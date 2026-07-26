@@ -46,9 +46,12 @@ def format_show(show: Show) -> str:
         lines.append(f"\n📝 {_esc(show.summary)}")
     if show.sold_out is None:
         lines.append("⚪️ Disponibilité inconnue")
+    links = []
     if show.booking_url:
-        lines.append(f'\n🎟 <a href="{html.escape(show.booking_url)}">Réserver</a>')
-    elif show.url:
-        lines.append(f'\n🔗 <a href="{html.escape(show.url)}">Détails</a>')
+        links.append(f'🎟 <a href="{html.escape(show.booking_url)}">Réserver</a>')
+    if show.url:
+        links.append(f'🔗 <a href="{html.escape(show.url)}">Page de la pièce</a>')
+    if links:
+        lines.append("\n" + "\n".join(links))
 
     return "\n".join(lines)

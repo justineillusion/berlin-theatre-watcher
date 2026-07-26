@@ -56,7 +56,10 @@ def _print_console(show: Show) -> None:
         print(f"     🗣 {show.languages}")
     if show.summary:
         print(f"     📝 {show.summary}")
-    print(f"     🔗 {show.booking_url or show.url or ''}")
+    if show.booking_url:
+        print(f"     🎟 {show.booking_url}")
+    if show.url:
+        print(f"     🔗 {show.url}")
 
 
 def main() -> None:
