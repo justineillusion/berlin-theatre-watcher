@@ -14,6 +14,7 @@ from .notify import format_show, send_telegram
 from .parsers import SOURCES
 from .state import load_seen, save_seen
 from .summary import fetch_summary
+from .translate import to_french
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
 
@@ -47,9 +48,10 @@ def _print_console(show: Show) -> None:
     when = " · ".join(x for x in [show.date, show.time] if x)
     dispo = {True: "COMPLET", False: "billets dispo", None: "dispo inconnue"}[show.sold_out]
     star = " ⭐" if show.matched_keywords else ""
-    extra = f"  (+{show.other_dates_count} autres dates)" if show.other_dates_count else ""
     print(f"\n  🎭 {show.title}{star}")
-    print(f"     {show.theater} · {when}{extra} · {show.venue or ''} · {dispo}")
+    print(f"     {show.theater} · {when} · {show.venue or ''} · {dispo}")
+    if len(show.available_dates) > 1:
+        print(f"     🎟 Places libres : {' | '.join(show.available_dates)}")
     if show.languages:
         print(f"     🗣 {show.languages}")
     if show.summary:
@@ -80,9 +82,9 @@ def main() -> None:
     print(f"✅ {len(hits)} spectacle(s) retenu(s) (surtitres EN, non complet, filtres).")
 
     if hits:
-        print("📝 Récupération des résumés…")
+        print("📝 Récupération des résumés (+ traduction FR)…")
         for show in hits:
-            show.summary = fetch_summary(show.theater, show.url)
+            show.summary = to_french(fetch_summary(show.theater, show.url))
 
     if args.dry_run:
         print("\n🔔 DRY-RUN (rien envoyé, état inchangé) :")

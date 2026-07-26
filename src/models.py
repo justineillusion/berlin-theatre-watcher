@@ -22,6 +22,7 @@ class Show:
     summary: Optional[str] = None         # résumé du sujet (page détail)
     matched_keywords: List[str] = field(default_factory=list)
     other_dates_count: int = 0            # nb d'autres dates dispo pour cette pièce
+    available_dates: List[str] = field(default_factory=list)  # dates avec places libres
 
     def key(self) -> str:
         """Identité d'une PIÈCE (pour la déduplication : 1 alerte par pièce)."""

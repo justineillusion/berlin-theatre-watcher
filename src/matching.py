@@ -10,6 +10,13 @@ def _find(keywords: List[str], hay: str) -> List[str]:
     return [kw for kw in keywords if kw.strip() and kw.strip().lower() in hay]
 
 
+def _fmt_date(show: Show) -> str:
+    """'2026-09-19' + '20:00' -> '19/09 · 20:00'."""
+    d = show.date
+    label = f"{d[8:10]}/{d[5:7]}" if len(d) >= 10 and d[4] == "-" else d
+    return f"{label} · {show.time}" if show.time else label
+
+
 def select(shows: List[Show], config: dict) -> List[Show]:
     """Filtres durs + matching mots-clés + regroupement par pièce.
 
@@ -45,6 +52,8 @@ def select(shows: List[Show], config: dict) -> List[Show]:
         members.sort(key=lambda s: s.date or "9999")
         rep = members[0]                       # la prochaine date à venir
         rep.other_dates_count = len(members) - 1
+        # toutes les dates avec places libres (les complètes sont déjà écartées)
+        rep.available_dates = [_fmt_date(m) for m in members]
         reps.append(rep)
 
     # Les correspondances de goût d'abord, puis par date.

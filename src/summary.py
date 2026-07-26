@@ -60,6 +60,17 @@ def _schaubuehne(soup: BeautifulSoup) -> Optional[str]:
     return text
 
 
+def _volksbuehne(soup: BeautifulSoup) -> Optional[str]:
+    skip = ("cookie", "theaterkasse", "besucherservice", "abendkasse", "newsletter")
+    for p in soup.find_all("p"):
+        if p.find(["p", "div"]):
+            continue                       # on ne garde que les <p> feuilles
+        txt = p.get_text(" ", strip=True)
+        if len(txt) > 90 and not any(k in txt.lower() for k in skip):
+            return txt
+    return None
+
+
 def _generic(soup: BeautifulSoup) -> Optional[str]:
     for attrs in ({"property": "og:description"}, {"name": "description"}):
         meta = soup.find("meta", attrs=attrs)
@@ -71,6 +82,7 @@ def _generic(soup: BeautifulSoup) -> Optional[str]:
 _EXTRACTORS = {
     "Berliner Ensemble": _berliner_ensemble,
     "Schaubühne": _schaubuehne,
+    "Volksbühne": _volksbuehne,
 }
 
 
