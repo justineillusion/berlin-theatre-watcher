@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+import time
 from pathlib import Path
 from typing import List
 
@@ -82,7 +83,9 @@ def main() -> None:
 
     if hits:
         print("📝 Récupération des résumés (+ traduction FR)…")
-        for show in hits:
+        for i, show in enumerate(hits):
+            if i:
+                time.sleep(1.0)   # espace les appels pour éviter le rate-limit traduction
             show.summary = to_french(fetch_summary(show.theater, show.url))
 
     if args.dry_run:
