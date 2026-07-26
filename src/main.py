@@ -13,6 +13,7 @@ from .models import Show
 from .notify import format_show, send_telegram
 from .parsers import SOURCES
 from .state import load_seen, save_seen
+from .summary import fetch_summary
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
 
@@ -51,8 +52,8 @@ def _print_console(show: Show) -> None:
     print(f"     {show.theater} · {when}{extra} · {show.venue or ''} · {dispo}")
     if show.languages:
         print(f"     🗣 {show.languages}")
-    if show.matched_keywords:
-        print(f"     ✨ {', '.join(show.matched_keywords)}")
+    if show.summary:
+        print(f"     📝 {show.summary}")
     print(f"     🔗 {show.booking_url or show.url or ''}")
 
 
@@ -77,6 +78,11 @@ def main() -> None:
 
     hits = select(all_shows, config)
     print(f"✅ {len(hits)} spectacle(s) retenu(s) (surtitres EN, non complet, filtres).")
+
+    if hits:
+        print("📝 Récupération des résumés…")
+        for show in hits:
+            show.summary = fetch_summary(show.theater, show.url)
 
     if args.dry_run:
         print("\n🔔 DRY-RUN (rien envoyé, état inchangé) :")

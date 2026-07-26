@@ -19,6 +19,7 @@ class Show:
     has_english_surtitles: bool = False
     sold_out: Optional[bool] = None       # None = inconnu (on notifie quand même)
     booking_url: Optional[str] = None
+    summary: Optional[str] = None         # résumé du sujet (page détail)
     matched_keywords: List[str] = field(default_factory=list)
     other_dates_count: int = 0            # nb d'autres dates dispo pour cette pièce
 

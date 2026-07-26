@@ -37,8 +37,8 @@ def format_show(show: Show) -> str:
         lines.append(f"🎬 {html.escape(show.production_type)}")
     if show.languages:
         lines.append(f"🗣 {html.escape(show.languages)}")
-    if show.matched_keywords:
-        lines.append("✨ correspond à : " + html.escape(", ".join(show.matched_keywords)))
+    if show.summary:
+        lines.append(f"\n📝 {html.escape(show.summary)}")
     if show.sold_out is False:
         lines.append("🟢 Billets disponibles")
     elif show.sold_out is None:

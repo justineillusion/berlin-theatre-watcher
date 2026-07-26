@@ -58,7 +58,9 @@ def _parse_page(html: str, base: str) -> List[Show]:
         day, month, yy = m.groups()
         date = f"20{yy}-{month}-{day}"
         title = prod.get_text(strip=True)
-        prod_url = urljoin(base, prod.get("href") or "")
+        # les liens sont "./produktionen/..." relatifs à /en/ (pas /en/schedule/)
+        href = (prod.get("href") or "").lstrip("./")
+        prod_url = urljoin("https://www.schaubuehne.de/en/", href)
 
         full = div.get_text(" ", strip=True)
         details = full.split("Mit dem Aufruf")[0]   # retire le disclaimer YouTube
