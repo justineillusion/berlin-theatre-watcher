@@ -23,26 +23,28 @@ def send_telegram(token: str, chat_id: str, text: str) -> None:
     resp.raise_for_status()
 
 
+def _esc(text: str) -> str:
+    # Telegram HTML ne décode que &lt; &gt; &amp; : on n'échappe donc PAS les
+    # guillemets/apostrophes (sinon ils s'affichent en &#x27; / &quot;).
+    return html.escape(text, quote=False)
+
+
 def format_show(show: Show) -> str:
     """Message Telegram (HTML) pour une représentation retenue."""
-    lines = [f"🎭 <b>{html.escape(show.title)}</b>", f"📍 {html.escape(show.theater)}"]
+    lines = [f"🎭 <b>{_esc(show.title)}</b>", f"📍 {_esc(show.theater)}"]
 
-    when = " · ".join(x for x in [show.date, show.time] if x)
-    if when:
-        lines.append(f"🗓 {html.escape(when)}")
-    if len(show.available_dates) > 1:
-        lines.append("🎟 Places libres : " + html.escape(" | ".join(show.available_dates)))
+    dates = show.available_dates or ([show.date] if show.date else [])
+    if dates:
+        lines.append("🗓 Places libres : " + _esc(" | ".join(dates)))
     if show.venue:
-        lines.append(f"🏛 {html.escape(show.venue)}")
+        lines.append(f"🏛 {_esc(show.venue)}")
     if show.production_type:
-        lines.append(f"🎬 {html.escape(show.production_type)}")
+        lines.append(f"🎬 {_esc(show.production_type)}")
     if show.languages:
-        lines.append(f"🗣 {html.escape(show.languages)}")
+        lines.append(f"🗣 {_esc(show.languages)}")
     if show.summary:
-        lines.append(f"\n📝 {html.escape(show.summary)}")
-    if show.sold_out is False:
-        lines.append("🟢 Billets disponibles")
-    elif show.sold_out is None:
+        lines.append(f"\n📝 {_esc(show.summary)}")
+    if show.sold_out is None:
         lines.append("⚪️ Disponibilité inconnue")
     if show.booking_url:
         lines.append(f'\n🎟 <a href="{html.escape(show.booking_url)}">Réserver</a>')

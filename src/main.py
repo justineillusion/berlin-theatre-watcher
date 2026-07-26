@@ -45,13 +45,12 @@ def collect_shows(theaters: list) -> List[Show]:
 
 
 def _print_console(show: Show) -> None:
-    when = " · ".join(x for x in [show.date, show.time] if x)
-    dispo = {True: "COMPLET", False: "billets dispo", None: "dispo inconnue"}[show.sold_out]
+    dates = show.available_dates or ([show.date] if show.date else [])
     star = " ⭐" if show.matched_keywords else ""
     print(f"\n  🎭 {show.title}{star}")
-    print(f"     {show.theater} · {when} · {show.venue or ''} · {dispo}")
-    if len(show.available_dates) > 1:
-        print(f"     🎟 Places libres : {' | '.join(show.available_dates)}")
+    print(f"     {show.theater} · {show.venue or ''}")
+    if dates:
+        print(f"     🗓 Places libres : {' | '.join(dates)}")
     if show.languages:
         print(f"     🗣 {show.languages}")
     if show.summary:
