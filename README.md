@@ -39,10 +39,19 @@ config.yaml ─┐
   ```
 
 ### 2. Test en local
+
+**Dry-run** (recommandé pour un premier essai) — affiche les résultats dans le
+terminal, sans Telegram, sans modifier l'état. Nécessite **seulement** la clé
+Anthropic :
+```bash
+ANTHROPIC_API_KEY=sk-ant-... ./.venv/bin/python -m src.main --dry-run
+```
+
+**Run complet** (envoie sur Telegram) :
 ```bash
 cp .env.example .env       # remplis les 3 valeurs
 set -a; source .env; set +a
-python -m src.main
+./.venv/bin/python -m src.main
 ```
 
 ### 3. Automatisation (GitHub Actions)
