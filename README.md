@@ -1,82 +1,100 @@
 # 🎭 Berlin Theatre Watcher
 
 Reçois une **notification push Telegram** quand un spectacle susceptible de te
-plaire apparaît à la **Schaubühne**, au **Berliner Ensemble** ou à la
-**Volksbühne** — avec **surtitres anglais**, **pas complet**, et le **lien de
-réservation**.
+plaire apparaît au **Berliner Ensemble** ou à la **Volksbühne** — avec
+**surtitres anglais**, **pas complet**, et le **lien de réservation**.
+
+> Version **sans clé API, 100 % gratuite**. Le scan lit directement le HTML des
+> pages « programme / English surtitles » et filtre par mots-clés. Aucun compte
+> à créer pour tester.
 
 ## Comment ça marche
 
-1. **Fetch** — récupère les pages "programme / English surtitles" des 3 théâtres.
-2. **Extraction (LLM)** — Claude lit chaque page et en extrait une liste
-   structurée de représentations (titre, date, langue, surtitres EN, sold-out,
-   lien de résa). Robuste aux refontes de site, contrairement à des sélecteurs CSS.
-3. **Filtres durs** — on ne garde que : surtitres anglais **et** non complet.
-4. **Scoring (LLM)** — Claude note chaque candidat 0–10 selon **ton profil de
-   goût** (`config.yaml`), avec un bonus fort pour l'international / non-allemand.
-5. **Dédup + notif** — au-dessus du seuil et pas déjà vu → message Telegram avec
-   le lien de résa. L'état est stocké dans `state/seen.json` pour ne pas te
-   spammer deux fois.
-6. **Cron** — tourne tout seul chaque jour via GitHub Actions.
+1. **Fetch + parse** — récupère les pages des théâtres et en extrait les
+   représentations (titre, date, lieu, langue, sold-out, lien de résa) avec un
+   parser dédié par théâtre.
+2. **Filtres durs** — on ne garde que : **surtitres anglais** *et* **pas complet**.
+3. **Mots-clés** — `keywords_avoid` exclut ; `keywords_love` met en avant (⭐) les
+   spectacles qui matchent tes goûts (metteur·ses en scène, autrices/auteurs,
+   pays, thèmes).
+4. **Dédup + notif** — les nouveautés partent sur Telegram avec le lien de résa.
+   `state/seen.json` évite de te spammer deux fois.
+5. **Cron** — tourne tout seul chaque jour via GitHub Actions.
 
 ```
 config.yaml ─┐
              ▼
-   fetch → extract(LLM) → filtres → score(LLM) → dédup → Telegram
-             ▲                                      │
-        3 théâtres                          state/seen.json
+   fetch → parse → [surtitres EN + pas complet] → mots-clés → dédup → Telegram
+             ▲                                                    │
+     Berliner Ensemble, Volksbühne                        state/seen.json
 ```
 
-## Setup
+## Tester tout de suite (aucune clé requise)
 
-### 1. Bot Telegram
+```bash
+cd berlin-theatre-watcher
+python3 -m venv .venv && ./.venv/bin/pip install -r requirements.txt
+./.venv/bin/python -m src.main --dry-run
+```
+
+Ça affiche dans le terminal tous les spectacles retenus, avec ⭐ pour ceux qui
+matchent tes mots-clés. Rien n'est envoyé, rien n'est modifié.
+
+## Recevoir les push (Telegram)
+
+### 1. Créer le bot
 - Sur Telegram, écris à **@BotFather** → `/newbot` → récupère le **token**.
 - Envoie « hi » à ton nouveau bot.
 - Récupère ton `chat_id` :
   ```bash
-  pip install -r requirements.txt
-  TELEGRAM_BOT_TOKEN=xx: python -m src.get_chat_id
+  TELEGRAM_BOT_TOKEN=xxx ./.venv/bin/python -m src.get_chat_id
   ```
 
-### 2. Test en local
-
-**Dry-run** (recommandé pour un premier essai) — affiche les résultats dans le
-terminal, sans Telegram, sans modifier l'état. Nécessite **seulement** la clé
-Anthropic :
+### 2. Run complet en local
 ```bash
-ANTHROPIC_API_KEY=sk-ant-... ./.venv/bin/python -m src.main --dry-run
-```
-
-**Run complet** (envoie sur Telegram) :
-```bash
-cp .env.example .env       # remplis les 3 valeurs
+cp .env.example .env       # remplis les 2 valeurs
 set -a; source .env; set +a
 ./.venv/bin/python -m src.main
 ```
 
 ### 3. Automatisation (GitHub Actions)
 - Pousse ce repo sur GitHub.
-- **Settings → Secrets and variables → Actions** → ajoute :
-  `ANTHROPIC_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
+- **Settings → Secrets and variables → Actions** → ajoute
+  `TELEGRAM_BOT_TOKEN` et `TELEGRAM_CHAT_ID`.
 - Onglet **Actions** → *Scan Berlin theatres* → **Run workflow** pour un test.
 - Ensuite ça tourne tous les jours à ~10h (Berlin).
 
-## Personnalisation
+## Personnalisation — `config.yaml`
 
-Tout est dans **`config.yaml`** :
-- `taste_profile` — ton texte de goûts (le cœur du système, sois précis).
-- `score_threshold` — sévérité des alertes (7 par défaut).
-- `theaters` — URLs à scanner + notes.
+- `keywords_love` — tes goûts (mis en avant avec ⭐).
+- `keywords_avoid` — ce que tu ne veux jamais voir (exclu).
+- `require_keyword_match` — `false` : tout ce qui est surtitré EN et dispo ;
+  `true` : uniquement ce qui matche `keywords_love`. Commence à `false` pour
+  voir le volume, passe à `true` si trop de bruit.
 
 ## Limites connues
 
-- **Sites en JavaScript.** L'extraction lit le HTML servi. Si un théâtre passe à
-  un rendu 100 % JS, la page arrivera vide → il faudra soit trouver son endpoint
-  JSON, soit ajouter un rendu headless (Playwright). Le Berliner Ensemble
-  (`/en/surtitles`) est en HTML statique et marche directement.
-- **Détection sold-out** — dépend de ce qu'affiche la page. Si l'info n'est pas
-  visible, `sold_out = inconnu` et on t'alerte quand même (mieux vaut trop que pas
-  assez).
-- **Coût LLM** — quelques centimes par run (2 appels Claude/jour). Négligeable.
-- **Dédup par titre+date** — une pièce à 5 dates peut générer jusqu'à 5 alertes.
-  Ajuste dans `src/main.py` si tu préfères une alerte par pièce.
+- **Schaubühne** — son programme est chargé en JavaScript : rien dans le HTML
+  servi, donc pas parsable simplement. Elle est **désactivée** dans `config.yaml`.
+  Pour l'ajouter il faudrait un navigateur headless (Playwright) ou repasser à
+  une extraction par LLM (voir l'historique git : une version LLM existait).
+- **Structure des sites** — si le Berliner Ensemble ou la Volksbühne refont leur
+  site, les parsers (`src/parsers/`) peuvent casser et devront être ajustés.
+- **Sold-out** — détecté via la page (absence de bouton Tickets au BE, classe
+  `ticket-status--sold-out` à la Volksbühne). Si l'info manque, on notifie quand
+  même (mieux vaut trop que pas assez).
+- **Dédup par titre+date** — une pièce à plusieurs dates peut générer plusieurs
+  alertes. Ajuste `Show.key()` dans `src/models.py` si tu préfères une alerte par
+  pièce.
+
+## Structure
+
+| Fichier | Rôle |
+|---|---|
+| `config.yaml` | mots-clés + théâtres à scanner |
+| `src/parsers/` | un parser HTML par théâtre |
+| `src/matching.py` | filtres durs + mots-clés |
+| `src/notify.py` | message Telegram |
+| `src/state.py` | `seen.json` (anti-doublon) |
+| `src/main.py` | orchestration (`--dry-run` dispo) |
+| `.github/workflows/scan.yml` | cron quotidien |

@@ -1,57 +1,54 @@
-# Berlin Theatre Watcher — configuration
+# Berlin Theatre Watcher — configuration (version SANS clé API)
 #
-# Édite librement ce fichier. Rien de secret ici (les clés/token vont dans les
+# Édite librement ce fichier. Rien de secret ici (le token Telegram va dans les
 # variables d'environnement / GitHub Secrets, voir .env.example).
 
-# Seuil de notification : on ne t'alerte que pour un spectacle noté >= à ce seuil
-# par le LLM (0 = tout, 10 = uniquement les coups de cœur absolus).
-score_threshold: 7
-
-# Modèle Claude utilisé pour l'extraction + le scoring.
-model: claude-sonnet-5
-
 # ---------------------------------------------------------------------------
-# TON PROFIL DE GOÛT
+# MOTS-CLÉS DE GOÛT
 # ---------------------------------------------------------------------------
-# Écris-le en langage naturel, aussi détaillé que tu veux. C'est CE texte qui
-# guide le scoring. Sois concret : metteurs en scène / autrices / auteurs que
-# tu adores, pays/langues, thèmes, esthétiques — et ce que tu fuis.
-taste_profile: |
-  Je vis à Berlin et je cherche du théâtre exigeant.
-  FORTE préférence pour les pièces INTERNATIONALES (non-allemandes) : autrices/
-  auteurs et metteur·ses en scène étranger·es, textes traduits, troupes en
-  tournée. Une pièce du répertoire allemand classique m'intéresse beaucoup moins.
-  CONDITION ABSOLUE : surtitres anglais (sinon je ne comprends pas).
-  J'aime : la mise en scène contemporaine et physique, les autrices femmes, les
-  sujets politiques et sociaux, l'Europe de l'Est, l'adaptation de grands romans,
-  Milo Rau, Katie Mitchell, Ivo van Hove, Simon Stone, Tiago Rodrigues.
-  Je fuis : le boulevard, la comédie légère, les revues, les spectacles pour
-  enfants, l'opérette.
+# On ne t'alerte QUE pour des spectacles avec surtitres anglais et pas complets.
+# Les mots-clés affinent selon tes goûts (recherche insensible à la casse dans
+# titre + lieu + langue + type + lien).
+
+# Si un de ces mots apparaît, le spectacle est mis en avant (⭐).
+# Mets ici tes metteur·ses en scène, autrices/auteurs, pays, thèmes favoris.
+keywords_love:
+  - Milo Rau
+  - Katie Mitchell
+  - Ivo van Hove
+  - Simon Stone
+  - Tiago Rodrigues
+  - Annie Ernaux
+  - Ostermeier
+  - international
+
+# Si un de ces mots apparaît, le spectacle est EXCLU (jamais notifié).
+keywords_avoid:
+  - Theaterführung   # visites guidées
+  - tour
+  - Kinder           # spectacles pour enfants
+  - Familien
+
+# true  = ne notifier QUE les spectacles qui matchent un keywords_love.
+# false = notifier TOUS les spectacles surtitrés anglais non complets,
+#         en mettant simplement en avant ceux qui matchent (recommandé au début
+#         pour voir ce que ça remonte, puis passe à true si trop de bruit).
+require_keyword_match: false
 
 # ---------------------------------------------------------------------------
 # THÉÂTRES À SCANNER
 # ---------------------------------------------------------------------------
-# Pour chaque théâtre : une ou plusieurs URLs de programme. On privilégie la
-# page "English surtitles" quand elle existe (source la plus fiable).
 theaters:
-  - name: Schaubühne
-    urls:
-      - https://www.schaubuehne.de/en/programme/index.html
-    notes: >
-      Pas de page surtitres datée : filtrer le programme sur le marqueur
-      "with English surtitles". Base URL pour compléter les liens relatifs :
-      https://www.schaubuehne.de
-
   - name: Berliner Ensemble
-    urls:
-      - https://www.berliner-ensemble.de/en/surtitles
-    notes: >
-      Liste datée dédiée aux représentations avec surtitres anglais.
-      Les liens de résa pointent vers eventim-inhouse.de.
+    parser: berliner_ensemble
+    url: https://www.berliner-ensemble.de/en/surtitles
 
   - name: Volksbühne
-    urls:
-      - https://www.volksbuehne.berlin/en/
-    notes: >
-      Repérer les productions en anglais ou avec surtitres anglais dans le
-      programme. Base URL : https://www.volksbuehne.berlin
+    parser: volksbuehne
+    url: https://www.volksbuehne.berlin/en/
+
+  # Schaubühne : programme chargé en JavaScript -> pas exploitable sans LLM ni
+  # navigateur headless. Désactivée pour l'instant. Voir README > Limites.
+  # - name: Schaubühne
+  #   parser: schaubuehne
+  #   url: https://www.schaubuehne.de/en/programme/index.html

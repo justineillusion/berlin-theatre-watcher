@@ -4,24 +4,18 @@ import argparse
 import os
 import sys
 from pathlib import Path
-from urllib.parse import urlsplit
+from typing import List
 
 import yaml
-from anthropic import Anthropic
 
-from .extract import extract_shows
-from .fetch import fetch_html, html_to_text
+from .fetch import fetch_html
+from .matching import select
 from .models import Show
 from .notify import format_show, send_telegram
-from .scoring import score_shows
+from .parsers import PARSERS
 from .state import load_seen, save_seen
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
-
-
-def _base_url(url: str) -> str:
-    parts = urlsplit(url)
-    return f"{parts.scheme}://{parts.netloc}"
 
 
 def _require_env(name: str) -> str:
@@ -31,38 +25,36 @@ def _require_env(name: str) -> str:
     return value
 
 
-def collect_shows(client: Anthropic, model: str, theaters: list) -> list[Show]:
-    shows: list[Show] = []
+def collect_shows(theaters: list) -> List[Show]:
+    shows: List[Show] = []
     for theater in theaters:
         name = theater["name"]
-        for url in theater.get("urls", []):
-            try:
-                text = html_to_text(fetch_html(url))
-            except Exception as exc:  # noqa: BLE001 — on continue sur les autres sources
-                print(f"⚠️  {name} — échec du fetch de {url} : {exc}")
-                continue
-            try:
-                found = extract_shows(
-                    client, model, name, theater.get("notes", ""), _base_url(url), text
-                )
-            except Exception as exc:  # noqa: BLE001
-                print(f"⚠️  {name} — échec de l'extraction : {exc}")
-                continue
-            print(f"   {name} : {len(found)} représentation(s) extraite(s) de {url}")
-            shows.extend(found)
+        parser = PARSERS.get(theater.get("parser", ""))
+        if parser is None:
+            print(f"⚠️  {name} — parser inconnu : {theater.get('parser')!r}, ignoré.")
+            continue
+        try:
+            html = fetch_html(theater["url"])
+            found = parser(html)
+        except Exception as exc:  # noqa: BLE001 — on continue sur les autres théâtres
+            print(f"⚠️  {name} — échec ({exc}).")
+            continue
+        print(f"   {name} : {len(found)} représentation(s) trouvée(s).")
+        shows.extend(found)
     return shows
 
 
 def _print_console(show: Show) -> None:
-    """Affichage lisible dans le terminal (mode dry-run)."""
     when = " · ".join(x for x in [show.date, show.time] if x)
     dispo = {True: "COMPLET", False: "billets dispo", None: "dispo inconnue"}[show.sold_out]
-    print(f"\n  🎭 {show.title}  —  {show.score}/10")
-    print(f"     {show.theater} · {when} · {dispo}")
-    if show.reason:
-        print(f"     → {show.reason}")
-    if show.booking_url:
-        print(f"     🎟 {show.booking_url}")
+    star = " ⭐" if show.matched_keywords else ""
+    print(f"\n  🎭 {show.title}{star}")
+    print(f"     {show.theater} · {when} · {show.venue or ''} · {dispo}")
+    if show.languages:
+        print(f"     🗣 {show.languages}")
+    if show.matched_keywords:
+        print(f"     ✨ {', '.join(show.matched_keywords)}")
+    print(f"     🔗 {show.booking_url or show.url or ''}")
 
 
 def main() -> None:
@@ -70,67 +62,39 @@ def main() -> None:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Affiche les résultats dans le terminal sans envoyer sur Telegram "
-        "ni modifier l'état (nécessite seulement ANTHROPIC_API_KEY).",
+        help="Affiche les résultats dans le terminal, sans Telegram ni écriture "
+        "d'état. Ne nécessite AUCUNE clé ni token.",
     )
     args = parser.parse_args()
 
     config = yaml.safe_load(CONFIG_PATH.read_text())
-    model = config.get("model", "claude-sonnet-5")
-    threshold = int(config.get("score_threshold", 7))
-    taste = config["taste_profile"]
 
-    api_key = _require_env("ANTHROPIC_API_KEY")
-    client = Anthropic(api_key=api_key)
     if not args.dry_run:
         tg_token = _require_env("TELEGRAM_BOT_TOKEN")
         tg_chat = _require_env("TELEGRAM_CHAT_ID")
 
     print("🔎 Collecte des programmes…")
-    all_shows = collect_shows(client, model, config["theaters"])
+    all_shows = collect_shows(config["theaters"])
 
-    # Filtres durs : surtitres anglais requis, on écarte les complets.
-    candidates = [
-        s for s in all_shows if s.has_english_surtitles and s.sold_out is not True
-    ]
-    print(f"✅ {len(candidates)} candidat(s) avec surtitres EN et non complet(s).")
-
-    if not candidates:
-        print("Rien à scorer. Fin.")
-        return
-
-    print("🧠 Scoring selon le profil de goût…")
-    scored = score_shows(client, model, taste, candidates)
+    hits = select(all_shows, config)
+    print(f"✅ {len(hits)} spectacle(s) retenu(s) (surtitres EN, non complet, filtres).")
 
     if args.dry_run:
-        hits = sorted(
-            (s for s in scored if (s.score or 0) >= threshold),
-            key=lambda s: s.score or 0,
-            reverse=True,
-        )
-        print(
-            f"\n🔔 DRY-RUN — {len(hits)} spectacle(s) au-dessus du seuil {threshold} "
-            "(rien envoyé, état inchangé) :"
-        )
+        print("\n🔔 DRY-RUN (rien envoyé, état inchangé) :")
         for show in hits:
             _print_console(show)
         print("\n(Retire --dry-run + configure Telegram pour recevoir les push.)")
         return
 
     seen = load_seen()
-    new_hits = [
-        s
-        for s in scored
-        if (s.score or 0) >= threshold and s.key() not in seen
-    ]
-    new_hits.sort(key=lambda s: s.score or 0, reverse=True)
+    new_hits = [s for s in hits if s.key() not in seen]
+    print(f"🔔 {len(new_hits)} nouveau(x) depuis le dernier scan.")
 
-    print(f"🔔 {len(new_hits)} nouveau(x) spectacle(s) au-dessus du seuil {threshold}.")
     for show in new_hits:
         try:
             send_telegram(tg_token, tg_chat, format_show(show))
             seen.add(show.key())
-            print(f"   → notifié : {show.title} ({show.score}/10)")
+            print(f"   → notifié : {show.title}")
         except Exception as exc:  # noqa: BLE001
             print(f"   ⚠️  échec de l'envoi Telegram pour {show.title} : {exc}")
 

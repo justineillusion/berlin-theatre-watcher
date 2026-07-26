@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from typing import Optional
+from dataclasses import asdict, dataclass, field
+from typing import List, Optional
 
 
 @dataclass
@@ -13,25 +13,33 @@ class Show:
     date: str = ""                       # "YYYY-MM-DD" si connu, sinon texte brut
     time: Optional[str] = None
     venue: Optional[str] = None
-    original_language: Optional[str] = None
-    is_german_production: Optional[bool] = None   # True = répertoire allemand
+    url: Optional[str] = None             # page détail de la production
+    languages: Optional[str] = None       # ex "In German and English"
+    production_type: Optional[str] = None # ex "Lecture Performance"
     has_english_surtitles: bool = False
     sold_out: Optional[bool] = None       # None = inconnu (on notifie quand même)
     booking_url: Optional[str] = None
-    description: Optional[str] = None
-
-    # rempli par le scoring LLM
-    score: Optional[int] = None
-    reason: Optional[str] = None
+    matched_keywords: List[str] = field(default_factory=list)
 
     def key(self) -> str:
         """Identité stable d'une représentation (pour la déduplication)."""
         return f"{self.theater}|{self.title.strip().lower()}|{self.date}".strip()
+
+    def haystack(self) -> str:
+        """Texte concaténé pour la recherche de mots-clés (minuscules)."""
+        parts = [
+            self.title,
+            self.venue,
+            self.languages,
+            self.production_type,
+            self.url,
+        ]
+        return " ".join(p for p in parts if p).lower()
 
     def to_dict(self) -> dict:
         return asdict(self)
 
     @classmethod
     def from_dict(cls, d: dict) -> "Show":
-        allowed = {f for f in cls.__dataclass_fields__}  # type: ignore[attr-defined]
+        allowed = set(cls.__dataclass_fields__)  # type: ignore[attr-defined]
         return cls(**{k: v for k, v in d.items() if k in allowed})
