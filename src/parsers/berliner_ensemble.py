@@ -20,10 +20,15 @@ from typing import List
 
 from bs4 import BeautifulSoup
 
+from ..fetch import fetch_html
 from ..models import Show
 
 _BASE = "https://www.berliner-ensemble.de"
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def collect(url: str) -> List[Show]:
+    return parse(fetch_html(url))
 
 
 def parse(html: str) -> List[Show]:

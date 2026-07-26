@@ -1,8 +1,9 @@
 # 🎭 Berlin Theatre Watcher
 
 Reçois une **notification push Telegram** quand un spectacle susceptible de te
-plaire apparaît au **Berliner Ensemble** ou à la **Volksbühne** — avec
-**surtitres anglais**, **pas complet**, et le **lien de réservation**.
+plaire apparaît à la **Schaubühne**, au **Berliner Ensemble** ou à la
+**Volksbühne** — avec **surtitres anglais**, **pas complet**, et le **lien de
+réservation**.
 
 > Version **sans clé API, 100 % gratuite**. Le scan lit directement le HTML des
 > pages « programme / English surtitles » et filtre par mots-clés. Aucun compte
@@ -24,9 +25,9 @@ plaire apparaît au **Berliner Ensemble** ou à la **Volksbühne** — avec
 ```
 config.yaml ─┐
              ▼
-   fetch → parse → [surtitres EN + pas complet] → mots-clés → dédup → Telegram
-             ▲                                                    │
-     Berliner Ensemble, Volksbühne                        state/seen.json
+   fetch → parse → [surtitres EN + pas complet] → mots-clés → 1/pièce → Telegram
+             ▲                                                         │
+  Schaubühne, Berliner Ensemble, Volksbühne                   state/seen.json
 ```
 
 ## Tester tout de suite (aucune clé requise)
@@ -74,18 +75,16 @@ set -a; source .env; set +a
 
 ## Limites connues
 
-- **Schaubühne** — son programme est chargé en JavaScript : rien dans le HTML
-  servi, donc pas parsable simplement. Elle est **désactivée** dans `config.yaml`.
-  Pour l'ajouter il faudrait un navigateur headless (Playwright) ou repasser à
-  une extraction par LLM (voir l'historique git : une version LLM existait).
-- **Structure des sites** — si le Berliner Ensemble ou la Volksbühne refont leur
+- **Schaubühne** — son programme est chargé en AJAX (POST paginé). Le parser
+  (`src/parsers/schaubuehne.py`) reproduit cet appel ; c'est donc un peu plus
+  fragile que les deux autres si le site change son mécanisme de chargement.
+- **Structure des sites** — si un théâtre refait son
   site, les parsers (`src/parsers/`) peuvent casser et devront être ajustés.
 - **Sold-out** — détecté via la page (absence de bouton Tickets au BE, classe
   `ticket-status--sold-out` à la Volksbühne). Si l'info manque, on notifie quand
   même (mieux vaut trop que pas assez).
-- **Dédup par titre+date** — une pièce à plusieurs dates peut générer plusieurs
-  alertes. Ajuste `Show.key()` dans `src/models.py` si tu préfères une alerte par
-  pièce.
+- **1 alerte par pièce** — les multiples dates d'une même pièce sont regroupées
+  (prochaine date + « +N autres dates »). Tu es notifiée une fois par production.
 
 ## Structure
 

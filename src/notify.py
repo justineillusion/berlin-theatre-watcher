@@ -29,7 +29,8 @@ def format_show(show: Show) -> str:
 
     when = " · ".join(x for x in [show.date, show.time] if x)
     if when:
-        lines.append(f"🗓 {html.escape(when)}")
+        extra = f"  (+{show.other_dates_count} autres dates)" if show.other_dates_count else ""
+        lines.append(f"🗓 {html.escape(when)}{extra}")
     if show.venue:
         lines.append(f"🏛 {html.escape(show.venue)}")
     if show.production_type:

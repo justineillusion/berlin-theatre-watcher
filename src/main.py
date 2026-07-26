@@ -8,11 +8,10 @@ from typing import List
 
 import yaml
 
-from .fetch import fetch_html
 from .matching import select
 from .models import Show
 from .notify import format_show, send_telegram
-from .parsers import PARSERS
+from .parsers import SOURCES
 from .state import load_seen, save_seen
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
@@ -29,13 +28,12 @@ def collect_shows(theaters: list) -> List[Show]:
     shows: List[Show] = []
     for theater in theaters:
         name = theater["name"]
-        parser = PARSERS.get(theater.get("parser", ""))
-        if parser is None:
-            print(f"⚠️  {name} — parser inconnu : {theater.get('parser')!r}, ignoré.")
+        source = SOURCES.get(theater.get("parser", ""))
+        if source is None:
+            print(f"⚠️  {name} — source inconnue : {theater.get('parser')!r}, ignorée.")
             continue
         try:
-            html = fetch_html(theater["url"])
-            found = parser(html)
+            found = source(theater["url"])
         except Exception as exc:  # noqa: BLE001 — on continue sur les autres théâtres
             print(f"⚠️  {name} — échec ({exc}).")
             continue
@@ -48,8 +46,9 @@ def _print_console(show: Show) -> None:
     when = " · ".join(x for x in [show.date, show.time] if x)
     dispo = {True: "COMPLET", False: "billets dispo", None: "dispo inconnue"}[show.sold_out]
     star = " ⭐" if show.matched_keywords else ""
+    extra = f"  (+{show.other_dates_count} autres dates)" if show.other_dates_count else ""
     print(f"\n  🎭 {show.title}{star}")
-    print(f"     {show.theater} · {when} · {show.venue or ''} · {dispo}")
+    print(f"     {show.theater} · {when}{extra} · {show.venue or ''} · {dispo}")
     if show.languages:
         print(f"     🗣 {show.languages}")
     if show.matched_keywords:

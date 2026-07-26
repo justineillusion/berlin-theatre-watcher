@@ -10,35 +10,53 @@
 # Les mots-clés affinent selon tes goûts (recherche insensible à la casse dans
 # titre + lieu + langue + type + lien).
 
-# Si un de ces mots apparaît, le spectacle est mis en avant (⭐).
-# Mets ici tes metteur·ses en scène, autrices/auteurs, pays, thèmes favoris.
+# Si un de ces mots apparaît (dans le titre, l'auteur/metteur·se en scène, etc.)
+# le spectacle matche. Étoffe librement : plus la liste est riche, plus tu
+# attrapes de pièces internationales. (Recherche insensible à la casse.)
 keywords_love:
+  # --- Metteur·ses en scène que tu aimes ---
   - Milo Rau
   - Katie Mitchell
   - Ivo van Hove
   - Simon Stone
   - Tiago Rodrigues
-  - Annie Ernaux
   - Ostermeier
+  # --- Autrices / auteurs internationaux (souvent cités dans le "By ...") ---
+  - Annie Ernaux
+  - Oscar Wilde
+  - George Orwell
+  - Shakespeare
+  - Chekhov
+  - Ibsen
+  - Sarah Kane
+  - Caryl Churchill
+  - Jon Fosse
+  - Elena Ferrante
+  # --- Indices de production internationale ---
   - international
+  - in english          # pièces jouées en anglais
 
 # Si un de ces mots apparaît, le spectacle est EXCLU (jamais notifié).
 keywords_avoid:
-  - Theaterführung   # visites guidées
-  - tour
+  - Theaterführung   # visites guidées du théâtre
+  - Führung
   - Kinder           # spectacles pour enfants
   - Familien
 
-# true  = ne notifier QUE les spectacles qui matchent un keywords_love.
-# false = notifier TOUS les spectacles surtitrés anglais non complets,
-#         en mettant simplement en avant ceux qui matchent (recommandé au début
-#         pour voir ce que ça remonte, puis passe à true si trop de bruit).
-require_keyword_match: false
+# true  = ne notifier QUE les spectacles qui matchent un keywords_love (ciblé,
+#         peu de bruit — recommandé pour ta préférence internationale).
+# false = notifier TOUS les spectacles surtitrés anglais non complets, avec ⭐
+#         sur les matches (pour explorer le volume).
+require_keyword_match: true
 
 # ---------------------------------------------------------------------------
 # THÉÂTRES À SCANNER
 # ---------------------------------------------------------------------------
 theaters:
+  - name: Schaubühne
+    parser: schaubuehne
+    url: https://www.schaubuehne.de/en/schedule/programme.html
+
   - name: Berliner Ensemble
     parser: berliner_ensemble
     url: https://www.berliner-ensemble.de/en/surtitles
@@ -46,9 +64,3 @@ theaters:
   - name: Volksbühne
     parser: volksbuehne
     url: https://www.volksbuehne.berlin/en/
-
-  # Schaubühne : programme chargé en JavaScript -> pas exploitable sans LLM ni
-  # navigateur headless. Désactivée pour l'instant. Voir README > Limites.
-  # - name: Schaubühne
-  #   parser: schaubuehne
-  #   url: https://www.schaubuehne.de/en/programme/index.html

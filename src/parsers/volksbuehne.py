@@ -19,9 +19,14 @@ from typing import List
 
 from bs4 import BeautifulSoup
 
+from ..fetch import fetch_html
 from ..models import Show
 
 _BASE = "https://www.volksbuehne-berlin.de"
+
+
+def collect(url: str) -> List[Show]:
+    return parse(fetch_html(url))
 
 
 def _has_english(text: str) -> tuple[bool, str | None]:
