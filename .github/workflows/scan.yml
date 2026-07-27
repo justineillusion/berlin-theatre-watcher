@@ -2,8 +2,10 @@ name: Scan Berlin theatres
 
 on:
   schedule:
-    # Tous les jours à 08:00 UTC (~10:00 heure de Berlin).
-    - cron: "0 8 * * *"
+    # Tous les jours vers 08:23 UTC (~10:23 Berlin). On évite l'heure pile
+    # (:00), créneau surchargé chez GitHub où les crons sont souvent retardés
+    # ou sautés. Rappel : les schedules GitHub restent "best effort".
+    - cron: "23 8 * * *"
   workflow_dispatch: {}   # bouton "Run workflow" pour tester à la main
 
 permissions:
