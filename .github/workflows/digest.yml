@@ -1,0 +1,35 @@
+name: Récap du dimanche
+
+on:
+  schedule:
+    # Dimanche 13:23 UTC = 15:23 à Berlin l'été (CEST), 14:23 l'hiver (CET).
+    # Comme pour le scan quotidien, on évite l'heure pile : les crons GitHub y
+    # sont souvent retardés. Rappel : les schedules restent "best effort".
+    - cron: "23 13 * * 0"
+  workflow_dispatch: {}   # bouton "Run workflow" pour tester à la main
+
+permissions:
+  contents: read           # le récap ne touche pas à state/seen.json
+
+concurrency:
+  group: theatre-digest
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Envoyer le récap
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m src.main --digest

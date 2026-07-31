@@ -11,7 +11,7 @@ import yaml
 
 from .matching import select
 from .models import Show
-from .notify import format_show, send_telegram
+from .notify import format_digest, format_show, send_telegram
 from .parsers import SOURCES
 from .state import load_seen, save_seen
 from .language import detect as detect_language
@@ -72,6 +72,12 @@ def main() -> None:
         help="Affiche les résultats dans le terminal, sans Telegram ni écriture "
         "d'état. Ne nécessite AUCUNE clé ni token.",
     )
+    parser.add_argument(
+        "--digest",
+        action="store_true",
+        help="Récap hebdomadaire : envoie TOUT ce qui est réservable, y compris "
+        "les pièces déjà notifiées. Ne touche pas à l'état (state/seen.json).",
+    )
     args = parser.parse_args()
 
     config = yaml.safe_load(CONFIG_PATH.read_text())
@@ -87,21 +93,39 @@ def main() -> None:
     print(f"✅ {len(hits)} spectacle(s) retenu(s) (surtitres EN, non complet, filtres).")
 
     if hits:
-        print("📝 Récupération des résumés (+ langue, + traduction FR)…")
+        # Le récap ne montre pas les résumés : on saute la traduction, lente et
+        # rate-limitée, et on ne garde que la détection de langue.
+        print("📝 Récupération des pages détail (langue" + ("" if args.digest else " + résumés FR") + ")…")
         for i, show in enumerate(hits):
-            if i:
+            if i and not args.digest:
                 time.sleep(1.0)   # espace les appels pour éviter le rate-limit traduction
             summary, page_text = fetch_details(show.theater, show.url)
-            show.summary = to_french(summary)
+            if not args.digest:
+                show.summary = to_french(summary)
             show.spoken_language, show.surtitles = detect_language(
                 show.languages, page_text, show.has_english_surtitles
             )
 
     if args.dry_run:
         print("\n🔔 DRY-RUN (rien envoyé, état inchangé) :")
-        for show in hits:
-            _print_console(show)
+        if args.digest:
+            for msg in format_digest(hits):
+                print("\n--- message ---")
+                print(msg)
+        else:
+            for show in hits:
+                _print_console(show)
         print("\n(Retire --dry-run + configure Telegram pour recevoir les push.)")
+        return
+
+    if args.digest:
+        messages = format_digest(hits)
+        for msg in messages:
+            send_telegram(tg_token, tg_chat, msg)
+        print(
+            f"📅 Récap envoyé : {len(hits)} pièce(s) en {len(messages)} message(s). "
+            "État inchangé."
+        )
         return
 
     seen = load_seen()
