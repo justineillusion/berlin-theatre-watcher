@@ -47,7 +47,7 @@ keywords_avoid:
 #         peu de bruit — recommandé pour ta préférence internationale).
 # false = notifier TOUS les spectacles surtitrés anglais non complets, avec ⭐
 #         sur les matches (pour explorer le volume).
-require_keyword_match: true
+require_keyword_match: false
 
 # ---------------------------------------------------------------------------
 # THÉÂTRES À SCANNER
