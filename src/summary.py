@@ -6,7 +6,7 @@ pages « en »), avec un repli générique (og:description). On tronque à ~2 li
 from __future__ import annotations
 
 import re
-from typing import Optional
+from typing import Optional, Tuple
 
 from bs4 import BeautifulSoup
 
@@ -86,13 +86,22 @@ _EXTRACTORS = {
 }
 
 
-def fetch_summary(theater: str, url: Optional[str]) -> Optional[str]:
+def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Optional[str]]:
+    """Renvoie (résumé, texte brut de la page) en une seule requête.
+
+    Le texte brut sert à la détection de langue (voir `language.detect`), d'où
+    le fait de le remonter plutôt que de refetcher la page une deuxième fois.
+    """
     if not url:
-        return None
+        return None, None
     try:
         soup = BeautifulSoup(fetch_html(url), "html.parser")
     except Exception:  # noqa: BLE001 — un résumé manquant n'est pas bloquant
-        return None
+        return None, None
     extractor = _EXTRACTORS.get(theater)
     text = (extractor(soup) if extractor else None) or _generic(soup)
-    return _trim(text) if text else None
+    return (_trim(text) if text else None), soup.get_text(" ", strip=True)
+
+
+def fetch_summary(theater: str, url: Optional[str]) -> Optional[str]:
+    return fetch_details(theater, url)[0]

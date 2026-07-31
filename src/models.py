@@ -15,6 +15,8 @@ class Show:
     venue: Optional[str] = None
     url: Optional[str] = None             # page détail de la production
     languages: Optional[str] = None       # ex "In German and English"
+    spoken_language: Optional[str] = None # ex "En allemand et arabe" (déduit)
+    surtitles: Optional[str] = None       # ex "surtitres allemands et anglais"
     production_type: Optional[str] = None # ex "Lecture Performance"
     has_english_surtitles: bool = False
     sold_out: Optional[bool] = None       # None = inconnu (on notifie quand même)

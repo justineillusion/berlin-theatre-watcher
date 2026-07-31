@@ -14,7 +14,8 @@ from .models import Show
 from .notify import format_show, send_telegram
 from .parsers import SOURCES
 from .state import load_seen, save_seen
-from .summary import fetch_summary
+from .language import detect as detect_language
+from .summary import fetch_details
 from .translate import to_french
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
@@ -52,8 +53,9 @@ def _print_console(show: Show) -> None:
     print(f"     {show.theater} · {show.venue or ''}")
     if dates:
         print(f"     🗓 Places libres : {' | '.join(dates)}")
-    if show.languages:
-        print(f"     🗣 {show.languages}")
+    spoken = " · ".join(p for p in (show.spoken_language, show.surtitles) if p)
+    if spoken:
+        print(f"     🗣 {spoken}")
     if show.summary:
         print(f"     📝 {show.summary}")
     if show.booking_url:
@@ -85,11 +87,15 @@ def main() -> None:
     print(f"✅ {len(hits)} spectacle(s) retenu(s) (surtitres EN, non complet, filtres).")
 
     if hits:
-        print("📝 Récupération des résumés (+ traduction FR)…")
+        print("📝 Récupération des résumés (+ langue, + traduction FR)…")
         for i, show in enumerate(hits):
             if i:
                 time.sleep(1.0)   # espace les appels pour éviter le rate-limit traduction
-            show.summary = to_french(fetch_summary(show.theater, show.url))
+            summary, page_text = fetch_details(show.theater, show.url)
+            show.summary = to_french(summary)
+            show.spoken_language, show.surtitles = detect_language(
+                show.languages, page_text, show.has_english_surtitles
+            )
 
     if args.dry_run:
         print("\n🔔 DRY-RUN (rien envoyé, état inchangé) :")

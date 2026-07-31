@@ -4,6 +4,7 @@ import html
 
 import httpx
 
+from .language import is_pure_language_note
 from .models import Show
 
 _API = "https://api.telegram.org/bot{token}/sendMessage"
@@ -40,8 +41,11 @@ def format_show(show: Show) -> str:
         lines.append(f"🏛 {_esc(show.venue)}")
     if show.production_type:
         lines.append(f"🎬 {_esc(show.production_type)}")
-    if show.languages:
-        lines.append(f"🗣 {_esc(show.languages)}")
+    if show.languages and not is_pure_language_note(show.languages):
+        lines.append(f"✍️ {_esc(show.languages)}")
+    spoken = " · ".join(p for p in (show.spoken_language, show.surtitles) if p)
+    if spoken:
+        lines.append(f"🗣 {_esc(spoken)}")
     if show.summary:
         lines.append(f"\n📝 {_esc(show.summary)}")
     if show.sold_out is None:
