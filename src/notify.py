@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import html
+import time
 from collections import OrderedDict
 from typing import List
 
@@ -12,18 +13,38 @@ from .models import Show
 _API = "https://api.telegram.org/bot{token}/sendMessage"
 
 
-def send_telegram(token: str, chat_id: str, text: str) -> None:
-    resp = httpx.post(
-        _API.format(token=token),
-        json={
-            "chat_id": chat_id,
-            "text": text,
-            "parse_mode": "HTML",
-            "disable_web_page_preview": False,
-        },
-        timeout=30.0,
-    )
-    resp.raise_for_status()
+def send_telegram(token: str, chat_id: str, text: str, retries: int = 3) -> None:
+    """Envoie un message, en réessayant les échecs réseau.
+
+    Sans retry, un simple « read operation timed out » fait perdre l'alerte du
+    jour : main.py n'inscrit la pièce dans l'état qu'après un envoi réussi, donc
+    elle repartirait au scan suivant — mais pour une représentation le soir même
+    c'est déjà trop tard. On insiste donc ici.
+
+    Un 4xx (token ou chat_id faux, message mal formé) n'est pas réessayé : il ne
+    se résoudra pas tout seul.
+    """
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": False,
+    }
+    last_error: Exception | None = None
+    for attempt in range(retries):
+        try:
+            resp = httpx.post(_API.format(token=token), json=payload, timeout=30.0)
+            resp.raise_for_status()
+            return
+        except httpx.HTTPStatusError as exc:
+            if 400 <= exc.response.status_code < 500:
+                raise
+            last_error = exc
+        except httpx.RequestError as exc:      # timeout, DNS, coupure réseau
+            last_error = exc
+        if attempt < retries - 1:
+            time.sleep(2.0 * (attempt + 1))
+    raise last_error if last_error else RuntimeError("envoi Telegram échoué")
 
 
 def _esc(text: str) -> str:
