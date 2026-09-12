@@ -12,16 +12,33 @@ import re
 import time
 from typing import Optional
 
-_ERROR_RE = re.compile(r"^\s*(error|erreur)?\s*\d{3}\s*$", re.I)  # ex "505", "error 500"
+_ERROR_RE = re.compile(r"^\s*(error|erreur)?\s*\d{3}\b", re.I)  # "505", "Error 500 (…)"
+
+# L'endpoint peut renvoyer une PAGE d'erreur Google entière, pas juste un code :
+# « Error 500 (Server Error)!!1500.That's an error.… That's all we know. »
+# Elle est longue et passait donc le contrôle de longueur. On la reconnaît à ses
+# formules, en tolérant l'apostrophe droite comme la typographique.
+_ERROR_MARKERS = (
+    "that's an error",
+    "that\u2019s an error",
+    "that's all we know",
+    "that\u2019s all we know",
+    "server error",
+    "please try again later",
+)
 
 
 def _looks_valid(source: str, result: Optional[str]) -> bool:
     if not result or not result.strip():
         return False
-    if _ERROR_RE.match(result.strip()):
+    stripped = result.strip()
+    if _ERROR_RE.match(stripped):
+        return False
+    low = stripped.lower()
+    if any(marker in low for marker in _ERROR_MARKERS):
         return False
     # une vraie traduction ne fond pas à quasi rien
-    return len(result.strip()) >= max(10, len(source) // 4)
+    return len(stripped) >= max(10, len(source) // 4)
 
 
 def to_french(text: Optional[str], retries: int = 3) -> Optional[str]:
