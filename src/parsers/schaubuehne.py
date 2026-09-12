@@ -2,7 +2,9 @@
 
 Le programme n'est pas dans le HTML de la page : il est chargé en AJAX (POST)
 page par page via  programme.html?ajax=1&offset=N&letzterTermin=0  jusqu'à ce que
-la réponse soit "ende erreicht.". Chaque représentation est un <div> portant une
+la réponse soit "ende erreicht.". ATTENTION : les offsets commencent à 0, et
+c'est offset=0 qui porte le MOIS EN COURS — partir de 1 rend le bot aveugle
+aux dates les plus proches. Chaque représentation est un <div> portant une
 seule classe date-DDMMYY et contenant un lien vers /produktionen/ (+ Eventim).
 Le marqueur de surtitres est le texte "With English surtitles".
 """
@@ -32,7 +34,7 @@ def collect(url: str) -> List[Show]:
     shows: List[Show] = []
     with httpx.Client(follow_redirects=True, headers=headers, timeout=30.0) as client:
         client.get(url)  # amorce les cookies
-        for page in range(1, _MAX_PAGES + 1):
+        for page in range(0, _MAX_PAGES):
             resp = client.post(f"{url}?ajax=1&offset={page}&letzterTermin=0", data={})
             body = resp.text
             if body.strip() == "ende erreicht." or len(body) < 50:
