@@ -2,10 +2,19 @@ name: Scan Berlin theatres
 
 on:
   schedule:
-    # Tous les jours vers 08:23 UTC (~10:23 Berlin). On évite l'heure pile
-    # (:00), créneau surchargé chez GitHub où les crons sont souvent retardés
-    # ou sautés. Rappel : les schedules GitHub restent "best effort".
-    - cron: "23 8 * * *"
+    # Objectif : recevoir les alertes le MATIN à Berlin.
+    #
+    # Les crons GitHub sont "best effort" et arrivent très en retard : réglé à
+    # 08:23 UTC, ce workflow partait en pratique entre 11:51 et 16:13 UTC, soit
+    # l'après-midi voire le soir à Berlin. On avance donc le tir, et on pose
+    # deux créneaux plutôt qu'un : GitHub saute parfois purement et simplement
+    # une exécution planifiée.
+    #
+    # Deux exécutions ne produisent PAS de doublon : l'état (state/seen.json)
+    # mémorise les dates déjà annoncées, donc le second passage n'envoie que ce
+    # que le premier n'a pas vu. Le scan est idempotent.
+    - cron: "17 5 * * *"    # 07:17 Berlin l'été, 06:17 l'hiver
+    - cron: "17 7 * * *"    # filet de sécurité si le premier est sauté
   workflow_dispatch: {}   # bouton "Run workflow" pour tester à la main
 
 permissions:
