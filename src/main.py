@@ -129,14 +129,39 @@ def main() -> None:
         return
 
     seen = load_seen()
-    new_hits = [s for s in hits if s.key() not in seen]
-    print(f"🔔 {len(new_hits)} nouveau(x) depuis le dernier scan.")
 
-    for show in new_hits:
+    # Une alerte par pièce, MAIS on réveille la notification quand le théâtre
+    # ouvre des dates qu'on n'avait pas encore annoncées.
+    pending: List[Show] = []
+    for show in hits:
+        key = show.key()
+        current = set(show.available_iso)
+        known = seen.get(key)
+
+        if known is None:                      # pièce jamais vue
+            pending.append(show)
+        elif not known:                        # état hérité de l'ancien format
+            seen[key] = current                # on amorce en silence
+        else:
+            fresh = sorted(current - known)
+            if fresh:
+                show.new_dates = fresh         # dates inédites -> on réalerte
+                pending.append(show)
+            else:
+                seen[key] = known | current
+
+    fresh_plays = sum(1 for s in pending if not s.new_dates)
+    print(
+        f"🔔 {len(pending)} notification(s) : {fresh_plays} nouvelle(s) pièce(s), "
+        f"{len(pending) - fresh_plays} avec de nouvelles dates."
+    )
+
+    for show in pending:
         try:
             send_telegram(tg_token, tg_chat, format_show(show))
-            seen.add(show.key())
-            print(f"   → notifié : {show.title}")
+            seen[show.key()] = seen.get(show.key(), set()) | set(show.available_iso)
+            label = "nouvelles dates" if show.new_dates else "nouveau"
+            print(f"   → notifié ({label}) : {show.title}")
         except Exception as exc:  # noqa: BLE001
             print(f"   ⚠️  échec de l'envoi Telegram pour {show.title} : {exc}")
 

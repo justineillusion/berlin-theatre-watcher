@@ -25,6 +25,8 @@ class Show:
     matched_keywords: List[str] = field(default_factory=list)
     other_dates_count: int = 0            # nb d'autres dates dispo pour cette pièce
     available_dates: List[str] = field(default_factory=list)  # dates avec places libres
+    available_iso: List[str] = field(default_factory=list)    # idem, brut, pour l'état
+    new_dates: List[str] = field(default_factory=list)        # dates inédites ce scan
 
     def key(self) -> str:
         """Identité d'une PIÈCE (pour la déduplication : 1 alerte par pièce)."""

@@ -103,6 +103,8 @@ def format_digest(shows: List[Show]) -> List[str]:
 def format_show(show: Show) -> str:
     """Message Telegram (HTML) pour une représentation retenue."""
     lines = [f"🎭 <b>{_esc(show.title)}</b>", f"📍 {_esc(show.theater)}"]
+    if show.new_dates:
+        lines.append("🆕 Nouvelles dates pour une pièce déjà signalée")
 
     dates = show.available_dates or ([show.date] if show.date else [])
     if dates:

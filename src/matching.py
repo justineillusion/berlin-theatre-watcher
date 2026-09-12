@@ -54,6 +54,11 @@ def select(shows: List[Show], config: dict) -> List[Show]:
         rep.other_dates_count = len(members) - 1
         # toutes les dates avec places libres (les complètes sont déjà écartées)
         rep.available_dates = [_fmt_date(m) for m in members]
+        # Forme brute (AAAA-MM-JJ HH:MM) : c'est elle qu'on stocke dans l'état,
+        # car _fmt_date perd l'année et deux saisons pourraient se confondre.
+        rep.available_iso = [
+            f"{m.date} {m.time}".strip() for m in members if m.date
+        ]
         reps.append(rep)
 
     # Les correspondances de goût d'abord, puis par date.
