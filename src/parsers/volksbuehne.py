@@ -29,6 +29,22 @@ def collect(url: str) -> List[Show]:
     return parse(fetch_html(url))
 
 
+# La version anglaise du site laisse parfois la mention de langue en allemand,
+# abrégée : « mit dt. und engl. ÜT ». Sans ces variantes, la pièce est vue comme
+# non surtitrée et le filtre dur l'écarte en silence (cas d'« A Year without
+# Summer »). On les ramène à la formulation anglaise : le reste du pipeline
+# (detect(), is_pure_language_note()) ne connaît que celle-là.
+# L'ordre compte : « dt. und engl. üt » contient « engl. üt ».
+_GERMAN_MARKERS = [
+    ("dt. und engl. üt", "german and english surtitles"),
+    ("engl. und dt. üt", "german and english surtitles"),
+    ("deutschen und englischen übertiteln", "german and english surtitles"),
+    ("englischen übertiteln", "english surtitles"),
+    ("englische übertitel", "english surtitles"),
+    ("engl. üt", "english surtitles"),
+]
+
+
 def _has_english(text: str) -> tuple[bool, str | None]:
     low = text.lower()
     markers = [
@@ -42,6 +58,9 @@ def _has_english(text: str) -> tuple[bool, str | None]:
     for m in markers:
         if m in low:
             return True, m
+    for needle, canonical in _GERMAN_MARKERS:
+        if needle in low:
+            return True, canonical
     return False, None
 
 
