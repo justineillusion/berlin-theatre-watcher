@@ -2,16 +2,19 @@ name: Ouverture des ventes (1er du mois)
 
 on:
   schedule:
-    # La Schaubühne ouvre la vente du mois suivant le 1er à 11:00 (Berlin), ou
-    # le jour ouvré suivant si le 1er tombe un dimanche/férié -> on couvre aussi
-    # le 2. Les places des pièces courues partent en quelques heures : le scan
+    # Ouverture des ventes (reportée au jour ouvré suivant si dimanche/férié) :
+    #   - Schaubühne : le 1er à 11:00, pour le mois suivant
+    #   - Volksbühne : 1er jour ouvré, pour le mois suivant (heure non précisée)
+    #   - Berliner Ensemble : le 3 à 10:00, fenêtre glissante d'~4 semaines
+    # Les places des pièces courues partent en quelques heures : le scan
     # quotidien du matin passe AVANT l'ouverture et ne les verrait que le
-    # lendemain.
+    # lendemain. Le cron tourne du 1er au 6 ; le job sort aussitôt si ce
+    # n'est pas un jour d'ouverture.
     #
     # Les crons GitHub arrivent souvent avec des heures de retard : on ne vise
-    # donc pas 11:00, on démarre tôt et le job ATTEND lui-même 11:00 avant de
-    # scanner toutes les 10 min jusqu'à midi.
-    - cron: "3 5 1,2 * *"   # 07:03 Berlin l'été, 06:03 l'hiver
+    # donc pas l'heure d'ouverture : on démarre tôt et le job ATTEND lui-même
+    # l'ouverture avant de scanner toutes les 10 min pendant une heure.
+    - cron: "3 5 1-6 * *"   # 07:03 Berlin l'été, 06:03 l'hiver
   workflow_dispatch: {}     # bouton "Run workflow" pour tester à la main
 
 permissions:
@@ -35,20 +38,46 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Scans rapprochés 11:00 → 12:00 (Berlin)
+      - name: Jour d'ouverture ?
+        id: sale
+        env:
+          TZ: Europe/Berlin
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import datetime as dt
+          # Fériés fixes à Berlin (les fériés mobiles tombent rarement du 1er au 6).
+          FIXED = {(1, 1), (5, 1), (10, 3), (12, 25), (12, 26)}
+          today = dt.date.today()
+          def sale_day(day):
+              d = today.replace(day=day)
+              while d.weekday() == 6 or (d.month, d.day) in FIXED:
+                  d += dt.timedelta(days=1)
+              return d
+          if today == sale_day(1):
+              print("hour=11")        # Schaubühne + Volksbühne
+          elif today == sale_day(3):
+              print("hour=10")        # Berliner Ensemble
+          else:
+              print("hour=")
+          PY
+          cat "$GITHUB_OUTPUT"
+
+      - name: Scans rapprochés pendant l'heure d'ouverture (Berlin)
+        if: steps.sale.outputs.hour != ''
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TZ: Europe/Berlin
+          HOUR: ${{ steps.sale.outputs.hour }}
         run: |
-          start=$(date -d "today 11:00" +%s)
-          end=$(date -d "today 12:00" +%s)
+          start=$(date -d "today ${HOUR}:00" +%s)
+          end=$(( start + 3600 ))
           now=$(date +%s)
           if [ "$now" -lt "$start" ]; then
-            echo "Attente jusqu'à 11:00 Berlin ($(( (start - now) / 60 )) min)…"
+            echo "Attente jusqu'à ${HOUR}:00 Berlin ($(( (start - now) / 60 )) min)…"
             sleep $(( start - now ))
           fi
-          # Au moins un passage, même si GitHub nous a lancés après midi.
+          # Au moins un passage, même si GitHub nous a lancés après la fenêtre.
           while :; do
             echo "=== Scan $(date +%H:%M) ==="
             python -m src.main || echo "⚠️ scan en échec, on réessaie au prochain créneau"
@@ -57,7 +86,7 @@ jobs:
           done
 
       - name: Persist state
-        if: always()
+        if: always() && steps.sale.outputs.hour != ''
         run: |
           git config user.name  "theatre-watcher-bot"
           git config user.email "actions@github.com"
