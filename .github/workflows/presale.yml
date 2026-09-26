@@ -1,0 +1,70 @@
+name: Ouverture des ventes (1er du mois)
+
+on:
+  schedule:
+    # La Schaubühne ouvre la vente du mois suivant le 1er à 11:00 (Berlin), ou
+    # le jour ouvré suivant si le 1er tombe un dimanche/férié -> on couvre aussi
+    # le 2. Les places des pièces courues partent en quelques heures : le scan
+    # quotidien du matin passe AVANT l'ouverture et ne les verrait que le
+    # lendemain.
+    #
+    # Les crons GitHub arrivent souvent avec des heures de retard : on ne vise
+    # donc pas 11:00, on démarre tôt et le job ATTEND lui-même 11:00 avant de
+    # scanner toutes les 10 min jusqu'à midi.
+    - cron: "3 5 1,2 * *"   # 07:03 Berlin l'été, 06:03 l'hiver
+  workflow_dispatch: {}     # bouton "Run workflow" pour tester à la main
+
+permissions:
+  contents: write           # pour committer state/seen.json
+
+concurrency:
+  group: theatre-scan       # même groupe que le scan quotidien : un seul writer de seen.json
+  cancel-in-progress: false
+
+jobs:
+  presale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Scans rapprochés 11:00 → 12:00 (Berlin)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TZ: Europe/Berlin
+        run: |
+          start=$(date -d "today 11:00" +%s)
+          end=$(date -d "today 12:00" +%s)
+          now=$(date +%s)
+          if [ "$now" -lt "$start" ]; then
+            echo "Attente jusqu'à 11:00 Berlin ($(( (start - now) / 60 )) min)…"
+            sleep $(( start - now ))
+          fi
+          # Au moins un passage, même si GitHub nous a lancés après midi.
+          while :; do
+            echo "=== Scan $(date +%H:%M) ==="
+            python -m src.main || echo "⚠️ scan en échec, on réessaie au prochain créneau"
+            [ "$(date +%s)" -ge "$end" ] && break
+            sleep 600
+          done
+
+      - name: Persist state
+        if: always()
+        run: |
+          git config user.name  "theatre-watcher-bot"
+          git config user.email "actions@github.com"
+          git add state/seen.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update seen state [skip ci]"
+            git push
+          else
+            echo "Pas de changement d'état."
+          fi
