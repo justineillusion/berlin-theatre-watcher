@@ -21,6 +21,8 @@ keywords_love:
   - Simon Stone
   - Tiago Rodrigues
   - Ostermeier
+  - Gisèle Vienne
+  - Anne Teresa De Keersmaeker
   # --- Autrices / auteurs internationaux (souvent cités dans le "By ...") ---
   - Annie Ernaux
   - Oscar Wilde
@@ -64,3 +66,12 @@ theaters:
   - name: Volksbühne
     parser: volksbuehne
     url: https://www.volksbuehne.berlin/en/
+
+  # Next.js : on passe par le sitemap de chaque festival (voir parsers/festspiele.py)
+  - name: Berliner Festspiele — Performing Arts Season
+    parser: festspiele
+    url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=performing-arts-season
+
+  - name: Berliner Festspiele — Theatertreffen
+    parser: festspiele
+    url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=theatertreffen

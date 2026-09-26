@@ -10,10 +10,11 @@ from __future__ import annotations
 from typing import Callable, List
 
 from ..models import Show
-from . import berliner_ensemble, schaubuehne, volksbuehne
+from . import berliner_ensemble, festspiele, schaubuehne, volksbuehne
 
 SOURCES: dict[str, Callable[[str], List[Show]]] = {
     "berliner_ensemble": berliner_ensemble.collect,
     "volksbuehne": volksbuehne.collect,
     "schaubuehne": schaubuehne.collect,
+    "festspiele": festspiele.collect,
 }

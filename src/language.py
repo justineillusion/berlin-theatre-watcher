@@ -136,6 +136,9 @@ def is_pure_language_note(note: Optional[str]) -> bool:
     return not rest.strip()
 
 
+_WORDLESS = re.compile(r"no spoken (?:word|language)|without words|ohne (?:worte|sprache)", re.I)
+
+
 def detect(
     note: Optional[str],
     page_text: Optional[str] = None,
@@ -147,6 +150,9 @@ def detect(
     `page_text` : le texte de la page détail (facultatif, plus riche).
     """
     note = note or ""
+    # Danse / théâtre visuel sans texte (Berliner Festspiele : « No spoken word »).
+    if _WORDLESS.search(note):
+        return "Sans texte", None
     detail = _context(page_text or "")
     haystack = f"{note} | {detail}"
 
@@ -167,8 +173,9 @@ def detect(
             break
 
     # Pas de surtitres annoncés : on ne les suppose anglais que si la pièce
-    # n'est pas déjà jouée en anglais (là, c'est l'allemand qui est surtitré).
-    if not surtitle_names and has_english_surtitles and spoken_names != ["anglais"]:
+    # n'est pas jouée principalement en anglais (« In English and French » : pas
+    # de surtitres ; « In German and English » : l'allemand reste surtitré).
+    if not surtitle_names and has_english_surtitles and spoken_names[:1] != ["anglais"]:
         surtitle_names = ["anglais"]
 
     surtitles = (
