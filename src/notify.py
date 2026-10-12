@@ -106,6 +106,11 @@ def format_digest(shows: List[Show]) -> List[str]:
                 if show.booking_url:
                     line += f' · <a href="{html.escape(show.booking_url)}">réserver</a>'
                 block.append(line)
+            if show.critics:
+                block.append(
+                    f'   📰 <a href="{html.escape(show.critics.url)}">{show.critics.star_bar()}</a>'
+                    f" ({show.critics.count} critiques)"
+                )
         blocks.append("\n".join(block))
 
     # Regroupe les blocs en messages sous la limite Telegram.
@@ -141,6 +146,12 @@ def format_show(show: Show) -> str:
         lines.append(f"🗣 {_esc(spoken)}")
     if show.summary:
         lines.append(f"\n📝 {_esc(show.summary)}")
+    if show.critics:
+        lines.append(
+            f"\n📰 Presse : {show.critics.label()}\n"
+            f'   <a href="{html.escape(show.critics.url)}">Kritikenrundschau sur Nachtkritik</a>'
+            " · note estimée"
+        )
     if show.sold_out is None:
         lines.append("⚪️ Disponibilité inconnue")
     links = []

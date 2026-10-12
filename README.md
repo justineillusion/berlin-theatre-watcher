@@ -73,6 +73,26 @@ set -a; source .env; set +a
   `true` : uniquement ce qui matche `keywords_love`. Commence à `false` pour
   voir le volume, passe à `true` si trop de bruit.
 
+## Note presse (Nachtkritik)
+
+Quand la pièce a été critiquée sur [nachtkritik.de](https://nachtkritik.de), le
+bot lit la **Kritikenrundschau** (le résumé des critiques de la SZ, FAZ, taz,
+Tagesspiegel…) et affiche une **note estimée** :
+
+```
+📰 Presse : ★★★☆☆ 3/5 · 10 critiques (👍4 😐1 👎5)
+```
+
+Nachtkritik ne donne pas de note : chaque paragraphe est noté avec un petit
+lexique allemand pondéré (`src/critics.py`), puis on fait la moyenne. C'est
+une **estimation** — fiable pour distinguer un triomphe d'un four, moins pour
+l'ironie ; la répartition 👍/😐/👎 aide à repérer les avis partagés. Pas de
+ligne 📰 = pas de critique trouvée (ou moins de 2 avis). Désactivable avec
+`critics_rating: false`.
+
+La recherche Nachtkritik est lente (5–30 s/requête) : le scan quotidien ne la
+lance que pour les pièces à notifier, mais le récap du dimanche prend ~25 min.
+
 ## Limites connues
 
 - **Schaubühne** — son programme est chargé en AJAX (POST paginé). Le parser

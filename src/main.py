@@ -4,6 +4,7 @@ import argparse
 import os
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List
 
@@ -15,6 +16,7 @@ from .notify import format_digest, format_show, send_telegram
 from .parsers import SOURCES
 from .state import load_seen, save_seen
 from .language import detect as detect_language
+from .critics import fetch_rating
 from .summary import fetch_details
 from .translate import to_french
 
@@ -46,6 +48,21 @@ def collect_shows(theaters: list) -> List[Show]:
     return shows
 
 
+def add_critics(shows: List[Show], config: dict) -> None:
+    """Note presse estimée depuis Nachtkritik, quand une Kritikenrundschau existe."""
+    if not config.get("critics_rating", True) or not shows:
+        return
+    print(f"📰 Recherche des critiques sur Nachtkritik ({len(shows)} pièce(s))…")
+    # La recherche Nachtkritik met 5 à 30 s : quelques requêtes en parallèle
+    # (sans plus, par politesse) pour que le récap ne dure pas un quart d'heure.
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        ratings = pool.map(lambda s: fetch_rating(s.theater, s.title), shows)
+        for show, rating in zip(shows, ratings):
+            show.critics = rating
+    found = sum(1 for s in shows if s.critics)
+    print(f"   {found} pièce(s) avec une note presse.")
+
+
 def _print_console(show: Show) -> None:
     dates = show.available_dates or ([show.date] if show.date else [])
     star = " ⭐" if show.matched_keywords else ""
@@ -58,6 +75,8 @@ def _print_console(show: Show) -> None:
         print(f"     🗣 {spoken}")
     if show.summary:
         print(f"     📝 {show.summary}")
+    if show.critics:
+        print(f"     📰 {show.critics.label()}")
     if show.booking_url:
         print(f"     🎟 {show.booking_url}")
     if show.url:
@@ -78,9 +97,17 @@ def main() -> None:
         help="Récap hebdomadaire : envoie TOUT ce qui est réservable, y compris "
         "les pièces déjà notifiées. Ne touche pas à l'état (state/seen.json).",
     )
+    parser.add_argument(
+        "--no-critics",
+        action="store_true",
+        help="Saute la note presse Nachtkritik (lente) : pour les ouvertures de "
+        "vente, où l'alerte doit partir tout de suite.",
+    )
     args = parser.parse_args()
 
     config = yaml.safe_load(CONFIG_PATH.read_text())
+    if args.no_critics:
+        config["critics_rating"] = False
 
     if not args.dry_run:
         tg_token = _require_env("TELEGRAM_BOT_TOKEN")
@@ -105,6 +132,9 @@ def main() -> None:
             show.spoken_language, show.surtitles = detect_language(
                 show.languages, page_text, show.has_english_surtitles
             )
+
+    if args.dry_run or args.digest:
+        add_critics(hits, config)
 
     if args.dry_run:
         print("\n🔔 DRY-RUN (rien envoyé, état inchangé) :")
@@ -149,6 +179,8 @@ def main() -> None:
                 pending.append(show)
             else:
                 seen[key] = known | current
+
+    add_critics(pending, config)
 
     fresh_plays = sum(1 for s in pending if not s.new_dates)
     print(

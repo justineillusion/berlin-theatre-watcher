@@ -80,7 +80,7 @@ jobs:
           # Au moins un passage, même si GitHub nous a lancés après la fenêtre.
           while :; do
             echo "=== Scan $(date +%H:%M) ==="
-            python -m src.main || echo "⚠️ scan en échec, on réessaie au prochain créneau"
+            python -m src.main --no-critics || echo "⚠️ scan en échec, on réessaie au prochain créneau"
             [ "$(date +%s)" -ge "$end" ] && break
             sleep 600
           done

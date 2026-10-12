@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import List, Optional
 
+from .critics import CriticsRating
+
 
 @dataclass
 class Show:
@@ -27,6 +29,7 @@ class Show:
     available_dates: List[str] = field(default_factory=list)  # dates avec places libres
     available_iso: List[str] = field(default_factory=list)    # idem, brut, pour l'état
     new_dates: List[str] = field(default_factory=list)        # dates inédites ce scan
+    critics: Optional[CriticsRating] = None  # note presse estimée (Nachtkritik)
 
     def key(self) -> str:
         """Identité d'une PIÈCE (pour la déduplication : 1 alerte par pièce)."""

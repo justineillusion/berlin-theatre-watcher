@@ -51,6 +51,11 @@ keywords_avoid:
 #         sur les matches (pour explorer le volume).
 require_keyword_match: false
 
+# Note presse estimée (★ sur 5) à partir de la « Kritikenrundschau » de
+# nachtkritik.de, quand la pièce y a été critiquée. Estimation par lexique
+# (pas de note officielle) : à lire avec la répartition 👍/😐/👎.
+critics_rating: true
+
 # ---------------------------------------------------------------------------
 # THÉÂTRES À SCANNER
 # ---------------------------------------------------------------------------
