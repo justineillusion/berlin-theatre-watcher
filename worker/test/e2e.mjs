@@ -150,14 +150,34 @@ try {
     const c = await click(LEA, "i:lear00000001", msgs[LEA]);
     assert.match(edits(c, LEA)[0].text, /Intéressé·es : toi/);
     assert.match(edits(c, OWNER)[0].text, /Intéressé·es : Léa/);
-    assert.match(sends(c, GROUP)[0].text, /Léa<\/b> est intéressé·e par/);
+    const g = sends(c, GROUP)[0];
+    assert.match(g.text, /Léa<\/b> est intéressé·e par/);
+    assert.deepEqual(g.reply_markup.inline_keyboard[0].map((b) => b.callback_data), ["i:lear00000001", "v:lear00000001"]);
   });
 
-  await step("Justine clique « Moi aussi » dans le groupe", async () => {
-    const c = await click(OWNER, "i:lear00000001", 5555, GROUP, "group");
+  await step("Justine clique « Moi aussi » dans le groupe → l'annonce devient « 🎟 Plan ! »", async () => {
+    const c = await click(OWNER, "i:lear00000001", 5555, GROUP, "group", "⭐ Léa est intéressé·e par King Lear");
     const g = edits(c, GROUP)[0];
-    assert.match(g.text, /Intéressé·es : Léa, Justine/);
+    assert.match(g.text, /Plan !<\/b> Léa et Justine veulent voir/);
+    assert.match(g.text, /Prochaines dates : mar\. 01\/12 19:30/);
     assert.match(edits(c, OWNER)[0].text, /Intéressé·es : Léa, toi/);
+  });
+
+  await step("groupe : /interets@bot, /programme, /aide répondent dans le groupe", async () => {
+    let c = await sayGroup(LEA, "/interets@TestBot");
+    assert.match(sends(c, GROUP)[0].text, /King Lear[\s\S]*⭐ Léa, Justine/);
+    c = await sayGroup(LEA, "/programme@TestBot");
+    const p = sends(c, GROUP)[0];
+    assert.match(p.text, /À l'affiche dans nos lieux[\s\S]*Hedda/);
+    assert.ok(p.reply_markup.inline_keyboard.flat().some((b) => b.callback_data === "i:hedda0000001"));
+    c = await sayGroup(LEA, "/aide");
+    assert.match(sends(c, GROUP)[0].text, /dans le groupe/);
+  });
+
+  await step("groupe : un non-membre qui clique ⭐ est envoyé vers le bot (lien d'invitation)", async () => {
+    const c = await tgUpdate({ callback_query: { id: "nm", from: { id: 777, first_name: "Zed" }, data: "i:lear00000001",
+      message: { message_id: 5555, chat: { id: GROUP, type: "group" }, text: "⭐ x" } } });
+    assert.match(c.find((x) => x.method === "answerCallbackQuery").url, /t\.me\/TestBot\?start=\w+/);
   });
 
   await step("/interets liste ce qui tente la bande", async () => {
@@ -170,9 +190,13 @@ try {
     assert.equal(edits(c, LEA)[0].reply_markup.inline_keyboard[0].length, 5);   // 1★…5★
     c = await click(LEA, "r:lear00000001:4", msgs[LEA]);
     assert.match(sends(c, LEA)[0].text, /Un petit mot/);
-    assert.match(sends(c, GROUP)[0].text, /Léa<\/b> a vu .* ★★★★☆/);
+    const review = sends(c, GROUP)[0];
+    assert.match(review.text, /Léa<\/b> a vu\n🎭 .*King Lear[\s\S]*★★★★☆ 4\/5/);
+    assert.deepEqual(review.reply_markup.inline_keyboard[0].map((b) => b.text), ["⭐ Je veux le voir", "✅ Je l'ai vu aussi"]);
     c = await say(LEA, "Bouleversant, Lars Eidinger incroyable");
-    assert.match(sends(c, GROUP)[0].text, /« Bouleversant/);
+    // le petit mot COMPLÈTE l'avis déjà posté (édition, pas de 2e message)
+    assert.equal(sends(c, GROUP).length, 0);
+    assert.match(edits(c, GROUP)[0].text, /★★★★☆ 4\/5\n💬 “Bouleversant, Lars Eidinger incroyable”/);
     assert.match(edits(c, OWNER)[0].text, /✅ Léa ★★★★☆ — « Bouleversant/);
   });
 
@@ -374,6 +398,47 @@ try {
   await step("langue : inconnu avec une appli en anglais → refus en anglais", async () => {
     const c = await tgUpdate({ message: { message_id: upd, from: { id: 555, first_name: "Bob", language_code: "en" }, chat: { id: 555, type: "private" }, text: "/start nope" } });
     assert.match(sends(c, 555)[0].text, /isn't valid/);
+  });
+
+  // ------------------------------------------------------------ groupe (suite)
+  await step("groupe : « ✅ Je l'ai vu aussi » → note en privé, avis posté en réponse dans le groupe", async () => {
+    let c = await click(OWNER, "v:peer00000001", 6000, GROUP, "group", "✅ Léa a vu");
+    assert.equal(c.find((x) => x.method === "answerCallbackQuery").text, "Regarde ton chat privé avec le bot ✉️");
+    const dm = sends(c, OWNER)[0];
+    assert.match(dm.text, /Ta note pour la bande/);
+    assert.equal(dm.reply_markup.inline_keyboard[0].length, 5);
+    c = await click(OWNER, "r:peer00000001:5", 6001);
+    const g = c.find((x) => x.method === "sendMessage" && x.chat_id == GROUP);
+    assert.match(g.text, /Justine<\/b> a vu[\s\S]*★★★★★ 5\/5/);
+    assert.equal(g.reply_parameters.message_id, 6000);
+    await say(OWNER, "/passer");
+  });
+
+  await step("récap du dimanche : le groupe reçoit « le plan de la semaine »", async () => {
+    const s = await scan([hedda, ente, lear], "digest");
+    const g = s.messages.filter((m) => m.chat_id === GROUP).map((m) => m.text).join("\n");
+    assert.match(g, /plan de la semaine/);
+  });
+
+  await step("/programme : liste + choix d'un lieu → une notif par pièce avec ⭐ ✅ 🔕 (même sans texte rédigé)", async () => {
+    let c = await say(OWNER, "/programme");
+    const picker = sends(c, OWNER).at(-1);
+    assert.match(picker.text, /Parcourir un lieu/);
+    const be = picker.reply_markup.inline_keyboard.flat().find((b) => b.callback_data === "pv:berliner-ensemble");
+    assert.ok(be);
+    c = await click(OWNER, "pv:berliner-ensemble", 6100);
+    const items = sends(c, OWNER);
+    assert.ok(items.length >= 1);
+    assert.equal(items[0].reply_markup.inline_keyboard[0].length, 3);
+    c = await say(OWNER, "/expos");
+    assert.ok(sends(c, OWNER)[0].reply_markup.inline_keyboard.flat().every((b) => ["pv:kw", "sd"].includes(b.callback_data)))   // pas de théâtre;
+  });
+
+  await step("item jamais rédigé : /programme montre quand même une ligne (titre + dates)", async () => {
+    const bare = play("bare00000001", "Sans Texte", ["2027-03-01 19:00"]);
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, bare] });   // jamais /api/render
+    const c = await say(LEA, "/programme");
+    assert.match(sends(c, LEA).map((m) => m.text).join("\n"), /Sans Texte<\/a>\n   🗓 01\/03/);
   });
 
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {

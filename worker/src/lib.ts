@@ -29,7 +29,23 @@ export interface Item {
 
 /** Corps / ligne de récap d'un item dans la langue de la personne (repli : français). */
 export const itemText = (item: Item, lang: Lang) => (lang === "en" && item.text_en) || item.text;
-export const itemLine = (item: Item, lang: Lang) => (lang === "en" && item.line_en) || item.line;
+export const itemLine = (item: Item, lang: Lang) =>
+  (lang === "en" && item.line_en) || item.line || basicLine(item, lang);
+
+/** Ligne minimale quand le scraper n'a pas (encore) rédigé l'item : titre lié + dates. */
+export function basicLine(item: Item, lang: Lang): string {
+  const t = item.url ? `<a href="${esc(item.url)}">${esc(item.title)}</a>` : esc(item.title);
+  const star = item.starred ? " ⭐" : "";
+  let when = "";
+  if (item.kind === "expo") {
+    if (item.end_date) when = `${lang === "en" ? "until" : "jusqu'au"} ${frDate(item.end_date)}`;
+  } else {
+    const now = new Date().toISOString().slice(0, 10);
+    const d = (JSON.parse(item.dates || "[]") as string[]).filter((x) => x.slice(0, 10) >= now).sort();
+    if (d.length) when = d.slice(0, 5).map((x) => frDate(x)).join(", ") + (d.length > 5 ? ` (+${d.length - 5})` : "");
+  }
+  return `• ${t}${star}${when ? `\n   🗓 ${when}` : ""}`;
+}
 
 export interface Reaction {
   chat_id: number;
@@ -203,13 +219,21 @@ function statusLine(item: Item, r: Reaction | null, lang: Lang): string {
   return "";
 }
 
+/** Corps minimal d'une notif quand le texte n'a pas (encore) été rédigé. */
+export function basicText(item: Item, lang: Lang): string {
+  const icon = item.kind === "expo" ? "🖼" : "🎭";
+  const lines = basicLine(item, lang).split("\n").slice(1).map((l) => l.trim());
+  const link = item.url ? `\n🔗 <a href="${esc(item.url)}">${lang === "en" ? "Details" : "Détails"}</a>` : "";
+  return `${icon} <b>${esc(item.title)}</b>${lines.length ? "\n" + lines.join("\n") : ""}${link}`;
+}
+
 const MAX = 4000;
 
 /** Message complet pour une personne : en-tête + corps + bande + état. */
 export function renderFor(
   item: Item, viewer: number, r: Reaction | null, friends: Friend[], header: string | null, lang: Lang = "fr",
 ): { text: string; reply_markup: unknown } {
-  const body = itemText(item, lang) || `<b>${esc(item.title)}</b>`;
+  const body = itemText(item, lang) || basicText(item, lang);
   const tail = socialBlock(friends, viewer, false, lang) + statusLine(item, r, lang);
   let text = (header ? `${header}\n` : "") + body;
   if (text.length + tail.length > MAX) text = text.slice(0, MAX - tail.length - 1) + "…";

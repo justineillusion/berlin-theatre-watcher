@@ -109,6 +109,38 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
   // langue
   langPrompt: "🌍 Langue des messages · Message language :",
   langSet: "🇫🇷 C'est noté : je te parle en français.",
+  // groupe
+  groupHelp: `🎭 <b>Le bot de la bande, dans le groupe</b>
+/interets — ce qui tente la bande (qui, quelles dates, où réserver)
+/programme — ce qui est à l'affiche dans nos lieux, avec des boutons ⭐ « Ça me tente »
+/aide — cette aide
+
+Ici, ⭐ « Moi aussi » sous une annonce = tu es partant·e. Les notifs perso, les « vu » et les notes se gèrent en privé avec le bot.`,
+  groupInterestsTitle: "⭐ <b>Ce qui tente la bande</b>",
+  groupNoInterests: "Personne n'a encore mis ⭐ sur une pièce ou une expo à l'affiche. /programme pour choisir !",
+  groupProgrammeTitle: "📅 <b>À l'affiche dans nos lieux</b>",
+  groupProgrammeHint: "<i>Touche ⭐ pour dire que ça te tente — la bande le verra.</i>",
+  groupNothingOn: "Rien à l'affiche pour l'instant dans les lieux suivis.",
+  weeklyGroupTitle: "📅 <b>Le plan de la semaine</b>",
+  pickButton: (title: string) => `⭐ ${title}`,
+  plan: (names: string, what: string) => `🎟 <b>Plan !</b> ${names} veulent voir ${what}`,
+  nextDates: (d: string) => `Prochaines dates : ${d}`,
+  until: (d: string) => `jusqu'au ${d}`,
+  closingSoon: "ferme bientôt",
+  and: "et",
+  joinHint: "Rejoins d'abord le bot en privé : il s'ouvre, appuie sur Démarrer 🙂",
+  days: ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
+  book: "réserver",
+  annSaw: (who: string) => `✅ <b>${who}</b> a vu`,
+  wantToSee: "⭐ Je veux le voir",
+  sawToo: "✅ Je l'ai vu aussi",
+  checkPrivate: "Regarde ton chat privé avec le bot ✉️",
+  rateIt: (what: string) => `✅ ${what}\n\nTa note pour la bande ?`,
+  browsePrompt: "👀 Parcourir un lieu pour réagir (⭐ ✅ 🔕) :",
+  browseAll: "Tout le programme (liste)",
+  browseMore: (n: number) => `… et ${n} de plus : /programme pour la liste complète.`,
+  browseEmpty: "Rien à l'affiche dans ce lieu pour l'instant.",
+  noFollowed: "Tu ne suis aucun lieu de ce type. /suivre pour en ajouter.",
 };
 
 const en: typeof fr = {
@@ -204,6 +236,37 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
   legend: "<i>⭐ = your keywords · 👥 = the gang</i>",
   langPrompt: "🌍 Langue des messages · Message language :",
   langSet: "🇬🇧 Done: I'll talk to you in English.",
+  groupHelp: `🎭 <b>The gang's bot, in the group</b>
+/interets — what the gang wants to see (who, which dates, where to book)
+/programme — what's on in our venues, with ⭐ “I'm interested” buttons
+/aide — this help
+
+Here, ⭐ “Me too” under an announcement = you're in. Personal alerts, “seen” and ratings are handled privately with the bot.`,
+  groupInterestsTitle: "⭐ <b>What the gang wants to see</b>",
+  groupNoInterests: "Nobody has ⭐-ed a current play or exhibition yet. /programme to pick one!",
+  groupProgrammeTitle: "📅 <b>On now in our venues</b>",
+  groupProgrammeHint: "<i>Tap ⭐ if you're interested — the gang will see it.</i>",
+  groupNothingOn: "Nothing on right now in the venues we follow.",
+  weeklyGroupTitle: "📅 <b>This week's gang plan</b>",
+  pickButton: (title: string) => `⭐ ${title}`,
+  plan: (names: string, what: string) => `🎟 <b>Plan!</b> ${names} both want to see ${what}`,
+  nextDates: (d: string) => `Next dates: ${d}`,
+  until: (d: string) => `until ${d}`,
+  closingSoon: "closing soon",
+  and: "&",
+  joinHint: "Join the bot privately first: it opens, tap Start 🙂",
+  days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  book: "book",
+  annSaw: (who: string) => `✅ <b>${who}</b> saw`,
+  wantToSee: "⭐ I want to see it",
+  sawToo: "✅ I saw it too",
+  checkPrivate: "Check your private chat with the bot ✉️",
+  rateIt: (what: string) => `✅ ${what}\n\nHow would you rate it for the gang?`,
+  browsePrompt: "👀 Browse a venue to react (⭐ ✅ 🔕):",
+  browseAll: "Whole programme (list)",
+  browseMore: (n: number) => `… and ${n} more: /programme for the full list.`,
+  browseEmpty: "Nothing on at this venue right now.",
+  noFollowed: "You don't follow any venue of this kind. /suivre to add some.",
 };
 
 const DICT: Record<Lang, typeof fr> = { fr, en };

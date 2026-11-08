@@ -93,6 +93,7 @@ def run_multi(
         print(f"👥 {plan.json().get('users', 0)} ami·e(s) inscrit·e(s) ; {len(need)} pièce(s) à rédiger"
               f" ({', '.join(langs)}).")
 
+        need_ids = {s.item_id() for s in need}
         enrich(need, digest, langs)
         add_critics(need, config)
 
@@ -101,6 +102,10 @@ def run_multi(
             json={
                 "mode": mode,
                 "items": [_texts(s, langs) for s in need],
+                # Tout le reste du catalogue, en version courte (sans résumé ni
+                # critiques) : /programme et les récaps ont toujours une ligne.
+                # Le Worker n'écrase pas un texte complet déjà rédigé.
+                "basic": [_texts(s, langs) for s in hits if s.item_id() not in need_ids],
             },
         )
         rendered.raise_for_status()

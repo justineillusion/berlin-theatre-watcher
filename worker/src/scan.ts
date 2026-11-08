@@ -6,6 +6,7 @@
 //   POST /api/cinema-recipients  cinémas        -> qui suit quels cinémas (ciné du dimanche)
 //   POST /api/cinema-done        semaine        -> récap envoyé (idempotence des 2 crons)
 import { Lang, asLang, tr } from "./i18n";
+import { groupInterests } from "./group";
 import {
   Env, Item, Reaction, esc, frDate, friendsByItem, itemLine, renderFor, setSetting, setting, socialBlock,
 } from "./lib";
@@ -225,9 +226,18 @@ export async function plan(env: Env, body: any): Promise<Response> {
 export async function render(env: Env, body: any): Promise<Response> {
   const mode = body.mode === "digest" ? "digest" : "scan";
   const texts: { id: string; text: string; line: string; text_en?: string; line_en?: string }[] = body.items ?? [];
-  const stmts = texts.map((t) =>
-    env.DB.prepare("UPDATE items SET text = ?, line = ?, text_en = ?, line_en = ? WHERE id = ?")
-      .bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id));
+  // `basic` : version courte (sans résumé ni critiques) de TOUT le catalogue, pour
+  // /programme et les récaps ; n'écrase jamais un texte complet déjà rédigé.
+  const basic: { id: string; text: string; line: string; text_en?: string; line_en?: string }[] = body.basic ?? [];
+  const stmts = [
+    ...basic.map((t) => env.DB.prepare(
+      `UPDATE items SET text = COALESCE(text, ?), line = COALESCE(line, ?),
+         text_en = COALESCE(text_en, ?), line_en = COALESCE(line_en, ?) WHERE id = ?`,
+    ).bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id)),
+    ...texts.map((t) =>
+      env.DB.prepare("UPDATE items SET text = ?, line = ?, text_en = ?, line_en = ? WHERE id = ?")
+        .bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id)),
+  ];
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
   const ids = texts.map((t) => t.id);
 
@@ -238,6 +248,14 @@ export async function render(env: Env, body: any): Promise<Response> {
       const lang = asLang(u.lang);
       for (const text of await digestFor(env, u.chat_id, ids, tr(lang).sundayDigest, lang)) {
         messages.push({ chat_id: u.chat_id, kind: "digest", text });
+      }
+    }
+    // Le groupe : ce qui tente au moins un membre (dates à venir, expos qui ferment).
+    const group = await setting(env, "group_chat_id");
+    if (group) {
+      const glang = asLang(await setting(env, "group_lang"));
+      for (const text of await groupInterests(env, glang, tr(glang).weeklyGroupTitle)) {
+        messages.push({ chat_id: Number(group), kind: "digest", text });
       }
     }
     return Response.json({ messages });
@@ -313,7 +331,6 @@ export async function digestFor(
      JOIN subscriptions s ON s.venue_id = i.venue_id AND s.chat_id = ?1
      LEFT JOIN reactions r ON r.item_id = i.id AND r.chat_id = ?1
      WHERE (r.status IS NULL)
-       AND i.line IS NOT NULL
        AND (?2 IS NULL OR i.id IN (SELECT value FROM json_each(?2)))
        AND (?2 IS NOT NULL OR i.last_seen >= ?3)
        AND (i.kind = 'theatre' OR i.start_date IS NULL OR i.start_date = '' OR i.start_date <= ?4)
@@ -342,7 +359,7 @@ export async function digestFor(
       blocks.push(`\n📍 <b>${esc(venue)}</b>`);
     }
     const social = socialBlock(friends.get(it.id) ?? [], chat_id, true, lang);
-    blocks.push(itemLine(it, lang)! + (social ? `\n${social}` : ""));
+    blocks.push(itemLine(it, lang) + (social ? `\n${social}` : ""));
   }
 
   const messages: string[] = [];

@@ -14,8 +14,19 @@ Transforme le watcher en bot pour une bande d'amis :
 - **Notes** : la note presse Nachtkritik (théâtre) reste ; s'y ajoutent les notes des amis.
 - **Expos** : une notif quand l'expo est annoncée, puis un rappel « ⏳ Dernières semaines »
   (14 j avant la fin, `expo_last_weeks_days`) à qui a mis ⭐ et ne l'a pas encore vue.
-- **Groupe Telegram (facultatif)** : le bot y annonce les ⭐ (« Moi aussi » en un clic) et les avis.
+- **Groupe Telegram (facultatif)**, dans la langue de qui a tapé `/groupe` (`settings.group_lang`) :
+  - annonces ⭐ avec « Moi aussi » / « ✅ Je l'ai vu aussi » ; dès 2 partant·es, l'annonce devient
+    « 🎟 Plan ! A et B veulent voir X » avec les prochaines dates et le lien ;
+  - avis complets (note, petit mot en entier, lieu, dates, lien) : posté à la note, puis complété
+    (édition) quand le petit mot arrive ; « ✅ Je l'ai vu aussi » lance la note en privé et l'avis
+    est posté en réponse au message du groupe ;
+  - `/interets`, `/programme` (liste + boutons ⭐), `/aide` répondent DANS le groupe ;
+  - le dimanche, « Le plan de la semaine » (ce qui tente au moins un membre) ;
+  - un non-membre qui clique est envoyé vers le bot avec le lien d'invitation.
   Les notifs restent en privé : « vu » et « ignoré » sont personnels.
+- **Parcourir le catalogue** : `/programme` (liste + choix d'un lieu), `/expos`, `/theatre` : une notif
+  par pièce/expo du lieu choisi, avec ⭐ ✅ 🔕. Tout le catalogue a une version courte (`basic`
+  dans `/api/render`), même ce qui n'a jamais été envoyé.
 - **Langue par personne** (`/langue` ou `/language`, proposé à l'inscription) : 🇫🇷 français (défaut)
   ou 🇬🇧 anglais. Tous les textes du bot (commandes, boutons, récaps) et les notifs : le scraper
   rédige une variante anglaise (`items.text_en` / `line_en`, résumé repris de la page anglaise du
@@ -94,14 +105,15 @@ Puis :
 
 ## Commandes
 
-Tout le monde : `/suivre` `/programme` `/interets` `/vus` `/ignores` `/langue` (`/language`) `/aide` `/stop`
+Tout le monde : `/suivre` `/programme` `/expos` `/theatre` `/interets` `/vus` `/ignores` `/langue` (`/language`) `/aide` `/stop`
+Dans le groupe : `/interets` `/programme` `/aide`
 Admin : `/invite` `/nouveaulien` `/membres` `/groupe` (dans un groupe) `/plusdegroupe`
 
 ## Tests
 
 ```bash
 npm run typecheck
-npm test        # wrangler dev + D1 local + faux Telegram : scénario complet en 30 étapes
+npm test        # wrangler dev + D1 local + faux Telegram : scénario complet en 36 étapes
 ```
 
 ## Mettre à jour une base existante

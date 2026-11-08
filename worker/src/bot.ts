@@ -1,17 +1,19 @@
 // Webhook Telegram : commandes, boutons ⭐ / ✅ / 🔕, notes, petits mots.
 import {
-  Env, Friend, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, renderFor,
+  Env, Friend, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, keyboard, renderFor,
   send, setSetting, setting, socialBlock, stars, tg,
 } from "./lib";
 import { digestFor } from "./scan";
 import { Lang, asLang, guessLang, langKeyboard, tr } from "./i18n";
+import {
+  announceInterest, announceReview, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
+} from "./group";
 
 interface TgUser { id: number; first_name: string; username?: string; language_code?: string }
 
 const help = (env: Env, chat: number, lang: Lang) => tr(lang).help + (isOwner(env, chat) ? tr(lang).ownerHelp : "");
 
-/** Langue des annonces du groupe : celle de qui a tapé /groupe. */
-const groupLang = async (env: Env): Promise<Lang> => asLang(await setting(env, "group_lang"));
+
 
 const isOwner = (env: Env, id: number) => String(id) === String(env.OWNER_CHAT_ID);
 
@@ -43,13 +45,25 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
   const cmd = rawCmd.startsWith("/") ? rawCmd.split("@")[0].toLowerCase() : "";
 
   if (msg.chat.type !== "private") {
-    // Dans un groupe, on n'écoute que la commande d'admin /groupe.
+    // /groupe (admin) enregistre le groupe ; ensuite, dans CE groupe seulement :
+    // /interets, /programme, /aide (les « /cmd@bot » sont déjà ramenés à « /cmd »).
     if (cmd === "/groupe" && isOwner(env, from.id)) {
       const owner = await getUser(env, from.id);
       const lang = owner ? asLang(owner.lang) : guessLang(from.language_code);
       await setSetting(env, "group_chat_id", String(msg.chat.id));
       await setSetting(env, "group_lang", lang);
       await send(env, msg.chat.id, tr(lang).groupOn);
+      return;
+    }
+    if (String(msg.chat.id) !== (await groupChat(env))) return;
+    const G = tr(await grpLang(env));
+    const lang = await grpLang(env);
+    if (cmd === "/interets" || cmd === "/interests") {
+      for (const m of await groupInterests(env, lang)) await send(env, msg.chat.id, m);
+    } else if (cmd === "/programme" || cmd === "/program") {
+      for (const m of await groupProgramme(env, lang)) await send(env, msg.chat.id, m.text, m.reply_markup);
+    } else if (cmd === "/aide" || cmd === "/help" || cmd === "/start") {
+      await send(env, msg.chat.id, G.groupHelp);
     }
     return;
   }
@@ -70,8 +84,11 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
     case "/suivre": return void (await send(env, chat, T.followPrompt, await followKeyboard(env, chat, lang)));
     case "/programme": {
       for (const m of await digestFor(env, chat, null, T.nowShowing, lang)) await send(env, chat, m);
-      return;
+      return void (await send(env, chat, T.browsePrompt, await venuePicker(env, chat, lang, null)));
     }
+    case "/expos": return void (await send(env, chat, T.browsePrompt, await venuePicker(env, chat, lang, "expo")));
+    case "/theatre": case "/theatres": case "/theater":
+      return void (await send(env, chat, T.browsePrompt, await venuePicker(env, chat, lang, "theatre")));
     case "/interets": return void (await send(env, chat, await interestsText(env, chat, lang)));
     case "/vus": return void (await send(env, chat, await seenText(env, chat, lang)));
     case "/ignores": return onIgnored(env, chat, lang);
@@ -274,13 +291,45 @@ async function myDelivery(env: Env, chat: number, item: string) {
 }
 
 /** Annonce au groupe, dans la langue du groupe (`make` reçoit le dictionnaire). */
-async function announce(env: Env, make: (T: ReturnType<typeof tr>) => string, item?: Item): Promise<void> {
-  const group = await setting(env, "group_chat_id");
-  if (!group) return;
-  const T = tr(await groupLang(env));
-  await send(env, group, make(T), item ? {
-    inline_keyboard: [[{ text: T.meToo, callback_data: `i:${item.id}` }]],
-  } : undefined);
+// ---------------------------------------------------------------------------
+// Parcourir un lieu (/programme, /expos, /theatre) : une notif par item, avec ⭐ ✅ 🔕
+// ---------------------------------------------------------------------------
+async function venuePicker(env: Env, chat: number, lang: Lang, kind: string | null): Promise<unknown> {
+  const T = tr(lang);
+  const since = (await setting(env, "current_since")) ?? "";
+  const { results } = await env.DB.prepare(
+    `SELECT v.id, v.name, v.kind, COUNT(i.id) AS n FROM venues v
+     JOIN subscriptions s ON s.venue_id = v.id AND s.chat_id = ?1
+     JOIN items i ON i.venue_id = v.id AND i.last_seen >= ?2
+     WHERE v.active = 1 AND (?3 IS NULL OR v.kind = ?3)
+     GROUP BY v.id ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
+  ).bind(chat, since, kind).all<{ id: string; name: string; kind: string; n: number }>();
+  if (!results.length) return { inline_keyboard: [[{ text: T.noFollowed.slice(0, 60), callback_data: "sd" }]] };
+  return { inline_keyboard: results.map((v) => [{ text: `${KIND_ICON[v.kind] ?? "🎭"} ${v.name} (${v.n})`, callback_data: `pv:${v.id}` }]) };
+}
+
+const BROWSE_MAX = 12;   // Worker gratuit : 50 requêtes sortantes par appel
+
+async function browseVenue(env: Env, chat: number, lang: Lang, venueId: string): Promise<void> {
+  const T = tr(lang);
+  const since = (await setting(env, "current_since")) ?? "";
+  const { results } = await env.DB.prepare(
+    `SELECT i.* FROM items i LEFT JOIN reactions r ON r.item_id = i.id AND r.chat_id = ?1
+     WHERE i.venue_id = ?2 AND i.last_seen >= ?3 AND (r.status IS NULL OR r.status != 'ignored')
+     ORDER BY COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999') LIMIT ?4`,
+  ).bind(chat, venueId, since, BROWSE_MAX + 1).all<Item>();
+  if (!results.length) return void (await send(env, chat, T.browseEmpty));
+  const shown = results.slice(0, BROWSE_MAX);
+  const friends = await friendsByItem(env, shown.map((i) => i.id));
+  const { results: mine } = await env.DB.prepare(
+    "SELECT * FROM reactions WHERE chat_id = ? AND item_id IN (SELECT value FROM json_each(?))",
+  ).bind(chat, JSON.stringify(shown.map((i) => i.id))).all<Reaction>();
+  const react = new Map(mine.map((r) => [r.item_id, r]));
+  for (const it of shown) {
+    const v = renderFor(it, chat, react.get(it.id) ?? null, friends.get(it.id) ?? [], null, lang);
+    await send(env, chat, v.text, v.reply_markup);
+  }
+  if (results.length > BROWSE_MAX) await send(env, chat, T.browseMore(results.length - BROWSE_MAX));
 }
 
 function label(item: Item, venueName?: string): string {
@@ -297,6 +346,12 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
 
   const user = await getUser(env, chat);
   if (!user?.active) {
+    // Dans le groupe : on ouvre directement le bot avec le lien d'invitation.
+    if (cq.message?.chat?.type !== "private") {
+      return void (await tg(env, "answerCallbackQuery", {
+        callback_query_id: cq.id, url: `https://t.me/${env.BOT_USERNAME}?start=${await inviteCode(env)}`,
+      }));
+    }
     return void (await answer(tr(guessLang(from.language_code)).openFirst(env.BOT_USERNAME), true));
   }
   let lang = asLang(user.lang);
@@ -316,6 +371,12 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       await send(env, chat, T.defaultAll, await followKeyboard(env, chat, lang));
     }
     return;
+  }
+
+  // --- parcourir un lieu ---------------------------------------------------
+  if (data.startsWith("pv:")) {
+    await answer();
+    return browseVenue(env, chat, lang, data.slice(3));
   }
 
   // --- /suivre -----------------------------------------------------------
@@ -358,13 +419,24 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       r = await setReaction(env, chat, item.id, { interested: on });
       toast = on ? T.toastStar : T.toastUnstar;
       if (on && !prev?.interested) {
-        ctx.waitUntil(announce(env, (G) => G.annStar(esc(from.first_name), label(item, venue?.name)), item));
+        // Clic sur une annonce d'intérêt du groupe : on la met à jour (→ « 🎟 Plan ! ») ;
+        // ailleurs (avis, liste /programme, notif privée) : nouvelle annonce.
+        const clickedText = String(cq.message?.text ?? "");
+        const editId = inGroup && /^(⭐|🎟)/u.test(clickedText) ? cq.message.message_id : undefined;
+        ctx.waitUntil(announceInterest(env, item, venue?.name, from.first_name, editId));
       }
       break;
     }
     case "v":
       r = await setReaction(env, chat, item.id, { status: "seen" });
       toast = T.toastSeen;
+      if (inGroup) {
+        // « ✅ Je l'ai vu aussi » depuis le groupe : la note se donne en privé, et
+        // l'avis sera posté en réponse à ce message du groupe.
+        await setSetting(env, threadKey(chat, item.id), String(cq.message.message_id));
+        await send(env, chat, T.rateIt(label(item, venue?.name)), keyboard(item, r, lang));
+        toast = T.checkPrivate;
+      }
       break;
     case "r": {
       const n = Math.max(1, Math.min(5, Number(arg) || 0));
@@ -373,7 +445,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       toast = T.toastRated(stars(n));
       ctx.waitUntil((async () => {
         await send(env, chat, T.askComment(stars(n), esc(item.title)));
-        if (!prev?.rating) await announce(env, (G) => G.annSeen(esc(from.first_name), label(item, venue?.name), stars(n)));
+        if (prev?.rating !== n) await announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null);
       })());
       break;
     }
@@ -394,13 +466,6 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   const friends = (await friendsByItem(env, [item.id])).get(item.id) ?? [];
   const mine = await myDelivery(env, chat, item.id);
   if (inGroup) {
-    if (op === "i") {
-      const others = friends.filter((f) => f.interested && !f.status);
-      const G = tr(await groupLang(env));
-      await edit(env, cq.message.chat.id, cq.message.message_id,
-        `⭐ ${label(item, venue?.name)}\n${G.interestedList} ${others.map((f) => esc(f.first_name)).join(", ")}`,
-        { inline_keyboard: [[{ text: G.meToo, callback_data: `i:${item.id}` }]] });
-    }
     if (mine?.message_id) {
       const v = renderFor(item, chat, r, friends, mine.header, lang);
       await edit(env, chat, mine.message_id, v.text, v.reply_markup);
@@ -439,7 +504,7 @@ async function onComment(
   await send(env, chat, tr(lang).thanksComment);
   const venue = await env.DB.prepare("SELECT name FROM venues WHERE id = ?").bind(item.venue_id).first<{ name: string }>();
   ctx.waitUntil((async () => {
-    await announce(env, (G) => `${G.annComment(esc(name), label(item, venue?.name))}${r.rating ? ` ${stars(r.rating)}` : ""} :\n« ${esc(comment)} »`);
+    await announceReview(env, item, venue?.name, chat, name, r.rating, comment);
     await refreshAll(env, item, null);
   })());
 }
