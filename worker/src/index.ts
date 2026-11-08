@@ -74,7 +74,8 @@ export default {
         // Mêmes portées que celles posées à la main : défaut + chats privés (fr),
         // chats privés en anglais, groupes (2 commandes), et bouton « menu ».
         const cmds = await setGlobalMenus(env);
-        await tg(env, "setChatMenuButton", { menu_button: { type: "commands" } });
+        // Bouton à gauche du champ de saisie : ouvre la mini-app (les /commandes restent tapables).
+        await tg(env, "setChatMenuButton", { menu_button: { type: "web_app", text: "Berlin Encore!", web_app: { url: `${url.origin}/app` } } });
         // Telegram choisit le menu selon la langue de l'APPLI : on pose donc, par
         // chat, le menu dans la langue choisie par la personne (users.lang).
         const { results: users } = await env.DB.prepare(
