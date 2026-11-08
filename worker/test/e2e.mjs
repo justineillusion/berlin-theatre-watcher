@@ -549,6 +549,9 @@ try {
 
   await step("lieu sauté par un scan (site en panne) : son programme reste dans /programme", async () => {
     const total = async () => (sends(await say(OWNER, "/programme"), OWNER)[0].text.match(/À l'affiche<\/b> \((\d+)\)/) || [])[1];
+    // Les scans sont horodatés à la seconde : si l'étape d'avant a scanné dans la même
+    // seconde, son item « Sans Texte » comptait encore comme courant. On change de seconde.
+    await new Promise((r) => setTimeout(r, 1100));
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear] });
     const before = await total();
     assert.ok(Number(before) > 0);
