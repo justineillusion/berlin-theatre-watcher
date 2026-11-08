@@ -409,19 +409,19 @@ export const langKeyboard = (onboarding = false) => ({
 // pose en plus un menu PAR CHAT dans la langue choisie (setChatMenu).
 // ---------------------------------------------------------------------------
 export const COMMANDS = [
-  { command: "programme", description: "Ce qui est à l'affiche dans mes lieux" },
-  { command: "sorties", description: "Mes sorties : réservé, envies ⭐, vu" },
-  { command: "reglages", description: "Lieux, langue, pas pour moi, groupe" },
+  { command: "programme", description: "À l'affiche" },
+  { command: "sorties", description: "Mes sorties" },
+  { command: "reglages", description: "Réglages" },
 ];
 export const COMMANDS_EN = [
-  { command: "programme", description: "What's on in my venues" },
-  { command: "sorties", description: "My outings: booked, ⭐ wishlist, seen" },
-  { command: "reglages", description: "Venues, language, not for me, group" },
+  { command: "programme", description: "What's on" },
+  { command: "sorties", description: "My outings" },
+  { command: "reglages", description: "Settings" },
 ];
 
 /** Version du menu : à chaque changement de COMMANDS, on l'incrémente et le menu
  *  de chaque personne est reposé à sa prochaine interaction (bot.ts). */
-export const MENU_VERSION = "3cmd";
+export const MENU_VERSION = "3cmd-short";
 
 /** Menus par défaut (privé fr / en) et du groupe — posés par /api/setup, et
  *  automatiquement au 1er update après un changement de MENU_VERSION. */
@@ -437,8 +437,8 @@ export async function setGlobalMenus(env: { BOT_TOKEN: string; TG_API?: string }
   await call({ commands: COMMANDS_EN, language_code: "en" });
   await call({
     commands: [
-      { command: "interets", description: "Ce qui tente la bande ⭐" },
-      { command: "programme", description: "À l'affiche dans nos lieux" },
+      { command: "interets", description: "Envies de la bande ⭐" },
+      { command: "programme", description: "À l'affiche" },
     ],
     scope: { type: "all_group_chats" },
   });
