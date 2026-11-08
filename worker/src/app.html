@@ -64,7 +64,8 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .v .sc{color:var(--ink);font-weight:700;white-space:nowrap}
 .sc.link{text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px;cursor:pointer}
 .venue{margin:14px 16px 2px;padding-top:10px;border-top:2px solid var(--ink);font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}
-.dismissed-toggle{margin:18px 0 4px 12px!important;color:var(--muted)!important}.dismissed .item:not(.open) .row{opacity:.45}
+.badge.rescue{border:1.5px solid var(--ink);padding:3px 8px;font-weight:800;color:var(--ink);opacity:1}.dismissed .item:not(.open) .row .rescue{opacity:1}
+.day.dim{color:var(--muted);border-top:1px solid var(--line);margin-top:18px}.day .fold{margin-left:auto;border:0;background:none;padding:0;font:600 13.5px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:3px}.dismissed .item:not(.open) .row > :not(.rescue){opacity:.42}
 .more{display:block;margin:0 0 4px 76px;border:0;background:none;padding:6px 0;font:700 13.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 .v .k{color:var(--gold)}
 .badge{font-size:15px;padding-top:2px}
@@ -141,7 +142,7 @@ const L = {
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
-        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅, en bas)`, notForMeN:(n) => `Pas pour moi · ${n}`, whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} ⭐/🎟 plus tard`,
+        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, notForMeN:(n) => `Pas pour moi · ${n}`, hideD:"Masquer", showD:"Afficher", whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} ⭐/🎟 plus tard`,
         whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont grisées.", soldShort:"complet", hideSold:"Sans complets", whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
@@ -152,7 +153,7 @@ const L = {
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
-        reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅, at the bottom)`, notForMeN:(n) => `Not for me · ${n}`, whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} ⭐/🎟 later on`,
+        reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, notForMeN:(n) => `Not for me · ${n}`, hideD:"Hide", showD:"Show", whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} ⭐/🎟 later on`,
         whyRule:"Theatre: only dates with English surtitles. Sold-out shows are greyed out.", soldShort:"sold out", hideSold:"Hide sold out", whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
@@ -160,7 +161,7 @@ const L = {
 let T = L.fr, S = null;
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
-try { st.hideSold = localStorage.getItem("hideSold") === "1"; } catch {}
+try { st.hideSold = localStorage.getItem("hideSold") === "1"; st.hideDismissed = localStorage.getItem("hideDismissed") === "1"; } catch {}
 const ICON = { theatre:"🎭", expo:"🏛", film:"🎬" };
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
@@ -193,7 +194,7 @@ function dayLabel(d) {
 }
 const shortDay = (d) => `${+d.slice(8, 10)} ${T.smons[+d.slice(5, 7) - 1]}`;
 const state = (x) => !x.me ? "" : x.me.status === "seen" ? "seen" : x.me.status === "ignored" ? "ignored" : x.me.booked ? "booked" : x.me.star ? "star" : "";
-const badge = (x) => state(x) === "seen" && x.me.rating ? `<span class="badge rate">${x.me.rating}★</span>` : `<span class="badge">${{ star:"⭐", booked:"🎟", seen:"✅" }[state(x)] || ""}</span>`;
+const badge = (x) => state(x) === "ignored" && st.dateCell ? `<span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span>` : state(x) === "seen" && x.me.rating ? `<span class="badge rate">${x.me.rating}★</span>` : `<span class="badge">${{ star:"⭐", booked:"🎟", seen:"✅" }[state(x)] || ""}</span>`;
 const stars = (n) => n ? `<span class="stars">${"★".repeat(n)}<i>${"★".repeat(5 - n)}</i></span>` : "";
 
 /** Lignes utiles de la fiche du bot (HTML Telegram) : lieu/salle, auteur, langue, critiques presse, résumé. */
@@ -380,7 +381,7 @@ function whyNote() {
   const soldHidden = st.hideSold ? shows.filter((x) => !["seen", "ignored"].includes(state(x)) && !(x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])
     && (x.sold || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])).length : 0;
   const later = shows.filter((x) => ["booked", "star"].includes(state(x)) && next(x) && next(x).slice(0, 10) >= LIMIT[st.when]).length;
-  const bits = [[n("ignored"), T.whyIgnored], [n("seen"), T.whySeen], [later, T.whyLater], [soldHidden, T.whySold]].filter(([c]) => c).map(([c, f]) => f(c));
+  const bits = [[st.hideDismissed ? n("ignored") : 0, T.whyIgnored], [n("seen"), T.whySeen], [later, T.whyLater], [soldHidden, T.whySold]].filter(([c]) => c).map(([c, f]) => f(c));
   const lines = [];
   if (bits.length) lines.push(T.whyHidden + " " + bits.join(", ") + ".");
   if (st.kind !== "film") lines.push(T.whyRule);
@@ -422,8 +423,9 @@ function render() {
     for (const x of shows) { const d = dayLabel(next(x)); if (d !== cur) { h += dayHead(d); cur = d; } h += item(x); }
     if (expos.length) h += dayHead(T.expos, T.exposNote) + exposByVenue(expos);
     if (dismissed.length) {
-      h += `<button class="more dismissed-toggle" data-dismissed="1">🙅 ${esc(T.notForMeN(dismissed.length))} ${st.showDismissed ? "▴" : "▾"}</button>`;
-      if (st.showDismissed) { st.dateCell = true; h += `<div class="dismissed">${dismissed.map(item).join("")}</div>`; st.dateCell = false; }
+      // Affichés par défaut, grisés, à la fin ; « Masquer » les replie (mémorisé).
+      h += `<div class="day dim">${esc(T.notForMeN(dismissed.length))}<button class="fold" data-dismissed="1">${esc(st.hideDismissed ? T.showD : T.hideD)}</button></div>`;
+      if (!st.hideDismissed) { st.dateCell = true; h += `<div class="dismissed">${dismissed.map(item).join("")}</div>`; st.dateCell = false; }
     }
     list.innerHTML = (h || `<div class="empty">${esc(T.empty)}</div>`) + whyNote();
   } else {
@@ -439,6 +441,8 @@ function render() {
 document.addEventListener("click", (e) => {
   const a = e.target.closest("a[data-link]");
   if (a) { if (tgApp?.openLink) { e.preventDefault(); tgApp.openLink(a.href); } return; }
+  const rs = e.target.closest("[data-rescue]");
+  if (rs) { e.preventDefault(); e.stopPropagation(); return void act("u", rs.dataset.rescue); }
   const sc = e.target.closest("[data-href]");
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
@@ -460,7 +464,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.askremove) { st.confirmRemove = +t.dataset.askremove; }
   else if (t.dataset.friend) { st.confirmRemove = null; return void friendAct(t.dataset.friend, +t.dataset.id); }
   else if (t.dataset.invite) { return void shareInvite(); }
-  else if (t.dataset.dismissed) st.showDismissed = !st.showDismissed;
+  else if (t.dataset.dismissed) { st.hideDismissed = !st.hideDismissed; try { localStorage.setItem("hideDismissed", st.hideDismissed ? "1" : ""); } catch {} }
   else if (t.dataset.venue) { const v = t.dataset.venue; st.venuesOpen.has(v) ? st.venuesOpen.delete(v) : st.venuesOpen.add(v); }
   else if (t.dataset.open) { st.open = st.open === t.dataset.open ? null : t.dataset.open; st.picking = null; st.sharing = null; st.sent = null; }
   else return;
