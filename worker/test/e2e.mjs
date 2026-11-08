@@ -684,6 +684,23 @@ try {
     await say(OWNER, "/passer");
   });
 
+  await step("un texte sans 📝 n'écrase pas un texte qui en a un (fr et en)", async () => {
+    const it = play("syn000000001", "Nora", [`${soon(4)} 19:30`]);
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, it] });
+    await api("/api/render", { mode: "scan", items: [{ id: it.id, text: "🎭 Nora\n\n📝 Synopsis.", line: "• Nora",
+      text_en: "🎭 Nora\n\n📝 Synopsis EN.", line_en: "• Nora" }] });
+    await api("/api/render", { mode: "scan", items: [{ id: it.id, text: "🎭 Nora (nouvelle date)", line: "• Nora 2",
+      text_en: "🎭 Nora (new date)", line_en: "• Nora 2" }] });
+    let k = edits(await click(OWNER, "i:syn000000001", 9101), OWNER)[0].text;
+    assert.match(k, /📝 Synopsis\./);                      // l'ancien 📝 est gardé
+    await click(OWNER, "i:syn000000001", 9101);
+    await api("/api/render", { mode: "scan", items: [{ id: it.id, text: "🎭 Nora v3\n\n📝 Synopsis v3.", line: "• Nora 3" }] });
+    const c = await click(OWNER, "i:syn000000001", 9101);
+    const txt = edits(c, OWNER)[0].text;
+    assert.match(txt, /Nora v3[\s\S]*📝 Synopsis v3/);       // un nouveau 📝 remplace l'ancien
+    await click(OWNER, "i:syn000000001", 9101);
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);

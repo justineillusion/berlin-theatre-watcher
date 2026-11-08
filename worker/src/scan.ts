@@ -346,9 +346,18 @@ export async function render(env: Env, body: any): Promise<Response> {
       `UPDATE items SET text = COALESCE(text, ?), line = COALESCE(line, ?),
          text_en = COALESCE(text_en, ?), line_en = COALESCE(line_en, ?) WHERE id = ?`,
     ).bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id)),
+    // Un texte SANS 📝 n'écrase jamais un texte qui en a un (résumé pas fini à
+    // temps ce scan-ci, traduction ratée…) : on garde l'ancien, par langue.
     ...texts.map((t) =>
-      env.DB.prepare("UPDATE items SET text = ?, line = ?, text_en = ?, line_en = ? WHERE id = ?")
-        .bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id)),
+      env.DB.prepare(
+        `UPDATE items SET
+           text = CASE WHEN instr(?1, '📝') = 0 AND instr(COALESCE(text, ''), '📝') > 0 THEN text ELSE ?1 END,
+           line = ?2,
+           text_en = CASE WHEN ?3 IS NOT NULL AND instr(?3, '📝') = 0 AND instr(COALESCE(text_en, ''), '📝') > 0
+                          THEN text_en ELSE COALESCE(?3, text_en) END,
+           line_en = COALESCE(?4, line_en)
+         WHERE id = ?5`,
+      ).bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id)),
   ];
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
   const ids = texts.map((t) => t.id);
