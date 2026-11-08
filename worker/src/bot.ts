@@ -1,6 +1,6 @@
 // Webhook Telegram : commandes, boutons ⭐ / ✅ / 🔕, notes, petits mots.
 import {
-  Env, Friend, Horizon, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, horizon, keyboard, renderFor,
+  Env, Friend, Horizon, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, horizon, editKeyboard, keyboard, renderFor,
   send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql,
 } from "./lib";
 import { digestFor } from "./scan";
@@ -577,6 +577,16 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     await edit(env, chat, clickedId, pickerText(item, venue?.name, lang), bookPicker(item, prev, lang, o));
     return void (await answer());
   }
+  if (op === "ed" || op === "eb") {
+    // ✏️ Modifier : la fiche montre 1–5★ + réécrire + ↩︎ ; ↩︎ la remet telle quelle.
+    if (clickedId) {
+      const mine = await myDelivery(env, chat, item.id);
+      const friends = (await friendsByItem(env, [item.id])).get(item.id) ?? [];
+      const v = renderFor(item, chat, prev, friends, mine?.message_id === clickedId ? mine.header : null, lang);
+      await edit(env, chat, clickedId, v.text, op === "ed" ? editKeyboard(item, prev, lang) : v.reply_markup);
+    }
+    return void (await answer());
+  }
   if (op === "bb") {
     if (clickedId) await restore(env, chat, item, prev, clickedId, where, lang);
     return void (await answer());
@@ -664,7 +674,8 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       r = await setReaction(env, chat, item.id, { status: "seen", rating: n });
       toast = T.toastRated(stars(n));
       // Plus d'invitation automatique : la fiche montre [✍️ Critique] (une étape à la fois).
-      if (prev?.rating !== n) ctx.waitUntil(announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null));
+      // Changer sa note ne ré-annonce pas au groupe : seulement la 1re note.
+      if (!prev?.rating) ctx.waitUntil(announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null));
       break;
     }
     case "w":

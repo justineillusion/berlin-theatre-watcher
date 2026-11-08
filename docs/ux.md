@@ -39,11 +39,14 @@ règle donc en privé.
   pièce / film commencé et encore programmé — pour noter ce qu'on a vu ailleurs).
 - **⭐** : [🎟 Réserver] [✅ Déjà vu] / [↩︎ annuler ⭐].
 - **🎟 réservé** : avant la date [📅 Changer la date] ; dès le lendemain [★ Noter].
-- **✅ vu, pas noté** : [1★] … [5★]. **Noté** : [✍️ Critique] tant qu'il n'y a pas d'avis, puis rien
-  (la fiche affiche « ✅ Vu · ★★★★☆ · « … » »). Plus d'invitation automatique après la note.
+- **✅ vu, pas noté** : [1★] … [5★]. **Noté** : [✍️ Critique] tant qu'il n'y a pas d'avis, puis
+  [✏️ Modifier] (la fiche affiche « ✅ Vu · ★★★★☆ · « … » »). Plus d'invitation automatique après la note.
+- **✏️ Modifier** (sur place, aussi depuis /sorties) : [1★] … [5★] (note actuelle marquée « · 4★ · »),
+  puis [✍️ Réécrire la critique] [↩︎ Retour]. Changer la note met la fiche à jour ; le groupe n'est
+  annoncé qu'à la 1re note.
 - **🙅** : [↩︎ Annuler].
 - en : Interested / Not for me / Already seen ; Book / Already seen / undo ⭐ ; Change date / Rate ;
-  Review ; Undo.
+  Review ; Edit / Rewrite review / Back ; Undo.
 
 ## Trois commandes
 

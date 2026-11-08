@@ -207,8 +207,9 @@ try {
     const w = await click(LEA, "w:lear00000001", msgs[LEA]);
     assert.match(sends(w, LEA)[0].text, /★★★★☆ pour <b>King Lear<\/b>[\s\S]*Un petit mot/);
     c = await say(LEA, "Bouleversant, Lars Eidinger incroyable");
-    // avis donné : la fiche montre note + avis, sans bouton
-    assert.deepEqual(edits(c, LEA).find((x) => x.message_id === msgs[LEA]).reply_markup.inline_keyboard, []);
+    // avis donné : la fiche montre note + avis, et seulement [✏️ Modifier]
+    assert.deepEqual(edits(c, LEA).find((x) => x.message_id === msgs[LEA]).reply_markup.inline_keyboard,
+      [[{ text: "✏️ Modifier", callback_data: "ed:lear00000001" }]]);
     // le petit mot COMPLÈTE l'avis déjà posté (édition, pas de 2e message)
     assert.equal(sends(c, GROUP).length, 0);
     assert.match(edits(c, GROUP)[0].text, /★★★★☆ 4\/5\n💬 “Bouleversant, Lars Eidinger incroyable”/);
@@ -250,9 +251,21 @@ try {
     await say(LEA, "/passer");
     c = await say(LEA, "texte perdu ?");
     assert.doesNotMatch(sends(c, LEA)[0].text, /Avis enregistré/);
-    // noté + avis : plus aucun bouton (la fiche dit tout)
-    const kb = edits(await click(LEA, "r:rvA000000001:5", 7001), LEA)[0].reply_markup.inline_keyboard;
-    assert.deepEqual(kb, []);
+    // noté + avis : [✏️ Modifier] → 1–5★ (note actuelle marquée) + réécrire + ↩︎, sur place
+    c = await click(LEA, "ed:rvA000000001", 7001);
+    assert.equal(sends(c, LEA).length, 0);
+    const ek = edits(c, LEA).find((x) => x.message_id === 7001);
+    assert.match(ek.text, /Vu · ★★★★★ · « Gabler : magistral »/);
+    assert.deepEqual(ek.reply_markup.inline_keyboard.map((r) => r.map((b) => b.text)),
+      [["1★", "2★", "3★", "4★", "· 5★ ·"], ["✍️ Réécrire la critique", "↩︎ Retour"]]);
+    c = await click(LEA, "eb:rvA000000001", 7001);
+    assert.deepEqual(edits(c, LEA).find((x) => x.message_id === 7001).reply_markup.inline_keyboard,
+      [[{ text: "✏️ Modifier", callback_data: "ed:rvA000000001" }]]);
+    // changer la note : la fiche suit, le groupe n'est PAS ré-annoncé
+    c = await click(LEA, "r:rvA000000001:3", 7001);
+    assert.match(edits(c, LEA).find((x) => x.message_id === 7001).text, /Vu · ★★★☆☆ · « Gabler : magistral »/);
+    await new Promise((ok) => setTimeout(ok, 300));
+    assert.equal(sends(c, GROUP).length, 0);
     await say(LEA, "/passer");
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear] });
   });

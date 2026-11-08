@@ -248,7 +248,9 @@ export function keyboard(item: Item, r: Reaction | null, lang: Lang = "fr"): unk
   if (r?.status === "ignored") return kb([{ text: T.btnUndo, callback_data: `u:${id}` }]);
   if (r?.status === "seen") {
     if (!r.rating) return kb([1, 2, 3, 4, 5].map((n) => ({ text: `${n}★`, callback_data: `r:${id}:${n}` })));
-    return r.comment ? kb() : kb([{ text: T.btnCritique, callback_data: `w:${id}` }]);
+    return r.comment
+      ? kb([{ text: T.btnEdit, callback_data: `ed:${id}` }])
+      : kb([{ text: T.btnCritique, callback_data: `w:${id}` }]);
   }
   if (r?.booked_at) {
     return r.booked_at.slice(0, 10) < berlinDay()
@@ -267,6 +269,15 @@ export function keyboard(item: Item, r: Reaction | null, lang: Lang = "fr"): unk
   ];
   if (isShowing(item)) row.push({ text: T.btnAlreadySeen, callback_data: `v:${id}` });
   return kb(row);
+}
+
+/** ✏️ Modifier (noté + avis) : 1–5★ (note actuelle marquée), [✍️ Réécrire la critique] [↩︎ Retour]. */
+export function editKeyboard(item: Item, r: Reaction | null, lang: Lang = "fr"): unknown {
+  const T = tr(lang);
+  return { inline_keyboard: [
+    [1, 2, 3, 4, 5].map((n) => ({ text: r?.rating === n ? `· ${n}★ ·` : `${n}★`, callback_data: `r:${item.id}:${n}` })),
+    [{ text: T.btnRewrite, callback_data: `w:${item.id}` }, { text: T.btnBack, callback_data: `eb:${item.id}` }],
+  ] };
 }
 
 /** « sam. 9 janv. 19:30 » / « Sat 9 Jan 19:30 » (date seule : sans l'heure). */
