@@ -159,7 +159,9 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":
 const berlin = (d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone:"Europe/Berlin", year:"numeric", month:"2-digit", day:"2-digit" }).format(d);
 const TODAY = berlin(), TOMORROW = berlin(new Date(Date.now() + 864e5));
 const plus = (n) => berlin(new Date(Date.now() + n * 864e5));
-const LIMIT = { week: plus(7), month: plus(31), all: "9999" };
+// « Ce mois » = le mois du calendrier (jusqu'au 30 novembre, pas 31 jours glissants).
+const MONTH_END = (([y, m]) => m === 12 ? `${y + 1}-01-01` : `${y}-${String(m + 1).padStart(2, "0")}-01`)(TODAY.split("-").map(Number));
+const LIMIT = { week: plus(7), month: MONTH_END, all: "9999" };
 
 function next(x) {
   if (x.kind === "expo") return x.start && x.start > TODAY ? x.start : TODAY;
