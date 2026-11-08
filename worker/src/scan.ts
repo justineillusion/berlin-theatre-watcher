@@ -173,8 +173,25 @@ async function upsertVenues(env: Env, venues: VenueIn[], scope: string): Promise
 }
 
 /** Films du récap ciné -> items (kind 'film') : ⭐ ✅ 🔕 comme une pièce. */
+/** Remet le bloc 📝 de l'ancien texte dans le nouveau s'il n'en a pas (avant les liens 🎟/🔗). */
+export function keepSynopsis(next: string | null, prev: string | null | undefined): string | null {
+  if (!next || next.includes("📝") || !prev) return next;
+  const m = prev.match(/\n\n📝[^\n]*(?:\n(?!\n)[^\n]*)*/u);
+  if (!m) return next;
+  const at = next.search(/\n\n(?:🎟|🔗)/u);
+  return at >= 0 ? next.slice(0, at) + m[0] + next.slice(at) : next + m[0];
+}
+
 async function upsertFilms(env: Env, list: any[]): Promise<void> {
   const now = new Date().toISOString().replace("T", " ").slice(0, 19);
+  const { results: oldRows } = await env.DB.prepare(
+    "SELECT id, text, text_en FROM items WHERE id IN (SELECT value FROM json_each(?))",
+  ).bind(JSON.stringify(list.map((f) => f.id))).all<{ id: string; text: string | null; text_en: string | null }>();
+  const old = new Map(oldRows.map((r) => [r.id, r]));
+  for (const f of list) {
+    f.text = keepSynopsis(f.text ?? null, old.get(f.id)?.text);
+    f.text_en = keepSynopsis(f.text_en ?? null, old.get(f.id)?.text_en);
+  }
   const stmts = list.map((f) => env.DB.prepare(
     `INSERT INTO items (id, venue_id, kind, title, url, dates, starred, text, line, text_en, line_en, last_seen)
      VALUES (?, ?, 'film', ?, ?, ?, 0, ?, ?, ?, ?, ?)
@@ -341,23 +358,24 @@ export async function render(env: Env, body: any): Promise<Response> {
   // `basic` : version courte (sans résumé ni critiques) de TOUT le catalogue, pour
   // /programme et les récaps ; n'écrase jamais un texte complet déjà rédigé.
   const basic: { id: string; text: string; line: string; text_en?: string; line_en?: string }[] = body.basic ?? [];
+  const { results: oldRows } = await env.DB.prepare(
+    "SELECT id, text, text_en FROM items WHERE id IN (SELECT value FROM json_each(?))",
+  ).bind(JSON.stringify(texts.map((t) => t.id))).all<{ id: string; text: string | null; text_en: string | null }>();
+  const old = new Map(oldRows.map((r) => [r.id, r]));
   const stmts = [
     ...basic.map((t) => env.DB.prepare(
       `UPDATE items SET text = COALESCE(text, ?), line = COALESCE(line, ?),
          text_en = COALESCE(text_en, ?), line_en = COALESCE(line_en, ?) WHERE id = ?`,
     ).bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id)),
-    // Un texte SANS 📝 n'écrase jamais un texte qui en a un (résumé pas fini à
-    // temps ce scan-ci, traduction ratée…) : on garde l'ancien, par langue.
-    ...texts.map((t) =>
-      env.DB.prepare(
-        `UPDATE items SET
-           text = CASE WHEN instr(?1, '📝') = 0 AND instr(COALESCE(text, ''), '📝') > 0 THEN text ELSE ?1 END,
-           line = ?2,
-           text_en = CASE WHEN ?3 IS NOT NULL AND instr(?3, '📝') = 0 AND instr(COALESCE(text_en, ''), '📝') > 0
-                          THEN text_en ELSE COALESCE(?3, text_en) END,
-           line_en = COALESCE(?4, line_en)
-         WHERE id = ?5`,
-      ).bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id)),
+    // Un texte SANS 📝 ne fait jamais perdre un 📝 déjà en base (résumé pas fini
+    // à temps ce scan-ci, traduction ratée…) : on y remet l'ancien 📝, par langue,
+    // en gardant tout le reste à jour (dates, notes…).
+    ...texts.map((t) => {
+      const o = old.get(t.id);
+      return env.DB.prepare("UPDATE items SET text = ?, line = ?, text_en = ?, line_en = COALESCE(?, line_en) WHERE id = ?")
+        .bind(keepSynopsis(t.text, o?.text), t.line, keepSynopsis(t.text_en ?? null, o?.text_en) ?? o?.text_en ?? null,
+          t.line_en ?? null, t.id);
+    }),
   ];
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
   const ids = texts.map((t) => t.id);

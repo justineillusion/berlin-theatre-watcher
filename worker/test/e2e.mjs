@@ -692,7 +692,7 @@ try {
     await api("/api/render", { mode: "scan", items: [{ id: it.id, text: "🎭 Nora (nouvelle date)", line: "• Nora 2",
       text_en: "🎭 Nora (new date)", line_en: "• Nora 2" }] });
     let k = edits(await click(OWNER, "i:syn000000001", 9101), OWNER)[0].text;
-    assert.match(k, /📝 Synopsis\./);                      // l'ancien 📝 est gardé
+    assert.match(k, /Nora \(nouvelle date\)\n\n📝 Synopsis\./);   // reste à jour + l'ancien 📝 remis
     await click(OWNER, "i:syn000000001", 9101);
     await api("/api/render", { mode: "scan", items: [{ id: it.id, text: "🎭 Nora v3\n\n📝 Synopsis v3.", line: "• Nora 3" }] });
     const c = await click(OWNER, "i:syn000000001", 9101);
