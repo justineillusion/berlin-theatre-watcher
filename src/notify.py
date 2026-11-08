@@ -251,7 +251,9 @@ def format_show(show: Show, lang: str = "fr") -> str:
                      else "🆕 Nouvelles dates pour une pièce déjà signalée")
     dates = show.available_dates or ([show.date] if show.date else [])
     if dates:
-        lines.append(("🗓 Seats available: " if en else "🗓 Places libres : ") + _esc(" | ".join(dates)))
+        more = len(dates) - 5
+        shown = " | ".join(dates[:5]) + ((f" (+{more} more)" if en else f" (+{more} autres)") if more > 0 else "")
+        lines.append(("🗓 Seats available: " if en else "🗓 Places libres : ") + _esc(shown))
     if show.sold_out is None:
         lines.append("⚪️ Availability unknown" if en else "⚪️ Disponibilité inconnue")
     if show.production_type:
