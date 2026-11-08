@@ -184,6 +184,11 @@ def detect(
         else None
     )
 
+    # L'allemand est la norme à Berlin : on ne l'affiche pas (ça prend de la
+    # place pour rien). On ne signale la langue que si ce n'est PAS l'allemand
+    # seul (« En anglais », « En allemand et turc », « Multilingue »…).
+    if spoken_names == ["allemand"]:
+        return None, surtitles
     if spoken_names:
         return f"En {_join_fr(spoken_names)}", surtitles
 
@@ -193,7 +198,7 @@ def detect(
 
     # Déduction : surtitres anglais seuls dans une maison berlinoise -> allemand.
     if surtitle_names == ["anglais"]:
-        return "En allemand (probable)", surtitles
+        return None, surtitles          # allemand probable : rien à signaler
 
     return None, surtitles
 
