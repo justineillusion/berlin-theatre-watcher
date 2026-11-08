@@ -19,7 +19,7 @@ from .state import load_seen, save_seen
 from .language import detect as detect_language
 from .mute import filter_muted, load_muted, mute_keyboard, sync as sync_muted
 from .critics import fetch_rating
-from .summary import fetch_details
+from .summary import fetch_details, is_synopsis
 from .translate import GUARD_FAILS, in_lang, looks_english, looks_french, to_english, to_french
 from .budget import call_with_timeout, map_with_budget
 
@@ -146,6 +146,8 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
 
     def one(show: Show):
         c = cache.get(show.item_id())
+        if c and c.get("src") and not is_synopsis(c["src"]):
+            c = None                       # résumé en cache = un générique : on relit la page
         if c and c.get("at", "") >= fresh_after and all(c.get(lg) is not None for lg in langs):
             return c
         summary, page_text = fetch_details(show.theater, show.url)
@@ -179,6 +181,12 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
         if show.kind != "expo":
             show.spoken_language, show.surtitles = out.get("spoken"), out.get("surtitles")
     _save_summary_cache(cache)
+    # Métrique : pages sans vrai résumé (générique seul ou rien), par lieu.
+    from collections import Counter
+    miss = Counter(sh.venue_name or sh.theater for sh in shows if not (sh.summary or sh.summary_en))
+    if miss:
+        print("   📝 Sans résumé (générique seul / rien / langue) : "
+              + ", ".join(f"{v} {n}" for v, n in miss.most_common()))
     if GUARD_FAILS:
         print("   🈯 Descriptions refusées (pas dans la langue de la fiche) : "
               + ", ".join(f"{lg} {n}" for lg, n in sorted(GUARD_FAILS.items())))

@@ -574,6 +574,30 @@ try {
     assert.deepEqual(r.messages.map((m) => m.chat_id), []);   // Justine 🔕, Léa déjà ⭐ : rien
   });
 
+  await step("décocher un théâtre, un lieu d'expo et un cinéma : plus rien de ces lieux, partout", async () => {
+    const theatre = play("unselT00001", "Pièce décochée", [`${soon(4)} 19:30`]);
+    const expoU = { id: "unselE00001", venue_id: "kw", kind: "expo", title: "Expo décochée", url: "https://kw/u",
+      dates: [], start_date: "", end_date: soon(90), starred: false };
+    // Léa décoche le BE, KW et l'Intimes : la case passe à ⬜️ et le reste
+    for (const v of ["berliner-ensemble", "kw", "cinema-intimes"]) await click(LEA, `s:${v}`, 9500);
+    const kb = sends(await say(LEA, "/suivre"), LEA)[0].reply_markup.inline_keyboard.flat().map((b) => b.text);
+    assert.ok(kb.some((t) => /^⬜️ .*Berliner Ensemble/.test(t)) && kb.some((t) => /^⬜️ .*KW/.test(t))
+      && kb.some((t) => /^⬜️ .*Intimes/.test(t)), kb.join(" | "));
+    // scan : aucune notif à Léa pour ces lieux
+    const s = await scan([hedda, ente, lear, theatre, expoU]);
+    assert.ok(!s.messages.some((m) => m.chat_id === LEA && ["unselT00001", "unselE00001"].includes(m.item_id)));
+    // /programme : ni BE ni KW au menu
+    const menu = sends(await say(LEA, "/programme"), LEA)[0].reply_markup.inline_keyboard.flat().map((b) => b.callback_data);
+    assert.ok(!menu.includes("pv:berliner-ensemble:0") && !menu.includes("pv:kw:0"), menu.join(" "));
+    // récap : rien de ces lieux
+    const d = (await scan([hedda, ente, lear, theatre, expoU], "digest")).messages
+      .filter((m) => m.chat_id === LEA).map((m) => m.text).join("\n");
+    assert.doesNotMatch(d, /décochée|King Lear/);
+    // ciné : l'Intimes n'est plus dans ses cinémas
+    const rc = (await api("/api/cinema-recipients", { venues: CINEMAS, force: true })).recipients.find((r) => r.chat_id === LEA);
+    assert.ok(!rc || !JSON.parse(JSON.stringify(rc.venue_ids)).includes("cinema-intimes"));
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);

@@ -31,6 +31,50 @@ def _trim(text: str, max_chars: int = _MAX) -> str:
     return cut.rsplit(" ", 1)[0].rstrip(" ,;:") + "…"
 
 
+# Générique (credits) : « Regie: X », « by Milo Rau », « Bühne: … », dates,
+# durée, surtitres… Ce n'est PAS un résumé : jamais affiché comme 📝.
+_CREDIT_WORDS = (
+    r"regie|inszenierung|directed by|director|direction|mise en sc[eè]ne|von|nach|after|mit|with|by|"
+    r"b[üu]hne|stage|set|kost[üu]me?|costumes?|dramaturgi[ea]|dramaturgy|musik|music|licht|light(?:ing)?|"
+    r"video|choreogra\w*|text|premi[eè]re|uraufführung|world premiere|dauer|duration|"
+    r"surtitles|übertitel|sous-titres|surtitres|cast|besetzung|en allemand|in german|auf deutsch"
+)
+_LABEL_RE = re.compile(rf"\b(?:{_CREDIT_WORDS})\s*:\s*\S", re.I)
+_LEAD_RE = re.compile(rf"^\s*(?:{_CREDIT_WORDS})\b", re.I)
+_SENT_RE = re.compile(r"[a-zäöüßàâçéèêëîïôûù]{2,}[.!?…»“”\"]?\s+[A-ZÄÖÜÀ-Ý»„“\"]|[a-zäöüßàâçéèêëîïôûù]{2,}[.!?…]\s*$")
+
+
+def is_synopsis(text: Optional[str], min_chars: int = 150) -> bool:
+    """Un vrai résumé (de quoi parle la pièce), pas un générique ni une liste de noms."""
+    if not text:
+        return False
+    t = _clean(text)
+    if len(t) < min_chars:
+        return False
+    t = t[:400]                                 # ce qui sera affiché (2–3 phrases)
+    if len(_LABEL_RE.findall(t)) >= 2:          # « Regie: X, Bühne: Y »
+        return False
+    if _LEAD_RE.match(t) and len(_SENT_RE.findall(t)) < 2:
+        return False                            # « by X, mit Y… » sans vraies phrases
+    if not _SENT_RE.search(t):
+        return False                            # aucune phrase : liste de noms / dates
+    # proportion de mots capitalisés (listes de noms) trop forte
+    words = re.findall(r"\b\w+\b", t)
+    caps = sum(w[:1].isupper() for w in words)
+    return caps / max(1, len(words)) < 0.45
+
+
+def _first_synopsis(soup: BeautifulSoup) -> Optional[str]:
+    """Repli générique : 1er paragraphe « feuille » qui ressemble à un résumé."""
+    for p in soup.find_all("p"):
+        if p.find(["p", "div"]) or p.find_parent(["footer", "nav", "header"]):
+            continue
+        txt = _clean(p.get_text(" ", strip=True))
+        if is_synopsis(txt):
+            return txt
+    return None
+
+
 def _berliner_ensemble(soup: BeautifulSoup) -> Optional[str]:
     el = soup.select_one(".s-description-toggle__controls")
     if not el:
@@ -112,7 +156,12 @@ def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Opti
     except Exception:  # noqa: BLE001 — un résumé manquant n'est pas bloquant
         return None, None
     extractor = _EXTRACTORS.get(theater)
-    text = (extractor(soup) if extractor else None) or _generic(soup)
+    text = None
+    for cand in ((extractor(soup) if extractor else None), _generic(soup), _first_synopsis(soup)):
+        if is_synopsis(cand):
+            text = cand
+            break
+    # Rien de valable (générique seul…) : pas de 📝 plutôt qu'un générique.
     return (_trim(text) if text else None), soup.get_text(" ", strip=True)
 
 

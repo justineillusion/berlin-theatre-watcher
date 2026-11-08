@@ -378,7 +378,7 @@ async function browse(env: Env, chat: number, lang: Lang, filter: string, offset
                  WHERE r.item_id = i.id AND r.interested = 1 AND r.status IS NULL) AND ?3 = ?3`
       : "i.kind = ?3";
   const { results } = await env.DB.prepare(
-    `SELECT i.* FROM items i JOIN venues v ON v.id = i.venue_id
+    `SELECT i.* FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
      WHERE ${cur} AND ${where}
      ORDER BY CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position,
        COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999'), i.title
