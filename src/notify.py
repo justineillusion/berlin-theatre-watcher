@@ -179,6 +179,11 @@ _CREDIT_WORDS = {
 }
 
 
+def synopsis_block(escaped: str) -> str:
+    """📝 replié par défaut (Telegram : <blockquote expandable>) — la fiche reste courte, on déroule."""
+    return f"<blockquote expandable>📝 {escaped}</blockquote>"
+
+
 def credits_line(text: str, lang: str = "fr") -> str:
     """Crédits nettoyés, connecteurs dans la langue de la fiche (« By X and Y » -> « De X et Y »)."""
     t = clean_credits(text)
@@ -232,7 +237,7 @@ def format_expo(show: Show, lang: str = "fr") -> str:
         lines.append(press)
     summary = _summary(show, lang)
     if summary:
-        lines.append(f"\n📝 {_esc(summary)}")
+        lines.append(f"\n{synopsis_block(_esc(summary))}")
     if show.url:
         page = "Exhibition page" if lang == "en" else "Page de l'expo"
         lines.append(f'\n🔗 <a href="{html.escape(show.url)}">{page}</a>')
@@ -312,7 +317,7 @@ def format_show(show: Show, lang: str = "fr") -> str:
         lines.append(press)
     summary = _summary(show, lang)
     if summary:
-        lines.append(f"\n📝 {_esc(summary)}")
+        lines.append(f"\n{synopsis_block(_esc(summary))}")
     links = []
     if show.booking_url:
         links.append(f'🎟 <a href="{html.escape(show.booking_url)}">{"Book" if en else "Réserver"}</a>')

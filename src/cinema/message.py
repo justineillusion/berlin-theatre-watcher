@@ -289,7 +289,7 @@ def film_card(film: Film, lang: str = "fr") -> str:
         lines.append(buzz)
     pitch = film.pitch_en if lang == "en" else film.pitch
     if pitch:
-        lines.append(f"\n📝 {esc(pitch)}")
+        lines.append(f"\n<blockquote expandable>📝 {esc(pitch)}</blockquote>")
     return "\n".join(lines)
 
 

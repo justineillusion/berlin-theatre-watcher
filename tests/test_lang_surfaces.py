@@ -99,6 +99,31 @@ def test_film_card():
         _check(cm.film_card(_film(), lang), lang, "fiche film")
 
 
+def _balanced(html: str) -> list:
+    """Pile des balises : vide = HTML valide pour Telegram (toute balise ouverte est refermée, dans l'ordre)."""
+    stack = []
+    for close, tag in re.findall(r"<(/?)([a-z]+)[^>]*>", html):
+        if close:
+            assert stack and stack[-1] == tag, f"</{tag}> sans ouverture :\n{html}"
+            stack.pop()
+        else:
+            stack.append(tag)
+    return stack
+
+
+def test_synopsis_is_collapsed_and_html_valid():
+    for lang in ("fr", "en"):
+        for card in (format_show(_play(), lang), format_expo(_expo(), lang), cm.film_card(_film(), lang)):
+            assert "<blockquote expandable>📝 " in card, card
+            assert re.search(r"<blockquote expandable>📝 [^<]*</blockquote>", card), card
+            assert _balanced(card) == [], card
+    # un résumé contenant < > & reste échappé : pas de balise parasite dans le bloc
+    sh = _play()
+    sh.summary = "A < B & <script>"
+    card = format_show(sh, "fr")
+    assert "&lt;script&gt;" in card and _balanced(card) == []
+
+
 def test_worker_english_dictionary_has_no_french():
     src = (Path(__file__).resolve().parent.parent / "worker" / "src" / "i18n.ts").read_text(encoding="utf-8")
     en = src[src.index("const en: typeof fr = {"):]

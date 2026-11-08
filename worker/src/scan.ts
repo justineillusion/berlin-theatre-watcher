@@ -177,7 +177,8 @@ async function upsertVenues(env: Env, venues: VenueIn[], scope: string): Promise
 /** Remet le bloc 📝 de l'ancien texte dans le nouveau s'il n'en a pas (avant les liens 🎟/🔗). */
 export function keepSynopsis(next: string | null, prev: string | null | undefined): string | null {
   if (!next || next.includes("📝") || !prev) return next;
-  const m = prev.match(/\n\n📝[^\n]*(?:\n(?!\n)[^\n]*)*/u);
+  // Bloc replié (« <blockquote expandable>📝 … </blockquote> ») ou ancien format (📝 jusqu'à la ligne vide).
+  const m = prev.match(/\n\n(?:<blockquote expandable>📝[\s\S]*?<\/blockquote>|📝[^\n]*(?:\n(?!\n)[^\n]*)*)/u);
   if (!m) return next;
   const at = next.search(/\n\n(?:🎟|🔗)/u);
   return at >= 0 ? next.slice(0, at) + m[0] + next.slice(at) : next + m[0];

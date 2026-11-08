@@ -310,6 +310,18 @@ export function basicText(item: Item, lang: Lang): string {
 
 const MAX = 4000;
 
+/** Coupe propre : retire une balise entamée et referme les balises restées ouvertes (HTML Telegram). */
+export function closeHtml(s: string): string {
+  s = s.replace(/<[^>]*$/, "").replace(/&[a-z#0-9]*$/i, "");
+  const open: string[] = [];
+  for (const m of s.matchAll(/<(\/?)([a-z]+)[^>]*>/gi)) {
+    const tag = m[2].toLowerCase();
+    if (m[1]) { const i = open.lastIndexOf(tag); if (i >= 0) open.splice(i, 1); }
+    else open.push(tag);
+  }
+  return s + open.reverse().map((t) => `</${t}>`).join("");
+}
+
 /** Message complet pour une personne : en-tête + corps + bande + état. */
 export function renderFor(
   item: Item, viewer: number, r: Reaction | null, friends: Friend[], header: string | null, lang: Lang = "fr",
@@ -317,6 +329,6 @@ export function renderFor(
   const body = itemText(item, lang) || basicText(item, lang);
   const tail = socialBlock(friends, viewer, false, lang) + statusLine(item, r, lang);
   let text = (header ? `${header}\n` : "") + body;
-  if (text.length + tail.length > MAX) text = text.slice(0, MAX - tail.length - 1) + "…";
+  if (text.length + tail.length > MAX) text = closeHtml(text.slice(0, MAX - tail.length - 30) + "…");
   return { text: text + tail, reply_markup: keyboard(item, r, lang) };
 }

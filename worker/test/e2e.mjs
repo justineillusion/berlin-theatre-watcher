@@ -771,6 +771,18 @@ try {
     const txt = edits(c, OWNER)[0].text;
     assert.match(txt, /Nora v3[\s\S]*📝 Synopsis v3/);       // un nouveau 📝 remplace l'ancien
     await click(OWNER, "i:syn000000001", 9101);
+    // format replié (<blockquote expandable>) : gardé lui aussi, balises intactes
+    await api("/api/render", { mode: "scan", items: [{ id: it.id, text: "🎭 Nora v4\n\n<blockquote expandable>📝 Replié.</blockquote>\n\n🔗 x", line: "• Nora 4" }] });
+    await api("/api/render", { mode: "scan", items: [{ id: it.id, text: "🎭 Nora v5\n\n🔗 x", line: "• Nora 5" }] });
+    let t5 = edits(await click(OWNER, "i:syn000000001", 9101), OWNER)[0].text;
+    assert.match(t5, /Nora v5\n\n<blockquote expandable>📝 Replié\.<\/blockquote>\n\n🔗 x/);
+    await click(OWNER, "i:syn000000001", 9101);
+    // fiche trop longue : coupée sans casser le HTML (le bloc replié est refermé)
+    await api("/api/render", { mode: "scan", items: [{ id: it.id, line: "• Nora 6",
+      text: "🎭 Nora v6\n\n<blockquote expandable>📝 " + "lorem ipsum ".repeat(400) + "</blockquote>" }] });
+    t5 = edits(await click(OWNER, "i:syn000000001", 9101), OWNER)[0].text;
+    assert.ok(t5.length <= 4096 && /…<\/blockquote>/.test(t5), t5.slice(-80));
+    await click(OWNER, "i:syn000000001", 9101);
   });
 
   await step("/reglages : un message, 4 boutons -> lieux, langue, pas pour moi, groupe", async () => {

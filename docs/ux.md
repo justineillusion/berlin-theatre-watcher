@@ -1,5 +1,8 @@
 # Règles d'écriture des cartes (toutes surfaces : push, /programme, groupe, récaps)
 
+- **📝 replié** : le résumé est un `<blockquote expandable>📝 …</blockquote>` (fermé par défaut, on le déroule
+  dans Telegram) — pièces, expos, films, fr et en. Une fiche trop longue est coupée sans casser le HTML.
+
 1. **Zéro remplissage.** Une ligne n'existe que si elle apprend quelque chose d'utile.
    Jamais « pas encore de critiques », « pas encore ouvert », « couvert, pas d'avis »,
    « en allemand (probable) », « rien de neuf ». Si on ne sait pas : on n'écrit rien.
