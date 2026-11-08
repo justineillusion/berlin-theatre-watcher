@@ -663,15 +663,14 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       const n = Math.max(1, Math.min(5, Number(arg) || 0));
       r = await setReaction(env, chat, item.id, { status: "seen", rating: n });
       toast = T.toastRated(stars(n));
-      ctx.waitUntil((async () => {
-        await askReview(env, chat, item, lang, T.askComment(stars(n), esc(item.title)), inGroup ? null : clickedId);
-        if (prev?.rating !== n) await announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null);
-      })());
+      // Plus d'invitation automatique : la fiche montre [✍️ Critique] (une étape à la fois).
+      if (prev?.rating !== n) ctx.waitUntil(announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null));
       break;
     }
     case "w":
       // « ✍️ Écrire / modifier mon avis » : rouvre une invitation pour cet item.
-      await askReview(env, chat, item, lang, T.askReview(esc(item.title)), inGroup ? null : clickedId);
+      await askReview(env, chat, item, lang,
+        prev?.rating ? T.askComment(stars(prev.rating), esc(item.title)) : T.askReview(esc(item.title)), inGroup ? null : clickedId);
       return void (await answer());
     case "x":
       r = await setReaction(env, chat, item.id, { status: "ignored" });

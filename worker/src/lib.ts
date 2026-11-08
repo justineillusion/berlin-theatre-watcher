@@ -223,31 +223,50 @@ export function socialBlock(friends: Friend[], viewer: number | null, compact = 
 }
 
 /** Boutons sous une notif, selon l'état de la personne qui la regarde. */
+/** Jour de Berlin, « 2026-11-08 ». */
+export const berlinDay = (now = new Date()) =>
+  new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
+
+/** À l'affiche aujourd'hui (on a pu le voir ailleurs) : expo ouverte ; pièce/film commencé·e et encore programmé·e. */
+export function isShowing(item: Item, today = berlinDay()): boolean {
+  if (item.start_date && item.start_date.slice(0, 10) > today) return false;
+  if (item.kind === "expo") return !item.end_date || item.end_date.slice(0, 10) >= today;
+  const dates = (JSON.parse(item.dates || "[]") as string[]).map((d) => d.slice(0, 10));
+  return dates.some((d) => d >= today);
+}
+
+/** Boutons = la prochaine étape seulement (machine à états, docs/ux.md) :
+ *  proposé  [⭐ Intéressé·e] [🙅 Pas pour moi] (+ [✅ Déjà vu] si à l'affiche)
+ *  ⭐       [🎟 Réserver] [✅ Déjà vu] / [↩︎ annuler ⭐]
+ *  🎟       [📅 Changer la date] ; dès le lendemain de la date : [★ Noter]
+ *  ✅       1★…5★ ; noté : [✍️ Critique] tant qu'il n'y a pas d'avis, puis rien
+ *  🙅       [↩︎ Annuler] */
 export function keyboard(item: Item, r: Reaction | null, lang: Lang = "fr"): unknown {
   const id = item.id;
   const T = tr(lang);
-  if (r?.status === "ignored") {
-    return { inline_keyboard: [[{ text: T.btnUnignore, callback_data: `u:${id}` }]] };
-  }
+  const kb = (...rows: { text: string; callback_data: string }[][]) => ({ inline_keyboard: rows });
+  if (r?.status === "ignored") return kb([{ text: T.btnUndo, callback_data: `u:${id}` }]);
   if (r?.status === "seen") {
-    const row = [1, 2, 3, 4, 5].map((n) => ({
-      text: r.rating === n ? `· ${n}★ ·` : `${n}★`,
-      callback_data: `r:${id}:${n}`,
-    }));
-    return { inline_keyboard: [row, [
-      { text: T.btnReview, callback_data: `w:${id}` },
-      { text: T.btnNotSeen, callback_data: `u:${id}` },
-    ]] };
+    if (!r.rating) return kb([1, 2, 3, 4, 5].map((n) => ({ text: `${n}★`, callback_data: `r:${id}:${n}` })));
+    return r.comment ? kb() : kb([{ text: T.btnCritique, callback_data: `w:${id}` }]);
   }
-  return {
-    inline_keyboard: [[
-      { text: r?.interested ? T.btnInterestedOn : T.btnInterested, callback_data: `i:${id}` },
-      { text: T.btnSeen(item.kind === "expo"), callback_data: `v:${id}` },
-      { text: T.btnIgnore, callback_data: `x:${id}` },
-    ], [
-      { text: r?.booked_at ? T.btnBookChange : T.btnBook, callback_data: `b:${id}` },
-    ]],
-  };
+  if (r?.booked_at) {
+    return r.booked_at.slice(0, 10) < berlinDay()
+      ? kb([{ text: T.btnRate, callback_data: `v:${id}` }])
+      : kb([{ text: T.btnChangeDate, callback_data: `b:${id}` }]);
+  }
+  if (r?.interested) {
+    return kb(
+      [{ text: T.btnReserve, callback_data: `b:${id}` }, { text: T.btnAlreadySeen, callback_data: `v:${id}` }],
+      [{ text: T.btnUnstar, callback_data: `i:${id}` }],
+    );
+  }
+  const row = [
+    { text: T.btnInterested, callback_data: `i:${id}` },
+    { text: T.btnIgnore, callback_data: `x:${id}` },
+  ];
+  if (isShowing(item)) row.push({ text: T.btnAlreadySeen, callback_data: `v:${id}` });
+  return kb(row);
 }
 
 /** « sam. 9 janv. 19:30 » / « Sat 9 Jan 19:30 » (date seule : sans l'heure). */

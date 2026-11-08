@@ -29,6 +29,22 @@
 - Le lendemain de la date : « Alors, c'était comment ? » 1–5★ (une seule fois) ; la note marque « vu ».
 - Un item réservé n'est jamais reproposé.
 
+## Boutons d'une fiche : la prochaine étape seulement
+
+Même code (worker/src/lib.ts `keyboard`) pour fr/en, les fiches privées et /programme. Les messages du groupe
+gardent leurs boutons partagés ([🙋 Moi aussi] [✅ Je l'ai vu aussi]) : l'état y est par personne, il se
+règle donc en privé.
+
+- **Proposé** : [⭐ Intéressé·e] [🙅 Pas pour moi] (+ [✅ Déjà vu] si à l'affiche : expo ouverte ;
+  pièce / film commencé et encore programmé — pour noter ce qu'on a vu ailleurs).
+- **⭐** : [🎟 Réserver] [✅ Déjà vu] / [↩︎ annuler ⭐].
+- **🎟 réservé** : avant la date [📅 Changer la date] ; dès le lendemain [★ Noter].
+- **✅ vu, pas noté** : [1★] … [5★]. **Noté** : [✍️ Critique] tant qu'il n'y a pas d'avis, puis rien
+  (la fiche affiche « ✅ Vu · ★★★★☆ · « … » »). Plus d'invitation automatique après la note.
+- **🙅** : [↩︎ Annuler].
+- en : Interested / Not for me / Already seen ; Book / Already seen / undo ⭐ ; Change date / Rate ;
+  Review ; Undo.
+
 ## Trois commandes
 
 Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« Mes sorties » / « My outings »),
