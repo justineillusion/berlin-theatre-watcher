@@ -352,6 +352,22 @@ export async function plan(env: Env, body: any): Promise<Response> {
   // D1 : pas plus de ~100 requêtes par batch, on découpe.
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
 
+  // Dates complètes (surtitrées EN) : grisées dans la mini-app. Une pièce entièrement
+  // complète n'est pas dans `items` : elle reste « à l'affiche » sans aucune date libre
+  // (dates = []), donc aucune annonce ; si des places reviennent, ce sont des dates nouvelles.
+  if (mode === "scan" && body.sold && typeof body.sold === "object") {
+    const sold: Record<string, string[]> = body.sold;
+    const inScan = new Set(items.map((i) => i.id));
+    const ups: D1PreparedStatement[] = items.filter((i) => i.kind === "theatre").map((i) =>
+      env.DB.prepare("UPDATE items SET sold = ? WHERE id = ?").bind(sold[i.id]?.length ? JSON.stringify(sold[i.id]) : null, i.id));
+    for (const [id, ds] of Object.entries(sold)) {
+      if (inScan.has(id) || !Array.isArray(ds) || !ds.length) continue;
+      ups.push(env.DB.prepare("UPDATE items SET sold = ?, dates = '[]', last_seen = ? WHERE id = ? AND kind = 'theatre'")
+        .bind(JSON.stringify(ds.slice(0, 60)), started, id));
+    }
+    for (let i = 0; i < ups.length; i += 80) await env.DB.batch(ups.slice(i, i + 80));
+  }
+
   const ids = items.map((i) => i.id);
   // Un lieu sauté ce coup-ci (site lent / en panne → rien reçu de lui) garde
   // son dernier programme connu, au lieu de disparaître de /programme.

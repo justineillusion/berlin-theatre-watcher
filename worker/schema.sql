@@ -49,7 +49,8 @@ CREATE TABLE IF NOT EXISTS items (
   line       TEXT,                           -- bloc pour les récaps
   text_en    TEXT,                           -- variantes anglaises (rendues si un ami lit en anglais)
   line_en    TEXT,
-  last_seen  TEXT NOT NULL DEFAULT (datetime('now'))
+  last_seen  TEXT NOT NULL DEFAULT (datetime('now')),
+  sold TEXT                      -- dates complètes (JSON), grisées dans la mini-app
 );
 
 -- Réaction d'une personne à une pièce/expo.

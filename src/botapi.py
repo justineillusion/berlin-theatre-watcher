@@ -20,7 +20,7 @@ import copy
 from datetime import date, timedelta
 
 import os
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Optional
 
 import httpx
 
@@ -136,6 +136,7 @@ def run_multi(
     tg_token: str,
     digest: bool,
     enrich: Callable[[List[Show], bool, tuple], None],
+    sold: Optional[Dict[str, List[str]]] = None,
 ) -> None:
     from .main import add_critics
     global HORIZON_THEATRE_DAYS
@@ -156,6 +157,7 @@ def run_multi(
                 "horizon_expo_days": config.get("horizon_expo_days", 7),
                 "horizon_theatre_days": config.get("horizon_theatre_days", 14),
                 "sales": _sales(config),
+                "sold": sold or {},
             },
         )
         plan.raise_for_status()

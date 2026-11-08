@@ -194,6 +194,21 @@ await step("cercles : ajouter un inconnu (pas ami d'ami) refusé ; retirer sans 
   assert.ok(!r.json.people.some((p) => p.name === "Joss"));
   assert.ok(!calls.some((c) => c.method === "sendMessage"));
 });
+await step("complets : une date complète grisée, une pièce entièrement complète garde sa fiche sans date libre", async () => {
+  calls = [];
+  const plan = (body) => fetch(W + "/api/plan", { method: "POST", headers: { authorization: "Bearer a", "content-type": "application/json" }, body: JSON.stringify(body) });
+  const VEN = [{ id: "be", name: "Berliner Ensemble", kind: "theatre" }, { id: "kw", name: "KW", kind: "expo" }, { id: "vb", name: "Volksbühne", kind: "theatre" }];
+  const r = await plan({ mode: "scan", venues: VEN,
+    items: [{ id: "p1", venue_id: "be", kind: "theatre", title: "Twelfth Night", url: "https://x/p1", dates: [`${day(2)} 19:30`], start_date: null, end_date: null, starred: false }],
+    sold: { p1: [`${day(5)} 20:00`], p2: [`${day(3)} 19:00`] } });
+  assert.equal(r.status, 200, await r.text());
+  await new Promise((r) => setTimeout(r, 300));
+  const s = (await post("/app/api/state", { initData: me })).json;
+  assert.deepEqual(item(s, "p1").sold, [`${day(5)} 20:00`]);
+  assert.deepEqual(item(s, "p1").dates, [`${day(2)} 19:30`]);
+  assert.deepEqual(item(s, "p2").sold, [`${day(3)} 19:00`]);
+  assert.deepEqual(item(s, "p2").dates, []);
+});
 await step("action inconnue / id bizarre : 400", async () => {
   assert.equal((await post("/app/api/act", { initData: me, op: "stop", id: "p1" })).status, 400);
   assert.equal((await post("/app/api/act", { initData: me, op: "i", id: "p1:x" })).status, 400);

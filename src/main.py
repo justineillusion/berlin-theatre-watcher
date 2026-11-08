@@ -297,7 +297,9 @@ def main() -> None:
         # récupère donc les pages détail + critiques QUE pour les pièces qu'au
         # moins un ami doit recevoir (sinon le scan durerait 25 min chaque jour).
         from .botapi import run_multi
-        run_multi(hits, config, tg_token, digest=args.digest, enrich=enrich)
+        from .matching import sold_out_dates
+        run_multi(hits, config, tg_token, digest=args.digest, enrich=enrich,
+                  sold=sold_out_dates(all_shows, config))
         return
 
     hits = filter_muted(hits, muted_state or {})

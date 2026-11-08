@@ -53,6 +53,9 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .day em{font:600 11px var(--sans);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .item{margin:0 10px;border-radius:0}
 .item.open{background:var(--bg);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);margin:8px 14px 12px 10px}
+.item.soldout:not(.open) .row{opacity:.42}.item.soldout .when small{color:var(--velvet);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);text-transform:uppercase;letter-spacing:.04em}.detail s{color:var(--muted)}
+#whens .soldtoggle{margin-left:auto}
 .row{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 8px;border:0;background:none;width:100%;text-align:left}
 .when{font:700 15.5px var(--sans);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px;line-height:1.1}
 .when small{display:block;font:500 12px var(--sans);color:var(--muted);margin-top:3px}
@@ -138,7 +141,7 @@ const L = {
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} ⭐/🎟 plus tard`,
-        whyRule:"Théâtre : seulement les dates surtitrées en anglais et pas complètes.", whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
+        whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont grisées.", soldShort:"complet", hideSold:"Sans complets", whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
@@ -149,13 +152,14 @@ const L = {
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
         reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} ⭐/🎟 later on`,
-        whyRule:"Theatre: only dates with English surtitles that aren't sold out.", whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
+        whyRule:"Theatre: only dates with English surtitles. Sold-out shows are greyed out.", soldShort:"sold out", hideSold:"Hide sold out", whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
 };
 let T = L.fr, S = null;
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
+try { st.hideSold = localStorage.getItem("hideSold") === "1"; } catch {}
 const ICON = { theatre:"🎭", expo:"🏛", film:"🎬" };
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
@@ -170,8 +174,13 @@ function next(x) {
   if (x.kind === "expo") return x.start && x.start > TODAY ? x.start : TODAY;
   // Réservé : la séance réservée, pas la prochaine date de la pièce.
   if (x.me && x.me.booked && x.me.booked.slice(0, 10) >= TODAY) return x.me.booked;
-  return (x.dates || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
+  const free = (x.dates || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
+  if (st.hideSold) return free;
+  const sold = (x.sold || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
+  return !free ? sold : !sold ? free : (sold < free ? sold : free);
 }
+/** Cette séance est complète (et ce n'est pas la mienne). */
+const isSold = (x, d) => !!d && (x.sold || []).includes(d) && !(x.me && x.me.booked === d);
 const dt = (d) => new Date(d.slice(0, 10) + "T12:00:00Z");
 const cap = (w) => w.charAt(0).toUpperCase() + w.slice(1);
 function dayLabel(d) {
@@ -252,7 +261,7 @@ function reviewBlock(x, full) {
 function whenCell(x) {
   if (x.kind === "expo") return ICON.expo;
   const n = next(x);
-  if (st.tab === "prog") return `${n ? n.slice(11) : "—"}<small>${ICON[x.kind]}</small>`;
+  if (st.tab === "prog") return `${n ? n.slice(11) : "—"}<small>${isSold(x, n) ? esc(T.soldShort) : ICON[x.kind]}</small>`;
   const d = (x.me && x.me.booked) || n || (x.dates || []).slice().sort().pop();
   if (!d) return ICON[x.kind];
   return `${+d.slice(8, 10)} ${esc(T.smons[+d.slice(5, 7) - 1])}<small>${esc(T.dows[dt(d).getUTCDay()].slice(0, 3))}${d.length > 10 ? " " + d.slice(11, 16) : ""}</small>`;
@@ -261,7 +270,8 @@ function whenCell(x) {
 const scTag = (f) => f.ratingUrl ? `<b class="sc link" data-href="${esc(f.ratingUrl)}">${esc(f.rating)} ↗</b>` : `<b class="sc">${esc(f.rating)}</b>`;
 function item(x) {
   const open = st.open === x.id, s = state(x), me = x.me || {};
-  let h = `<div class="item${open ? " open" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
+  const soldNow = st.tab === "prog" && isSold(x, next(x));
+  let h = `<div class="item${open ? " open" : ""}${soldNow ? " soldout" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div>
     <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}</div>
     ${badge(x)}</button>`;
@@ -269,7 +279,8 @@ function item(x) {
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
   const dates = x.kind === "expo"
     ? [x.start && x.start > TODAY ? `${T.from} ${shortDay(x.start)}` : "", x.end ? `${T.until} ${shortDay(x.end)}` : ""].filter(Boolean).join(", ")
-    : upcoming.slice(0, 8).map((d) => `${dayLabel(d)} ${d.slice(11)}`).join(" · ");
+    : [...upcoming, ...(x.sold || []).filter((d) => d.slice(0, 10) >= TODAY)].sort().slice(0, 10)
+        .map((d) => isSold(x, d) ? `<s>${esc(dayLabel(d))} ${d.slice(11)}</s> <em class="sold">${esc(T.soldShort)}</em>` : esc(`${dayLabel(d)} ${d.slice(11)}`)).join(" · ");
   const f = facts(x);
   h += `<div class="detail">`;
   if (s === "seen") {
@@ -283,7 +294,7 @@ function item(x) {
   const friends = (x.friends || []).filter((p) => p.seen && (p.rating || p.comment));
   if (friends.length) h += `<div class="sect">${esc(T.band)}</div>` + friends.map((p) =>
     `<div class="friend"><b>${esc(p.name)} ${stars(p.rating)}</b>${p.comment ? `<div class="quote">« ${esc(p.comment)} »</div>` : ""}</div>`).join("");
-  if (s !== "seen" && dates) h += `<div>🗓 ${esc(dates)}</div>`;
+  if (s !== "seen" && dates) h += `<div>🗓 ${x.kind === "expo" ? esc(dates) : dates}</div>`;
   if (me.booked && s !== "seen") h += `<div>🎟 ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}</div>`;
   if (f.rating) h += `<div>${scTag(f)}</div>`;
   h += f.meta.map((l) => `<div class="m">${esc(l)}</div>`).join("");
@@ -364,8 +375,10 @@ function whyNote() {
   const shows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind));
   const inWin = (x) => (x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when]);
   const n = (k) => shows.filter((x) => inWin(x) && state(x) === k).length;
+  const soldHidden = st.hideSold ? shows.filter((x) => !["seen", "ignored"].includes(state(x)) && !(x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])
+    && (x.sold || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])).length : 0;
   const later = shows.filter((x) => ["booked", "star"].includes(state(x)) && next(x) && next(x).slice(0, 10) >= LIMIT[st.when]).length;
-  const bits = [[n("ignored"), T.whyIgnored], [n("seen"), T.whySeen], [later, T.whyLater]].filter(([c]) => c).map(([c, f]) => f(c));
+  const bits = [[n("ignored"), T.whyIgnored], [n("seen"), T.whySeen], [later, T.whyLater], [soldHidden, T.whySold]].filter(([c]) => c).map(([c, f]) => f(c));
   const lines = [];
   if (bits.length) lines.push(T.whyHidden + " " + bits.join(", ") + ".");
   if (st.kind !== "film") lines.push(T.whyRule);
@@ -390,6 +403,7 @@ function render() {
   }
   chips(K, [["all", T.all], ["theatre", T.theatre], ["film", T.film], ["expo", T.expo]], "kind");
   chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
+  if (st.kind !== "expo") W.insertAdjacentHTML("beforeend", `<button class="chip soldtoggle" data-hidesold="1" aria-pressed="${!!st.hideSold}">${esc(T.hideSold)}</button>`);
   let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
   let h = "";
   if (st.tab === "prog") {
@@ -419,9 +433,10 @@ document.addEventListener("click", (e) => {
   const sc = e.target.closest("[data-href]");
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
-  if (t.dataset.tab || t.dataset.kind || t.dataset.when) st.focus = null;
+  if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
   if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
+  else if (t.dataset.hidesold) { st.hideSold = !st.hideSold; try { localStorage.setItem("hideSold", st.hideSold ? "1" : ""); } catch {} }
   else if (t.dataset.when) st.when = t.dataset.when;
   else if (t.dataset.pick) { st.picking = st.picking === t.dataset.pick ? null : t.dataset.pick; st.sharing = null; st.withs.clear(); }
   else if (t.dataset.sharing) { st.sharing = st.sharing === t.dataset.sharing ? null : t.dataset.sharing; st.picking = null; st.sel.clear(); }

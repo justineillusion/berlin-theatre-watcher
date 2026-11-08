@@ -73,3 +73,19 @@ def select(shows: List[Show], config: dict) -> List[Show]:
     # Les correspondances de goût d'abord, puis par date.
     reps.sort(key=lambda s: (-len(s.matched_keywords), s.date or "9999"))
     return reps
+
+
+def sold_out_dates(shows: List[Show], config: dict) -> dict:
+    """Dates COMPLÈTES des pièces surtitrées en anglais (même filtres que select) :
+    {item_id: ["AAAA-MM-JJ HH:MM", ...]}. La mini-app les montre grisées « Complet »
+    au lieu de les cacher ; les annonces et alertes, elles, ne les reçoivent jamais."""
+    avoid = config.get("keywords_avoid") or []
+    today = date.today().isoformat()
+    out: dict = {}
+    for show in shows:
+        if show.kind == "expo" or not show.has_english_surtitles or show.sold_out is not True:
+            continue
+        if not show.date or show.date < today or _find(avoid, show.haystack()):
+            continue
+        out.setdefault(show.item_id(), set()).add(f"{show.date} {show.time}".strip())
+    return {k: sorted(v) for k, v in out.items()}

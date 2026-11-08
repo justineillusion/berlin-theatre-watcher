@@ -166,7 +166,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
       const r = mine.get(i.id);
       return {
         id: i.id, kind: i.kind, title: i.title, url: i.url, venue: i.venue, venue_id: i.venue_id,
-        dates: JSON.parse(i.dates || "[]"), start: i.start_date, end: i.end_date, starred: i.starred,
+        dates: JSON.parse(i.dates || "[]"), sold: JSON.parse((i as any).sold || "[]"), start: i.start_date, end: i.end_date, starred: i.starred,
         text: itemText(i, lang),
         me: r ? { star: r.interested, status: r.status, rating: r.rating, comment: r.comment, booked: r.booked_at, at: r.updated_at } : null,
         friends: friends.get(i.id) ?? [],
