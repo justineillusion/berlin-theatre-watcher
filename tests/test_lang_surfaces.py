@@ -70,6 +70,13 @@ def test_theatre_and_expo_cards():
         _check(digest_line(_expo(), lang), lang, "ligne de récap expo")
 
 
+def test_no_duplicate_language_line():
+    sh = Show(theater="Volksbühne", title="CURSED", production_type="In English", languages="in english",
+              spoken_language="En anglais", available_dates=["10/12 · 19:00"])
+    card = format_show(sh, "fr")
+    assert "🎬" not in card and card.count("🗣") == 1, card
+
+
 def test_film_card():
     for lang in ("fr", "en"):
         _check(cm.film_card(_film(), lang), lang, "fiche film")
