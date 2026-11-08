@@ -276,6 +276,20 @@ export async function plan(env: Env, body: any): Promise<Response> {
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
 
   const ids = items.map((i) => i.id);
+  // Un lieu sauté ce coup-ci (site lent / en panne → rien reçu de lui) garde
+  // son dernier programme connu, au lieu de disparaître de /programme.
+  const prevSince = await setting(env, "current_since");
+  const seenVenues = [...new Set(items.map((i) => i.venue_id))];
+  if (prevSince) {
+    await env.DB.prepare(
+      `UPDATE items SET last_seen = ?1
+       WHERE last_seen >= ?2 AND last_seen < ?1 AND kind IN ('theatre', 'expo')
+         AND venue_id IN (SELECT id FROM venues WHERE active = 1 AND kind != 'cinema')
+         AND venue_id NOT IN (SELECT value FROM json_each(?3))
+         AND (CASE WHEN kind = 'expo' THEN end_date IS NULL OR end_date = '' OR end_date >= date('now')
+                   ELSE (SELECT MAX(value) FROM json_each(dates)) >= date('now') END)`,
+    ).bind(started, prevSince, JSON.stringify(seenVenues)).run();
+  }
   await setSetting(env, "current_since", started);
   await setSetting(env, "expo_last_weeks_days", String(Number(body.expo_last_weeks_days ?? 14)));
 

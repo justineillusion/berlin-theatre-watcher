@@ -455,6 +455,15 @@ try {
     assert.equal(card.reply_markup.inline_keyboard[0].length, 3);
   });
 
+  await step("lieu sauté par un scan (site en panne) : son programme reste dans /programme", async () => {
+    const menu = async () => sends(await say(OWNER, "/programme"), OWNER)[0].reply_markup.inline_keyboard.flat().map((b) => b.text).join("|");
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear] });
+    const before = await menu();
+    assert.match(before, /Schaub/);
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, lear] });   // rien de la Schaubühne
+    assert.equal(await menu(), before);
+  });
+
   // ------------------------------------------------------------ films
   await step("ciné : un message par film (⭐ ✅ 🔕), pas de renvoi sauf nouvelles séances", async () => {
     const d1 = `${soon(3)} 20:15`, d2 = `${soon(5)} 21:00`;
