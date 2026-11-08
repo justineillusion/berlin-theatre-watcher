@@ -4,7 +4,6 @@ import argparse
 import os
 import sys
 import time
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List
 
@@ -12,14 +11,15 @@ import yaml
 
 from .matching import select
 from .models import Show
-from .notify import expo_period, format_digest, format_item, send_telegram
+from .notify import digest_line, expo_period, format_digest, format_item, send_telegram
 from .parsers import SOURCES
 from .state import load_seen, save_seen
 from .language import detect as detect_language
 from .mute import filter_muted, load_muted, mute_keyboard, sync as sync_muted
 from .critics import fetch_rating
 from .summary import fetch_details
-from .translate import to_french
+from .translate import to_english, to_french
+from .budget import call_with_timeout, map_with_budget
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
 
@@ -50,9 +50,12 @@ def collect_shows(theaters: list) -> List[Show]:
             print(f"⚠️  {name} — source inconnue : {theater.get('parser')!r}, ignorée.")
             continue
         try:
-            found = source(theater["url"])
+            ok, found = call_with_timeout(lambda: source(theater["url"]), _VENUE_TIMEOUT_S)
         except Exception as exc:  # noqa: BLE001 — on continue sur les autres théâtres
             print(f"⚠️  {name} — échec ({exc}).")
+            continue
+        if not ok:
+            print(f"⏱  {name} — pas de réponse en {_VENUE_TIMEOUT_S} s, lieu sauté ce coup-ci.")
             continue
         for show in found:
             show.venue_id = venue_slug(name)
@@ -74,36 +77,61 @@ def add_critics(shows: List[Show], config: dict) -> None:
         return
     # "cache" (--no-critics) : note lue dans state/critics_cache.json, sans réseau.
     offline = mode == "cache"
-    print(f"📰 Recherche des critiques sur Nachtkritik ({len(shows)} pièce(s))…")
-    # La recherche Nachtkritik met 5 à 30 s : quelques requêtes en parallèle
-    # (sans plus, par politesse) pour que le récap ne dure pas un quart d'heure.
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        ratings = pool.map(lambda s: fetch_rating(s.theater, s.title, s.url, offline=offline), shows)
-        for show, rating in zip(shows, ratings):
-            show.critics = rating
+    budget = float(config.get("critics_budget_s", 300))
+    print(f"📰 Recherche des critiques sur Nachtkritik ({len(shows)} pièce(s), {budget:.0f} s max)…")
+    # La recherche Nachtkritik met 5 à 30 s par pièce, parfois bien plus (timeouts
+    # httpx par lecture + retries qui s'empilent) : un scan a déjà bloqué 21 min.
+    # Budget global (voir src/budget.py) ; les pièces non terminées partent sans
+    # note presse, le cache fera mieux au prochain scan.
+    done, late = map_with_budget(
+        shows, lambda s: fetch_rating(s.theater, s.title, s.url, offline=offline), budget, workers=4)
+    for i, rating in done.items():
+        shows[i].critics = rating
+    if late:
+        print(f"   ⏱  budget de {budget:.0f} s dépassé : {len(late)} pièce(s) sans note presse "
+              f"({', '.join(shows[i].title for i in late[:5])}{'…' if len(late) > 5 else ''}).")
     found = sum(1 for s in shows if s.critics)
     print(f"   {found} pièce(s) avec une note presse.")
 
 
-def enrich(shows: List[Show], digest: bool = False) -> None:
-    """Pages détail : résumé traduit en FR + langue parlée (théâtre).
+_ENRICH_BUDGET_S = 360      # pages détail + traductions : 6 min max (config enrich_budget_s)
+_VENUE_TIMEOUT_S = 90       # un lieu qui ne répond pas en 90 s est sauté (config venue_timeout_s)
+
+
+def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> None:
+    """Pages détail : résumé traduit en FR (et en EN si `langs` le demande :
+    tel quel quand la page est déjà en anglais) + langue parlée (théâtre).
 
     Le récap ne montre pas les résumés : on saute alors la traduction, lente et
     rate-limitée, et on ne garde que la détection de langue.
     """
     if not shows:
         return
-    print("📝 Récupération des pages détail (langue" + ("" if digest else " + résumés FR") + ")…")
-    for i, show in enumerate(shows):
-        if i and not digest:
-            time.sleep(1.0)   # espace les appels pour éviter le rate-limit traduction
+    budget = float(_ENRICH_BUDGET_S)
+    print("📝 Récupération des pages détail (langue" + ("" if digest else " + résumés " + "/".join(langs).upper())
+          + f", {budget:.0f} s max)…")
+
+    def one(show: Show):
         summary, page_text = fetch_details(show.theater, show.url)
+        fr = en = None
         if not digest:
-            show.summary = to_french(summary)
-        if show.kind != "expo":
-            show.spoken_language, show.surtitles = detect_language(
-                show.languages, page_text, show.has_english_surtitles
-            )
+            if "fr" in langs:
+                fr = to_french(summary)
+            if "en" in langs:
+                en = to_english(summary)
+        lang = (detect_language(show.languages, page_text, show.has_english_surtitles)
+                if show.kind != "expo" else (show.spoken_language, show.surtitles))
+        return fr, en, lang
+
+    # Un seul worker + 1 s entre deux pièces : la traduction gratuite rate-limite.
+    done, late = map_with_budget(shows, one, budget, workers=1, pause=0.0 if digest else 1.0)
+    for i, out in done.items():
+        if out is None:
+            continue
+        shows[i].summary, shows[i].summary_en, (shows[i].spoken_language, shows[i].surtitles) = out
+    if late:
+        print(f"   ⏱  budget de {budget:.0f} s dépassé : {len(late)} pièce(s) sans résumé "
+              f"({', '.join(shows[i].title for i in late[:5])}{'…' if len(late) > 5 else ''}).")
 
 
 def _print_console(show: Show) -> None:
@@ -154,9 +182,19 @@ def main() -> None:
         help="Pas de requête Nachtkritik (lente) : seulement les notes déjà en "
         "cache. Pour les ouvertures de vente, où l'alerte doit partir tout de suite.",
     )
+    parser.add_argument(
+        "--lang",
+        choices=["fr", "en"],
+        default="fr",
+        help="Avec --dry-run : affiche les messages tels que les reçoit un ami "
+        "qui lit dans cette langue (bot multi-utilisateurs, /langue).",
+    )
     args = parser.parse_args()
 
     config = yaml.safe_load(CONFIG_PATH.read_text())
+    global _ENRICH_BUDGET_S, _VENUE_TIMEOUT_S
+    _ENRICH_BUDGET_S = float(config.get("enrich_budget_s", _ENRICH_BUDGET_S))
+    _VENUE_TIMEOUT_S = float(config.get("venue_timeout_s", _VENUE_TIMEOUT_S))
     if args.no_critics and config.get("critics_rating", True):
         config["critics_rating"] = "cache"     # notes déjà en cache seulement (pas de réseau)
 
@@ -192,14 +230,18 @@ def main() -> None:
 
     hits = filter_muted(hits, muted_state or {})
 
-    enrich(hits, args.digest)
+    enrich(hits, args.digest, ("fr", "en") if args.lang == "en" else ("fr",))
 
     if args.dry_run or args.digest:
         add_critics(hits, config)
 
     if args.dry_run:
         print("\n🔔 DRY-RUN (rien envoyé, état inchangé) :")
-        if args.digest:
+        if args.lang != "fr":
+            for show in hits:
+                print("\n--- " + ("récap" if args.digest else "message") + f" ({args.lang}) ---")
+                print(digest_line(show, args.lang) if args.digest else format_item(show, args.lang))
+        elif args.digest:
             for msg in format_digest(hits):
                 print("\n--- message ---")
                 print(msg)

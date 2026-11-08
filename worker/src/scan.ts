@@ -5,8 +5,9 @@
 //   POST /api/sent    accusés d'envoi            -> mémorise dates + message_id
 //   POST /api/cinema-recipients  cinémas        -> qui suit quels cinémas (ciné du dimanche)
 //   POST /api/cinema-done        semaine        -> récap envoyé (idempotence des 2 crons)
+import { Lang, asLang, tr } from "./i18n";
 import {
-  Env, Item, Reaction, esc, frDate, friendsByItem, renderFor, setSetting, setting, socialBlock,
+  Env, Item, Reaction, esc, frDate, friendsByItem, itemLine, renderFor, setSetting, setting, socialBlock,
 } from "./lib";
 
 interface MetaIn {
@@ -104,15 +105,14 @@ async function computePending(
   return out;
 }
 
-function header(p: Pending, item: Item): string | null {
+function header(p: Pending, item: Item, lang: Lang): string | null {
+  const T = tr(lang);
   if (p.kind === "new_dates") {
     const shown = p.fresh.slice(0, 6).map((d) => frDate(d)).join(", ");
     const more = p.fresh.length > 6 ? ` (+${p.fresh.length - 6})` : "";
-    return `🆕 <b>Nouvelles dates</b> : ${shown}${more}`;
+    return T.newDates(shown + more);
   }
-  if (p.kind === "last_weeks") {
-    return `⏳ <b>Dernières semaines !</b> Fin le ${frDate(item.end_date)} — tu avais mis ⭐`;
-  }
+  if (p.kind === "last_weeks") return T.lastWeeks(frDate(item.end_date));
   return null;
 }
 
@@ -174,13 +174,13 @@ export async function cinemaRecipients(env: Env, body: any): Promise<Response> {
     return Response.json({ recipients: [], already_sent: true });
   }
   const { results } = await env.DB.prepare(
-    `SELECT s.chat_id, json_group_array(s.venue_id) AS venue_ids FROM subscriptions s
+    `SELECT s.chat_id, COALESCE(u.lang, 'fr') AS lang, json_group_array(s.venue_id) AS venue_ids FROM subscriptions s
      JOIN users u ON u.chat_id = s.chat_id AND u.active = 1
      JOIN venues v ON v.id = s.venue_id AND v.active = 1 AND v.kind = 'cinema'
      GROUP BY s.chat_id ORDER BY s.chat_id`,
-  ).all<{ chat_id: number; venue_ids: string }>();
+  ).all<{ chat_id: number; lang: string; venue_ids: string }>();
   return Response.json({
-    recipients: results.map((r) => ({ chat_id: r.chat_id, venue_ids: JSON.parse(r.venue_ids) })),
+    recipients: results.map((r) => ({ chat_id: r.chat_id, lang: asLang(r.lang), venue_ids: JSON.parse(r.venue_ids) })),
   });
 }
 
@@ -211,26 +211,32 @@ export async function plan(env: Env, body: any): Promise<Response> {
   await setSetting(env, "expo_last_weeks_days", String(Number(body.expo_last_weeks_days ?? 14)));
 
   const users = await env.DB.prepare("SELECT COUNT(*) AS n FROM users WHERE active = 1").first<{ n: number }>();
-  if (mode === "digest") return Response.json({ need: ids, users: users?.n ?? 0 });
+  // Langues à rédiger : le scraper ne produit la variante anglaise que si quelqu'un la lit.
+  const { results: langRows } = await env.DB.prepare(
+    "SELECT DISTINCT COALESCE(lang, 'fr') AS lang FROM users WHERE active = 1").all<{ lang: string }>();
+  const langs = [...new Set(["fr", ...langRows.map((r) => asLang(r.lang))])];
+  if (mode === "digest") return Response.json({ need: ids, users: users?.n ?? 0, langs });
 
   const pending = await computePending(env, ids, Number(body.expo_last_weeks_days ?? 14), true);
-  return Response.json({ need: [...new Set(pending.map((p) => p.item_id))], users: users?.n ?? 0 });
+  return Response.json({ need: [...new Set(pending.map((p) => p.item_id))], users: users?.n ?? 0, langs });
 }
 
 // ---------------------------------------------------------------------------
 export async function render(env: Env, body: any): Promise<Response> {
   const mode = body.mode === "digest" ? "digest" : "scan";
-  const texts: { id: string; text: string; line: string }[] = body.items ?? [];
+  const texts: { id: string; text: string; line: string; text_en?: string; line_en?: string }[] = body.items ?? [];
   const stmts = texts.map((t) =>
-    env.DB.prepare("UPDATE items SET text = ?, line = ? WHERE id = ?").bind(t.text, t.line, t.id));
+    env.DB.prepare("UPDATE items SET text = ?, line = ?, text_en = ?, line_en = ? WHERE id = ?")
+      .bind(t.text, t.line, t.text_en ?? null, t.line_en ?? null, t.id));
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
   const ids = texts.map((t) => t.id);
 
   if (mode === "digest") {
-    const users = await env.DB.prepare("SELECT chat_id FROM users WHERE active = 1").all<{ chat_id: number }>();
+    const users = await env.DB.prepare("SELECT chat_id, lang FROM users WHERE active = 1").all<{ chat_id: number; lang: string }>();
     const messages: unknown[] = [];
     for (const u of users.results) {
-      for (const text of await digestFor(env, u.chat_id, ids, "📅 <b>Récap du dimanche</b>")) {
+      const lang = asLang(u.lang);
+      for (const text of await digestFor(env, u.chat_id, ids, tr(lang).sundayDigest, lang)) {
         messages.push({ chat_id: u.chat_id, kind: "digest", text });
       }
     }
@@ -247,6 +253,8 @@ export async function render(env: Env, body: any): Promise<Response> {
   const { results: reacts } = await env.DB.prepare(
     "SELECT * FROM reactions WHERE item_id IN (SELECT value FROM json_each(?))").bind(JSON.stringify(itemIds)).all<Reaction>();
   const react = new Map(reacts.map((r) => [`${r.chat_id}|${r.item_id}`, r]));
+  const { results: langRows } = await env.DB.prepare("SELECT chat_id, lang FROM users").all<{ chat_id: number; lang: string }>();
+  const langOf = new Map(langRows.map((u) => [u.chat_id, asLang(u.lang)]));
 
   // Ordre : ⭐ (mots-clés) d'abord, puis par date.
   pending.sort((a, b) => {
@@ -256,9 +264,10 @@ export async function render(env: Env, body: any): Promise<Response> {
 
   const messages = pending.map((p) => {
     const item = byId.get(p.item_id)!;
-    const h = header(p, item);
+    const lang = langOf.get(p.chat_id) ?? "fr";
+    const h = header(p, item, lang);
     const { text, reply_markup } = renderFor(item, p.chat_id, react.get(`${p.chat_id}|${p.item_id}`) ?? null,
-      friends.get(p.item_id) ?? [], h);
+      friends.get(p.item_id) ?? [], h, lang);
     return { chat_id: p.chat_id, item_id: p.item_id, kind: p.kind, dates: p.dates, header: h, text, reply_markup };
   });
   return Response.json({ messages });
@@ -292,7 +301,10 @@ export async function sent(env: Env, body: any): Promise<Response> {
 // ---------------------------------------------------------------------------
 // Récap (dimanche, ou /programme à la demande)
 // ---------------------------------------------------------------------------
-export async function digestFor(env: Env, chat_id: number, ids: string[] | null, title: string): Promise<string[]> {
+export async function digestFor(
+  env: Env, chat_id: number, ids: string[] | null, title: string, lang: Lang = "fr",
+): Promise<string[]> {
+  const T = tr(lang);
   const since = await setting(env, "current_since");
   const horizon = addDays(today(), 45);   // expos : ouvertes, ou qui ouvrent sous 6 semaines
   const { results } = await env.DB.prepare(
@@ -309,12 +321,12 @@ export async function digestFor(env: Env, chat_id: number, ids: string[] | null,
   ).bind(chat_id, ids ? JSON.stringify(ids) : null, since ?? "", horizon).all<Item & { venue_name: string }>();
 
   if (!results.length) {
-    return [`${title}\n\nRien de neuf dans tes lieux suivis (ou tout est déjà vu / ignoré). /suivre pour en ajouter.`];
+    return [`${title}\n\n${T.digestEmpty}`];
   }
   const friends = await friendsByItem(env, results.map((r) => r.id));
   const nTheatre = results.filter((r) => r.kind === "theatre").length;
   const nExpo = results.length - nTheatre;
-  const counts = [nTheatre && `${nTheatre} pièce${nTheatre > 1 ? "s" : ""}`, nExpo && `${nExpo} expo${nExpo > 1 ? "s" : ""}`]
+  const counts = [nTheatre && T.plays(nTheatre), nExpo && T.expos(nExpo)]
     .filter(Boolean).join(" · ");
 
   const blocks: string[] = [];
@@ -322,19 +334,19 @@ export async function digestFor(env: Env, chat_id: number, ids: string[] | null,
   for (const it of results) {
     if (it.kind !== section) {
       section = it.kind;
-      blocks.push(section === "theatre" ? "\n🎭 <b>THÉÂTRE</b>" : "\n🖼 <b>EXPOS</b>");
+      blocks.push(section === "theatre" ? T.theatreSection : T.expoSection);
       venue = "";
     }
     if (it.venue_name !== venue) {
       venue = it.venue_name;
       blocks.push(`\n📍 <b>${esc(venue)}</b>`);
     }
-    const social = socialBlock(friends.get(it.id) ?? [], chat_id, true);
-    blocks.push(it.line! + (social ? `\n${social}` : ""));
+    const social = socialBlock(friends.get(it.id) ?? [], chat_id, true, lang);
+    blocks.push(itemLine(it, lang)! + (social ? `\n${social}` : ""));
   }
 
   const messages: string[] = [];
-  let cur = `${title} — ${counts}\n<i>⭐ = tes mots-clés · 👥 = la bande</i>`;
+  let cur = `${title} — ${counts}\n${T.legend}`;
   for (const b of blocks) {
     if (cur.length + b.length + 1 > 3500) { messages.push(cur); cur = b.replace(/^\n/, ""); }
     else cur += "\n" + b;

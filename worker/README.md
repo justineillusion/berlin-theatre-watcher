@@ -16,6 +16,11 @@ Transforme le watcher en bot pour une bande d'amis :
   (14 j avant la fin, `expo_last_weeks_days`) à qui a mis ⭐ et ne l'a pas encore vue.
 - **Groupe Telegram (facultatif)** : le bot y annonce les ⭐ (« Moi aussi » en un clic) et les avis.
   Les notifs restent en privé : « vu » et « ignoré » sont personnels.
+- **Langue par personne** (`/langue` ou `/language`, proposé à l'inscription) : 🇫🇷 français (défaut)
+  ou 🇬🇧 anglais. Tous les textes du bot (commandes, boutons, récaps) et les notifs : le scraper
+  rédige une variante anglaise (`items.text_en` / `line_en`, résumé repris de la page anglaise du
+  théâtre ou traduit) seulement si un ami lit en anglais. Les annonces du groupe sont dans la
+  langue de qui a tapé `/groupe`. Textes : `src/i18n.ts`.
 - **Récap du dimanche** et `/programme` : par personne, sans ce qu'elle a vu/ignoré, avec la ligne 👥.
 - Un nouvel ami (ou un lieu nouvellement coché) ne reçoit **pas** tout le catalogue en notifs :
   le scan suivant l'enregistre en silence ; `/programme` montre ce qui est déjà à l'affiche.
@@ -89,15 +94,26 @@ Puis :
 
 ## Commandes
 
-Tout le monde : `/suivre` `/programme` `/interets` `/vus` `/ignores` `/aide` `/stop`
+Tout le monde : `/suivre` `/programme` `/interets` `/vus` `/ignores` `/langue` (`/language`) `/aide` `/stop`
 Admin : `/invite` `/nouveaulien` `/membres` `/groupe` (dans un groupe) `/plusdegroupe`
 
 ## Tests
 
 ```bash
 npm run typecheck
-npm test        # wrangler dev + D1 local + faux Telegram : scénario complet en 24 étapes
+npm test        # wrangler dev + D1 local + faux Telegram : scénario complet en 30 étapes
 ```
+
+## Mettre à jour une base existante
+
+`schema.sql` ne crée que ce qui manque ; une colonne ajoutée à une table existante passe par
+`migrations/` (à lancer une seule fois) :
+
+```bash
+npx wrangler d1 execute theatre-bot --remote --file=migrations/001_lang.sql   # users.lang, items.text_en/line_en
+```
+
+Après un changement du menu des commandes (`COMMANDS` dans `src/index.ts`), relancer `/api/setup`.
 
 ## Ajouter un lieu
 

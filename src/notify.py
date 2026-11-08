@@ -7,7 +7,7 @@ from typing import List
 
 import httpx
 
-from .language import is_pure_language_note
+from .language import is_pure_language_note, to_english_labels
 from .models import Show
 
 _API = "https://api.telegram.org/bot{token}/sendMessage"
@@ -74,14 +74,16 @@ _CHUNK = 3500        # marge sous la limite Telegram
 _MAX_DATES = 5       # au-delà, on résume ("+3 autres")
 
 
-def _short_dates(show: Show) -> str:
+def _short_dates(show: Show, lang: str = "fr") -> str:
     """['05/09 · 19:30', …] -> '05/09, 06/09 (+3 autres)'."""
     dates = [d.split(" · ")[0] for d in (show.available_dates or [])]
     if not dates:
         return ""
     head = ", ".join(dates[:_MAX_DATES])
     extra = len(dates) - _MAX_DATES
-    return f"{head} (+{extra} autre{'s' if extra > 1 else ''})" if extra > 0 else head
+    if extra <= 0:
+        return head
+    return f"{head} (+{extra} more)" if lang == "en" else f"{head} (+{extra} autre{'s' if extra > 1 else ''})"
 
 
 def _fr_date(iso: str | None) -> str:
@@ -91,15 +93,35 @@ def _fr_date(iso: str | None) -> str:
     return f"{iso[8:10]}/{iso[5:7]}/{iso[2:4]}"
 
 
-def expo_period(show: Show) -> str:
+def expo_period(show: Show, lang: str = "fr") -> str:
+    a, b = _fr_date(show.date), _fr_date(show.end_date)
+    if lang == "en":
+        if show.date and show.end_date:
+            return f"{a} – {b}"
+        if show.end_date:
+            return f"until {b}"
+        return f"from {a}" if show.date else ""
     if show.date and show.end_date:
-        return f"du {_fr_date(show.date)} au {_fr_date(show.end_date)}"
+        return f"du {a} au {b}"
     if show.end_date:
-        return f"jusqu'au {_fr_date(show.end_date)}"
-    return f"à partir du {_fr_date(show.date)}" if show.date else ""
+        return f"jusqu'au {b}"
+    return f"à partir du {a}" if show.date else ""
 
 
-def digest_line(show: Show) -> str:
+def _labels(show: Show, lang: str):
+    """(langue parlée, surtitres) dans la langue du message."""
+    if lang == "en":
+        return to_english_labels(show.spoken_language, show.surtitles)
+    return show.spoken_language, show.surtitles
+
+
+def _summary(show: Show, lang: str):
+    """Résumé dans la langue voulue ; pas de repli dans l'autre langue
+    (mieux vaut pas de résumé qu'un résumé dans une langue non lue)."""
+    return show.summary_en if lang == "en" else show.summary
+
+
+def digest_line(show: Show, lang: str = "fr") -> str:
     """Bloc d'une pièce/expo dans un récap (sans la ligne « amis », ajoutée par
     le bot multi-utilisateurs)."""
     star = " ⭐" if show.matched_keywords else ""
@@ -108,41 +130,46 @@ def digest_line(show: Show) -> str:
         title = f'<a href="{html.escape(show.url)}">{title}</a>'
     lines = [f"• {title}{star}"]
     if show.kind == "expo":
-        period = expo_period(show)
+        period = expo_period(show, lang)
         if period:
             lines.append(f"   🗓 {_esc(period)}")
         return "\n".join(lines)
-    detail = " · ".join(p for p in (_short_dates(show), show.spoken_language) if p)
+    detail = " · ".join(p for p in (_short_dates(show, lang), _labels(show, lang)[0]) if p)
     if detail:
         line = f"   🗓 {_esc(detail)}"
         if show.booking_url:
-            line += f' · <a href="{html.escape(show.booking_url)}">réserver</a>'
+            book = "book" if lang == "en" else "réserver"
+            line += f' · <a href="{html.escape(show.booking_url)}">{book}</a>'
         lines.append(line)
     if show.critics:
+        n = show.critics.count
+        reviews = f"{n} review{'s' if n > 1 else ''}" if lang == "en" else f"{n} critiques"
         lines.append(
             f'   📰 <a href="{html.escape(show.critics.url)}">{show.critics.star_bar()}</a>'
-            f" ({show.critics.count} critiques)"
+            f" ({reviews})"
         )
     return "\n".join(lines)
 
 
-def format_expo(show: Show) -> str:
+def format_expo(show: Show, lang: str = "fr") -> str:
     """Message Telegram (HTML) pour une expo."""
     lines = [f"🖼 <b>{_esc(show.title)}</b>", f"📍 {_esc(show.venue_name or show.theater)}"]
-    period = expo_period(show)
+    period = expo_period(show, lang)
     if period:
         lines.append(f"🗓 {_esc(period[0].upper() + period[1:])}")
     if show.languages:
         lines.append(f"✍️ {_esc(show.languages)}")
-    if show.summary:
-        lines.append(f"\n📝 {_esc(show.summary)}")
+    summary = _summary(show, lang)
+    if summary:
+        lines.append(f"\n📝 {_esc(summary)}")
     if show.url:
-        lines.append(f'\n🔗 <a href="{html.escape(show.url)}">Page de l\'expo</a>')
+        page = "Exhibition page" if lang == "en" else "Page de l'expo"
+        lines.append(f'\n🔗 <a href="{html.escape(show.url)}">{page}</a>')
     return "\n".join(lines)
 
 
-def format_item(show: Show) -> str:
-    return format_expo(show) if show.kind == "expo" else format_show(show)
+def format_item(show: Show, lang: str = "fr") -> str:
+    return format_expo(show, lang) if show.kind == "expo" else format_show(show, lang)
 
 
 def format_digest(shows: List[Show]) -> List[str]:
@@ -186,39 +213,42 @@ def format_digest(shows: List[Show]) -> List[str]:
     return messages
 
 
-def format_show(show: Show) -> str:
+def format_show(show: Show, lang: str = "fr") -> str:
     """Message Telegram (HTML) pour une représentation retenue."""
+    en = lang == "en"
     lines = [f"🎭 <b>{_esc(show.title)}</b>", f"📍 {_esc(show.theater)}"]
     if show.new_dates:
-        lines.append("🆕 Nouvelles dates pour une pièce déjà signalée")
+        lines.append("🆕 New dates for a play already announced" if en
+                     else "🆕 Nouvelles dates pour une pièce déjà signalée")
 
     dates = show.available_dates or ([show.date] if show.date else [])
     if dates:
-        lines.append("🗓 Places libres : " + _esc(" | ".join(dates)))
+        lines.append(("🗓 Seats available: " if en else "🗓 Places libres : ") + _esc(" | ".join(dates)))
     if show.venue:
         lines.append(f"🏛 {_esc(show.venue)}")
     if show.production_type:
         lines.append(f"🎬 {_esc(show.production_type)}")
     if show.languages and not is_pure_language_note(show.languages):
         lines.append(f"✍️ {_esc(show.languages)}")
-    spoken = " · ".join(p for p in (show.spoken_language, show.surtitles) if p)
+    spoken = " · ".join(p for p in _labels(show, lang) if p)
     if spoken:
         lines.append(f"🗣 {_esc(spoken)}")
-    if show.summary:
-        lines.append(f"\n📝 {_esc(show.summary)}")
+    summary = _summary(show, lang)
+    if summary:
+        lines.append(f"\n📝 {_esc(summary)}")
     if show.critics:
         lines.append(
-            f"\n📰 Presse : {show.critics.label()}\n"
-            f'   <a href="{html.escape(show.critics.url)}">Kritikenrundschau sur Nachtkritik</a>'
-            " · note estimée"
+            (f"\n📰 Press: {show.critics.label(lang)}\n" if en else f"\n📰 Presse : {show.critics.label()}\n")
+            + f'   <a href="{html.escape(show.critics.url)}">Kritikenrundschau '
+            + ("on Nachtkritik</a> · estimated rating" if en else "sur Nachtkritik</a> · note estimée")
         )
     if show.sold_out is None:
-        lines.append("⚪️ Disponibilité inconnue")
+        lines.append("⚪️ Availability unknown" if en else "⚪️ Disponibilité inconnue")
     links = []
     if show.booking_url:
-        links.append(f'🎟 <a href="{html.escape(show.booking_url)}">Réserver</a>')
+        links.append(f'🎟 <a href="{html.escape(show.booking_url)}">{"Book" if en else "Réserver"}</a>')
     if show.url:
-        links.append(f'🔗 <a href="{html.escape(show.url)}">Page de la pièce</a>')
+        links.append(f'🔗 <a href="{html.escape(show.url)}">{"Play page" if en else "Page de la pièce"}</a>')
     if links:
         lines.append("\n" + "\n".join(links))
 

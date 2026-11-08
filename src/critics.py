@@ -49,10 +49,13 @@ class CriticsRating:
         half = self.stars - full >= 0.5
         return "★" * full + ("½" if half else "") + "☆" * (5 - full - half)
 
-    def label(self) -> str:
-        """« ★★★½☆ 3,5/5 · 8 critiques (👍4 😐3 👎1) »."""
-        note = f"{self.stars:g}".replace(".", ",")
+    def label(self, lang: str = "fr") -> str:
+        """« ★★★½☆ 3,5/5 · 8 critiques (👍4 😐3 👎1) » (en : « 3.5/5 · 8 reviews »)."""
         split = f"👍{self.positive} 😐{self.mixed} 👎{self.negative}"
+        if lang == "en":
+            n = self.count
+            return f"{self.star_bar()} {self.stars:g}/5 · {n} review{'s' if n > 1 else ''} ({split})"
+        note = f"{self.stars:g}".replace(".", ",")
         return f"{self.star_bar()} {note}/5 · {self.count} critiques ({split})"
 
 

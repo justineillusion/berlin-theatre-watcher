@@ -16,12 +16,23 @@ function authorized(req: Request, env: Env): boolean {
 }
 
 const COMMANDS = [
-  { command: "suivre", description: "Choisir ses théâtres, lieux d'expo et cinémas" },
   { command: "programme", description: "Tout ce qui est à l'affiche dans mes lieux" },
+  { command: "suivre", description: "Choisir ses théâtres, lieux d'expo et cinémas" },
   { command: "interets", description: "Ce qui tente la bande ⭐" },
   { command: "vus", description: "Mes sorties et mes notes" },
   { command: "ignores", description: "Réactiver une pièce/expo ignorée" },
+  { command: "langue", description: "🇫🇷 Français / 🇬🇧 English" },
   { command: "aide", description: "Comment ça marche" },
+];
+// Menu affiché aux applis Telegram en anglais (la langue des MESSAGES, elle, se choisit par /langue).
+const COMMANDS_EN = [
+  { command: "programme", description: "Everything on in my venues" },
+  { command: "suivre", description: "Choose theatres, exhibition venues and cinemas" },
+  { command: "interets", description: "What the gang fancies ⭐" },
+  { command: "vus", description: "My outings and ratings" },
+  { command: "ignores", description: "Un-ignore a play/exhibition" },
+  { command: "language", description: "🇫🇷 Français / 🇬🇧 English" },
+  { command: "aide", description: "How it works" },
 ];
 
 export default {
@@ -60,7 +71,18 @@ export default {
           allowed_updates: ["message", "callback_query"],
           drop_pending_updates: true,
         });
+        // Mêmes portées que celles posées à la main : défaut + chats privés (fr),
+        // chats privés en anglais, groupes (2 commandes), et bouton « menu ».
+        const priv = { type: "all_private_chats" };
         const cmds = await tg(env, "setMyCommands", { commands: COMMANDS });
+        await tg(env, "setMyCommands", { commands: COMMANDS, scope: priv });
+        await tg(env, "setMyCommands", { commands: COMMANDS_EN, scope: priv, language_code: "en" });
+        await tg(env, "setMyCommands", { commands: COMMANDS_EN, language_code: "en" });
+        await tg(env, "setMyCommands", {
+          commands: COMMANDS.filter((c) => c.command === "interets" || c.command === "programme"),
+          scope: { type: "all_group_chats" },
+        });
+        await tg(env, "setChatMenuButton", { menu_button: { type: "commands" } });
         return Response.json({ webhook: hook, commands: cmds });
       }
     }

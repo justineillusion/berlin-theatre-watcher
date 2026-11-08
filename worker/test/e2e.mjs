@@ -78,14 +78,17 @@ async function scan(items, mode = "scan") {
   const p = await api("/api/plan", { mode, venues: VENUES, items, expo_last_weeks_days: 14 });
   const need = items.filter((i) => p.need.includes(i.id));
   const r = await api("/api/render", {
-    mode, items: need.map((i) => ({ id: i.id, text: `🎭 <b>${i.title}</b>`, line: `• ${i.title}` })),
+    mode, items: need.map((i) => ({
+      id: i.id, text: `🎭 <b>${i.title}</b>`, line: `• ${i.title}`,
+      ...(p.langs?.includes("en") ? { text_en: `🎭 <b>${i.title}</b> [EN]`, line_en: `• ${i.title} [EN]` } : {}),
+    })),
   });
   const sentList = r.messages.map((m) => {
     const { text, reply_markup, ...meta } = m;
     return { ...meta, message_id: nextId++ };
   });
   if (sentList.length) await api("/api/sent", { sent: sentList });
-  return { need: p.need, messages: r.messages, sent: sentList };
+  return { need: p.need, langs: p.langs, messages: r.messages, sent: sentList };
 }
 const play = (id, title, dates, venue = "berliner-ensemble") =>
   ({ id, venue_id: venue, kind: "theatre", title, url: `https://x/${id}`, dates, start_date: null, end_date: null, starred: false });
@@ -315,6 +318,62 @@ try {
     assert.deepEqual(again.recipients, []);
     assert.ok((await api("/api/cinema-recipients", { ...body, force: true })).recipients.length > 0);
     assert.ok((await api("/api/cinema-recipients", { ...body, week: "2026-11-16" })).recipients.length > 0);
+  });
+
+  // ------------------------------------------------------------ langue
+  await step("/langue : Léa passe en anglais (boutons 🇫🇷 / 🇬🇧)", async () => {
+    let c = await say(LEA, "/langue");
+    const kb = sends(c, LEA)[0].reply_markup.inline_keyboard[0].map((b) => b.callback_data);
+    assert.deepEqual(kb, ["l:fr", "l:en"]);
+    c = await click(LEA, "l:en", 9001);
+    assert.match(edits(c, LEA)[0].text, /English/);
+    assert.match(sends(await say(LEA, "/aide"), LEA)[0].text, /How it works[\s\S]*\/language/);
+    assert.match(sends(await say(LEA, "/suivre"), LEA)[0].text, /What do you want to follow/);
+    assert.match(sends(await say(OWNER, "/aide"), OWNER)[0].text, /Comment ça marche/);   // Justine reste en français
+  });
+
+  await step("langue : notif rendue en anglais pour Léa, en français pour Justine", async () => {
+    const peer = play("peer00000001", "Peer Gynt", ["2027-02-01 19:00"]);
+    const s = await scan([hedda, ente, lear, peer]);
+    assert.ok(s.langs.includes("en"));
+    const lea = s.messages.find((m) => m.chat_id === LEA), jus = s.messages.find((m) => m.chat_id === OWNER);
+    assert.match(lea.text, /Peer Gynt<\/b> \[EN\]/);
+    assert.deepEqual(lea.reply_markup.inline_keyboard[0].map((b) => b.text), ["⭐ Interested", "✅ Seen", "🔕 Ignore"]);
+    assert.doesNotMatch(jus.text, /\[EN\]/);
+    assert.equal(jus.reply_markup.inline_keyboard[0][0].text, "⭐ Intéressé·e");
+    // Léa ⭐ : toast et sa notif en anglais, l'annonce du groupe dans la langue du groupe (fr)
+    const c = await click(LEA, "i:peer00000001", s.sent.find((m) => m.chat_id === LEA).message_id);
+    assert.match(edits(c, LEA)[0].text, /Interested: you/);
+    assert.match(edits(c, OWNER)[0].text, /Intéressé·es : Léa/);
+    assert.match(sends(c, GROUP)[0].text, /est intéressé·e par/);
+    assert.equal(c.find((x) => x.method === "answerCallbackQuery").text, "⭐ Noted, the gang knows");
+  });
+
+  await step("langue : récap du dimanche et /programme en anglais", async () => {
+    const s = await scan([hedda, ente, lear], "digest");
+    const l = s.messages.filter((m) => m.chat_id === LEA).map((m) => m.text).join("\n");
+    assert.match(l, /Sunday round-up/);
+    assert.match(l, /• Hedda \[EN\]/);
+    assert.match(sends(await say(LEA, "/programme"), LEA)[0].text, /Now on/);
+  });
+
+  await step("langue : à l'inscription, choix proposé ; 🇬🇧 redonne l'accueil en anglais", async () => {
+    const ZOE = 444;
+    const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/start=(\w+)/)[1];
+    let c = await tgUpdate({ message: { message_id: upd, from: { id: ZOE, first_name: "Zoé" }, chat: { id: ZOE, type: "private" }, text: `/start ${link}` } });
+    const last = sends(c, ZOE).at(-1);
+    assert.deepEqual(last.reply_markup.inline_keyboard[0].map((b) => b.callback_data), ["l:fr:1", "l:en:1"]);
+    c = await tgUpdate({ callback_query: { id: "z1", from: { id: ZOE, first_name: "Zoé" }, data: "l:en:1", message: { message_id: 1, chat: { id: ZOE, type: "private" }, text: "x" } } });
+    assert.match(sends(c, ZOE)[0].text, /Welcome Zoé[\s\S]*How it works/);
+    assert.match(sends(c, ZOE)[1].text, /By default you follow everything/);
+    const r = (await cine()).find((x) => x.chat_id === ZOE);
+    assert.equal(r.lang, "en");
+    assert.equal((await cine()).find((x) => x.chat_id === OWNER).lang, "fr");
+  });
+
+  await step("langue : inconnu avec une appli en anglais → refus en anglais", async () => {
+    const c = await tgUpdate({ message: { message_id: upd, from: { id: 555, first_name: "Bob", language_code: "en" }, chat: { id: 555, type: "private" }, text: "/start nope" } });
+    assert.match(sends(c, 555)[0].text, /isn't valid/);
   });
 
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {

@@ -55,6 +55,11 @@ require_keyword_match: false
 # nachtkritik.de, quand la pièce y a été critiquée. Estimation par lexique
 # (pas de note officielle) : à lire avec la répartition 👍/😐/👎.
 critics_rating: true
+# Garde-fous de durée (secondes, temps réel) : une étape trop lente est coupée,
+# ce qui n'a pas fini part sans (note presse / résumé / lieu sauté).
+critics_budget_s: 300      # Nachtkritik, toutes pièces confondues
+enrich_budget_s: 360       # pages détail + traductions des résumés
+venue_timeout_s: 90        # programme d'UN lieu
 
 # ---------------------------------------------------------------------------
 # LIEUX À SCANNER (théâtres + expos)

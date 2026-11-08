@@ -196,3 +196,50 @@ def detect(
         return "En allemand (probable)", surtitles
 
     return None, surtitles
+
+
+# ---------------------------------------------------------------------------
+# Version anglaise des libellés produits par `detect` (bot : users.lang = 'en')
+# ---------------------------------------------------------------------------
+_EN_NAMES = {
+    "allemand": "German", "anglais": "English", "français": "French", "arabe": "Arabic",
+    "espagnol": "Spanish", "italien": "Italian", "portugais": "Portuguese", "russe": "Russian",
+    "ukrainien": "Ukrainian", "polonais": "Polish", "tchèque": "Czech", "hongrois": "Hungarian",
+    "roumain": "Romanian", "grec": "Greek", "turc": "Turkish", "kurde": "Kurdish",
+    "hébreu": "Hebrew", "persan": "Persian", "néerlandais": "Dutch", "suédois": "Swedish",
+    "danois": "Danish", "norvégien": "Norwegian", "finnois": "Finnish",
+    "serbo-croate": "Serbo-Croatian", "japonais": "Japanese", "coréen": "Korean",
+    "chinois": "Chinese", "yiddish": "Yiddish", "langue des signes": "sign language",
+}
+_EN_BY_FORM = {**_EN_NAMES, **{_plural(k): v for k, v in _EN_NAMES.items()}}
+
+
+def _names_en(fr_list: str) -> str:
+    """'allemand, arabe et anglais' -> 'German, Arabic and English'."""
+    parts = re.split(r",\s*|\s+et\s+", fr_list.strip())
+    out = [_EN_BY_FORM.get(p.strip(), p.strip()) for p in parts if p.strip()]
+    if len(out) <= 1:
+        return out[0] if out else ""
+    return ", ".join(out[:-1]) + " and " + out[-1]
+
+
+def to_english_labels(spoken: Optional[str], surtitles: Optional[str]) -> Tuple[Optional[str], Optional[str]]:
+    """('En allemand (probable)', 'surtitres anglais') -> ('In German (probably)', 'English surtitles')."""
+    en_spoken = None
+    if spoken:
+        if spoken == "Sans texte":
+            en_spoken = "No spoken word"
+        elif spoken == "Multilingue":
+            en_spoken = "Multilingual"
+        elif spoken.startswith("En "):
+            body = spoken[3:]
+            probable = body.endswith(" (probable)")
+            body = body.replace(" (probable)", "")
+            en_spoken = f"In {_names_en(body)}" + (" (probably)" if probable else "")
+        else:
+            en_spoken = spoken
+    en_titles = None
+    if surtitles:
+        en_titles = (f"{_names_en(surtitles[len('surtitres '):])} surtitles"
+                     if surtitles.startswith("surtitres ") else surtitles)
+    return en_spoken, en_titles

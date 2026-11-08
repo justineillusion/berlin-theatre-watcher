@@ -43,6 +43,7 @@ config.yaml ─┐
 cd berlin-theatre-watcher
 python3 -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 ./.venv/bin/python -m src.main --dry-run
+./.venv/bin/python -m src.main --dry-run --lang en   # les notifs telles que les lit un ami anglophone
 ```
 
 Ça affiche dans le terminal tous les spectacles retenus, avec ⭐ pour ceux qui

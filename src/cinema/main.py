@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+import time
 import traceback
 from dataclasses import replace
 from datetime import date, datetime, timedelta
@@ -25,9 +26,10 @@ from zoneinfo import ZoneInfo
 import yaml
 
 from . import taste
-from .message import evening_day, first_sentence, fmt_day, format_week
+from .message import evening_day, first_sentence, fmt_day, format_week, text
 from .models import Film, Screening
 from .ratings import norm_title
+from ..budget import call_with_timeout, map_with_budget
 from .sources import SOURCES
 from .version import label as version_label
 
@@ -83,11 +85,17 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
         if not fetch:
             errors.append(f"{cin.get('name')}: source inconnue {cin.get('source')!r}")
             continue
+        limit = float(cfg.get("cinema_timeout_s", 90))
         try:
-            got = fetch({**cin, "_evening_from": evening_from}, win["start"], win["fetch_days"])
+            ok, got = call_with_timeout(
+                lambda: fetch({**cin, "_evening_from": evening_from}, win["start"], win["fetch_days"]), limit)
         except Exception as exc:  # noqa: BLE001 — un cinéma en panne ne bloque pas les autres
             errors.append(f"{cin.get('name')}: {exc}")
             traceback.print_exc(file=sys.stderr)
+            continue
+        if not ok:
+            errors.append(f"{cin.get('name')}: pas de réponse en {limit:.0f} s, cinéma sauté")
+            print(f"⏱  {cin.get('name')} : pas de réponse en {limit:.0f} s, cinéma sauté.", file=sys.stderr)
             continue
         known_until[cin["name"]] = max((evening_day(s) for s in got), default=None)
         screenings += [s for s in got if is_evening(s, evening_from) and not_too_late(s, cfg)]
@@ -95,7 +103,8 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
     return screenings, errors, dubbed, known_until
 
 
-def coverage_lines(known_until: Dict[str, Optional[date]], names: List[str], win: dict) -> List[str]:
+def coverage_lines(known_until: Dict[str, Optional[date]], names: List[str], win: dict,
+                   lang: str = "fr") -> List[str]:
     """« Intimes : programme connu jusqu'au mer. 12 » quand un cinéma n'a pas
     encore publié toute la semaine (l'Intimes publie le jeudi pour jeudi→mercredi).
     Un dernier jour manquant n'est pas signalé (relâche possible)."""
@@ -105,9 +114,9 @@ def coverage_lines(known_until: Dict[str, Optional[date]], names: List[str], win
             continue                       # source en erreur : voir le rapport
         last = known_until[n]
         if last is None:
-            out.append(f"{n} : programme pas encore publié")
+            out.append(f"{n}{'' if lang == 'en' else ' '}: {text(lang, 'not_published')}")
         elif last < win["last"] - timedelta(days=1):
-            out.append(f"{n} : programme connu jusqu'au {fmt_day(last)}")
+            out.append(f"{n}{'' if lang == 'en' else ' '}: {text(lang, 'known_until')} {fmt_day(last, lang)}")
     return out
 
 
@@ -150,6 +159,24 @@ def make_pitch(film: Film) -> None:
     film.pitch = first_sentence(short)
 
 
+def make_pitch_en(film: Film) -> None:
+    """Pitch anglais : la description du cinéma (souvent en allemand) traduite.
+    Le synopsis SensCritique est en français : pas de traduction FR->EN en
+    cascade. Rien de fiable -> pas de pitch (plutôt qu'une autre langue)."""
+    desc = next((s.description for s in film.screenings if s.description), None)
+    if not desc:
+        return
+    short = first_sentence(desc, limit=220)
+    try:
+        from ..translate import looks_english, translate
+        if not looks_english(short):
+            out = translate(short, "en")
+            short = out if out and out != short else None
+    except Exception:  # noqa: BLE001
+        short = None
+    film.pitch_en = first_sentence(short) if short else None
+
+
 def select(passed: List[Film], cfg: dict, this_year: int) -> tuple[List[Film], List[Film]]:
     """Top `max_films` par note, en réservant `min_recent` places aux films
     récents (≤ recent_max_age ans) quand il y en a — sinon les rétrospectives
@@ -190,16 +217,38 @@ def analyse(cfg: dict, start: date) -> dict:
         f.rejected = taste.pre_filter(f, cfg)
         (rejected if f.rejected else candidates).append(f)
 
-    for f in candidates:
-        taste.rate(f, cfg)
-    candidates = merge_by_rating(candidates)
+    # Notes SensCritique puis Letterboxd (dans rating_filter) : budget global en
+    # temps réel ; un film dont la note n'arrive pas à temps est écarté (et loggé).
+    budget = float(cfg.get("ratings_budget_s", 300))
+    t0 = time.monotonic()
+    done, late = map_with_budget(candidates, lambda f: taste.rate(f, cfg), budget, workers=2)
+    timed_out = [candidates[i] for i in late]
+    candidates = merge_by_rating([f for i, f in enumerate(candidates) if i in done])
 
     always = {t.lower() for t in cfg.get("always_include") or []}
-    for f in candidates:
-        f.rejected = (taste.genre_filter(f, cfg) or taste.version_filter(f, cfg)
-                      or taste.wide_release_filter(f, cfg))
-        if not f.rejected and f.title.lower() not in always:
-            f.rejected = taste.rating_filter(f, cfg)
+
+    def judge(f: Film) -> Optional[str]:
+        try:
+            why = (taste.genre_filter(f, cfg) or taste.version_filter(f, cfg)
+                   or taste.wide_release_filter(f, cfg))
+            if not why and f.title.lower() not in always:
+                why = taste.rating_filter(f, cfg)
+            return why
+        except Exception as exc:  # noqa: BLE001 — sans verdict fiable, on écarte
+            return f"erreur pendant les filtres : {exc}"
+
+    left = max(10.0, budget - (time.monotonic() - t0))
+    verdicts, late2 = map_with_budget(candidates, judge, left, workers=2)
+    timed_out += [candidates[i] for i in late2]
+    judged = [(f, verdicts[i]) for i, f in enumerate(candidates) if i in verdicts]
+    for f in timed_out:
+        f.rejected = "notes : délai dépassé (ratings_budget_s)"
+        rejected.append(f)
+    if timed_out:
+        print(f"⏱  notes : budget de {budget:.0f} s dépassé, {len(timed_out)} film(s) écarté(s) faute de note.",
+              file=sys.stderr)
+    for f, why in judged:
+        f.rejected = why
         if f.rejected:
             rejected.append(f)
             # Pas encore noté MAIS récent et passé par tous les autres filtres
@@ -233,7 +282,8 @@ def _touches(f: Film, names: Optional[set]) -> bool:
             or any(d.split(" ")[0] in names for d in f.dropped_screenings))
 
 
-def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]] = None) -> dict:
+def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]] = None,
+            lang: str = "fr") -> dict:
     """Messages du récap pour les cinémas `cinemas` (None = tous ceux de cinema.yaml)."""
     today = datetime.now(_TZ).date()
     all_names = [c["name"] for c in cfg.get("cinemas", [])]
@@ -247,22 +297,22 @@ def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]]
     for f in kept:
         # Le pitch (traduction éventuelle) est calculé une fois par film, pas par ami.
         orig = by_key.get(f.key, f)
-        if orig.key not in analysis["pitched"]:
-            make_pitch(orig)
-            analysis["pitched"].add(orig.key)
-        f.pitch = orig.pitch
+        if (orig.key, lang) not in analysis["pitched"]:
+            (make_pitch_en if lang == "en" else make_pitch)(orig)
+            analysis["pitched"].add((orig.key, lang))
+        f.pitch, f.pitch_en = orig.pitch, orig.pitch_en
     for f in overflow:
         f.rejected = "hors top (plafond max_films)"
 
     win = analysis["window"]
     messages = format_week(kept, unrated, len(rejected) + len(overflow), win, shown, cfg,
-                           coverage_lines(analysis["known_until"], shown, win))
+                           coverage_lines(analysis["known_until"], shown, win, lang), lang)
     return {"messages": messages, "kept": kept, "rejected": rejected + overflow,
             "errors": analysis["errors"], "n_screenings": analysis["n_screenings"]}
 
 
-def run(cfg: dict, start: date, cinemas: Optional[List[str]] = None) -> dict:
-    return compose(analyse(cfg, start), cfg, start, cinemas)
+def run(cfg: dict, start: date, cinemas: Optional[List[str]] = None, lang: str = "fr") -> dict:
+    return compose(analyse(cfg, start), cfg, start, cinemas, lang)
 
 
 def cinema_venue_id(name: str) -> str:
@@ -297,16 +347,18 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
         print(f"👥 {len(recipients)} ami·e(s) suivent au moins un cinéma.")
         analysis = analyse(cfg, start)
 
-        cache: Dict[tuple, List[str]] = {}
+        cache: Dict[tuple, List[str]] = {}         # (cinémas, langue) -> messages
         failed: List[dict] = []
         ok = total = 0
         for rcp in recipients:
             subset = tuple(n for n in names if n in {by_id.get(v) for v in rcp["venue_ids"]})
             if not subset:
                 continue
-            if subset not in cache:
-                cache[subset] = compose(analysis, cfg, start, list(subset))["messages"]
-            for msg in cache[subset]:
+            lang = "en" if rcp.get("lang") == "en" else "fr"
+            key = (subset, lang)
+            if key not in cache:
+                cache[key] = compose(analysis, cfg, start, list(subset), lang)["messages"]
+            for msg in cache[key]:
                 total += 1
                 try:
                     send_telegram(token, str(rcp["chat_id"]), msg)
@@ -362,6 +414,8 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("--config", default=str(CONFIG_PATH))
     ap.add_argument("--only", help="cinémas (noms de cinema.yaml, séparés par des virgules) : "
                                    "le récap tel que le reçoit un ami qui ne suit qu'eux")
+    ap.add_argument("--lang", choices=["fr", "en"], default="fr",
+                    help="langue du récap (bot : chaque ami reçoit la sienne, /langue)")
     ap.add_argument("--force", action="store_true", help="renvoie même si le récap de la semaine est déjà parti")
     ap.add_argument("--backup", action="store_true",
                     help="créneau cron de secours : n'envoie que si le 1er n'est pas passé (bot multi-utilisateurs)")
@@ -372,7 +426,7 @@ def main(argv: List[str] | None = None) -> int:
     only = [x.strip() for x in args.only.split(",") if x.strip()] if args.only else None
 
     if args.dry_run:
-        result = run(cfg, start, only)
+        result = run(cfg, start, only, args.lang)
         for i, msg in enumerate(result["messages"], 1):
             print(f"----- message {i}/{len(result['messages'])} ({len(msg)} car.) -----")
             print(msg)
@@ -395,7 +449,7 @@ def main(argv: List[str] | None = None) -> int:
     if not chat_id:
         sys.exit("❌ TELEGRAM_CHAT_ID manquant (ou BOT_API_URL pour le bot multi-utilisateurs)")
     from ..notify import send_telegram
-    result = compose(analysis, cfg, start, only)
+    result = compose(analysis, cfg, start, only, args.lang)
     for msg in result["messages"]:
         send_telegram(token, chat_id, msg)
     print(f"✅ {len(result['messages'])} message(s) envoyé(s), {len(result['kept'])} film(s).")

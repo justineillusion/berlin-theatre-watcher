@@ -56,12 +56,20 @@ def _meta(show: Show) -> dict:
     }
 
 
+def _texts(show: Show, langs: tuple) -> dict:
+    out = {"id": show.item_id(), "text": format_item(show), "line": digest_line(show)}
+    if "en" in langs:
+        out["text_en"] = format_item(show, "en")
+        out["line_en"] = digest_line(show, "en")
+    return out
+
+
 def run_multi(
     hits: List[Show],
     config: dict,
     tg_token: str,
     digest: bool,
-    enrich: Callable[[List[Show], bool], None],
+    enrich: Callable[[List[Show], bool, tuple], None],
 ) -> None:
     from .main import add_critics
 
@@ -80,19 +88,19 @@ def run_multi(
         )
         plan.raise_for_status()
         need = [by_id[i] for i in plan.json()["need"] if i in by_id]
-        print(f"👥 {plan.json().get('users', 0)} ami·e(s) inscrit·e(s) ; {len(need)} pièce(s) à rédiger.")
+        # Langues lues par au moins un ami actif (le Worker choisit la variante par personne).
+        langs = tuple(plan.json().get("langs") or ["fr"])
+        print(f"👥 {plan.json().get('users', 0)} ami·e(s) inscrit·e(s) ; {len(need)} pièce(s) à rédiger"
+              f" ({', '.join(langs)}).")
 
-        enrich(need, digest)
+        enrich(need, digest, langs)
         add_critics(need, config)
 
         rendered = api.post(
             "/api/render",
             json={
                 "mode": mode,
-                "items": [
-                    {"id": s.item_id(), "text": format_item(s), "line": digest_line(s)}
-                    for s in need
-                ],
+                "items": [_texts(s, langs) for s in need],
             },
         )
         rendered.raise_for_status()

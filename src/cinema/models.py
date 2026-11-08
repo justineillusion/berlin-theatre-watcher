@@ -59,6 +59,7 @@ class Film:
     senscritique: Optional[Rating] = None
     letterboxd: Optional[Rating] = None
     pitch: Optional[str] = None
+    pitch_en: Optional[str] = None   # pitch anglais (amis qui lisent en anglais) ; None = pas de pitch
     rejected: Optional[str] = None   # raison d'exclusion (None = retenu)
     dropped_screenings: List[str] = field(default_factory=list)  # ex. séances en VF
     dubbed_release: bool = False     # le cinéma le passe aussi en VF (à n'importe quelle heure)

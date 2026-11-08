@@ -1,0 +1,220 @@
+// Textes du bot, par langue (users.lang : 'fr' par défaut, ou 'en').
+// Ajouter une langue = ajouter un objet du même type que `fr` et l'entrée dans LANGS.
+
+export type Lang = "fr" | "en";
+export const LANGS: Lang[] = ["fr", "en"];
+
+export function asLang(x: unknown): Lang {
+  return x === "en" ? "en" : "fr";
+}
+
+/** Langue d'un inconnu (pas encore inscrit) : celle de son appli Telegram si ce n'est pas du français. */
+export function guessLang(code?: string): Lang {
+  return code && !code.toLowerCase().startsWith("fr") ? "en" : "fr";
+}
+
+const fr = {
+  you: "toi",
+  youBold: "<b>toi</b>",
+  help: `🎭 <b>Comment ça marche</b>
+
+Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis, et chaque dimanche 🎬 le <b>ciné de la semaine</b> (films du soir en VO, bien notés) dans les cinémas que tu suis. Sous chaque notif :
+⭐ <b>Intéressé·e</b> : la bande voit que ça te tente (et toi, qui d'autre est partant)
+✅ <b>Vu</b> : plus de notif, et tu peux noter ★ + laisser un petit mot
+🔕 <b>Ignorer</b> : plus jamais de notif sur cette pièce/expo, même quand elle revient
+
+/suivre — choisir ses théâtres, lieux d'expo et cinémas 🎬
+/programme — tout ce qui est à l'affiche dans tes lieux
+/interets — ce qui tente la bande
+/vus — ce que tu as vu et tes notes
+/ignores — réactiver une pièce/expo ignorée
+/langue — 🇫🇷 Français / 🇬🇧 English
+/stop — ne plus rien recevoir`,
+  ownerHelp: `\n\n👑 <b>Admin</b>
+/invite — lien d'invitation à partager
+/nouveaulien — invalider l'ancien lien
+/membres — qui est inscrit
+/groupe — (à taper DANS un groupe Telegram) y annoncer les ⭐ et les avis, dans ta langue
+/plusdegroupe — arrêter les annonces dans le groupe`,
+  groupOn: "👋 C'est noté : j'annoncerai ici les ⭐ de la bande et les avis après spectacle.",
+  unsubscribed: "Tu t'étais désinscrit·e. Tape /start pour revenir 🙂",
+  privateBot: "🔒 Ce bot est réservé à une bande d'amis. Demande le lien d'invitation à la personne qui t'en a parlé.",
+  followPrompt: "Que veux-tu suivre ? Touche pour cocher / décocher :",
+  nowShowing: "📅 <b>À l'affiche</b>",
+  stopped: "🔕 C'est fait, tu ne recevras plus rien. /start pour revenir.",
+  notUnderstood: "Je n'ai pas compris 🙂 /aide pour la liste des commandes.",
+  newLinkDone: "🔁 Ancien lien désactivé.\n\n",
+  groupOff: "OK, plus d'annonces dans le groupe.",
+  welcomeBack: (name: string) => `Re-bonjour ${name} 👋\n\n`,
+  badInvite: "🔒 Ce lien d'invitation n'est pas (ou plus) valable. Demande-en un nouveau.",
+  welcome: (name: string) => `Bienvenue ${name} 🎉\n\n`,
+  noSpam: "Pour ne pas t'inonder, je ne t'envoie pas le programme actuel en notifs : seulement les nouveautés à partir de demain. Tape /programme pour voir ce qui est déjà à l'affiche.",
+  defaultAll: "Par défaut tu suis tout. Décoche ce qui ne t'intéresse pas :",
+  joined: (who: string) => `🎉 ${who} a rejoint le bot.`,
+  invite: (link: string) => `🔗 Lien d'invitation à partager avec tes amis :\n${link}\n\nIls ouvrent le lien, appuient sur « Démarrer », et c'est tout. /nouveaulien pour l'invalider.`,
+  members: (n: number) => `👥 <b>${n} membre(s)</b>\n`,
+  memberLine: (subs: number, stars: number) => `${subs} lieu(x), ${stars} ⭐`,
+  groupStatus: (on: boolean) => `\n\nGroupe d'annonces : ${on ? "activé" : "aucun (/groupe dans un groupe)"}`,
+  noVenues: "Aucun lieu encore — réessaie après le prochain scan",
+  all: "Tout ✅",
+  none: "Rien ⬜️",
+  done: "Terminé 👍",
+  saved: "👍 C'est enregistré. /suivre pour changer plus tard.",
+  noInterests: "Personne n'a encore mis ⭐ sur une pièce ou une expo à l'affiche.",
+  interestsTitle: "⭐ <b>Ce qui tente la bande</b>",
+  noneSeen: "Rien de marqué ✅ Vu pour l'instant.",
+  seenTitle: "✅ <b>Tes sorties</b>",
+  noneIgnored: "Tu n'ignores rien pour l'instant.",
+  ignoredTitle: "🔕 <b>Ignorés</b> — touche pour réactiver les notifs :",
+  openFirst: (bot: string) => `Ouvre d'abord le bot en privé (@${bot}) avec le lien d'invitation 🙂`,
+  gone: "Cette pièce n'est plus au programme.",
+  toastStar: "⭐ Noté, la bande est au courant",
+  toastUnstar: "Retiré de tes ⭐",
+  toastSeen: "✅ Plus de notif sur celle-ci. Une note ?",
+  toastRated: (s: string) => `${s} — merci !`,
+  askComment: (s: string, title: string) => `${s} pour <b>${title}</b>.\n\nUn petit mot pour la bande ? Écris-le simplement ici (ou /passer).`,
+  toastIgnored: "🔕 Ignoré, même si ça revient",
+  toastUndo: "↩️ C'est annulé",
+  thanksComment: "💬 Merci, c'est partagé avec la bande !",
+  annStar: (who: string, what: string) => `⭐ <b>${who}</b> est intéressé·e par ${what}`,
+  annSeen: (who: string, what: string, s: string) => `✅ <b>${who}</b> a vu ${what} : ${s}`,
+  annComment: (who: string, what: string) => `💬 <b>${who}</b> sur ${what}`,
+  meToo: "⭐ Moi aussi",
+  interestedList: "Intéressé·es :",
+  // lib.ts
+  band: "👥 <b>La bande</b>",
+  interested: (names: string) => `⭐ Intéressé·es : ${names}`,
+  avg: (s: string, avg: string, n: number) => `✅ Note moyenne : ${s} ${avg}/5 (${n} avis)`,
+  avgCompact: (s: string, n: number) => `✅ ${s} (${n} avis)`,
+  seenBy: (names: string) => `✅ vu par ${names}`,
+  btnUnignore: "↩️ Ne plus ignorer",
+  btnNotSeen: "↩️ Pas vu finalement",
+  btnInterested: "⭐ Intéressé·e",
+  btnInterestedOn: "⭐ Intéressé·e ✓",
+  btnSeen: (expo: boolean): string => (expo ? "✅ Vue" : "✅ Vu"),
+  btnIgnore: "🔕 Ignorer",
+  stIgnored: (expo: boolean) => `\n🔕 <i>Ignoré : plus aucune notif sur ${expo ? "cette expo" : "cette pièce"}, même si elle revient.</i>`,
+  stRated: (s: string, c: string) => `\n✅ <i>Ta note : ${s}${c ? ` — « ${c} »` : ""}</i>`,
+  stSeen: (expo: boolean) => `\n✅ <i>Noté comme ${expo ? "vue" : "vu"} — plus de notif. Une note pour la bande ?</i>`,
+  // scan.ts
+  newDates: (d: string) => `🆕 <b>Nouvelles dates</b> : ${d}`,
+  lastWeeks: (d: string) => `⏳ <b>Dernières semaines !</b> Fin le ${d} — tu avais mis ⭐`,
+  sundayDigest: "📅 <b>Récap du dimanche</b>",
+  digestEmpty: "Rien de neuf dans tes lieux suivis (ou tout est déjà vu / ignoré). /suivre pour en ajouter.",
+  plays: (n: number) => `${n} pièce${n > 1 ? "s" : ""}`,
+  expos: (n: number) => `${n} expo${n > 1 ? "s" : ""}`,
+  theatreSection: "\n🎭 <b>THÉÂTRE</b>",
+  expoSection: "\n🖼 <b>EXPOS</b>",
+  legend: "<i>⭐ = tes mots-clés · 👥 = la bande</i>",
+  // langue
+  langPrompt: "🌍 Langue des messages · Message language :",
+  langSet: "🇫🇷 C'est noté : je te parle en français.",
+};
+
+const en: typeof fr = {
+  you: "you",
+  youBold: "<b>you</b>",
+  help: `🎭 <b>How it works</b>
+
+I send you new plays (with English surtitles) and exhibitions from the venues you follow, and every Sunday 🎬 the <b>week's films</b> (evening screenings in original version, well rated) at the cinemas you follow. Under each alert:
+⭐ <b>Interested</b>: the gang sees you're keen (and you see who else is)
+✅ <b>Seen</b>: no more alerts, and you can rate it ★ + leave a short note
+🔕 <b>Ignore</b>: never hear about this play/exhibition again, even if it comes back
+
+/suivre — choose your theatres, exhibition venues and cinemas 🎬
+/programme — everything on in your venues
+/interets — what the gang fancies
+/vus — what you've seen and your ratings
+/ignores — un-ignore a play/exhibition
+/language — 🇫🇷 Français / 🇬🇧 English
+/stop — stop all messages`,
+  ownerHelp: `\n\n👑 <b>Admin</b>
+/invite — invitation link to share
+/nouveaulien — revoke the old link
+/membres — who's signed up
+/groupe — (type it IN a Telegram group) announce ⭐ and reviews there, in your language
+/plusdegroupe — stop group announcements`,
+  groupOn: "👋 Got it: I'll announce the gang's ⭐ and post-show reviews here.",
+  unsubscribed: "You had unsubscribed. Type /start to come back 🙂",
+  privateBot: "🔒 This bot is for a group of friends. Ask whoever told you about it for the invitation link.",
+  followPrompt: "What do you want to follow? Tap to tick / untick:",
+  nowShowing: "📅 <b>Now on</b>",
+  stopped: "🔕 Done, you won't receive anything any more. /start to come back.",
+  notUnderstood: "I didn't get that 🙂 /aide for the list of commands.",
+  newLinkDone: "🔁 Old link revoked.\n\n",
+  groupOff: "OK, no more group announcements.",
+  welcomeBack: (name: string) => `Welcome back ${name} 👋\n\n`,
+  badInvite: "🔒 This invitation link isn't valid (any more). Ask for a new one.",
+  welcome: (name: string) => `Welcome ${name} 🎉\n\n`,
+  noSpam: "So as not to flood you, I won't send the current programme as alerts: only what's new from tomorrow. Type /programme to see what's already on.",
+  defaultAll: "By default you follow everything. Untick what you're not interested in:",
+  joined: (who: string) => `🎉 ${who} joined the bot.`,
+  invite: (link: string) => `🔗 Invitation link to share with your friends:\n${link}\n\nThey open the link, tap “Start”, and that's it. /nouveaulien to revoke it.`,
+  members: (n: number) => `👥 <b>${n} member(s)</b>\n`,
+  memberLine: (subs: number, stars: number) => `${subs} venue(s), ${stars} ⭐`,
+  groupStatus: (on: boolean) => `\n\nAnnouncement group: ${on ? "on" : "none (/groupe in a group)"}`,
+  noVenues: "No venues yet — try again after the next scan",
+  all: "All ✅",
+  none: "None ⬜️",
+  done: "Done 👍",
+  saved: "👍 Saved. /suivre to change it later.",
+  noInterests: "Nobody has ⭐-ed a current play or exhibition yet.",
+  interestsTitle: "⭐ <b>What the gang fancies</b>",
+  noneSeen: "Nothing marked ✅ Seen yet.",
+  seenTitle: "✅ <b>Your outings</b>",
+  noneIgnored: "You're not ignoring anything right now.",
+  ignoredTitle: "🔕 <b>Ignored</b> — tap to get alerts again:",
+  openFirst: (bot: string) => `First open the bot privately (@${bot}) with the invitation link 🙂`,
+  gone: "This play is no longer on.",
+  toastStar: "⭐ Noted, the gang knows",
+  toastUnstar: "Removed from your ⭐",
+  toastSeen: "✅ No more alerts for this one. A rating?",
+  toastRated: (s: string) => `${s} — thanks!`,
+  askComment: (s: string, title: string) => `${s} for <b>${title}</b>.\n\nA short note for the gang? Just type it here (or /passer).`,
+  toastIgnored: "🔕 Ignored, even if it comes back",
+  toastUndo: "↩️ Undone",
+  thanksComment: "💬 Thanks, shared with the gang!",
+  annStar: (who: string, what: string) => `⭐ <b>${who}</b> is interested in ${what}`,
+  annSeen: (who: string, what: string, s: string) => `✅ <b>${who}</b> saw ${what}: ${s}`,
+  annComment: (who: string, what: string) => `💬 <b>${who}</b> on ${what}`,
+  meToo: "⭐ Me too",
+  interestedList: "Interested:",
+  band: "👥 <b>The gang</b>",
+  interested: (names: string) => `⭐ Interested: ${names}`,
+  avg: (s: string, avg: string, n: number) => `✅ Average rating: ${s} ${avg}/5 (${n} review${n > 1 ? "s" : ""})`,
+  avgCompact: (s: string, n: number) => `✅ ${s} (${n} review${n > 1 ? "s" : ""})`,
+  seenBy: (names: string) => `✅ seen by ${names}`,
+  btnUnignore: "↩️ Stop ignoring",
+  btnNotSeen: "↩️ Not seen after all",
+  btnInterested: "⭐ Interested",
+  btnInterestedOn: "⭐ Interested ✓",
+  btnSeen: () => "✅ Seen",
+  btnIgnore: "🔕 Ignore",
+  stIgnored: (expo: boolean) => `\n🔕 <i>Ignored: no more alerts about this ${expo ? "exhibition" : "play"}, even if it comes back.</i>`,
+  stRated: (s: string, c: string) => `\n✅ <i>Your rating: ${s}${c ? ` — “${c}”` : ""}</i>`,
+  stSeen: () => `\n✅ <i>Marked as seen — no more alerts. A rating for the gang?</i>`,
+  newDates: (d: string) => `🆕 <b>New dates</b>: ${d}`,
+  lastWeeks: (d: string) => `⏳ <b>Last weeks!</b> Ends ${d} — you ⭐-ed it`,
+  sundayDigest: "📅 <b>Sunday round-up</b>",
+  digestEmpty: "Nothing new in the venues you follow (or it's all seen / ignored). /suivre to add some.",
+  plays: (n: number) => `${n} play${n > 1 ? "s" : ""}`,
+  expos: (n: number) => `${n} exhibition${n > 1 ? "s" : ""}`,
+  theatreSection: "\n🎭 <b>THEATRE</b>",
+  expoSection: "\n🖼 <b>EXHIBITIONS</b>",
+  legend: "<i>⭐ = your keywords · 👥 = the gang</i>",
+  langPrompt: "🌍 Langue des messages · Message language :",
+  langSet: "🇬🇧 Done: I'll talk to you in English.",
+};
+
+const DICT: Record<Lang, typeof fr> = { fr, en };
+
+export function tr(lang: unknown): typeof fr {
+  return DICT[asLang(lang)];
+}
+
+export const langKeyboard = (onboarding = false) => ({
+  inline_keyboard: [[
+    { text: "🇫🇷 Français", callback_data: `l:fr${onboarding ? ":1" : ""}` },
+    { text: "🇬🇧 English", callback_data: `l:en${onboarding ? ":1" : ""}` },
+  ]],
+});

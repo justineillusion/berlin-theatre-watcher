@@ -1,4 +1,5 @@
 // Briques communes : types, accès D1, Telegram, rendu des messages.
+import { Lang, tr } from "./i18n";
 
 export interface Env {
   DB: D1Database;
@@ -22,7 +23,13 @@ export interface Item {
   starred: number;
   text: string | null;
   line: string | null;
+  text_en: string | null;  // variantes anglaises (users.lang = 'en'), NULL = pas rendues
+  line_en: string | null;
 }
+
+/** Corps / ligne de récap d'un item dans la langue de la personne (repli : français). */
+export const itemText = (item: Item, lang: Lang) => (lang === "en" && item.text_en) || item.text;
+export const itemLine = (item: Item, lang: Lang) => (lang === "en" && item.line_en) || item.line;
 
 export interface Reaction {
   chat_id: number;
@@ -126,10 +133,12 @@ export function frDate(iso: string | null): string {
   return `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
 }
 
-const name = (f: Friend, viewer: number | null) => (f.chat_id === viewer ? "toi" : esc(f.first_name));
+const name = (f: Friend, viewer: number | null, lang: Lang) => (f.chat_id === viewer ? tr(lang).you : esc(f.first_name));
 
 /** Bloc « 👥 La bande » : qui est intéressé, qui a vu et ce qu'ils en ont pensé. */
-export function socialBlock(friends: Friend[], viewer: number | null, compact = false): string {
+export function socialBlock(friends: Friend[], viewer: number | null, compact = false, lang: Lang = "fr"): string {
+  const T = tr(lang);
+  const nm = (f: Friend) => name(f, viewer, lang);
   const interested = friends.filter((f) => f.interested && f.status !== "seen" && f.status !== "ignored");
   const seen = friends.filter((f) => f.status === "seen");
   if (!interested.length && !seen.length) return "";
@@ -139,59 +148,57 @@ export function socialBlock(friends: Friend[], viewer: number | null, compact = 
 
   if (compact) {
     const parts: string[] = [];
-    if (interested.length) parts.push(`⭐ ${interested.map((f) => name(f, viewer)).join(", ")}`);
-    if (rated.length) parts.push(`✅ ${stars(Math.round(avg))} (${rated.length} avis)`);
-    else if (seen.length) parts.push(`✅ vu par ${seen.map((f) => name(f, viewer)).join(", ")}`);
+    if (interested.length) parts.push(`⭐ ${interested.map(nm).join(", ")}`);
+    if (rated.length) parts.push(T.avgCompact(stars(Math.round(avg)), rated.length));
+    else if (seen.length) parts.push(T.seenBy(seen.map(nm).join(", ")));
     return `   👥 ${parts.join(" · ")}`;
   }
 
-  const lines = ["\n👥 <b>La bande</b>"];
-  if (interested.length) {
-    lines.push(`⭐ Intéressé·es : ${interested.map((f) => name(f, viewer)).join(", ")}`);
-  }
+  const lines = ["\n" + T.band];
+  if (interested.length) lines.push(T.interested(interested.map(nm).join(", ")));
   if (seen.length) {
     if (rated.length > 1) {
-      lines.push(`✅ Note moyenne : ${stars(Math.round(avg))} ${avg.toFixed(1).replace(".", ",")}/5 (${rated.length} avis)`);
+      const a = avg.toFixed(1);
+      lines.push(T.avg(stars(Math.round(avg)), lang === "fr" ? a.replace(".", ",") : a, rated.length));
     }
     for (const f of seen.slice(-6)) {
       const note = f.rating ? ` ${stars(f.rating)}` : "";
       const word = f.comment ? ` — « ${esc(f.comment.slice(0, 140))} »` : "";
-      lines.push(`✅ ${name(f, viewer)}${note}${word}`);
+      lines.push(`✅ ${nm(f)}${note}${word}`);
     }
   }
   return lines.join("\n");
 }
 
 /** Boutons sous une notif, selon l'état de la personne qui la regarde. */
-export function keyboard(item: Item, r: Reaction | null): unknown {
+export function keyboard(item: Item, r: Reaction | null, lang: Lang = "fr"): unknown {
   const id = item.id;
+  const T = tr(lang);
   if (r?.status === "ignored") {
-    return { inline_keyboard: [[{ text: "↩️ Ne plus ignorer", callback_data: `u:${id}` }]] };
+    return { inline_keyboard: [[{ text: T.btnUnignore, callback_data: `u:${id}` }]] };
   }
   if (r?.status === "seen") {
     const row = [1, 2, 3, 4, 5].map((n) => ({
       text: r.rating === n ? `· ${n}★ ·` : `${n}★`,
       callback_data: `r:${id}:${n}`,
     }));
-    return { inline_keyboard: [row, [{ text: "↩️ Pas vu finalement", callback_data: `u:${id}` }]] };
+    return { inline_keyboard: [row, [{ text: T.btnNotSeen, callback_data: `u:${id}` }]] };
   }
-  const verb = item.kind === "expo" ? "Vue" : "Vu";
   return {
     inline_keyboard: [[
-      { text: r?.interested ? "⭐ Intéressé·e ✓" : "⭐ Intéressé·e", callback_data: `i:${id}` },
-      { text: `✅ ${verb}`, callback_data: `v:${id}` },
-      { text: "🔕 Ignorer", callback_data: `x:${id}` },
+      { text: r?.interested ? T.btnInterestedOn : T.btnInterested, callback_data: `i:${id}` },
+      { text: T.btnSeen(item.kind === "expo"), callback_data: `v:${id}` },
+      { text: T.btnIgnore, callback_data: `x:${id}` },
     ]],
   };
 }
 
-function statusLine(item: Item, r: Reaction | null): string {
-  const what = item.kind === "expo" ? "cette expo" : "cette pièce";
-  if (r?.status === "ignored") return `\n🔕 <i>Ignoré : plus aucune notif sur ${what}, même si elle revient.</i>`;
+function statusLine(item: Item, r: Reaction | null, lang: Lang): string {
+  const T = tr(lang);
+  const expo = item.kind === "expo";
+  if (r?.status === "ignored") return T.stIgnored(expo);
   if (r?.status === "seen") {
-    return r.rating
-      ? `\n✅ <i>Ta note : ${stars(r.rating)}${r.comment ? ` — « ${esc(r.comment.slice(0, 140))} »` : ""}</i>`
-      : `\n✅ <i>Noté comme ${item.kind === "expo" ? "vue" : "vu"} — plus de notif. Une note pour la bande ?</i>`;
+    return r.rating ? T.stRated(stars(r.rating), r.comment ? esc(r.comment.slice(0, 140)) : "") : T.stSeen(expo);
   }
   return "";
 }
@@ -200,11 +207,11 @@ const MAX = 4000;
 
 /** Message complet pour une personne : en-tête + corps + bande + état. */
 export function renderFor(
-  item: Item, viewer: number, r: Reaction | null, friends: Friend[], header: string | null,
+  item: Item, viewer: number, r: Reaction | null, friends: Friend[], header: string | null, lang: Lang = "fr",
 ): { text: string; reply_markup: unknown } {
-  const body = item.text || `<b>${esc(item.title)}</b>`;
-  const tail = socialBlock(friends, viewer) + statusLine(item, r);
+  const body = itemText(item, lang) || `<b>${esc(item.title)}</b>`;
+  const tail = socialBlock(friends, viewer, false, lang) + statusLine(item, r, lang);
   let text = (header ? `${header}\n` : "") + body;
   if (text.length + tail.length > MAX) text = text.slice(0, MAX - tail.length - 1) + "…";
-  return { text: text + tail, reply_markup: keyboard(item, r) };
+  return { text: text + tail, reply_markup: keyboard(item, r, lang) };
 }

@@ -123,10 +123,16 @@ qu'il suit** — rien s'il n'en suit aucun :
 4. Envoi depuis GitHub Actions (429 respectés, petite pause entre messages) ;
    un ami qui a bloqué le bot (403) est désactivé via `POST /api/sent`.
 
+Chaque ami le reçoit dans **sa langue** (`/langue`) : en anglais, jours/mois
+anglais, pas de titre français SensCritique, et le pitch vient de la
+description du cinéma traduite en anglais (le synopsis SensCritique est en
+français) — pas de pitch plutôt qu'un pitch dans une autre langue.
+
 Sans ces secrets : un seul récap, tous cinémas, sur `TELEGRAM_CHAT_ID`.
 
 ```bash
 ./.venv/bin/python -m src.cinema --dry-run --only Lichtblick,Babylon   # le récap d'un ami qui ne suit que ces deux-là
+./.venv/bin/python -m src.cinema --dry-run --lang en                    # version anglaise
 ```
 
 Le Lichtblick et le Babylon publient plusieurs semaines à l'avance.

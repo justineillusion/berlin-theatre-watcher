@@ -1,6 +1,7 @@
 -- Berlin Theatre Watcher — base D1 du bot multi-utilisateurs.
 -- Appliquer : npx wrangler d1 execute theatre-bot --remote --file=schema.sql
 -- (idempotent : CREATE ... IF NOT EXISTS)
+-- Base créée avant une colonne ajoutée ici : voir migrations/ (ALTER TABLE, une seule fois).
 
 -- Une personne inscrite au bot (chat privé : chat_id == user id Telegram).
 CREATE TABLE IF NOT EXISTS users (
@@ -9,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
   username     TEXT,
   active       INTEGER NOT NULL DEFAULT 1,   -- 0 = a bloqué le bot / s'est désinscrit
   pending_item TEXT,                         -- item en attente d'un « petit mot » après une note
+  lang         TEXT NOT NULL DEFAULT 'fr',   -- langue des messages : fr | en (/langue)
   joined_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -44,6 +46,8 @@ CREATE TABLE IF NOT EXISTS items (
   starred    INTEGER NOT NULL DEFAULT 0,     -- matche keywords_love
   text       TEXT,                           -- corps du message (HTML Telegram)
   line       TEXT,                           -- bloc pour les récaps
+  text_en    TEXT,                           -- variantes anglaises (rendues si un ami lit en anglais)
+  line_en    TEXT,
   last_seen  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
