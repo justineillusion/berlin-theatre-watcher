@@ -61,6 +61,8 @@ const click = (id, data, message_id, chatId = id, type = "private", text = "🎭
   tgUpdate({ callback_query: { id: String(upd), from: user(id), data, message: { message_id, chat: { id: chatId, type }, text } } });
 
 async function api(path, body) {
+  // Les fixtures datent de tous les mois : horizon large par défaut (testé à part).
+  if (path === "/api/plan") body = { horizon_expo_days: 3650, horizon_theatre_days: 3650, ...body };
   const r = await fetch(`${W}${path}`, {
     method: "POST", headers: { authorization: `Bearer ${API}`, "content-type": "application/json" }, body: JSON.stringify(body),
   });
@@ -462,6 +464,31 @@ try {
     assert.match(before, /Schaub/);
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, lear] });   // rien de la Schaubühne
     assert.equal(await menu(), before);
+  });
+
+  await step("horizon : expos ouvertes / sous 7 j, pièces jouées sous 14 j (ces dates seulement) ; annoncé en entrant", async () => {
+    const day = (n) => new Date(Date.now() + n * 86400000).toISOString().slice(0, 10);
+    const soon = play("hzsoon000001", "Bientôt", [`${day(3)} 19:30`, `${day(40)} 19:30`]);
+    const later = play("hzlater00001", "Plus tard", [`${day(40)} 19:30`]);
+    const expoLater = { id: "hzexpo000001", venue_id: "kw", kind: "expo", title: "Sieverding 2027", url: "https://x/s",
+      dates: [], start_date: day(60), end_date: day(200), starred: false };
+    const H = { horizon_expo_days: 7, horizon_theatre_days: 14 };
+    let p = await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, soon, later, expoLater], ...H });
+    assert.ok(p.need.includes("hzsoon000001"));
+    assert.ok(!p.need.includes("hzlater00001") && !p.need.includes("hzexpo000001"));   // gardés sans bruit
+    const c = await click(OWNER, "pv:berliner-ensemble:0", 6200);
+    const txt = sends(c, OWNER).map((m) => m.text).join("\n");
+    assert.match(txt, /Bientôt/);
+    assert.doesNotMatch(txt, /Plus tard/);
+    const card = sends(c, OWNER).find((m) => /Bientôt/.test(m.text)).text;
+    assert.ok(!card.includes(day(40).slice(8, 10) + "/" + day(40).slice(5, 7)), "date hors fenêtre affichée");
+    const k = await click(OWNER, "pv:kw:0", 6201);
+    assert.doesNotMatch(sends(k, OWNER).map((m) => m.text).join("\n"), /Sieverding/);
+    // La pièce « plus tard » entre dans la fenêtre → annoncée (une fois).
+    const later2 = play("hzlater00001", "Plus tard", [`${day(40)} 19:30`, `${day(5)} 20:00`]);
+    p = await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, soon, later2, expoLater], ...H });
+    assert.ok(p.need.includes("hzlater00001"));
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear], horizon_expo_days: 3650, horizon_theatre_days: 3650 });
   });
 
   // ------------------------------------------------------------ films

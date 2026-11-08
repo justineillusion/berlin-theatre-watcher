@@ -32,6 +32,38 @@ export const itemText = (item: Item, lang: Lang) => (lang === "en" && item.text_
 export const itemLine = (item: Item, lang: Lang) =>
   (lang === "en" && item.line_en) || item.line || basicLine(item, lang);
 
+/** Horizon d'affichage (config.yaml → /api/plan → settings) : on ne montre que
+ *  ce qui se joue MAINTENANT ou bientôt. Expos : ouvertes, ou qui ouvrent sous
+ *  `expo` jours ; pièces : une date dans les `theatre` jours (et seulement
+ *  celles-là). Au-delà, l'item est gardé en base sans bruit et annoncé quand il
+ *  entre dans la fenêtre. */
+export interface Horizon { expo: number; theatre: number }
+let HORIZON: Horizon = { expo: 7, theatre: 14 };
+const days = (v: string | null, d: number) => {
+  const n = Math.floor(Number(v));
+  return Number.isFinite(n) && n >= 0 && n <= 3650 ? n : d;
+};
+export async function horizon(env: Env): Promise<Horizon> {
+  HORIZON = {
+    expo: days(await setting(env, "horizon_expo_days"), 7),
+    theatre: days(await setting(env, "horizon_theatre_days"), 14),
+  };
+  return HORIZON;
+}
+/** Dernier jour (AAAA-MM-JJ) de la fenêtre des pièces / des expos. */
+export const windowEnd = (n: number) => new Date(Date.now() + n * 86400000).toISOString().slice(0, 10);
+/** Dates d'une pièce dans la fenêtre. */
+export const inWindow = (dates: string[], h: Horizon = HORIZON) => {
+  const now = new Date().toISOString().slice(0, 10), end = windowEnd(h.theatre);
+  return dates.filter((x) => x.slice(0, 10) >= now && x.slice(0, 10) <= end).sort();
+};
+/** Condition SQL « dans la fenêtre » pour l'item `a` (films : gérés à part). */
+export const windowSql = (h: Horizon, a = "i") => `(CASE ${a}.kind
+  WHEN 'expo' THEN (${a}.start_date IS NULL OR ${a}.start_date = '' OR ${a}.start_date <= date('now', '+${h.expo} days'))
+  WHEN 'theatre' THEN EXISTS (SELECT 1 FROM json_each(${a}.dates)
+    WHERE substr(value, 1, 10) BETWEEN date('now') AND date('now', '+${h.theatre} days'))
+  ELSE 1 END)`;
+
 /** Ligne minimale quand le scraper n'a pas (encore) rédigé l'item : titre lié + dates. */
 export function basicLine(item: Item, lang: Lang): string {
   const t = item.url ? `<a href="${esc(item.url)}">${esc(item.title)}</a>` : esc(item.title);
@@ -41,7 +73,8 @@ export function basicLine(item: Item, lang: Lang): string {
     if (item.end_date) when = `${lang === "en" ? "until" : "jusqu'au"} ${frDate(item.end_date)}`;
   } else {
     const now = new Date().toISOString().slice(0, 10);
-    const d = (JSON.parse(item.dates || "[]") as string[]).filter((x) => x.slice(0, 10) >= now).sort();
+    const all = (JSON.parse(item.dates || "[]") as string[]).filter((x) => x.slice(0, 10) >= now).sort();
+    const d = item.kind === "theatre" ? inWindow(all) : all;
     if (d.length) when = d.slice(0, 5).map((x) => frDate(x)).join(", ") + (d.length > 5 ? ` (+${d.length - 5})` : "");
   }
   return `• ${t}${star}${when ? `\n   🗓 ${when}` : ""}`;

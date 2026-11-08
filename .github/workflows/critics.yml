@@ -1,0 +1,42 @@
+name: Refresh Nachtkritik cache
+
+# Seul job qui interroge Nachtkritik en ligne. Les autres (scan, ventes, récap,
+# ciné, /programme) lisent state/critics_cache.json sans réseau : rapides.
+on:
+  schedule:
+    - cron: "30 4 * * *"    # 04:30 UTC : cache frais pour le scan de 05:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: theatre-state          # pas en même temps qu'un autre job qui committe l'état
+  cancel-in-progress: false
+
+jobs:
+  critics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Refresh critics cache (5 min max)
+        run: timeout 900 python -m src.critics_refresh --budget 300 --cap 10 --search-cap 45
+      - name: Commit cache
+        if: always()
+        run: |
+          git config user.name  "theatre-watcher-bot"
+          git config user.email "actions@github.com"
+          if [ -f state/critics_cache.json ]; then git add state/critics_cache.json; fi
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh Nachtkritik cache [skip ci]"
+            git pull --rebase -X theirs origin main || git rebase --abort
+            git push
+          else
+            echo "Cache inchangé."
+          fi

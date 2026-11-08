@@ -222,7 +222,8 @@ def analyse(cfg: dict, start: date) -> dict:
     # temps réel ; un film dont la note n'arrive pas à temps est écarté (et loggé).
     budget = float(cfg.get("ratings_budget_s", 300))
     t0 = time.monotonic()
-    done, late = map_with_budget(candidates, lambda f: taste.rate(f, cfg), budget, workers=2)
+    cap = float(cfg.get("item_timeout_s", 10))   # par film : au-delà, sauté (et loggé)
+    done, late = map_with_budget(candidates, lambda f: taste.rate(f, cfg), budget, workers=2, item_timeout=cap)
     timed_out = [candidates[i] for i in late]
     candidates = merge_by_rating([f for i, f in enumerate(candidates) if i in done])
 
@@ -239,15 +240,15 @@ def analyse(cfg: dict, start: date) -> dict:
             return f"erreur pendant les filtres : {exc}"
 
     left = max(10.0, budget - (time.monotonic() - t0))
-    verdicts, late2 = map_with_budget(candidates, judge, left, workers=2)
+    verdicts, late2 = map_with_budget(candidates, judge, left, workers=2, item_timeout=cap)
     timed_out += [candidates[i] for i in late2]
     judged = [(f, verdicts[i]) for i, f in enumerate(candidates) if i in verdicts]
     for f in timed_out:
         f.rejected = "notes : délai dépassé (ratings_budget_s)"
         rejected.append(f)
     if timed_out:
-        print(f"⏱  notes : budget de {budget:.0f} s dépassé, {len(timed_out)} film(s) écarté(s) faute de note.",
-              file=sys.stderr)
+        print(f"⏱  notes : {len(timed_out)} film(s) sauté(s) (> {cap:.0f} s chacun ou budget de {budget:.0f} s) : "
+              f"{', '.join(f.title for f in timed_out)}.", file=sys.stderr)
     for f, why in judged:
         f.rejected = why
         if f.rejected:

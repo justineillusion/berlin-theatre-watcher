@@ -54,6 +54,7 @@ max_films: 10
 # Garde-fous de durée (secondes, temps réel) : rien ne doit bloquer le job.
 cinema_timeout_s: 90       # programme d'UN cinéma ; au-delà il est sauté (et signalé dans le rapport)
 ratings_budget_s: 300      # toutes les recherches SensCritique + Letterboxd ; film sans note à temps = écarté
+item_timeout_s: 10         # par film (SensCritique + Letterboxd) : au-delà, sauté et loggé
 # Places réservées aux films récents (≤ recent_max_age ans) s'il y en a qui
 # passent les filtres — sinon les rétrospectives prennent tout.
 min_recent: 3

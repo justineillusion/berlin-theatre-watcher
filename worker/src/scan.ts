@@ -8,7 +8,8 @@
 import { Lang, asLang, tr } from "./i18n";
 import { groupInterests } from "./group";
 import {
-  Env, Item, Reaction, esc, frDate, friendsByItem, itemLine, renderFor, setSetting, setting, socialBlock,
+  Env, Horizon, Item, Reaction, esc, frDate, friendsByItem, horizon, inWindow, itemLine, renderFor, setSetting, setting,
+  socialBlock, windowEnd, windowSql,
 } from "./lib";
 
 interface MetaIn {
@@ -58,6 +59,7 @@ async function computePending(
   const silent: D1PreparedStatement[] = [];
   const primedSubs = new Set<string>();
   const now = today();
+  const h = await horizon(env);
 
   for (const item of items.results) {
     const dates: string[] = JSON.parse(item.dates || "[]");
@@ -78,14 +80,24 @@ async function computePending(
         continue;
       }
 
+      // Hors fenêtre (pièce sans date sous `h.theatre` jours, expo qui ouvre dans
+      // plus de `h.expo` jours) : rien pour l'instant ; annoncé UNE fois quand
+      // l'item entre dans la fenêtre (pas encore de livraison = « nouveau »).
+      const win = item.kind === "theatre" ? inWindow(dates, h) : dates;
       if (!d) {
+        if (item.kind === "theatre" && !win.length) continue;
+        if (item.kind === "expo" && item.start_date && item.start_date > windowEnd(h.expo)) continue;
         out.push({ chat_id: sub.chat_id, item_id: item.id, kind: "new", dates, fresh: [] });
         continue;
       }
       if (item.kind === "theatre") {
         const known = new Set<string>(JSON.parse(d.dates || "[]"));
-        const fresh = dates.filter((x) => !known.has(x)).sort();
-        if (fresh.length) out.push({ chat_id: sub.chat_id, item_id: item.id, kind: "new_dates", dates, fresh });
+        // Dates vraiment nouvelles ET dans la fenêtre ; celles d'après attendront
+        // (non mémorisées, elles seront annoncées en y entrant).
+        const fresh = win.filter((x) => !known.has(x));
+        if (fresh.length) {
+          out.push({ chat_id: sub.chat_id, item_id: item.id, kind: "new_dates", dates: [...known, ...fresh], fresh });
+        }
       } else if (
         r?.interested && !d.reminded && item.end_date &&
         item.end_date >= now && item.end_date <= addDays(now, lastWeeksDays)
@@ -292,6 +304,8 @@ export async function plan(env: Env, body: any): Promise<Response> {
   }
   await setSetting(env, "current_since", started);
   await setSetting(env, "expo_last_weeks_days", String(Number(body.expo_last_weeks_days ?? 14)));
+  if (body.horizon_expo_days != null) await setSetting(env, "horizon_expo_days", String(Number(body.horizon_expo_days)));
+  if (body.horizon_theatre_days != null) await setSetting(env, "horizon_theatre_days", String(Number(body.horizon_theatre_days)));
 
   const users = await env.DB.prepare("SELECT COUNT(*) AS n FROM users WHERE active = 1").first<{ n: number }>();
   // Langues à rédiger : le scraper ne produit la variante anglaise que si quelqu'un la lit.
@@ -406,7 +420,7 @@ export async function digestFor(
 ): Promise<string[]> {
   const T = tr(lang);
   const since = await setting(env, "current_since");
-  const horizon = addDays(today(), 45);   // expos : ouvertes, ou qui ouvrent sous 6 semaines
+  const h = await horizon(env);           // expos ouvertes / qui ouvrent bientôt ; pièces jouées bientôt
   const { results } = await env.DB.prepare(
     `SELECT i.*, v.name AS venue_name, v.position FROM items i
      JOIN venues v ON v.id = i.venue_id AND v.active = 1
@@ -416,9 +430,9 @@ export async function digestFor(
        AND (?2 IS NULL OR i.id IN (SELECT value FROM json_each(?2)))
        AND (?2 IS NOT NULL OR i.last_seen >= ?3 OR i.kind = 'film')
        AND (i.kind != 'film' OR (SELECT MAX(value) FROM json_each(i.dates)) >= ?5)
-       AND (i.kind = 'theatre' OR i.kind = 'film' OR i.start_date IS NULL OR i.start_date = '' OR i.start_date <= ?4)
+       AND ${windowSql(h)} AND ?4 = ?4
      ORDER BY CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position, COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999')`,
-  ).bind(chat_id, ids ? JSON.stringify(ids) : null, since ?? "", horizon, today()).all<Item & { venue_name: string }>();
+  ).bind(chat_id, ids ? JSON.stringify(ids) : null, since ?? "", "", today()).all<Item & { venue_name: string }>();
 
   if (!results.length) {
     return [`${title}\n\n${T.digestEmpty}`];

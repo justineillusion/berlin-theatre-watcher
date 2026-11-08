@@ -324,7 +324,17 @@ _THEATERS = {
     "Schaubühne": ("Schaubühne", "schaubuehne", _BERLIN + "schaubuehne-berlin"),
     "Berliner Ensemble": ("Berliner Ensemble", "berliner-ensemble", _BERLIN + "berliner-ensemble"),
     "Volksbühne": ("Volksbühne", "volksbuehne", _BERLIN + "volksbuehne-am-rosa-luxemburg-platz-berlin"),
+    # Festspiele : invités de partout, pas de contrainte de maison, mais une rubrique.
+    "Berliner Festspiele — Performing Arts Season": ("Berliner Festspiele", None, _BERLIN + "berliner-festspiele"),
+    "Berliner Festspiele — Theatertreffen": ("Berliner Festspiele", None, _BERLIN + "berliner-festspiele"),
 }
+
+
+def refresh_listings() -> int:
+    """Télécharge (si périmées) les rubriques Nachtkritik de toutes les maisons.
+    Job critics.yml seulement. Renvoie le nombre de critiques connues."""
+    sections = dict.fromkeys(sec for _, _, sec in _THEATERS.values() if sec)
+    return sum(len(_listing(sec)) for sec in sections)
 
 
 def _parse_listing(html: str, section: str) -> List[dict]:
@@ -409,7 +419,8 @@ def _search(query: str) -> Optional[List[tuple]]:
     return results
 
 
-def _find_reviews(theater: str, title: str, url: str = "", offline: bool = False) -> Tuple[List[Tuple[str, bool]], bool]:
+def _find_reviews(theater: str, title: str, url: str = "", offline: bool = False,
+                  search: bool = True) -> Tuple[List[Tuple[str, bool]], bool]:
     """Critiques candidates, la meilleure d'abord : ([(url, sûre)], échec réseau ?).
 
     « sûre » = l'URL nomme la maison berlinoise. Sinon (création à Vienne,
@@ -431,6 +442,8 @@ def _find_reviews(theater: str, title: str, url: str = "", offline: bool = False
                 if _title_matches(it["title"], variants) or _slug_matches(it["url"], slug, url_fragment)]
         if hits:
             return [(u, True) for u in dict.fromkeys(hits)], False   # rubrique : du plus récent au plus ancien
+    if not search:
+        return [], False
 
     # 2) Repli : la recherche plein texte (lente). Le titre complet « X (Y) » ne
     #    donne rien (tous les mots sont exigés). Et ajouter le nom du théâtre à
@@ -471,8 +484,12 @@ def _mentions_theater(html: str, theater: str) -> bool:
         return True
     soup = BeautifulSoup(html, "html.parser")
     # Pas tout le texte de la page : les encadrés « à lire aussi » citent
-    # n'importe quel théâtre.
-    blocks = soup.select(".text_besetzung") + [p for p in soup.find_all("p") if p.find_previous(class_="text_rundschau")]
+    # n'importe quel théâtre. Le générique (« Koproduktion der Salzburger
+    # Festspiele mit dem Berliner Ensemble ») suffit : une coproduction créée
+    # dans un festival partenaire est rangée sous ce festival chez Nachtkritik.
+    blocks = soup.select(".text_besetzung")
+    if not blocks:
+        blocks = [p for p in soup.find_all("p") if p.find_previous(class_="text_rundschau")]
     text = " ".join(b.get_text(" ", strip=True) for b in blocks).lower()
     text += " " + " ".join(a.get("href", "") for b in blocks for a in b.find_all("a"))
     return search_word.lower() in text or url_fragment in text
@@ -546,7 +563,8 @@ def _review(url: str, theater: str, sure: bool, offline: bool) -> Optional[dict]
     return entry
 
 
-def fetch_rating(theater: str, title: str, url: str = "", offline: bool = False) -> Optional[CriticsRating]:
+def fetch_rating(theater: str, title: str, url: str = "", offline: bool = False,
+                 search: bool = True) -> Optional[CriticsRating]:
     """Note presse estimée, ou None si pas de Kritikenrundschau exploitable.
 
     url : page du spectacle sur le site du théâtre (son slug est souvent le
@@ -554,7 +572,7 @@ def fetch_rating(theater: str, title: str, url: str = "", offline: bool = False)
     cache, sans réseau (ouvertures de vente, où l'alerte doit partir vite).
     """
     try:
-        candidates, _failed = _find_reviews(theater, title, url, offline)
+        candidates, _failed = _find_reviews(theater, title, url, offline, search)
         review_url, scores = None, []
         for cand, sure in candidates[:3]:
             entry = _review(cand, theater, sure, offline)
@@ -575,3 +593,8 @@ def fetch_rating(theater: str, title: str, url: str = "", offline: bool = False)
         negative=sum(s < -0.2 for s in scores),
         url=review_url,
     )
+
+
+def in_listing(theater: str, title: str, url: str = "") -> bool:
+    """La pièce figure-t-elle dans la rubrique (en cache) de sa maison ? Local, instantané."""
+    return bool(_find_reviews(theater, title, url, offline=True, search=False)[0])

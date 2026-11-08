@@ -2,7 +2,7 @@
 // « plan » quand 2+ personnes veulent voir la même chose, avis complets, récap hebdo.
 // Tout est dans la langue du groupe (settings.group_lang, celle de qui a tapé /groupe).
 import { Lang, asLang, tr } from "./i18n";
-import { Env, Item, basicText, edit, esc, itemText, send, setSetting, setting, stars, tg } from "./lib";
+import { Env, Item, basicText, edit, esc, horizon, inWindow, itemText, send, setSetting, setting, stars, tg, windowSql } from "./lib";
 
 const ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", cinema: "🎬", film: "🎬" };
 const today = () => new Date().toISOString().slice(0, 10);
@@ -32,7 +32,8 @@ export function whereWhen(item: Item, venue: string | null | undefined, lang: La
     if (item.end_date) parts.push(T.until(shortDate(item.end_date)));
   } else {
     const now = today();
-    const next = (JSON.parse(item.dates || "[]") as string[]).filter((d) => d.slice(0, 10) >= now).sort();
+    const all = (JSON.parse(item.dates || "[]") as string[]).filter((d) => d.slice(0, 10) >= now).sort();
+    const next = item.kind === "theatre" ? inWindow(all) : all;
     if (next.length) {
       const more = next.length > max ? ` (+${next.length - max})` : "";
       parts.push(T.nextDates(next.slice(0, max).map((d) => fmtWhen(d, lang)).join(", ") + more));
@@ -68,6 +69,7 @@ async function wanted(env: Env) {
        AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= ?2
                  ELSE i.last_seen >= datetime(?1, '-2 days') END)
        AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= ?2)
+       AND ${windowSql(await horizon(env))}
      GROUP BY i.id ORDER BY n DESC, i.title LIMIT 40`,
   ).bind(since, today()).all<Item & { venue: string; names: string; n: number }>();
   return results;
@@ -93,6 +95,7 @@ export async function groupProgramme(env: Env, lang: Lang): Promise<{ text: stri
        AND EXISTS (SELECT 1 FROM subscriptions s JOIN users u ON u.chat_id = s.chat_id AND u.active = 1
                    WHERE s.venue_id = v.id)
        AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= ?2)
+       AND ${windowSql(await horizon(env))}
      ORDER BY CASE i.kind WHEN 'theatre' THEN 0 ELSE 1 END, v.position, i.title LIMIT 60`,
   ).bind(since, today()).all<Item & { venue: string }>();
   if (!results.length) return [{ text: `${T.groupProgrammeTitle}\n\n${T.groupNothingOn}` }];

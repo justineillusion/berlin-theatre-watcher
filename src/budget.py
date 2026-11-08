@@ -50,6 +50,7 @@ def map_with_budget(
     budget: float,
     workers: int = 1,
     pause: float = 0.0,
+    item_timeout: Optional[float] = None,
 ) -> Tuple[Dict[int, R], List[int]]:
     """Applique fn à chaque item (dans l'ordre, `workers` threads daemon,
     `pause` secondes entre deux items d'un même worker), pendant `budget`
@@ -57,6 +58,8 @@ def map_with_budget(
 
     Renvoie ({index: résultat} pour ce qui a fini à temps, [index non finis]).
     Un item dont fn lève une exception compte comme fini, avec None.
+    `item_timeout` : plafond par item (s) ; un item trop lent est abandonné (il
+    finit en tâche de fond, son résultat est ignoré) et compté « non fini ».
     """
     if not items:
         return {}, []
@@ -64,6 +67,7 @@ def map_with_budget(
     for i in range(len(items)):
         todo.put(i)
     results: Dict[int, R] = {}
+    processed = [0]
     lock = threading.Lock()
     all_done = threading.Event()
     closed = threading.Event()
@@ -78,15 +82,23 @@ def map_with_budget(
             if pause and not first:
                 time.sleep(pause)
             first = False
+            out = _MISSING
             try:
-                out = fn(items[i])
+                if item_timeout:
+                    ok, out = call_with_timeout(lambda: fn(items[i]), item_timeout)
+                    if not ok:
+                        out = _MISSING          # trop lent : sauté (« à retenter »)
+                else:
+                    out = fn(items[i])
             except Exception:  # noqa: BLE001 — un item en échec ne bloque pas les autres
                 out = None
             with lock:
                 if closed.is_set():
                     return                      # trop tard : le résultat est ignoré
-                results[i] = out
-                if len(results) == len(items):
+                if out is not _MISSING:
+                    results[i] = out
+                processed[0] += 1
+                if processed[0] == len(items):
                     all_done.set()
 
     for _ in range(max(1, min(workers, len(items)))):

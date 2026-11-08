@@ -16,6 +16,9 @@ Un envoi raté n'est pas déclaré : il repartira au scan suivant (comme avant).
 """
 from __future__ import annotations
 
+import copy
+from datetime import date, timedelta
+
 import os
 from typing import Callable, Dict, List
 
@@ -62,7 +65,28 @@ def _complete(show: Show, need_ids: set) -> bool:
     return show.item_id() in need_ids or bool(show.summary or show.summary_en or show.critics)
 
 
+HORIZON_THEATRE_DAYS = 14   # config.yaml horizon_theatre_days (fixé par run_multi)
+
+
+def _windowed(show: Show) -> Show:
+    """Pièce : seulement les dates des `horizon_theatre_days` prochains jours
+    (la fiche ne montre que ce qui se joue bientôt ; les dates d'après restent
+    en base et seront annoncées en entrant dans la fenêtre)."""
+    if show.kind != "theatre" or len(show.available_iso) != len(show.available_dates):
+        return show
+    now = date.today()
+    end = (now + timedelta(days=HORIZON_THEATRE_DAYS)).isoformat()
+    keep = [i for i, d in enumerate(show.available_iso) if now.isoformat() <= d[:10] <= end]
+    if not keep or len(keep) == len(show.available_iso):
+        return show
+    out = copy.copy(show)
+    out.available_iso = [show.available_iso[i] for i in keep]
+    out.available_dates = [show.available_dates[i] for i in keep]
+    return out
+
+
 def _texts(show: Show, langs: tuple) -> dict:
+    show = _windowed(show)
     out = {"id": show.item_id(), "text": format_item(show), "line": digest_line(show)}
     if "en" in langs:
         out["text_en"] = format_item(show, "en")
@@ -78,6 +102,8 @@ def run_multi(
     enrich: Callable[[List[Show], bool, tuple], None],
 ) -> None:
     from .main import add_critics
+    global HORIZON_THEATRE_DAYS
+    HORIZON_THEATRE_DAYS = int(config.get("horizon_theatre_days", 14))
 
     mode = "digest" if digest else "scan"
     by_id: Dict[str, Show] = {s.item_id(): s for s in hits}
@@ -90,6 +116,8 @@ def run_multi(
                 "venues": _venues(config),
                 "items": [_meta(s) for s in hits],
                 "expo_last_weeks_days": config.get("expo_last_weeks_days", 14),
+                "horizon_expo_days": config.get("horizon_expo_days", 7),
+                "horizon_theatre_days": config.get("horizon_theatre_days", 14),
             },
         )
         plan.raise_for_status()

@@ -1,0 +1,45 @@
+name: Buzz presse (tip Berlin + The Berliner)
+
+on:
+  schedule:
+    # 04:45 UTC chaque jour (06:45 à Berlin l'été) : avant le scan du matin,
+    # pour que les cartes lisent un state/press_cache.json frais.
+    - cron: "45 4 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write          # pour committer state/press_cache.json
+
+concurrency:
+  group: theatre-press
+  cancel-in-progress: false
+
+jobs:
+  press:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15   # le refresh lui-même s'arrête à 5 min (budget interne)
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Rafraîchir le cache presse
+        run: python -m src.press --refresh
+
+      - name: Committer le cache
+        run: |
+          git config user.name  "theatre-watcher-bot"
+          git config user.email "actions@github.com"
+          git add state/press_cache.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update press cache [skip ci]"
+            git pull --rebase -X theirs origin main || git rebase --abort
+            git push
+          else
+            echo "Pas de changement du cache presse."
+          fi

@@ -71,32 +71,42 @@ def collect_shows(theaters: list) -> List[Show]:
     return shows
 
 
-def add_critics(shows: List[Show], config: dict) -> None:
-    """Note presse estimée depuis Nachtkritik, quand une Kritikenrundschau existe."""
+def add_critics(shows: List[Show], config: dict, online: bool = False) -> None:
+    """Note presse estimée depuis Nachtkritik, quand une Kritikenrundschau existe.
+
+    Par défaut : lecture du CACHE seulement (state/critics_cache.json), zéro
+    requête Nachtkritik, donc instantané. Le cache est rafraîchi chaque nuit par
+    le job critics.yml (`python -m src.critics_refresh`), seul à aller en ligne.
+    """
     shows = [s for s in shows if s.kind != "expo"]    # Nachtkritik = théâtre seulement
-    mode = config.get("critics_rating", True)
-    if not mode or not shows:
+    if not config.get("critics_rating", True) or not shows:
         return
-    # "cache" (--no-critics) : note lue dans state/critics_cache.json, sans réseau.
-    offline = mode == "cache"
+    if not online:
+        for s in shows:
+            s.critics = fetch_rating(s.theater, s.title, s.url, offline=True)
+        found = sum(1 for s in shows if s.critics)
+        print(f"📰 Notes presse (cache Nachtkritik) : {found}/{len(shows)} pièce(s) notée(s) "
+              f"({100 * found // len(shows)} %).")
+        return
     budget = float(config.get("critics_budget_s", 300))
-    print(f"📰 Recherche des critiques sur Nachtkritik ({len(shows)} pièce(s), {budget:.0f} s max)…")
-    # La recherche Nachtkritik met 5 à 30 s par pièce, parfois bien plus (timeouts
-    # httpx par lecture + retries qui s'empilent) : un scan a déjà bloqué 21 min.
-    # Budget global (voir src/budget.py) ; les pièces non terminées partent sans
-    # note presse, le cache fera mieux au prochain scan.
+    cap = float(config.get("critics_item_timeout_s", 8))
+    print(f"📰 Nachtkritik en ligne ({len(shows)} pièce(s), {budget:.0f} s max, {cap:.0f} s par pièce)…")
+    # Budget global + plafond par pièce (voir src/budget.py) : une pièce pas
+    # trouvée en `cap` secondes est sautée (« à retenter » : rien n'est mis en
+    # cache comme « pas de critique »), on passe à la suivante.
     done, late = map_with_budget(
-        shows, lambda s: fetch_rating(s.theater, s.title, s.url, offline=offline), budget, workers=4)
+        shows, lambda s: fetch_rating(s.theater, s.title, s.url), budget, workers=4, item_timeout=cap)
     for i, rating in done.items():
         shows[i].critics = rating
     if late:
-        print(f"   ⏱  budget de {budget:.0f} s dépassé : {len(late)} pièce(s) sans note presse "
-              f"({', '.join(shows[i].title for i in late[:5])}{'…' if len(late) > 5 else ''}).")
+        print(f"   ⏭  {len(late)} pièce(s) sautée(s) (trop lentes, à retenter) : "
+              f"{', '.join(shows[i].title for i in late)}.")
     found = sum(1 for s in shows if s.critics)
-    print(f"   {found} pièce(s) avec une note presse.")
+    print(f"   {found}/{len(shows)} pièce(s) avec une note presse ({100 * found // len(shows)} %).")
 
 
 _ENRICH_BUDGET_S = 360      # pages détail + traductions : 6 min max (config enrich_budget_s)
+_ITEM_TIMEOUT_S = 10       # par item (page détail + traductions) : au-delà, sauté (config item_timeout_s)
 _VENUE_TIMEOUT_S = 90       # un lieu qui ne répond pas en 90 s est sauté (config venue_timeout_s)
 
 
@@ -155,7 +165,7 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
         time.sleep(1.0)                    # la traduction gratuite rate-limite les rafales
         return out
 
-    done, late = map_with_budget(shows, one, budget, workers=1)
+    done, late = map_with_budget(shows, one, budget, workers=1, item_timeout=_ITEM_TIMEOUT_S)
     for i, out in done.items():
         if not out:
             continue
@@ -167,9 +177,9 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
             show.spoken_language, show.surtitles = out.get("spoken"), out.get("surtitles")
     _save_summary_cache(cache)
     if late:
-        print(f"   ⏱  budget de {budget:.0f} s dépassé : {len(late)} item(s) sans résumé ce coup-ci "
-              f"(le cache avancera au prochain scan) : "
-              f"{', '.join(shows[i].title for i in late[:5])}{'…' if len(late) > 5 else ''}.")
+        print(f"   ⏭  {len(late)} item(s) sans résumé ce coup-ci "
+              f"(> {_ITEM_TIMEOUT_S:.0f} s chacun ou budget épuisé ; le cache avancera au prochain scan) : "
+              f"{', '.join(shows[i].title for i in late)}.")
 
 
 def _print_console(show: Show) -> None:
@@ -230,8 +240,9 @@ def main() -> None:
     args = parser.parse_args()
 
     config = yaml.safe_load(CONFIG_PATH.read_text())
-    global _ENRICH_BUDGET_S, _VENUE_TIMEOUT_S
+    global _ENRICH_BUDGET_S, _VENUE_TIMEOUT_S, _ITEM_TIMEOUT_S
     _ENRICH_BUDGET_S = float(config.get("enrich_budget_s", _ENRICH_BUDGET_S))
+    _ITEM_TIMEOUT_S = float(config.get("item_timeout_s", _ITEM_TIMEOUT_S))
     _VENUE_TIMEOUT_S = float(config.get("venue_timeout_s", _VENUE_TIMEOUT_S))
     if args.no_critics and config.get("critics_rating", True):
         config["critics_rating"] = "cache"     # notes déjà en cache seulement (pas de réseau)

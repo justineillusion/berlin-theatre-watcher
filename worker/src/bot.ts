@@ -1,7 +1,7 @@
 // Webhook Telegram : commandes, boutons ⭐ / ✅ / 🔕, notes, petits mots.
 import {
-  Env, Friend, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, keyboard, renderFor,
-  send, setSetting, setting, socialBlock, stars, tg,
+  Env, Friend, Horizon, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, horizon, keyboard, renderFor,
+  send, setSetting, setting, socialBlock, stars, tg, windowSql,
 } from "./lib";
 import { digestFor } from "./scan";
 import { Lang, asLang, guessLang, langKeyboard, tr } from "./i18n";
@@ -217,6 +217,7 @@ async function interestsText(env: Env, chat: number, lang: Lang): Promise<string
      WHERE r.interested = 1 AND r.status IS NULL
        AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
                  ELSE i.last_seen >= datetime(?2, '-2 days') END)
+       AND ${windowSql(await horizon(env))}
      GROUP BY i.id ORDER BY n DESC, i.title LIMIT 30`,
   ).bind(chat, since).all<any>();
   if (!results.length) return T.noInterests;
@@ -302,7 +303,8 @@ async function myDelivery(env: Env, chat: number, item: string) {
 const PAGE = 5;
 
 /** Items « à l'affiche » vus par `chat` : lieux suivis, encore programmés, pas ignorés. */
-const CURRENT = `
+const current = (h: Horizon) => `
+  ${windowSql(h)} AND
   i.venue_id IN (SELECT venue_id FROM subscriptions WHERE chat_id = ?1)
   AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
             ELSE i.last_seen >= ?2 END)
@@ -311,18 +313,19 @@ const CURRENT = `
 
 async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | null = null): Promise<{ text: string; kb: unknown }> {
   const T = tr(lang);
+  const cur = current(await horizon(env));
   const since = (await setting(env, "current_since")) ?? "";
   const { results: venues } = await env.DB.prepare(
     `SELECT v.id, v.name, v.kind AS vkind, COUNT(*) AS n FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
-     WHERE ${CURRENT} AND (?3 IS NULL OR i.kind = ?3)
+     WHERE ${cur} AND (?3 IS NULL OR i.kind = ?3)
      GROUP BY v.id ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
   ).bind(chat, since, kind).all<{ id: string; name: string; vkind: string; n: number }>();
   const { results: kinds } = await env.DB.prepare(
-    `SELECT i.kind, COUNT(*) AS n FROM items i WHERE ${CURRENT} GROUP BY i.kind`,
+    `SELECT i.kind, COUNT(*) AS n FROM items i WHERE ${cur} GROUP BY i.kind`,
   ).bind(chat, since).all<{ kind: string; n: number }>();
   const star = await env.DB.prepare(
     `SELECT COUNT(DISTINCT r.item_id) AS n FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
-     JOIN items i ON i.id = r.item_id WHERE r.interested = 1 AND r.status IS NULL AND ${CURRENT}`,
+     JOIN items i ON i.id = r.item_id WHERE r.interested = 1 AND r.status IS NULL AND ${cur}`,
   ).bind(chat, since).first<{ n: number }>();
   const count = (k: string) => kinds.find((x) => x.kind === k)?.n ?? 0;
   const rows: unknown[][] = [];
@@ -343,6 +346,7 @@ async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | 
 /** Une page de fiches : `filter` = « pk:<theatre|expo|film|star> » ou « pv:<lieu> ». */
 async function browse(env: Env, chat: number, lang: Lang, filter: string, offset: number): Promise<void> {
   const T = tr(lang);
+  const cur = current(await horizon(env));
   const since = (await setting(env, "current_since")) ?? "";
   const [type, value] = [filter.slice(0, 2), filter.slice(3)];
   const where = type === "pv" ? "i.venue_id = ?3"
@@ -352,7 +356,7 @@ async function browse(env: Env, chat: number, lang: Lang, filter: string, offset
       : "i.kind = ?3";
   const { results } = await env.DB.prepare(
     `SELECT i.* FROM items i JOIN venues v ON v.id = i.venue_id
-     WHERE ${CURRENT} AND ${where}
+     WHERE ${cur} AND ${where}
      ORDER BY CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position,
        COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999'), i.title
      LIMIT ?4 OFFSET ?5`,
