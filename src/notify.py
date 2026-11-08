@@ -167,6 +167,27 @@ def clean_credits(text: str) -> str:
     return t
 
 
+_CREDIT_WORDS = {
+    "fr": [(r"\bin an adaptation by\b", "dans une adaptation de"), (r"\bin collaboration with\b", "en collaboration avec"),
+           (r"\badapted by\b", "adapté par"), (r"\bdirected by\b", "mis en scène par"), (r"^\s*(?:by|von)\b", "De"),
+           (r"\bafter\b|\bnach\b", "d'après"), (r"\bby\b|\bvon\b", "de"), (r"\band\b|\bund\b", "et"),
+           (r"\(Book\)", "(livret)"), (r"\(Music\)", "(musique)"), (r"\bDirector:", "Mise en scène :"),
+           (r"\bwith\b|\bmit\b", "avec")],
+    "en": [(r"^\s*(?:by|von)\b", "By"), (r"\bnach\b", "after"), (r"\bvon\b", "by"), (r"\bund\b", "and"),
+           (r"\bmit\b", "with"), (r"\bRegie:", "Director:")],
+}
+
+
+def credits_line(text: str, lang: str = "fr") -> str:
+    """Crédits nettoyés, connecteurs dans la langue de la fiche (« By X and Y » -> « De X et Y »)."""
+    t = clean_credits(text)
+    for pat, rep in _CREDIT_WORDS.get(lang, []):
+        t = re.sub(pat, rep, t, flags=re.I)
+    if lang == "fr":                        # élision : « D'Oscar Wilde », « d'Elisabeth »
+        t = re.sub(r"\b([Dd])e ([AEIOUÉÈÂÎaeiouéèâî])", r"\1'\2", t)
+    return t
+
+
 def digest_line(show: Show, lang: str = "fr") -> str:
     """Bloc d'une pièce/expo dans un récap (sans la ligne « amis », ajoutée par
     le bot multi-utilisateurs)."""
@@ -204,7 +225,7 @@ def format_expo(show: Show, lang: str = "fr") -> str:
     if period:
         lines.append(f"🗓 {_esc(period[0].upper() + period[1:])}")
     if show.languages:
-        lines.append(f"✍️ {_esc(clean_credits(show.languages))}")
+        lines.append(f"✍️ {_esc(credits_line(show.languages, lang))}")
     press = press_line(show, lang)
     if press:
         lines.append(press)
@@ -280,7 +301,7 @@ def format_show(show: Show, lang: str = "fr") -> str:
     if show.production_type:
         lines.append(f"🎬 {_esc(show.production_type)}")
     if show.languages and not is_pure_language_note(show.languages):
-        lines.append(f"✍️ {_esc(clean_credits(show.languages))}")
+        lines.append(f"✍️ {_esc(credits_line(show.languages, lang))}")
     spoken = " · ".join(p for p in _labels(show, lang) if p)
     if spoken:
         lines.append(f"🗣 {_esc(spoken)}")

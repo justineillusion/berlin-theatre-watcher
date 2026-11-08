@@ -40,7 +40,8 @@ def _play() -> Show:
     return Show(
         theater="Xyztheater", title="Qwerty", venue="Saal Zz", url="https://x/p", booking_url="https://x/b",
         available_dates=[f"0{i}/12 · 19:30" for i in range(1, 8)], available_iso=["2026-12-01 19:30"],
-        new_dates=["2026-12-01 19:30"], production_type=None, spoken_language="En anglais",
+        new_dates=["2026-12-01 19:30"], production_type=None,
+        languages="By Qwe Rty in an Adaptation by Asd Fgh and Zxc Vbn", spoken_language="En anglais",
         surtitles="surtitres anglais", summary="Résumé.", summary_en="Summary.", venue_id="x", venue_name="Xyztheater",
     )
 
