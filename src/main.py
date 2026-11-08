@@ -60,6 +60,10 @@ def collect_shows(theaters: list) -> List[Show]:
             print(f"⏱  {name} — pas de réponse en {_VENUE_TIMEOUT_S} s, lieu sauté ce coup-ci.")
             continue
         for show in found:
+            # Liens toujours absolus (Volksbühne renvoie « /en/productions/… »).
+            from urllib.parse import urljoin
+            show.url = urljoin(theater["url"], show.url) if show.url else show.url
+            show.booking_url = urljoin(show.url or theater["url"], show.booking_url) if show.booking_url else show.booking_url
             show.venue_id = venue_slug(name)
             show.venue_name = name
             show.kind = kind
