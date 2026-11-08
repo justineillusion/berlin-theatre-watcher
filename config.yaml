@@ -68,8 +68,8 @@ horizon_theatre_days: 365
 # Nachtkritik : les jobs lisent state/critics_cache.json SANS réseau ; seul le
 # job de nuit critics.yml (python -m src.critics_refresh) va en ligne.
 critics_budget_s: 300      # Nachtkritik en ligne (critics.yml), toutes pièces confondues
-item_timeout_s: 10         # plafond PAR ITEM (page détail, traduction…) : au-delà, sauté et loggé
-enrich_budget_s: 360       # pages détail + traductions des résumés
+item_timeout_s: 25         # plafond PAR ITEM (page détail, traduction…) : au-delà, sauté et loggé
+enrich_budget_s: 1200      # pages détail + traductions des résumés
 venue_timeout_s: 90        # programme d'UN lieu
 
 # ---------------------------------------------------------------------------

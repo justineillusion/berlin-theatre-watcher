@@ -47,18 +47,41 @@ def translate(text: Optional[str], target: str = "fr", retries: int = 3) -> Opti
         return text
     try:
         from deep_translator import GoogleTranslator
-    except Exception:  # noqa: BLE001 — dépendance absente : on garde l'original
-        return text
+    except Exception:  # noqa: BLE001 — dépendance absente : endpoint gtx seul
+        GoogleTranslator = None
 
     for attempt in range(retries):
-        try:
-            out = GoogleTranslator(source="auto", target=target).translate(text)
-            if _looks_valid(text, out):
-                return out
-        except Exception:  # noqa: BLE001
-            pass
+        # 1) endpoint « gtx » (celui des extensions navigateur) : bien moins
+        #    rate-limité que la page mobile scrapée par deep_translator, qui
+        #    renvoyait TooManyRequests en continu (FR jamais traduit, 8/11/2026).
+        out = _gtx(text, target)
+        if _looks_valid(text, out):
+            return out
+        if GoogleTranslator is not None:
+            try:
+                out = GoogleTranslator(source="auto", target=target).translate(text)
+                if _looks_valid(text, out):
+                    return out
+            except Exception:  # noqa: BLE001
+                pass
         time.sleep(1.0 + 1.5 * attempt)   # backoff pour laisser le rate-limit retomber
     return text  # repli : mieux vaut l'original qu'un "505"
+
+
+def _gtx(text: str, target: str) -> Optional[str]:
+    """translate.googleapis.com/translate_a/single?client=gtx (sans clé)."""
+    try:
+        import httpx
+        r = httpx.post(
+            "https://translate.googleapis.com/translate_a/single",
+            params={"client": "gtx", "sl": "auto", "tl": target, "dt": "t"},
+            data={"q": text[:4500]}, timeout=8.0,
+        )
+        if r.status_code != 200:
+            return None
+        return "".join(seg[0] for seg in (r.json()[0] or []) if seg and seg[0])
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def to_french(text: Optional[str], retries: int = 3) -> Optional[str]:
