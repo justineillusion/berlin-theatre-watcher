@@ -91,9 +91,10 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
       const m = await programmeMenu(env, chat, lang, kind);
       return void (await send(env, chat, m.text, m.kb));
     }
-    case "/interets": case "/interests":
-      return void (await send(env, chat, await interestsText(env, chat, lang), await interestsKeyboard(env, chat, lang)));
-    case "/vus": return void (await send(env, chat, await seenText(env, chat, lang)));
+    case "/sorties": case "/outings": case "/interets": case "/interests": case "/vus": {
+      const o = await outings(env, chat, lang);
+      return void (await send(env, chat, o.text, o.kb));
+    }
     case "/ignores": return onIgnored(env, chat, lang);
     case "/langue": case "/language": case "/lang":
       return void (await send(env, chat, T.langPrompt, langKeyboard()));
@@ -237,77 +238,51 @@ async function followKeyboard(env: Env, chat: number, lang: Lang): Promise<unkno
 // ---------------------------------------------------------------------------
 // Listes
 // ---------------------------------------------------------------------------
-async function interestsText(env: Env, chat: number, lang: Lang): Promise<string> {
+/** /sorties : UNE liste — 🎟 réservé (date ↑), ⭐ intéressé·e, ✅ vu (10 derniers, ma note).
+ *  Boutons : 🎟 / ✅ / ✖ pour réservé et ⭐ ; ★ (noter) ou ✍️ (avis) pour le vu. */
+async function outings(env: Env, chat: number, lang: Lang): Promise<{ text: string; kb?: unknown }> {
   const T = tr(lang);
   const since = (await setting(env, "current_since")) ?? "";
-  const { results } = await env.DB.prepare(
-    `SELECT i.id, i.title, i.kind, i.url, v.name AS venue, COUNT(*) AS n,
-       MAX(r.chat_id = ?1) AS mine
-     FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
-     JOIN items i ON i.id = r.item_id JOIN venues v ON v.id = i.venue_id
-     WHERE r.interested = 1 AND r.status IS NULL
-       AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
-                 ELSE i.last_seen >= datetime(?2, '-2 days') END)
-       AND ${windowSql(await horizon(env))}
-     GROUP BY i.id ORDER BY n DESC, i.title LIMIT 30`,
-  ).bind(chat, since).all<any>();
-  // 🎟 Réservations d'abord (les miennes et celles de la bande, à venir).
-  const { results: bk } = await env.DB.prepare(
-    `SELECT i.title, i.url, r.booked_at, r.chat_id, u.first_name, v.name AS venue FROM reactions r
-     JOIN users u ON u.chat_id = r.chat_id AND u.active = 1 JOIN items i ON i.id = r.item_id
-     JOIN venues v ON v.id = i.venue_id
-     WHERE r.booked_at IS NOT NULL AND substr(r.booked_at, 1, 10) >= date('now') AND r.status IS NULL
-     ORDER BY r.booked_at LIMIT 20`,
-  ).all<any>();
-  const booked = bk.length ? `${T.bookingsHead}\n` + bk.map((b) => {
-    const t = b.url ? `<a href="${esc(b.url)}">${esc(b.title)}</a>` : esc(b.title);
-    return `🎟 ${t} — ${whenLabel(b.booked_at, lang)} <i>(${esc(b.venue)})</i> · ${b.chat_id === chat ? T.youBold : esc(b.first_name)}`;
-  }).join("\n") + "\n\n" : "";
-  if (!results.length) return booked ? booked.trim() : T.noInterests;
-  const friends = await friendsByItem(env, results.map((r) => r.id));
-  const lines = results.map((r) => {
-    const t = r.url ? `<a href="${esc(r.url)}">${esc(r.title)}</a>` : esc(r.title);
-    const who = (friends.get(r.id) ?? []).filter((f) => f.interested && !f.status)
-      .map((f) => (f.chat_id === chat ? T.youBold : esc(f.first_name))).join(", ");
-    return `${KIND_ICON[r.kind] ?? "🎭"} ${t} <i>(${esc(r.venue)})</i>\n   ⭐ ${who}`;
-  });
-  return `${booked}${T.interestsTitle}\n\n${lines.join("\n")}`;
-}
-
-/** Boutons de /interets (privé) : mes ⭐ pas encore vus -> 🎟 réserver (ou changer la date) + ✅ vu. */
-async function interestsKeyboard(env: Env, chat: number, lang: Lang): Promise<unknown> {
-  const T = tr(lang);
-  const since = (await setting(env, "current_since")) ?? "";
-  const { results } = await env.DB.prepare(
-    `SELECT i.id, i.title, i.kind, r.booked_at FROM reactions r JOIN items i ON i.id = r.item_id
-     JOIN venues v ON v.id = i.venue_id AND v.active = 1
+  const { results: active } = await env.DB.prepare(
+    `SELECT i.id, i.title, i.kind, i.url, v.name AS venue, r.booked_at FROM reactions r
+     JOIN items i ON i.id = r.item_id JOIN venues v ON v.id = i.venue_id AND v.active = 1
      WHERE r.chat_id = ?1 AND r.interested = 1 AND r.status IS NULL
-       AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
-                 ELSE i.last_seen >= datetime(?2, '-2 days') END)
-     ORDER BY r.booked_at IS NULL, r.booked_at, i.title LIMIT 30`,
-  ).bind(chat, since).all<{ id: string; title: string; kind: string; booked_at: string | null }>();
-  if (!results.length) return undefined;
-  const short = (t: string) => (t.length > 28 ? t.slice(0, 27) + "…" : t);
-  return {
-    inline_keyboard: results.map((r) => [
-      { text: T.btnBookList(short(r.title), !!r.booked_at), callback_data: `b:${r.id}` },
-      { text: T.btnSeen(r.kind === "expo"), callback_data: `v:${r.id}` },
-      { text: "✖", callback_data: `ui:${r.id}` },
-    ]),
-  };
-}
-
-async function seenText(env: Env, chat: number, lang: Lang): Promise<string> {
-  const T = tr(lang);
-  const { results } = await env.DB.prepare(
-    `SELECT i.title, i.kind, r.rating, r.comment, v.name AS venue FROM reactions r
+       AND (r.booked_at IS NOT NULL AND substr(r.booked_at, 1, 10) >= date('now')
+            OR CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
+                    ELSE i.last_seen >= datetime(?2, '-2 days') END)
+     ORDER BY r.booked_at IS NULL, r.booked_at, i.title LIMIT 25`,
+  ).bind(chat, since).all<any>();
+  const { results: seen } = await env.DB.prepare(
+    `SELECT i.id, i.title, i.kind, i.url, v.name AS venue, r.rating, r.comment FROM reactions r
      JOIN items i ON i.id = r.item_id JOIN venues v ON v.id = i.venue_id
-     WHERE r.chat_id = ? AND r.status = 'seen' ORDER BY r.updated_at DESC LIMIT 40`,
+     WHERE r.chat_id = ? AND r.status = 'seen' ORDER BY r.updated_at DESC LIMIT 10`,
   ).bind(chat).all<any>();
-  if (!results.length) return T.noneSeen;
-  return `${T.seenTitle}\n\n` + results.map((r) =>
-    `${r.kind === "expo" ? "🖼" : "🎭"} ${esc(r.title)} <i>(${esc(r.venue)})</i>${r.rating ? ` ${stars(r.rating)}` : ""}` +
-    (r.comment ? `\n   « ${esc(r.comment)} »` : "")).join("\n");
+  if (!active.length && !seen.length) return { text: T.outEmpty };
+  const friends = await friendsByItem(env, active.map((r) => r.id));
+  const link = (r: any) => r.url ? `<a href="${esc(r.url)}">${esc(r.title)}</a>` : esc(r.title);
+  const others = (id: string) => (friends.get(id) ?? []).filter((f) => f.interested && !f.status && f.chat_id !== chat)
+    .map((f) => esc(f.first_name)).join(", ");
+  const line = (r: any, when = "") => {
+    const o = others(r.id);
+    return `${KIND_ICON[r.kind] ?? "🎭"} ${link(r)}${when} <i>(${esc(r.venue)})</i>${o ? `\n   👥 ${o}` : ""}`;
+  };
+  const booked = active.filter((r) => r.booked_at);
+  const keen = active.filter((r) => !r.booked_at);
+  const parts = [T.outingsTitle];
+  if (booked.length) parts.push(`${T.outBooked}\n` + booked.map((r) => line(r, ` — ${whenLabel(r.booked_at, lang)}`)).join("\n"));
+  if (keen.length) parts.push(`${T.outInterested}\n` + keen.map((r) => line(r)).join("\n"));
+  if (seen.length) {
+    parts.push(`${T.outSeen}\n` + seen.map((r) => `${KIND_ICON[r.kind] ?? "🎭"} ${link(r)}${r.rating ? ` ${stars(r.rating)}` : ""}`
+      + (r.comment ? `\n   « ${esc(r.comment)} »` : "")).join("\n"));
+  }
+  const short = (t: string) => (t.length > 28 ? t.slice(0, 27) + "…" : t);
+  const rows: any[][] = active.map((r) => [
+    { text: T.btnBookList(short(r.title), !!r.booked_at), callback_data: `b:${r.id}` },
+    { text: T.btnSeen(r.kind === "expo"), callback_data: `v:${r.id}` },
+    { text: "✖", callback_data: `ui:${r.id}` },
+  ]);
+  for (const r of seen) rows.push([{ text: T.btnRateList(short(r.title), !!r.rating), callback_data: `rt:${r.id}` }]);
+  return { text: parts.join("\n\n").slice(0, 4000), kb: rows.length ? { inline_keyboard: rows.slice(0, 40) } : undefined };
 }
 
 async function onIgnored(env: Env, chat: number, lang: Lang): Promise<void> {
@@ -562,12 +537,18 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     await refreshMine(env, chat, item, r2, lang);
     return void (await answer(T.bookCancelled));
   }
+  if (op === "rt") {
+    // ★ / ✍️ depuis /sorties : la carte de notation de cet item (1–5★ + ✍️ avis).
+    await send(env, chat, T.rateIt(label(item, venue?.name)), keyboard(item, prev, lang));
+    return void (await answer());
+  }
   if (op === "ui") {
     // ✖ depuis /interets : retire ⭐ (et la réservation), sans « ignoré » : l'item
     // revient dans /programme. La liste est rafraîchie sur place.
     const r2 = await setReaction(env, chat, item.id, { interested: 0, booked_at: null, booked_on: null, followup_sent: 0 });
     if (cq.message?.message_id) {
-      await edit(env, chat, cq.message.message_id, await interestsText(env, chat, lang), await interestsKeyboard(env, chat, lang));
+      const o = await outings(env, chat, lang);
+      await edit(env, chat, cq.message.message_id, o.text, o.kb);
     }
     await refreshMine(env, chat, item, r2, lang);
     ctx.waitUntil(refreshAll(env, item, chat));
@@ -644,7 +625,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   } else if (cq.message?.message_id) {
     const clicked = cq.message.message_id;
     const fromList = /^🔕 (Ignorés|Ignored)/.test(cq.message.text ?? "");
-    const fromInterests = /^(⭐|🎟) (Ce qui tente|What the gang|Réservations|Bookings)/.test(cq.message.text ?? "");
+    const fromInterests = /^(🗂 (Mes sorties|My outings)|(⭐|🎟) (Ce qui tente|What the gang|Réservations|Bookings))/.test(cq.message.text ?? "");
     if (fromInterests) {
       // ✅ depuis /interets : la ligne disparaît de la liste, la note se donne à part.
       const rows = (cq.message.reply_markup?.inline_keyboard ?? [])
