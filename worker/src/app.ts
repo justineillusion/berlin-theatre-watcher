@@ -145,8 +145,19 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
   const circle = await circleState(env, chat);
   const people = circle.friends;
   const invite = await inviteMessage(env, chat, lang);
+  // Prochaines ouvertes de billetterie (src/sales.py), pour les lieux que je suis.
+  const salesRaw = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'sales'").first<{ value: string }>())?.value;
+  let sales: { venue: string; day: string; at: string | null; month: string }[] = [];
+  try {
+    const names = new Map(venues.filter((v: any) => v.followed).map((v: any) => [v.id, v.name]));
+    sales = Object.values(JSON.parse(salesRaw || "{}") as Record<string, any>)
+      .filter((x) => names.has(x.venue_id) && x.day >= new Date().toISOString().slice(0, 10))
+      .map((x) => ({ venue: String(names.get(x.venue_id)), day: x.day, at: x.hour_known && x.at ? String(x.at).slice(11, 16) : null, month: x.month }))
+      .sort((a, b) => a.day.localeCompare(b.day));
+  } catch { /* calendrier illisible : on n'affiche rien */ }
   return {
     lang,
+    sales,
     venues,
     people,
     circle,
