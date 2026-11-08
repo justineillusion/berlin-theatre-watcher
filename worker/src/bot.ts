@@ -91,7 +91,8 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
       const m = await programmeMenu(env, chat, lang, kind);
       return void (await send(env, chat, m.text, m.kb));
     }
-    case "/interets": return void (await send(env, chat, await interestsText(env, chat, lang)));
+    case "/interets": case "/interests":
+      return void (await send(env, chat, await interestsText(env, chat, lang), await interestsKeyboard(env, chat, lang)));
     case "/vus": return void (await send(env, chat, await seenText(env, chat, lang)));
     case "/ignores": return onIgnored(env, chat, lang);
     case "/langue": case "/language": case "/lang":
@@ -271,6 +272,29 @@ async function interestsText(env: Env, chat: number, lang: Lang): Promise<string
     return `${KIND_ICON[r.kind] ?? "🎭"} ${t} <i>(${esc(r.venue)})</i>\n   ⭐ ${who}`;
   });
   return `${booked}${T.interestsTitle}\n\n${lines.join("\n")}`;
+}
+
+/** Boutons de /interets (privé) : mes ⭐ pas encore vus -> 🎟 réserver (ou changer la date) + ✅ vu. */
+async function interestsKeyboard(env: Env, chat: number, lang: Lang): Promise<unknown> {
+  const T = tr(lang);
+  const since = (await setting(env, "current_since")) ?? "";
+  const { results } = await env.DB.prepare(
+    `SELECT i.id, i.title, i.kind, r.booked_at FROM reactions r JOIN items i ON i.id = r.item_id
+     JOIN venues v ON v.id = i.venue_id AND v.active = 1
+     WHERE r.chat_id = ?1 AND r.interested = 1 AND r.status IS NULL
+       AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
+                 ELSE i.last_seen >= datetime(?2, '-2 days') END)
+     ORDER BY r.booked_at IS NULL, r.booked_at, i.title LIMIT 30`,
+  ).bind(chat, since).all<{ id: string; title: string; kind: string; booked_at: string | null }>();
+  if (!results.length) return undefined;
+  const short = (t: string) => (t.length > 28 ? t.slice(0, 27) + "…" : t);
+  return {
+    inline_keyboard: results.map((r) => [
+      { text: T.btnBookList(short(r.title), !!r.booked_at), callback_data: `b:${r.id}` },
+      { text: T.btnSeen(r.kind === "expo"), callback_data: `v:${r.id}` },
+      { text: "✖", callback_data: `ui:${r.id}` },
+    ]),
+  };
 }
 
 async function seenText(env: Env, chat: number, lang: Lang): Promise<string> {
@@ -538,6 +562,17 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     await refreshMine(env, chat, item, r2, lang);
     return void (await answer(T.bookCancelled));
   }
+  if (op === "ui") {
+    // ✖ depuis /interets : retire ⭐ (et la réservation), sans « ignoré » : l'item
+    // revient dans /programme. La liste est rafraîchie sur place.
+    const r2 = await setReaction(env, chat, item.id, { interested: 0, booked_at: null, booked_on: null, followup_sent: 0 });
+    if (cq.message?.message_id) {
+      await edit(env, chat, cq.message.message_id, await interestsText(env, chat, lang), await interestsKeyboard(env, chat, lang));
+    }
+    await refreshMine(env, chat, item, r2, lang);
+    ctx.waitUntil(refreshAll(env, item, chat));
+    return void (await answer("✓"));
+  }
   if (op === "j") {
     // « 🙋 J'y vais aussi » sous une annonce de réservation du groupe.
     if (!prev?.interested) await setReaction(env, chat, item.id, { interested: 1 });
@@ -609,7 +644,18 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   } else if (cq.message?.message_id) {
     const clicked = cq.message.message_id;
     const fromList = /^🔕 (Ignorés|Ignored)/.test(cq.message.text ?? "");
-    if (fromList) {
+    const fromInterests = /^(⭐|🎟) (Ce qui tente|What the gang|Réservations|Bookings)/.test(cq.message.text ?? "");
+    if (fromInterests) {
+      // ✅ depuis /interets : la ligne disparaît de la liste, la note se donne à part.
+      const rows = (cq.message.reply_markup?.inline_keyboard ?? [])
+        .filter((row: any[]) => !row.some((b: any) => b.callback_data === data));
+      await tg(env, "editMessageReplyMarkup", { chat_id: chat, message_id: clicked, reply_markup: { inline_keyboard: rows } });
+      await send(env, chat, T.rateIt(label(item, venue?.name)), keyboard(item, r, lang));
+      if (mine?.message_id) {
+        const v = renderFor(item, chat, r, friends, mine.header, lang);
+        await edit(env, chat, mine.message_id, v.text, v.reply_markup);
+      }
+    } else if (fromList) {
       // « ↩️ » depuis /ignores : on retire ce bouton de la liste…
       const rows = (cq.message.reply_markup?.inline_keyboard ?? [])
         .filter((row: any[]) => row[0]?.callback_data !== data);

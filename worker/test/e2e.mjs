@@ -623,6 +623,15 @@ try {
     // /interets : la réservation en tête
     let t = sends(await say(OWNER, "/interets"), OWNER)[0].text;
     assert.match(t, /^🎟 <b>Réservations<\/b>\n🎟 <a href="https:\/\/x\/book00000001">Mutter Courage<\/a> — .* 19:30 .*<b>toi<\/b>/);
+    // /interets : un bouton 🎟 par ⭐ (réservé -> « changer la date ») + ✅
+    const li = sends(await say(OWNER, "/interets"), OWNER)[0];
+    const lrows = li.reply_markup.inline_keyboard;
+    const mc = lrows.find((r) => r[0].callback_data === "b:book00000001");
+    assert.equal(mc[0].text, "🎟 Mutter Courage · changer la date");
+    assert.equal(mc[1].callback_data, "v:book00000001");
+    assert.ok(lrows.every((r) => r[0].text.length <= 31 + 20));
+    c = await click(OWNER, "b:book00000001", li._id, OWNER, "private", "🎟 Réservations");
+    assert.match(sends(c, OWNER)[0].text, /Mutter Courage<\/b> : pour quelle date/);
     // Max (groupe) : « J'y vais aussi » → intéressé + lien en privé
     c = await click(MAX, row[0].callback_data, ann._id, GROUP, "group", ann.text);
     assert.match(sends(c, MAX)[0].text, /Mutter Courage[\s\S]*https:\/\/x\/book00000001/);
@@ -652,6 +661,24 @@ try {
     assert.equal(fu[0].reply_markup.inline_keyboard[0][4].callback_data, "r:book00000002:5");
     r = await scan([hedda, ente, lear, bk, past]);
     assert.equal(r.messages.filter((x) => x.kind === "followup").length, 0);
+    // ✅ depuis /interets : la ligne disparaît, la note est proposée à part
+    const li2 = sends(await say(OWNER, "/interets"), OWNER)[0];
+    assert.ok(li2.reply_markup.inline_keyboard.some((r) => r[1].callback_data === "v:book00000002"));
+    c = await click(OWNER, "v:book00000002", li2._id, OWNER, "private", "🎟 Réservations");
+    const km = c.find((x) => x.method === "editMessageReplyMarkup");
+    assert.ok(!km.reply_markup.inline_keyboard.some((r) => r[1]?.callback_data === "v:book00000002"));
+    assert.match(sends(c, OWNER)[0].text, /Woyzeck[\s\S]*Ta note/);
+    // ✖ depuis /interets : plus ⭐, pas ignoré, liste rafraîchie sur place, revient dans /programme
+    const li3 = sends(await say(OWNER, "/interets"), OWNER)[0];
+    const row1 = li3.reply_markup.inline_keyboard.find((r) => r[0].callback_data === "b:book00000001");
+    assert.deepEqual(row1.map((b) => b.callback_data), ["b:book00000001", "v:book00000001", "ui:book00000001"]);
+    c = await click(OWNER, "ui:book00000001", li3._id, OWNER, "private", "⭐ Ce qui tente la bande");
+    const ed = edits(c, OWNER).find((x) => x.message_id === li3._id);
+    assert.ok(ed);                                   // Max y va toujours : la pièce reste, sans « toi »
+    assert.doesNotMatch(ed.text, /Mutter Courage[^\n]*\n\s+⭐[^\n]*toi/);
+    assert.ok(!(ed.reply_markup?.inline_keyboard ?? []).some((r) => r[0].callback_data === "b:book00000001"));
+    assert.ok(c.some((x) => x.method === "answerCallbackQuery" && x.text === "✓"));
+    assert.doesNotMatch(sends(await say(OWNER, "/ignores"), OWNER)[0].text, /Mutter Courage/);
     c = await click(OWNER, "r:book00000002:4", 8103);
     assert.match(sends(c, OWNER).find((x) => x.reply_markup?.force_reply).text, /Woyzeck/);
     await say(OWNER, "/passer");
