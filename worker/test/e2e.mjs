@@ -408,7 +408,7 @@ try {
     const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/start=(\w+)/)[1];
     await say(MAX, `/start ${link}`);
     assert.deepEqual(byChat(await cine())[MAX], ALL_CINE);
-    assert.match(sends(await say(MAX, "/aide"), MAX)[0].text, /films de la semaine/);
+    assert.match(sends(await say(MAX, "/aide"), MAX)[0].text, /films en VO/);
     await click(MAX, "sn", 7780);                      // « Rien » : plus de digest ciné
     assert.equal(byChat(await cine())[MAX], undefined);
   });
@@ -474,7 +474,8 @@ try {
     assert.deepEqual(last.reply_markup.inline_keyboard[0].map((b) => b.callback_data), ["l:fr:1", "l:en:1"]);
     c = await tgUpdate({ callback_query: { id: "z1", from: { id: ZOE, first_name: "Zoé" }, data: "l:en:1", message: { message_id: 1, chat: { id: ZOE, type: "private" }, text: "x" } } });
     assert.match(sends(c, ZOE)[0].text, /Welcome Zoé[\s\S]*How it works/);
-    assert.match(sends(c, ZOE)[1].text, /By default you follow everything/);
+    assert.equal(sends(c, ZOE).length, 1);                       // accueil seulement (lieux : dans l'app)
+    assert.match(sends(c, ZOE)[0].reply_markup.inline_keyboard[0][0].url, /t\.me\/TestBot\/Programme$/);
     const r = (await cine()).find((x) => x.chat_id === ZOE);
     assert.equal(r.lang, "en");
     assert.equal((await cine()).find((x) => x.chat_id === OWNER).lang, "fr");

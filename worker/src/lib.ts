@@ -356,5 +356,6 @@ export function renderFor(
 }
 
 /** Lien qui ouvre la mini-app sur une fiche (marche aussi dans le groupe, où les boutons web_app sont interdits). */
+export const appHome = (env: Env) => `https://t.me/${env.BOT_USERNAME}/${env.APP_SHORT_NAME || "Programme"}`;
 export const appLink = (env: Env, itemId: string) =>
   `https://t.me/${env.BOT_USERNAME}/${env.APP_SHORT_NAME || "Programme"}?startapp=${itemId}`;

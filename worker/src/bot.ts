@@ -1,7 +1,7 @@
 // Webhook Telegram : commandes, boutons ⭐ / ✅ / 🔕, notes, petits mots.
 import {
   Env, Friend, Horizon, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, horizon, editKeyboard, keyboard, renderFor,
-  send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql, appLink, circleSql, visibleTo } from "./lib";
+  send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql, appHome, appLink, circleSql, visibleTo } from "./lib";
 import { codeOwner, connect, connectViaLink, friendCallback, inviteMessage, resetCode } from "./circles";
 import { digestFor } from "./scan";
 import { openCard } from "./daily";
@@ -18,6 +18,8 @@ const help = (env: Env, chat: number, lang: Lang) => tr(lang).help + (isOwner(en
 
 
 const isOwner = (env: Env, id: number) => String(id) === String(env.OWNER_CHAT_ID);
+/** Bouton « 📖 Ouvrir Berlin Encore! » sous l'accueil et l'aide (privé). */
+const appButton = (env: Env, lang: Lang) => ({ inline_keyboard: [[{ text: tr(lang).openAppBtn, url: appHome(env) }]] });
 
 async function getUser(env: Env, chat_id: number) {
   return env.DB.prepare("SELECT * FROM users WHERE chat_id = ?").bind(chat_id)
@@ -94,7 +96,7 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
 
   switch (cmd) {
     case "/reglages": case "/settings":
-      return void (await send(env, chat, T.settingsTitle, settingsKeyboard(lang)));
+      return void (await send(env, chat, T.settingsTitle, settingsKeyboard(lang, isOwner(env, chat))));
     case "/suivre": return void (await send(env, chat, T.followPrompt, await followKeyboard(env, chat, lang)));
     case "/programme": case "/program":
     case "/expos": case "/theatre": case "/theatres": case "/theater": case "/films": {
@@ -122,7 +124,7 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
       ]);
       return void (await send(env, chat, "👌"));
     case "/aide": case "/help":
-      return void (await send(env, chat, help(env, chat, lang)));
+      return void (await send(env, chat, help(env, chat, lang), appButton(env, lang)));
   }
 
   // Chacun a son lien personnel : qui s'inscrit avec est connecté·e à lui / elle.
@@ -186,7 +188,7 @@ async function onStart(env: Env, from: TgUser, user: any, code?: string): Promis
     const lang = asLang(user.lang);
     if (!user.active) await env.DB.prepare("UPDATE users SET active = 1 WHERE chat_id = ?").bind(chat).run();
     if (inviter && inviter !== chat) return void (await connectViaLink(env, chat, inviter));
-    await send(env, chat, tr(lang).welcomeBack(esc(from.first_name)) + help(env, chat, lang));
+    await send(env, chat, tr(lang).welcomeBack(esc(from.first_name)) + help(env, chat, lang), appButton(env, lang));
     return;
   }
   const valid = isOwner(env, chat) || !!inviter || (code && code === await setting(env, "invite_code"));
@@ -207,8 +209,7 @@ async function onStart(env: Env, from: TgUser, user: any, code?: string): Promis
   // Langue par défaut : français (users.lang). Le choix est proposé tout de suite.
   await setChatMenu(env, chat, "fr");
   const T = tr("fr");
-  await send(env, chat, T.welcome(esc(from.first_name)) + help(env, chat, "fr") + "\n\n" + T.noSpam);
-  await send(env, chat, T.defaultAll, await followKeyboard(env, chat, "fr"));
+  await send(env, chat, T.welcome(esc(from.first_name)) + help(env, chat, "fr"), appButton(env, "fr"));
   await send(env, chat, T.langPrompt, langKeyboard(true));
   if (!isOwner(env, chat) && env.OWNER_CHAT_ID) {
     const owner = await getUser(env, Number(env.OWNER_CHAT_ID));
@@ -265,11 +266,12 @@ async function followKeyboard(env: Env, chat: number, lang: Lang): Promise<unkno
 }
 
 /** /reglages : un message, quatre boutons (lieux, langue, pas pour moi, groupe). */
-const settingsKeyboard = (lang: Lang) => {
+// 👥 Groupe : seulement pour l'admin (relier / délier le groupe de la bande).
+const settingsKeyboard = (lang: Lang, owner = false) => {
   const T = tr(lang);
   return { inline_keyboard: [
     [{ text: T.setVenues, callback_data: "st:v" }, { text: T.setLang, callback_data: "st:l" }],
-    [{ text: T.setIgnored, callback_data: "st:i" }, { text: T.setGroup, callback_data: "st:g" }],
+    [{ text: T.setIgnored, callback_data: "st:i" }, ...(owner ? [{ text: T.setGroup, callback_data: "st:g" }] : [])],
   ] };
 };
 
@@ -505,8 +507,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     await answer();
     // Inscription : l'accueil est parti en français ; on le redonne dans la langue choisie.
     if (onboarding && lang !== "fr") {
-      await send(env, chat, T.welcome(esc(from.first_name)) + help(env, chat, lang) + "\n\n" + T.noSpam);
-      await send(env, chat, T.defaultAll, await followKeyboard(env, chat, lang));
+      await send(env, chat, T.welcome(esc(from.first_name)) + help(env, chat, lang), appButton(env, lang));
     }
     return;
   }
@@ -526,7 +527,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     if (k === "v") return void (await send(env, chat, T.followPrompt, await followKeyboard(env, chat, lang)));
     if (k === "l") return void (await send(env, chat, T.langPrompt, langKeyboard()));
     if (k === "i") return onIgnored(env, chat, lang);
-    if (k === "g") return void (await send(env, chat, T.groupInfo(!!(await groupChat(env)))));
+    if (k === "g" && isOwner(env, chat)) return void (await send(env, chat, T.groupInfo(!!(await groupChat(env)))));
     return;
   }
 

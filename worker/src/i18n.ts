@@ -18,17 +18,13 @@ const fr = {
   youBold: "<b>toi</b>",
   help: `🎭 <b>Comment ça marche</b>
 
-Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis, et chaque dimanche 🎬 les films de la semaine (VO, bien notés). Sous chaque fiche :
-⭐ <b>Intéressé·e</b> : la bande voit que ça te tente
-🎟 <b>Réservé !</b> : ta date, annoncée à la bande
-✅ <b>Vu</b> : une note ★ et un petit mot
-🙅 <b>Pas pour moi</b> : plus jamais proposé
+📖 <b>Berlin Encore!</b>, l'app (bouton ci-dessous) : pièces surtitrées en anglais, expos, films en VO. Tu y mets tes ⭐, tes places 🎟, tes critiques, et tu vois ce qui tente tes amis.
 
-/programme — ce qui est à l'affiche
-/sorties — réservé, envies ⭐, vu
-/reglages — lieux, langue, pas pour moi, groupe`,
+💬 Ici, je te préviens : nouveautés des lieux que tu suis, ouverture des ventes, et quand un ami t'envoie une sortie.
+
+/invite — ton lien pour inviter un ami
+/reglages — lieux, langue`,
   ownerHelp: `\n\n👑 <b>Admin</b>
-/invite — lien d'invitation à partager
 /nouveaulien — invalider l'ancien lien
 /membres — qui est inscrit
 /groupe — (à taper DANS un groupe Telegram) y annoncer les ⭐ et les avis, dans ta langue
@@ -163,6 +159,7 @@ Ici, ⭐ « Moi aussi » sous une annonce = tu es partant·e. Les notifs perso, 
   saleOpen: (venue: string, month: string) => `🎟 C'est ouvert : ventes ${venue} pour ${month}.`,
   saleToday: (venue: string, month: string) => `🎟 Ventes ${venue} pour ${month} : ouverture aujourd'hui (heure non publiée)`,
   toastNotForMe: "🙅 Retiré de tes sorties",
+  openAppBtn: "📖 Ouvrir Berlin Encore!",
   setVenues: "📍 Lieux", setLang: "🌐 Langue", setIgnored: "🙅 Pas pour moi", setGroup: "👥 Groupe",
   groupInfo: (on: boolean): string => on ? "👥 Le groupe de la bande est relié : les ⭐, 🎟 et avis y sont annoncés."
     : "👥 Pas de groupe relié pour l'instant.",
@@ -213,17 +210,13 @@ const en: typeof fr = {
   youBold: "<b>you</b>",
   help: `🎭 <b>How it works</b>
 
-I send you new plays (with English surtitles) and exhibitions from the venues you follow, and every Sunday 🎬 the week's films (original version, well rated). Under each card:
-⭐ <b>Interested</b>: the gang sees you're keen
-🎟 <b>Booked!</b>: your date, announced to the gang
-✅ <b>Seen</b>: a ★ rating and a short note
-🙅 <b>Not for me</b>: never suggested again
+📖 <b>Berlin Encore!</b>, the app (button below): plays with English surtitles, exhibitions, original-version films. Add your ⭐, your tickets 🎟 and your reviews, and see what your friends fancy.
 
-/programme — what's on
-/sorties — booked, ⭐ wishlist, seen
-/reglages — venues, language, not for me, group`,
+💬 Here, I let you know: what's new at the venues you follow, ticket releases, and when a friend sends you an outing.
+
+/invite — your link to invite a friend
+/reglages — venues, language`,
   ownerHelp: `\n\n👑 <b>Admin</b>
-/invite — invitation link to share
 /nouveaulien — revoke the old link
 /membres — who's signed up
 /groupe — (type it IN a Telegram group) announce ⭐ and reviews there, in your language
@@ -354,6 +347,7 @@ Here, ⭐ “Me too” under an announcement = you're in. Personal alerts, “se
   saleOpen: (venue: string, month: string) => `🎟 It's open: ${venue} sales for ${month}.`,
   saleToday: (venue: string, month: string) => `🎟 ${venue} sales for ${month}: opening today (time not published)`,
   toastNotForMe: "🙅 Removed from your outings",
+  openAppBtn: "📖 Open Berlin Encore!",
   setVenues: "📍 Venues", setLang: "🌐 Language", setIgnored: "🙅 Not for me", setGroup: "👥 Group",
   groupInfo: (on: boolean) => on ? "👥 The gang's group is linked: ⭐, 🎟 and reviews are announced there."
     : "👥 No group linked yet.",
