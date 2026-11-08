@@ -56,6 +56,7 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     .bind(user.id).first<{ chat_id: number; first_name: string; lang: string | null }>();
   if (!me) return Response.json({ error: "not_member", bot: env.BOT_USERNAME }, { status: 403 });
 
+  ctx.waitUntil(env.DB.prepare("UPDATE users SET app_seen_at = datetime('now') WHERE chat_id = ?").bind(me.chat_id).run().then(() => {}, () => {}));
   const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
   if (url.pathname === "/app/api/state") return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   if (url.pathname === "/app/api/act") {

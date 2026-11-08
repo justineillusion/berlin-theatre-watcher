@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS users (
   pending_item TEXT,                         -- item en attente d'un « petit mot » après une note
   lang         TEXT NOT NULL DEFAULT 'fr',   -- langue des messages : fr | en (/langue)
   invite_code  TEXT,                         -- lien d'invitation personnel (migrations/006)
-  joined_at    TEXT NOT NULL DEFAULT (datetime('now'))
+  joined_at    TEXT NOT NULL DEFAULT (datetime('now')),
+  bot_seen_at TEXT,                          -- dernier message / clic dans le bot
+  app_seen_at TEXT                           -- dernière ouverture de la mini-app
 );
 
 -- Lieux : théâtres + expos (config.yaml, scan) et cinémas (cinema.yaml, job ciné).

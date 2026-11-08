@@ -44,6 +44,9 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
     await setSetting(env, "menu_v_global", MENU_VERSION);
     ctx.waitUntil(setGlobalMenus(env));
   }
+  // Activité (pour /membres) : les clics rejoués depuis la mini-app (id « app ») n'en sont pas.
+  const actor = update.callback_query?.id !== "app" ? (update.message?.from?.id ?? update.callback_query?.from?.id) : null;
+  if (actor) ctx.waitUntil(env.DB.prepare("UPDATE users SET bot_seen_at = datetime('now') WHERE chat_id = ?").bind(actor).run().then(() => {}, () => {}));
   if (update.callback_query) return onCallback(env, update.callback_query, ctx);
   const msg = update.message;
   if (!msg?.from || !msg.text) return;
@@ -225,15 +228,21 @@ async function inviteText(env: Env, lang: Lang): Promise<string> {
 async function membersText(env: Env, lang: Lang): Promise<string> {
   const T = tr(lang);
   const { results } = await env.DB.prepare(
-    `SELECT u.first_name, u.username, u.active, u.lang,
+    `SELECT u.first_name, u.username, u.active, u.lang, u.bot_seen_at, u.app_seen_at,
        (SELECT COUNT(*) FROM subscriptions s WHERE s.chat_id = u.chat_id) AS subs,
        (SELECT COUNT(*) FROM reactions r WHERE r.chat_id = u.chat_id AND r.interested = 1) AS stars
      FROM users u ORDER BY u.joined_at`,
   ).all<any>();
   const group = await setting(env, "group_chat_id");
-  return T.members(results.filter((r) => r.active).length) +
+  // Actif·ve = un clic / message dans le bot ou une ouverture de l'app depuis 7 jours.
+  const ago = (d: string | null) => d ? Math.floor((Date.now() - Date.parse(d.replace(" ", "T") + "Z")) / 864e5) : null;
+  const last = (r: any) => [ago(r.bot_seen_at), ago(r.app_seen_at)].filter((x) => x !== null) as number[];
+  const active7 = results.filter((r) => r.active && last(r).some((d) => d < 7)).length;
+  const app7 = results.filter((r) => r.active && ago(r.app_seen_at) !== null && ago(r.app_seen_at)! < 7).length;
+  return T.members(results.filter((r) => r.active).length) + T.activity(active7, app7) +
     results.map((r) => `${r.active ? "•" : "✖️"} ${esc(r.first_name)}${r.username ? ` @${esc(r.username)}` : ""}` +
-      ` ${r.lang === "en" ? "🇬🇧" : "🇫🇷"} — ${T.memberLine(r.subs, r.stars)}`).join("\n") +
+      ` ${r.lang === "en" ? "🇬🇧" : "🇫🇷"} — ${T.memberLine(r.subs, r.stars)}` +
+      ` · ${T.lastSeen(last(r).length ? Math.min(...last(r)) : null, ago(r.app_seen_at) !== null)}`).join("\n") +
     T.groupStatus(!!group);
 }
 
