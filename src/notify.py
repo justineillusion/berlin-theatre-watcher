@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import html
+import re
 import time
 from collections import OrderedDict
 from typing import List
@@ -130,19 +131,40 @@ def _aliases(show: Show) -> List[str]:
 
 
 def press_line(show: Show, lang: str = "fr") -> str:
-    """Ligne 📰 unique de la fiche : buzz presse (cache seul, src/press.py, qui
-    intègre déjà Nachtkritik) + lien vers la critique Nachtkritik si connue."""
-    try:
-        from .press import buzz_line
-        venue = (show.venue_name or show.theater) if show.kind == "expo" else show.theater
-        opens = show.date if show.kind == "expo" else (sorted(show.available_iso)[0][:10] if show.available_iso else None)
-        line = _esc(buzz_line(show.kind, venue, show.title, show.url or "", lang, opens=opens, aliases=_aliases(show)))
-    except Exception:  # noqa: BLE001 — la presse est un bonus, jamais bloquante
-        line = ""
+    """Ligne 📰 unique : uniquement ce qui informe vraiment.
+    - Nachtkritik (note + nb de critiques), sans lien ;
+    - buzz presse seulement s'il y a un avis tranché (👍/😐/👎/🔥).
+    Rien sinon : pas de « pas encore de critiques » / « pas encore ouvert »,
+    qui prennent de la place pour rien (et la 1re date réservable n'est pas
+    la première de la pièce)."""
+    parts = []
     if show.critics:
-        nk = f'<a href="{html.escape(show.critics.url)}">Nachtkritik {show.critics.star_bar()}</a>'
-        line = f"{line} · {nk}" if line else f"📰 {nk}"
-    return line
+        n = show.critics.count
+        rev = (f"{n} review{'s' if n > 1 else ''}" if lang == "en" else f"{n} critique{'s' if n > 1 else ''}")
+        parts.append(f"Nachtkritik {show.critics.star_bar()} ({rev})")
+    try:
+        from .press import press_for, format_buzz
+        venue = (show.venue_name or show.theater) if show.kind == "expo" else show.theater
+        b = press_for(show.kind, venue, show.title, show.url or "", opens=None, aliases=_aliases(show))
+        if b.get("status") == "verdict":
+            parts.append(format_buzz(b, lang).removeprefix("📰 "))
+    except Exception:  # noqa: BLE001 — la presse est un bonus, jamais bloquante
+        pass
+    return ("📰 " + _esc(" · ".join(parts))) if parts else ""
+
+
+_CREDIT_NOISE = re.compile(
+    r"\s*(World Premiere|Uraufführung|Premiere|With English surtitles|Mit englischen Übertiteln|"
+    r"PLATZ ?FR ?E ?I|Eine Aktion|Stage [A-Z]\b|Tickets?|Dauer|Duration).*$", re.I)
+
+
+def clean_credits(text: str) -> str:
+    """« by Falk Richter Director: Falk Richter World Premiere Stage A … » -> « by Falk Richter »."""
+    t = _CREDIT_NOISE.sub("", text or "").strip(" ,;·-")
+    t = re.sub(r"\s+Director:\s*(.+)$", lambda m: "" if m.group(1).strip() in t[:m.start()] else m.group(0), t)
+    if len(t) > 110:
+        t = t[:110].rsplit(" ", 1)[0] + "…"
+    return t
 
 
 def digest_line(show: Show, lang: str = "fr") -> str:
@@ -182,7 +204,7 @@ def format_expo(show: Show, lang: str = "fr") -> str:
     if period:
         lines.append(f"🗓 {_esc(period[0].upper() + period[1:])}")
     if show.languages:
-        lines.append(f"✍️ {_esc(show.languages)}")
+        lines.append(f"✍️ {_esc(clean_credits(show.languages))}")
     press = press_line(show, lang)
     if press:
         lines.append(press)
@@ -259,7 +281,7 @@ def format_show(show: Show, lang: str = "fr") -> str:
     if show.production_type:
         lines.append(f"🎬 {_esc(show.production_type)}")
     if show.languages and not is_pure_language_note(show.languages):
-        lines.append(f"✍️ {_esc(show.languages)}")
+        lines.append(f"✍️ {_esc(clean_credits(show.languages))}")
     spoken = " · ".join(p for p in _labels(show, lang) if p)
     if spoken:
         lines.append(f"🗣 {_esc(spoken)}")
