@@ -8,6 +8,7 @@ export interface Env {
   WEBHOOK_SECRET: string;  // vérifie que les updates viennent bien de Telegram (secret)
   OWNER_CHAT_ID: string;   // ton chat_id : admin du bot
   BOT_USERNAME: string;    // sans @, pour le lien d'invitation
+  APP_SHORT_NAME?: string; // mini-app (BotFather), défaut « Programme »
   TG_API?: string;         // tests uniquement (faux Telegram local)
 }
 
@@ -332,3 +333,7 @@ export function renderFor(
   if (text.length + tail.length > MAX) text = closeHtml(text.slice(0, MAX - tail.length - 30) + "…");
   return { text: text + tail, reply_markup: keyboard(item, r, lang) };
 }
+
+/** Lien qui ouvre la mini-app sur une fiche (marche aussi dans le groupe, où les boutons web_app sont interdits). */
+export const appLink = (env: Env, itemId: string) =>
+  `https://t.me/${env.BOT_USERNAME}/${env.APP_SHORT_NAME || "Programme"}?startapp=${itemId}`;

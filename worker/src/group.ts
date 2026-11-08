@@ -2,7 +2,7 @@
 // « plan » quand 2+ personnes veulent voir la même chose, avis complets, récap hebdo.
 // Tout est dans la langue du groupe (settings.group_lang, celle de qui a tapé /groupe).
 import { Lang, asLang, tr } from "./i18n";
-import { Env, Item, basicText, edit, esc, horizon, inWindow, itemText, send, setSetting, setting, stars, tg, windowSql } from "./lib";
+import { Env, Item, basicText, edit, esc, horizon, inWindow, itemText, send, setSetting, setting, stars, tg, windowSql, appLink } from "./lib";
 
 const ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", cinema: "🎬", film: "🎬" };
 const today = () => new Date().toISOString().slice(0, 10);
@@ -127,11 +127,11 @@ export function card(head: string, item: Item, lang: Lang): string {
 }
 
 /** Boutons sous une annonce du groupe : ⭐ (moi aussi / je veux le voir) + ✅ je l'ai vu aussi. */
-export const groupButtons = (item: Item, lang: Lang, _review = false) => ({
+export const groupButtons = (env: Env, item: Item, lang: Lang, _review = false) => ({
   inline_keyboard: [[
     { text: tr(lang).meToo, callback_data: `i:${item.id}` },
     { text: tr(lang).sawToo, callback_data: `v:${item.id}` },
-  ]],
+  ], [{ text: tr(lang).openApp, url: appLink(env, item.id) }]],
 });
 
 /** Message du groupe qui « porte » un item pour un membre (fil des réponses). */
@@ -155,8 +155,8 @@ export async function announceInterest(
   // Même fiche que partout (titre, lieu, dates, note, description, liens), précédée de qui est partant.
   const head = names.length >= 2 ? T.planHead(joinNames(names, lang)) : T.starHead(names[0]);
   const text = card(head, item, lang);
-  if (editId) await edit(env, group, editId, text, groupButtons(item, lang));
-  else await send(env, group, text, groupButtons(item, lang));
+  if (editId) await edit(env, group, editId, text, groupButtons(env, item, lang));
+  else await send(env, group, text, groupButtons(env, item, lang));
 }
 
 /** Avis complet dans le groupe : posté à la note (en réponse au message du groupe
@@ -172,7 +172,7 @@ export async function announceReview(
   if (rating) head.push(`${stars(rating)} ${rating}/5`);
   if (comment) head.push(`💬 “${esc(comment)}”`);
   const text = card(head.join("\n"), item, lang);
-  const markup = groupButtons(item, lang, true);
+  const markup = groupButtons(env, item, lang, true);
   const key = `grp_review:${chat}:${item.id}`;
   const prev = await setting(env, key);
   if (prev) {

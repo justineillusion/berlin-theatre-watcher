@@ -10,6 +10,8 @@ crons = ["*/15 * * * *"]
 # À remplir : ton chat_id (= TELEGRAM_CHAT_ID actuel) et le @ du bot, sans @.
 OWNER_CHAT_ID = "2128088613"
 BOT_USERNAME = "Justine_theatre_bot"
+# Nom court de la mini-app (BotFather /newapp) : t.me/<bot>/<nom>?startapp=<fiche>
+APP_SHORT_NAME = "Programme"
 
 [[d1_databases]]
 binding = "DB"

@@ -54,7 +54,8 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     .bind(user.id).first<{ chat_id: number; first_name: string; lang: string | null }>();
   if (!me) return Response.json({ error: "not_member", bot: env.BOT_USERNAME }, { status: 403 });
 
-  if (url.pathname === "/app/api/state") return Response.json(await state(env, me.chat_id, asLang(me.lang)));
+  const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
+  if (url.pathname === "/app/api/state") return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   if (url.pathname === "/app/api/act") {
     const op = String(body.op ?? ""), id = String(body.id ?? ""), arg = body.arg == null ? "" : String(body.arg);
     if (!OPS.has(op) || !/^[\w-]{1,40}$/.test(id) || !/^[\w-]{0,20}$/.test(arg)) {
@@ -71,7 +72,7 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     if (op === "bd" && Array.isArray(body.with) && body.with.length) {
       await bookFor(env, me, id, arg, body.with.map(Number).filter(Number.isFinite).slice(0, 8));
     }
-    return Response.json(await state(env, me.chat_id, asLang(me.lang)));
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   if (url.pathname === "/app/api/share") {
     // 💌 « Regarde ça, ça me tente : t'en penses quoi ? », en privé, à une ou plusieurs personnes du bot.
@@ -79,13 +80,13 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     const to = Array.isArray(body.to) ? body.to.map(Number).filter(Number.isFinite).slice(0, 8) : [];
     if (!/^[\w-]{1,40}$/.test(id) || !to.length) return Response.json({ error: "bad_request" }, { status: 400 });
     const sent = await share(env, me, id, to);
-    return Response.json({ sent, ...(await state(env, me.chat_id, asLang(me.lang))) });
+    return Response.json({ sent, ...(await state(env, me.chat_id, asLang(me.lang), focus)) });
   }
   return new Response("not found", { status: 404 });
 }
 
 /** Tout ce qu'affiche la page, en une fois (quelques centaines de lignes au plus). */
-async function state(env: Env, chat: number, lang: "fr" | "en") {
+async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
   const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
   // À l'affiche dans mes lieux + tout ce sur quoi j'ai réagi (⭐ 🎟 ✅, même passé).
   const { results: items } = await env.DB.prepare(
@@ -95,8 +96,9 @@ async function state(env: Env, chat: number, lang: "fr" | "en") {
                       ELSE i.last_seen >= ?2 END)
             AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now')))
         OR i.id IN (SELECT item_id FROM reactions WHERE chat_id = ?1 AND (interested = 1 OR status = 'seen'))
+        OR i.id = ?3   -- fiche ouverte depuis une annonce du groupe (même hors de mes lieux)
      LIMIT 600`,
-  ).bind(chat, since).all<Item & { venue: string }>();
+  ).bind(chat, since, focus).all<Item & { venue: string }>();
   const ids = JSON.stringify(items.map((i) => i.id));
   const { results: reacts } = await env.DB.prepare(
     `SELECT r.chat_id, r.item_id, r.interested, r.status, r.rating, r.comment, r.booked_at, r.updated_at, u.first_name

@@ -106,6 +106,8 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 <script>
 const tgApp = window.Telegram && Telegram.WebApp;
 const INIT = (tgApp && tgApp.initData) || "";
+// Ouvert depuis une annonce du groupe (…/Programme?startapp=<fiche>) : cette fiche d'abord, ouverte.
+const FOCUS = (tgApp && tgApp.initDataUnsafe && tgApp.initDataUnsafe.start_param) || "";
 const dark = tgApp ? tgApp.colorScheme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
 document.documentElement.dataset.theme = dark ? "dark" : "light";
 if (tgApp) {
@@ -121,7 +123,7 @@ const L = {
         booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ⭐ ce qui te tente.",
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
-        myReview:"Ma critique", send:"💌 Envoyer à…", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
+        myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
@@ -131,13 +133,14 @@ const L = {
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: ⭐ what tempts you.",
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
-        myReview:"My review", send:"💌 Send to…", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
+        myReview:"My review", shared:"From the group", send:"💌 Send to…", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
         reviewInChat:"The bot is waiting in the chat: reply with your review.", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
 };
 let T = L.fr, S = null;
-const st = { tab:"prog", kind:"all", when:"week", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false };
+const st = { tab:"prog", kind:"all", when:"week", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS };
+if (FOCUS) st.open = FOCUS;
 const ICON = { theatre:"🎭", expo:"🖼", film:"🎬" };
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
@@ -172,7 +175,7 @@ function facts(x) {
 }
 
 async function api(path, extra = {}) {
-  const r = await fetch("/app/api/" + path, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ initData: INIT, ...extra }) });
+  const r = await fetch("/app/api/" + path, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ initData: INIT, focus: FOCUS, ...extra }) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw Object.assign(new Error(j.error || r.status), { info: j });
   return j;
@@ -300,6 +303,8 @@ function render() {
   if (st.tab === "prog") {
     // Ce que j'ai vu ou écarté n'est plus reproposé (sauf la fiche ouverte, le temps de voir l'effet du clic).
     xs = xs.filter((x) => (!["seen", "ignored"].includes(state(x)) || x.id === st.open) && next(x) && next(x).slice(0, 10) < LIMIT[st.when]);
+    const focused = st.focus && S.items.find((x) => x.id === st.focus);
+    if (focused) { h += dayHead(T.shared) + item(focused); xs = xs.filter((x) => x.id !== st.focus); }
     const shows = xs.filter((x) => x.kind !== "expo").sort((a, b) => next(a).localeCompare(next(b)));
     const expos = xs.filter((x) => x.kind === "expo").sort((a, b) => (a.end || "9").localeCompare(b.end || "9"));
     let cur = "";

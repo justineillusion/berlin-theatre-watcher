@@ -1,8 +1,7 @@
 // Webhook Telegram : commandes, boutons ⭐ / ✅ / 🔕, notes, petits mots.
 import {
   Env, Friend, Horizon, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, horizon, editKeyboard, keyboard, renderFor,
-  send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql,
-} from "./lib";
+  send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql, appLink } from "./lib";
 import { digestFor } from "./scan";
 import { openCard } from "./daily";
 import { cardMarkup, currentSql, getList, openItem, sendList, showList } from "./list";
@@ -925,7 +924,7 @@ async function book(
       const head = G.groupBooked(esc(who), esc(item.title), whenLabel(iso, glang), esc(venue?.name ?? ""));
       const row: any[] = [{ text: G.imIn, callback_data: `j:${item.id}:${encodeWhen(iso)}` }];
       if (item.url) row.push({ text: G.imInLink, url: item.url });
-      await send(env, group, card(head, item, glang), { inline_keyboard: [row] });
+      await send(env, group, card(head, item, glang), { inline_keyboard: [row, [{ text: G.openApp, url: appLink(env, item.id) }]] });
     }
     await refreshAll(env, item, chat);
   })());

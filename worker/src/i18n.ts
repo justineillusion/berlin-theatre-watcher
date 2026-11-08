@@ -183,6 +183,7 @@ Ici, ⭐ « Moi aussi » sous une annonce = tu es partant·e. Les notifs perso, 
   groupBooked: (who: string, title: string, when: string, venue: string) =>
     `🎟 <b>${who}</b> a réservé <b>${title}</b> — ${when}${venue ? ` · ${venue}` : ""}`,
   imIn: "🙋 J'y vais aussi",
+  openApp: "📖 Ouvrir dans Berlin Encore!",
   imInLink: "🔗 Réserver",
   joinDm: (title: string, when: string, url: string) =>
     `🎟 Pour rejoindre la bande à <b>${title}</b> le ${when}${url ? ` : <a href="${url}">réserver ici</a>` : ""}.`,
@@ -373,6 +374,7 @@ Here, ⭐ “Me too” under an announcement = you're in. Personal alerts, “se
   groupBooked: (who: string, title: string, when: string, venue: string) =>
     `🎟 <b>${who}</b> has booked <b>${title}</b> — ${when}${venue ? ` · ${venue}` : ""}`,
   imIn: "🙋 I'm in too",
+  openApp: "📖 Open in Berlin Encore!",
   imInLink: "🔗 Book",
   joinDm: (title: string, when: string, url: string) =>
     `🎟 To join the gang at <b>${title}</b> on ${when}${url ? `: <a href="${url}">book here</a>` : ""}.`,

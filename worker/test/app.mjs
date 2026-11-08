@@ -31,13 +31,14 @@ const day = (n) => new Date(Date.now() + n * 864e5).toISOString().slice(0, 10);
 const seed = `
 INSERT INTO users (chat_id, first_name) VALUES (${ME}, 'Justine');
 INSERT INTO users (chat_id, first_name, lang) VALUES (555, 'Joss', 'en');
-INSERT INTO venues (id, name, kind) VALUES ('be', 'Berliner Ensemble', 'theatre'), ('kw', 'KW', 'expo');
+INSERT INTO venues (id, name, kind) VALUES ('be', 'Berliner Ensemble', 'theatre'), ('kw', 'KW', 'expo'), ('vb', 'Volksbühne', 'theatre');
 INSERT INTO subscriptions (chat_id, venue_id, primed) VALUES (${ME}, 'be', 1), (${ME}, 'kw', 1);
 INSERT INTO settings (key, value) VALUES ('current_since', '2000-01-01'), ('group_chat_id', '${GROUP}');
 INSERT INTO items (id, venue_id, kind, title, url, dates, text) VALUES
   ('p1', 'be', 'theatre', 'Twelfth Night', 'https://x/p1', '["${day(2)} 19:30", "${day(5)} 20:00"]', '🎭 <b>Twelfth Night</b>\n📍 Berliner Ensemble\n📝 Une île.'),
   ('p2', 'be', 'theatre', 'Mutter Courage', null, '["${day(3)} 19:00"]', '🎭 <b>Mutter Courage</b>');
 INSERT INTO items (id, venue_id, kind, title, start_date, end_date) VALUES ('e1', 'kw', 'expo', 'Expo', '${day(-10)}', '${day(30)}');
+INSERT INTO items (id, venue_id, kind, title, dates) VALUES ('v1', 'vb', 'theatre', 'Hors de mes lieux', '["${day(4)} 19:30"]');
 INSERT INTO reactions (chat_id, item_id, interested) VALUES (555, 'p1', 1);`;
 writeFileSync(`${STATE}-seed.sql`, seed);
 d1(`--file=${STATE}-seed.sql`);
@@ -88,12 +89,20 @@ await step("programme : mes lieux, envies des amis", async () => {
   assert.deepEqual(s.items.map((x) => x.id).sort(), ["e1", "p1", "p2"]);
   assert.deepEqual(item(s, "p1").friends.map((f) => f.name), ["Joss"]);
   assert.equal(item(s, "p1").me, null);
-  assert.equal(s.venues.length, 2);
+  assert.equal(s.venues.length, 3);
 });
 await step("⭐ : envie enregistrée + annonce au groupe", async () => {
   const s = await act("i", "p1");
   assert.equal(item(s, "p1").me.star, 1);
-  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id == GROUP), JSON.stringify(calls.map((c) => c.method)));
+  const ann = calls.find((c) => c.method === "sendMessage" && c.chat_id == GROUP);
+  assert.ok(ann, JSON.stringify(calls.map((c) => c.method)));
+  assert.ok(JSON.stringify(ann.reply_markup).includes("t.me/TestBot/Programme?startapp=p1"), JSON.stringify(ann.reply_markup));
+});
+await step("ouvert depuis le groupe (startapp) : la fiche est là même hors de mes lieux", async () => {
+  const without = (await post("/app/api/state", { initData: me })).json;
+  assert.ok(!item(without, "v1"));
+  const s = (await post("/app/api/state", { initData: me, focus: "v1" })).json;
+  assert.equal(item(s, "v1").title, "Hors de mes lieux");
 });
 await step("🙅 Pas pour moi puis ↩︎", async () => {
   assert.equal(item(await act("x", "p2"), "p2").me.status, "ignored");
