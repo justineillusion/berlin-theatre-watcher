@@ -39,7 +39,10 @@ INSERT INTO items (id, venue_id, kind, title, url, dates, text) VALUES
   ('p2', 'be', 'theatre', 'Mutter Courage', null, '["${day(3)} 19:00"]', '🎭 <b>Mutter Courage</b>');
 INSERT INTO items (id, venue_id, kind, title, start_date, end_date) VALUES ('e1', 'kw', 'expo', 'Expo', '${day(-10)}', '${day(30)}');
 INSERT INTO items (id, venue_id, kind, title, dates) VALUES ('v1', 'vb', 'theatre', 'Hors de mes lieux', '["${day(4)} 19:30"]');
-INSERT INTO reactions (chat_id, item_id, interested) VALUES (555, 'p1', 1);`;
+INSERT INTO reactions (chat_id, item_id, interested) VALUES (555, 'p1', 1);
+INSERT INTO users (chat_id, first_name) VALUES (666, 'Lyna');
+INSERT INTO connections (a, b, status) VALUES (${ME}, 555, 'ok'), (${ME}, 666, 'ok');
+INSERT INTO subscriptions (chat_id, venue_id, primed) VALUES (666, 'be', 1);`;
 writeFileSync(`${STATE}-seed.sql`, seed);
 d1(`--file=${STATE}-seed.sql`);
 
@@ -143,6 +146,45 @@ await step("Réglages : ne plus suivre puis resuivre un lieu", async () => {
 await step("Réglages : langue → anglais puis français", async () => {
   assert.equal((await act("l", "en")).lang, "en");
   assert.equal((await act("l", "fr")).lang, "fr");
+});
+const lyna = initData({ id: 666, first_name: "Lyna" });
+const joss = initData({ id: 555, first_name: "Joss" });
+await step("cercles : Lyna (amie de Justine seulement) ne voit pas les envies de Joss", async () => {
+  const s = (await post("/app/api/state", { initData: lyna })).json;
+  assert.ok(!item(s, "p1").friends.some((f) => f.name === "Joss"), JSON.stringify(item(s, "p1").friends));
+  assert.ok(item(s, "p1").friends.some((f) => f.name === "Justine"));
+  assert.deepEqual(s.people.map((p) => p.name), ["Justine"]);
+  assert.deepEqual(s.circle.suggestions.map((p) => [p.name, p.via]), [["Joss", ["Justine"]]]);
+  assert.match(s.invite, /t\.me\/TestBot\?start=p[0-9a-z]+/);
+});
+await step("cercles : 💌 / 🎟 + ami refusés hors connexions", async () => {
+  calls = [];
+  const r = await post("/app/api/share", { initData: lyna, id: "p1", to: [555] });
+  assert.deepEqual(r.json.sent, []);
+  assert.ok(!calls.some((c) => c.chat_id == 555));
+});
+await step("cercles : Lyna ajoute Joss → demande en privé → Joss accepte → visibles", async () => {
+  calls = [];
+  let r = await post("/app/api/friend", { initData: lyna, op: "add", id: 555 });
+  assert.equal(r.json.result, "sent");
+  assert.deepEqual(r.json.circle.outgoing.map((p) => p.name), ["Joss"]);
+  const dm = calls.find((c) => c.method === "sendMessage" && c.chat_id == 555);
+  assert.ok(dm && /Lyna/.test(dm.text) && JSON.stringify(dm.reply_markup).includes("fa:666"));
+  r = await post("/app/api/state", { initData: joss });
+  assert.deepEqual(r.json.circle.incoming.map((p) => p.name), ["Lyna"]);
+  r = await post("/app/api/friend", { initData: joss, op: "accept", id: 666 });
+  assert.equal(r.json.result, "connected");
+  const s = (await post("/app/api/state", { initData: lyna })).json;
+  assert.ok(item(s, "p1").friends.some((f) => f.name === "Joss"));
+  assert.deepEqual(s.people.map((p) => p.name).sort(), ["Joss", "Justine"]);
+});
+await step("cercles : ajouter un inconnu (pas ami d'ami) refusé ; retirer sans prévenir", async () => {
+  let r = await post("/app/api/friend", { initData: lyna, op: "add", id: 999 });
+  assert.equal(r.json.result, "not_allowed");
+  calls = [];
+  r = await post("/app/api/friend", { initData: lyna, op: "remove", id: 555 });
+  assert.ok(!r.json.people.some((p) => p.name === "Joss"));
+  assert.ok(!calls.some((c) => c.method === "sendMessage"));
 });
 await step("action inconnue / id bizarre : 400", async () => {
   assert.equal((await post("/app/api/act", { initData: me, op: "stop", id: "p1" })).status, 400);

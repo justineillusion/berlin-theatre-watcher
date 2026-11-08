@@ -157,6 +157,27 @@ export async function getReaction(env: Env, chat_id: number, item_id: string): P
     .bind(chat_id, item_id).first<Reaction>();
 }
 
+// ---------------------------------------------------------------------------
+// Cercles : chacun ne voit les ⭐ 🎟 ✅ que de ses connexions (table connections).
+// Chargé une fois par requête (index.ts) ; non chargé = on ne montre personne (fermé par défaut).
+// ---------------------------------------------------------------------------
+let CIRCLES: Map<number, Set<number>> | null = null;
+export async function loadCircles(env: Env): Promise<void> {
+  const { results } = await env.DB.prepare("SELECT a, b FROM connections WHERE status = 'ok'").all<{ a: number; b: number }>();
+  const m = new Map<number, Set<number>>();
+  const add = (x: number, y: number) => (m.get(x) ?? m.set(x, new Set()).get(x)!).add(y);
+  for (const r of results) { add(r.a, r.b); add(r.b, r.a); }
+  CIRCLES = m;
+}
+/** `other` fait-il partie du cercle de `viewer` (ou est-ce lui-même) ? */
+export const inCircle = (viewer: number, other: number) => viewer === other || !!CIRCLES?.get(viewer)?.has(other);
+/** Les réactions visibles par `viewer`. Sans viewer (groupe, récap commun) : pas de filtre. */
+export const visibleTo = <T extends { chat_id: number }>(friends: T[], viewer: number | null) =>
+  viewer == null ? friends : friends.filter((f) => inCircle(viewer, f.chat_id));
+/** SQL : `col` est dans le cercle de la personne liée en `?n` (elle-même comprise). */
+export const circleSql = (col: string, param: string) => `(${col} = ${param} OR ${col} IN (
+  SELECT b FROM connections WHERE a = ${param} AND status = 'ok' UNION SELECT a FROM connections WHERE b = ${param} AND status = 'ok'))`;
+
 /** Réactions des personnes ACTIVES à un ensemble d'items (pour les pieds de message). */
 export async function friendsByItem(env: Env, itemIds: string[]): Promise<Map<string, Friend[]>> {
   const out = new Map<string, Friend[]>();
@@ -328,7 +349,7 @@ export function renderFor(
   item: Item, viewer: number, r: Reaction | null, friends: Friend[], header: string | null, lang: Lang = "fr",
 ): { text: string; reply_markup: unknown } {
   const body = itemText(item, lang) || basicText(item, lang);
-  const tail = socialBlock(friends, viewer, false, lang) + statusLine(item, r, lang);
+  const tail = socialBlock(visibleTo(friends, viewer), viewer, false, lang) + statusLine(item, r, lang);
   let text = (header ? `${header}\n` : "") + body;
   if (text.length + tail.length > MAX) text = closeHtml(text.slice(0, MAX - tail.length - 30) + "…");
   return { text: text + tail, reply_markup: keyboard(item, r, lang) };

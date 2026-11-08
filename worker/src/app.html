@@ -98,6 +98,8 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .set .line{padding:12px 0;border:0;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;display:flex;justify-content:space-between;gap:12px;font:400 14.5px var(--sans)}
 .set .line span{color:var(--muted)}
 .set .line.on span{color:var(--ok)}
+.fline{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.fline b{font-weight:700}.fline span{display:block;font-size:13px;color:var(--muted)}
 .hint{color:var(--muted);font-size:13px;margin-top:14px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -131,7 +133,7 @@ const L = {
         booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ⭐ ce qui te tente.",
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
-        myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
+        myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
@@ -141,13 +143,13 @@ const L = {
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: ⭐ what tempts you.",
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
-        myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
+        myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
         reviewInChat:"The bot is waiting in the chat: reply with your review.", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
 };
 let T = L.fr, S = null;
-const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"" };
+const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
 const ICON = { theatre:"🎭", expo:"🏛", film:"🎬" };
 const $ = (id) => document.getElementById(id);
@@ -310,6 +312,22 @@ function noteIdeas(x) {
   const out = days.map((d) => d === TODAY ? T.tonight : `${cap(T.dows[dt(d).getUTCDay()])} ${+d.slice(8, 10)}${S.lang === "en" ? "?" : " ?"}`);
   return out.length ? out : [T.weekend];
 }
+/** Réglages → Mes amis : demandes reçues, amis, suggestions (amis de mes amis), lien d'invitation. */
+function friendsSection() {
+  const c = S.circle || { friends: [], incoming: [], outgoing: [], suggestions: [] };
+  const line = (name, sub, btns) => `<div class="fline"><div><b>${esc(name)}</b>${sub ? `<span>${esc(sub)}</span>` : ""}</div><div class="who">${btns}</div></div>`;
+  const btn = (op, id, label, on = false) => `<button class="act ${on ? "on" : ""}" data-friend="${op}" data-id="${id}">${esc(label)}</button>`;
+  let h = "";
+  if (c.incoming.length) h += dayHead(T.requestsT) + c.incoming.map((p) => line(p.name, "", btn("accept", p.id, T.accept, true) + btn("ignore", p.id, T.ignoreR))).join("");
+  h += dayHead(T.friendsT) + (c.friends.length ? c.friends.map((p) => line(p.name, "",
+      st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true) : `<button class="act" data-askremove="${p.id}">${esc(T.removeF)}</button>`)).join("")
+    : `<p class="hint">${esc(T.noFriends)}</p>`);
+  const sugg = [...c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))),
+                ...c.suggestions.map((p) => line(p.name, `${T.via} ${p.via.join(", ")}`, btn("add", p.id, T.add, true)))];
+  if (sugg.length) h += dayHead(T.suggestT) + sugg.join("");
+  h += dayHead(T.inviteT) + `<p class="hint">${esc(T.inviteHint)}</p><div class="acts"><button class="act on" data-invite="1">${esc(T.shareLink)} ↗</button></div>`;
+  return h;
+}
 function exposByVenue(expos) {
   const order = new Map((S.venues || []).map((v, i) => [v.name, i]));
   const groups = new Map();
@@ -335,7 +353,7 @@ function render() {
   if (!S) return;
   K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog";
   if (st.tab === "set") {
-    list.innerHTML = `<div class="set">${dayHead(T.venues)}${S.venues.map((v) =>
+    list.innerHTML = `<div class="set">${friendsSection()}${dayHead(T.venues)}${S.venues.map((v) =>
       `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}">${ICON[v.kind === "cinema" ? "film" : v.kind] || "🎭"} ${esc(v.name)}<span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("")}
       <p class="hint">${esc(T.tapToggle)}</p>
       ${dayHead(T.language)}<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
@@ -382,11 +400,26 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.share) { const n = st.note; st.note = ""; return void act("share", t.dataset.share, "", { path: "share", body: { to: [...st.sel], note: n } }); }
   else if (t.dataset.act === "bd") return void act("bd", t.dataset.id, t.dataset.arg, { body: { with: [...st.withs] } });
   else if (t.dataset.act) return void act(t.dataset.act, t.dataset.id, t.dataset.arg);
+  else if (t.dataset.askremove) { st.confirmRemove = +t.dataset.askremove; }
+  else if (t.dataset.friend) { st.confirmRemove = null; return void friendAct(t.dataset.friend, +t.dataset.id); }
+  else if (t.dataset.invite) { return void shareInvite(); }
   else if (t.dataset.venue) { const v = t.dataset.venue; st.venuesOpen.has(v) ? st.venuesOpen.delete(v) : st.venuesOpen.add(v); }
   else if (t.dataset.open) { st.open = st.open === t.dataset.open ? null : t.dataset.open; st.picking = null; st.sharing = null; st.sent = null; }
   else return;
   render();
 });
+async function friendAct(op, id) {
+  if (st.busy) return; st.busy = true;
+  try { S = await api("friend", { op, id }); if (S.result === "sent") tgApp?.showAlert?.(T.requestSent); }
+  catch { tgApp?.showAlert?.(T.error); }
+  st.busy = false; render();
+}
+function shareInvite() {
+  const link = S.invite || "";
+  const url = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Berlin Encore!")}`;
+  if (tgApp?.openTelegramLink) tgApp.openTelegramLink(url);
+  else navigator.clipboard?.writeText(link).then(() => alert(T.copied), () => {});
+}
 document.addEventListener("input", (e) => { if (e.target.id === "note") st.note = e.target.value; });
 render(); load();
 </script>

@@ -4,6 +4,7 @@
 //   POST /app/api/state    { initData }                 -> programme + mes sorties + réglages
 //   POST /app/api/act      { initData, op, id, arg?, with? } -> ⭐ 🎟 ✅ ★ 🙅 suivre (mêmes effets que les boutons) ;
 //                          with = places 🎟 prises aussi pour ces amis
+//   POST /app/api/friend   { initData, op: add|accept|ignore|remove, id } -> 👋 Mes amis
 //   POST /app/api/share    { initData, id, to, note? }  -> 💌 « ça te dit ? » (+ un mot) en privé à ces amis
 //
 // Qui parle ? Telegram passe à la page `initData`, signé avec le token du bot :
@@ -11,7 +12,8 @@
 // Les actions passent par le même code que les boutons du chat (handleUpdate) :
 // annonces au groupe, fiches mises à jour, tout reste cohérent.
 import { handleUpdate } from "./bot";
-import { Env, Item, esc, getItem, getReaction, itemText, keyboard, send, whenLabel } from "./lib";
+import { Env, Item, esc, getItem, getReaction, inCircle, loadCircles, itemText, keyboard, send, whenLabel } from "./lib";
+import { acceptFriend, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
 import { Lang, asLang } from "./i18n";
 import PAGE from "./app.html";
 
@@ -76,6 +78,19 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     const lang = op === "l" ? asLang(id) : asLang(me.lang);
     return Response.json(await state(env, me.chat_id, lang, focus));
   }
+  if (url.pathname === "/app/api/friend") {
+    // 👋 Mes amis : add (ami d'ami) | accept | ignore | remove (sans prévenir).
+    const op = String(body.op ?? ""), other = Number(body.id);
+    if (!Number.isFinite(other) || other === me.chat_id) return Response.json({ error: "bad_request" }, { status: 400 });
+    let result: string = "ok";
+    if (op === "add") result = await requestFriend(env, me.chat_id, other);
+    else if (op === "accept") result = (await acceptFriend(env, me.chat_id, other)) ? "connected" : "gone";
+    else if (op === "ignore") await ignoreFriend(env, me.chat_id, other);
+    else if (op === "remove") await removeFriend(env, me.chat_id, other);
+    else return Response.json({ error: "bad_request" }, { status: 400 });
+    await loadCircles(env);
+    return Response.json({ result, ...(await state(env, me.chat_id, asLang(me.lang), focus)) });
+  }
   if (url.pathname === "/app/api/share") {
     // 💌 « Regarde ça, ça me tente : t'en penses quoi ? », en privé, à une ou plusieurs personnes du bot.
     const id = String(body.id ?? "");
@@ -111,6 +126,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
   const mine = new Map<string, any>(), friends = new Map<string, any[]>();
   for (const r of reacts) {
     if (r.chat_id === chat) mine.set(r.item_id, r);
+    else if (!inCircle(chat, r.chat_id)) continue;   // seulement mes connexions
     else (friends.get(r.item_id) ?? friends.set(r.item_id, []).get(r.item_id)!)
       .push({ id: r.chat_id, name: r.first_name, star: r.interested && r.status !== "seen" ? 1 : 0, booked: r.booked_at, seen: r.status === "seen" ? 1 : 0, rating: r.rating, comment: r.comment });
   }
@@ -118,12 +134,16 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     `SELECT v.id, v.name, v.kind, EXISTS (SELECT 1 FROM subscriptions s WHERE s.chat_id = ? AND s.venue_id = v.id) AS followed
      FROM venues v WHERE v.active = 1 ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
   ).bind(chat).all<any>();
-  const { results: people } = await env.DB.prepare(
-    "SELECT chat_id AS id, first_name AS name FROM users WHERE active = 1 AND chat_id != ? ORDER BY first_name").bind(chat).all<any>();
+  // « Envoyer à » / « + Joss » : mes connexions seulement.
+  const circle = await circleState(env, chat);
+  const people = circle.friends;
+  const invite = await inviteMessage(env, chat, lang);
   return {
     lang,
     venues,
     people,
+    circle,
+    invite: invite.split("\n").pop(),
     items: items.map((i) => {
       const r = mine.get(i.id);
       return {
@@ -153,7 +173,7 @@ async function recipients(env: Env, me: Me, ids: number[]) {
   const { results } = await env.DB.prepare(
     "SELECT chat_id, first_name, lang FROM users WHERE active = 1 AND chat_id != ? AND chat_id IN (SELECT value FROM json_each(?))",
   ).bind(me.chat_id, JSON.stringify(ids)).all<{ chat_id: number; first_name: string; lang: string | null }>();
-  return results;
+  return results.filter((u) => inCircle(me.chat_id, u.chat_id));   // 💌 / 🎟 : seulement mes connexions
 }
 
 async function share(env: Env, me: Me, id: string, to: number[], note = ""): Promise<string[]> {

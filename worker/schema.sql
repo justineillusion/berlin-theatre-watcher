@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
   active       INTEGER NOT NULL DEFAULT 1,   -- 0 = a bloqué le bot / s'est désinscrit
   pending_item TEXT,                         -- item en attente d'un « petit mot » après une note
   lang         TEXT NOT NULL DEFAULT 'fr',   -- langue des messages : fr | en (/langue)
+  invite_code  TEXT,                         -- lien d'invitation personnel (migrations/006)
   joined_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -127,3 +128,13 @@ CREATE TABLE IF NOT EXISTS review_prompts (
   PRIMARY KEY (chat_id, message_id)
 );
 CREATE INDEX IF NOT EXISTS review_prompts_open ON review_prompts (chat_id, closed, created_at);
+
+-- Connexions entre personnes (migrations/006) : une paire = une ligne (a < b).
+CREATE TABLE IF NOT EXISTS connections (
+  a            INTEGER NOT NULL,
+  b            INTEGER NOT NULL,
+  status       TEXT NOT NULL DEFAULT 'pending',   -- pending (demande de requested_by) | ok
+  requested_by INTEGER,
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (a, b)
+);

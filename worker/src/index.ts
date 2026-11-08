@@ -11,7 +11,7 @@
 //   POST /api/setup     enregistre le webhook + le menu des commandes (Bearer API_TOKEN)
 import { handleUpdate } from "./bot";
 import { handleApp } from "./app";
-import { Env, tg } from "./lib";
+import { Env, loadCircles, tg } from "./lib";
 import { setChatMenu, setGlobalMenus } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
 import { salesTick } from "./sales";
@@ -24,12 +24,14 @@ function authorized(req: Request, env: Env): boolean {
 export default {
   // Cron du Worker (wrangler.toml) : ouvertures de vente, à l'heure de Berlin.
   async scheduled(_event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
+    await loadCircles(env);   // qui voit les ⭐ de qui (lib.ts)
     ctx.waitUntil(salesTick(env).then(() => undefined).catch((e) => console.log("sales tick failed", e)));
     ctx.waitUntil(dailyTick(env).then(() => undefined).catch((e) => console.log("daily tick failed", e)));
   },
 
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
+    await loadCircles(env).catch((e) => console.log("circles", e));   // qui voit les ⭐ de qui (lib.ts)
     // Mini-app Telegram (page + ses deux routes, authentifiées par initData).
     if (url.pathname === "/app" || url.pathname.startsWith("/app/")) return handleApp(req, env, ctx);
     if (req.method !== "POST") return new Response("🎭", { status: 200 });

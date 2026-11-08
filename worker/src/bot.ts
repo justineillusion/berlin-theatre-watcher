@@ -1,7 +1,8 @@
 // Webhook Telegram : commandes, boutons ⭐ / ✅ / 🔕, notes, petits mots.
 import {
   Env, Friend, Horizon, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, horizon, editKeyboard, keyboard, renderFor,
-  send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql, appLink } from "./lib";
+  send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql, appLink, circleSql, visibleTo } from "./lib";
+import { codeOwner, connect, connectViaLink, friendCallback, inviteMessage, resetCode } from "./circles";
 import { digestFor } from "./scan";
 import { openCard } from "./daily";
 import { cardMarkup, currentSql, getList, openItem, sendList, showList } from "./list";
@@ -124,12 +125,15 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
       return void (await send(env, chat, help(env, chat, lang)));
   }
 
+  // Chacun a son lien personnel : qui s'inscrit avec est connecté·e à lui / elle.
+  if (cmd === "/invite" || cmd === "/inviter") return void (await send(env, chat, await inviteMessage(env, chat, user?.lang ?? lang)));
+  if (cmd === "/nouveaulien" || cmd === "/newlink") {
+    // Lien personnel renouvelé ; pour la propriétaire, l'ancien lien commun aussi.
+    await resetCode(env, chat);
+    if (isOwner(env, chat)) await setSetting(env, "invite_code", randomCode());
+    return void (await send(env, chat, T.newLinkDone + await inviteMessage(env, chat, user?.lang ?? lang)));
+  }
   if (isOwner(env, chat)) {
-    if (cmd === "/invite") return void (await send(env, chat, await inviteText(env, lang)));
-    if (cmd === "/nouveaulien") {
-      await setSetting(env, "invite_code", randomCode());
-      return void (await send(env, chat, T.newLinkDone + await inviteText(env, lang)));
-    }
     if (cmd === "/membres") return void (await send(env, chat, await membersText(env, lang)));
     if (cmd === "/plusdegroupe") {
       await setSetting(env, "group_chat_id", null);
@@ -176,13 +180,16 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
 // ---------------------------------------------------------------------------
 async function onStart(env: Env, from: TgUser, user: any, code?: string): Promise<void> {
   const chat = from.id;
+  // Lien PERSONNEL de quelqu'un (circles.ts) : inscription + connexion à cette personne.
+  const inviter = await codeOwner(env, code);
   if (user) {
     const lang = asLang(user.lang);
     if (!user.active) await env.DB.prepare("UPDATE users SET active = 1 WHERE chat_id = ?").bind(chat).run();
+    if (inviter && inviter !== chat) return void (await connectViaLink(env, chat, inviter));
     await send(env, chat, tr(lang).welcomeBack(esc(from.first_name)) + help(env, chat, lang));
     return;
   }
-  const valid = isOwner(env, chat) || (code && code === await setting(env, "invite_code"));
+  const valid = isOwner(env, chat) || !!inviter || (code && code === await setting(env, "invite_code"));
   if (!valid) {
     await send(env, chat, tr(guessLang(from.language_code)).badInvite);
     return;
@@ -194,6 +201,9 @@ async function onStart(env: Env, from: TgUser, user: any, code?: string): Promis
     env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 0 FROM venues WHERE active = 1")
       .bind(chat),
   ]);
+  // Connecté·e à qui l'a invité·e (lien personnel), sinon à la propriétaire (ancien lien commun).
+  const sponsor = inviter ?? (!isOwner(env, chat) && env.OWNER_CHAT_ID ? Number(env.OWNER_CHAT_ID) : null);
+  if (sponsor) await connect(env, chat, sponsor);
   // Langue par défaut : français (users.lang). Le choix est proposé tout de suite.
   await setChatMenu(env, chat, "fr");
   const T = tr("fr");
@@ -288,7 +298,7 @@ async function outings(env: Env, chat: number, lang: Lang): Promise<{ text: stri
   if (!active.length && !seen.length) return { text: T.outEmpty };
   const friends = await friendsByItem(env, active.map((r) => r.id));
   const link = (r: any) => r.url ? `<a href="${esc(r.url)}">${esc(r.title)}</a>` : esc(r.title);
-  const others = (id: string) => (friends.get(id) ?? []).filter((f) => f.interested && !f.status && f.chat_id !== chat)
+  const others = (id: string) => visibleTo(friends.get(id) ?? [], chat).filter((f) => f.interested && !f.status && f.chat_id !== chat)
     .map((f) => esc(f.first_name)).join(", ");
   const line = (r: any, when = "") => {
     const o = others(r.id);
@@ -397,7 +407,8 @@ async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | 
   ).bind(chat, since).all<{ kind: string; n: number }>();
   const star = await env.DB.prepare(
     `SELECT COUNT(DISTINCT r.item_id) AS n FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
-     JOIN items i ON i.id = r.item_id WHERE r.interested = 1 AND r.status IS NULL AND ${current(await horizon(env), true)}`,
+     JOIN items i ON i.id = r.item_id WHERE r.interested = 1 AND r.status IS NULL AND ${circleSql("r.chat_id", "?1")}
+       AND ${current(await horizon(env), true)}`,
   ).bind(chat, since).first<{ n: number }>();
   const count = (k: string) => kinds.find((x) => x.kind === k)?.n ?? 0;
   const rows: unknown[][] = [];
@@ -424,7 +435,7 @@ async function browse(env: Env, chat: number, lang: Lang, filter: string, offset
   const where = type === "pv" ? "i.venue_id = ?3"
     : value === "star"
       ? `EXISTS (SELECT 1 FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
-                 WHERE r.item_id = i.id AND r.interested = 1 AND r.status IS NULL) AND ?3 = ?3`
+                 WHERE r.item_id = i.id AND r.interested = 1 AND r.status IS NULL AND ${circleSql("r.chat_id", "?1")}) AND ?3 = ?3`
       : "i.kind = ?3";
   const { results } = await env.DB.prepare(
     `SELECT i.* FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
@@ -479,6 +490,9 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     await setChatMenu(env, chat, lang);
     await setSetting(env, `menu_v:${chat}`, MENU_VERSION);
   }
+
+  // --- demandes d'ami (circles.ts) ------------------------------------------
+  if (/^f[ax]:/.test(data)) return void (await friendCallback(env, cq, chat, user.lang));
 
   // --- /langue -------------------------------------------------------------
   if (data.startsWith("l:")) {

@@ -10,7 +10,7 @@ import { groupInterests } from "./group";
 import { berlinNow } from "./sales";
 import {
   Env, Horizon, Item, Reaction, esc, frDate, friendsByItem, horizon, inWindow, itemLine, itemText, renderFor, setSetting, setting,
-  socialBlock, windowEnd, windowSql,
+  socialBlock, visibleTo, windowEnd, windowSql,
 } from "./lib";
 
 interface MetaIn {
@@ -637,7 +637,7 @@ export async function digestFor(
       venue = it.venue_name;
       blocks.push(`\n📍 <b>${esc(venue)}</b>`);
     }
-    const social = socialBlock(friends.get(it.id) ?? [], chat_id, true, lang);
+    const social = socialBlock(visibleTo(friends.get(it.id) ?? [], chat_id), chat_id, true, lang);
     blocks.push(itemLine(it, lang) + (social ? `\n${social}` : ""));
   }
 
