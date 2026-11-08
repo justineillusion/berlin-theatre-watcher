@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sorties Berlin</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+/* Couleurs = thème Telegram de la personne (clair/sombre), repli si ouvert hors Telegram. */
+:root{
+  --bg:var(--tg-theme-bg-color,#fff); --sec:var(--tg-theme-secondary-bg-color,#f1f2f5);
+  --ink:var(--tg-theme-text-color,#1b2430); --muted:var(--tg-theme-hint-color,#6b7684);
+  --accent:var(--tg-theme-button-color,#2481cc); --accent-ink:var(--tg-theme-button-text-color,#fff);
+  --link:var(--tg-theme-link-color,#2481cc); --line:color-mix(in srgb,var(--muted) 25%,transparent);
+  --star:#d99a00; --ok:#2f9e5b; --book:#7a4fd6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+.top{position:sticky;top:0;z-index:2;background:var(--bg);padding:10px 12px 4px}
+.tabs{display:flex;gap:4px;background:var(--sec);border-radius:10px;padding:3px}
+.tab{flex:1;border:0;background:none;color:var(--muted);font:600 13px inherit;font-family:inherit;padding:7px 4px;border-radius:8px}
+.tab[aria-selected="true"]{background:var(--bg);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 13px inherit;font-family:inherit;padding:5px 11px;border-radius:999px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.day{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:14px 16px 4px}
+.row{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 16px;border:0;background:none;width:100%;text-align:left;color:inherit;font:inherit}
+.row:active{background:var(--sec)}
+.when{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);text-align:center;line-height:1.25}
+.when b{display:block;color:var(--ink);font-size:14px}
+.t{font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.v{font-size:12.5px;color:var(--muted);margin-top:2px}
+.detail{padding:0 16px 14px 72px;font-size:14px;line-height:1.5;display:grid;gap:6px}
+.detail .m{color:var(--muted)}
+.detail a{color:var(--link)}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.act{border:1px solid var(--line);background:var(--sec);color:var(--ink);font:600 13px inherit;font-family:inherit;padding:7px 11px;border-radius:9px;text-decoration:none}
+.act.on{border-color:var(--accent);color:var(--accent)}
+.act[disabled]{opacity:.5}
+.gone{opacity:.35;filter:grayscale(1);transition:opacity .35s}
+.picker{display:flex;gap:6px;flex-wrap:wrap}
+.empty,.msg{padding:48px 24px;text-align:center;color:var(--muted)}
+.set{padding:4px 16px 24px}
+.set h3{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:16px 0 2px}
+.set div{padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.set span{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="tabs" role="tablist">
+    <button class="tab" data-tab="prog" aria-selected="true"></button>
+    <button class="tab" data-tab="mine" aria-selected="false"></button>
+    <button class="tab" data-tab="set" aria-selected="false"></button>
+  </div>
+  <div class="filters" id="kinds"></div>
+  <div class="filters" id="whens"></div>
+</div>
+<main id="list"><div class="msg">…</div></main>
+<script>
+const tgApp = window.Telegram && Telegram.WebApp;
+const INIT = (tgApp && tgApp.initData) || "";
+if (tgApp) { tgApp.ready(); tgApp.expand(); }
+
+const L = {
+  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"🎭 Théâtre", film:"🎬 Ciné", expo:"🖼 Expos",
+        week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", expos:"Expos en cours · par date de fin",
+        star:"⭐ Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation",
+        booked:"🎟 Réservé", wish:"⭐ Envies", done:"✅ Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ⭐ ce qui te tente.",
+        venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
+        outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
+        dows:["dim.","lun.","mar.","mer.","jeu.","ven.","sam."], mons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."],
+        until:"→", from:"dès" },
+  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"🎭 Theatre", film:"🎬 Cinema", expo:"🖼 Exhibitions",
+        week:"7 days", month:"This month", any:"All", today:"Today", expos:"Exhibitions on · by closing date",
+        star:"⭐ Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking",
+        booked:"🎟 Booked", wish:"⭐ Wishlist", done:"✅ Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: ⭐ what tempts you.",
+        venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
+        outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
+        dows:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], mons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+        until:"→", from:"from" },
+};
+let T = L.fr, S = null;
+const st = { tab:"prog", kind:"all", when:"week", open:null, picking:null, busy:false };
+const ICON = { theatre:"🎭", expo:"🖼", film:"🎬" };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const berlin = (d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone:"Europe/Berlin", year:"numeric", month:"2-digit", day:"2-digit" }).format(d);
+const TODAY = berlin();
+const plus = (n) => berlin(new Date(Date.now() + n * 864e5));
+const LIMIT = { week: plus(7), month: plus(31), all: "9999" };
+
+function next(x) {
+  if (x.kind === "expo") return x.start && x.start > TODAY ? x.start : TODAY;
+  return (x.dates || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
+}
+function dayLabel(d) {
+  if (d.slice(0, 10) === TODAY) return T.today;
+  const t = new Date(d.slice(0, 10) + "T12:00:00Z");
+  return `${T.dows[t.getUTCDay()]} ${t.getUTCDate()} ${T.mons[t.getUTCMonth()]}`;
+}
+const shortDay = (d) => `${+d.slice(8, 10)} ${T.mons[+d.slice(5, 7) - 1]}`;
+const state = (x) => !x.me ? "" : x.me.status === "seen" ? "seen" : x.me.status === "ignored" ? "ignored" : x.me.booked ? "booked" : x.me.star ? "star" : "";
+const badge = (x) => ({ star:"⭐", booked:"🎟", seen:"✅" }[state(x)] || "");
+
+/** Lignes utiles de la fiche du bot (HTML Telegram) : lieu/salle, auteur, langue, critiques, résumé. */
+function facts(x) {
+  const txt = (x.text || "").replace(/<br\s*\/?>/g, "\n").replace(/<[^>]+>/g, "");
+  const d = document.createElement("textarea"); d.innerHTML = txt; const lines = d.value.split("\n").map((l) => l.trim());
+  const pick = (p) => lines.filter((l) => l.startsWith(p));
+  return [...pick("📍"), ...pick("✍️"), ...pick("🗣"), ...pick("📰"), ...pick("⭐ "), ...pick("📝").map((l) => l.length > 320 ? l.slice(0, 320) + "…" : l)];
+}
+
+async function api(path, extra = {}) {
+  const r = await fetch("/app/api/" + path, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ initData: INIT, ...extra }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(j.error || r.status), { info: j });
+  return j;
+}
+async function load() {
+  if (!INIT) { $("list").innerHTML = `<div class="msg">${esc(T.outside)}</div>`; return; }
+  try { S = await api("state"); T = L[S.lang] || L.fr; document.documentElement.lang = S.lang; render(); }
+  catch (e) {
+    $("list").innerHTML = e.info?.error === "not_member"
+      ? `<div class="msg">${esc(T.notMember)}<a href="https://t.me/${esc(e.info.bot)}">@${esc(e.info.bot)}</a></div>`
+      : `<div class="msg">${esc(T.error)}</div>`;
+  }
+}
+async function act(op, id, arg) {
+  if (st.busy) return; st.busy = true;
+  // « Pas pour moi » : la fiche se grise, puis sort du programme (retrouvable via /ignores dans le chat).
+  if (op === "x") {
+    document.querySelectorAll(`[data-open="${id}"], [data-open="${id}"] + .detail`).forEach((el) => el.classList.add("gone"));
+    await new Promise((r) => setTimeout(r, 400));
+    st.open = null;
+  }
+  try { tgApp?.HapticFeedback?.selectionChanged(); S = await api("act", { op, id, arg }); }
+  catch { tgApp?.showAlert ? tgApp.showAlert(T.error) : null; }
+  st.busy = false; st.picking = null; render();
+}
+
+function chips(el, items, key) {
+  el.innerHTML = items.map(([v, l]) => `<button class="chip" data-${key}="${v}" aria-pressed="${st[key] === v}">${l}</button>`).join("");
+}
+function friendsLine(x) {
+  const f = x.friends || []; const parts = [];
+  const want = f.filter((p) => p.star || p.booked).map((p) => esc(p.name) + (p.booked ? " 🎟" : ""));
+  if (want.length) parts.push("⭐ " + want.join(", "));
+  const seen = f.filter((p) => p.seen).map((p) => esc(p.name) + (p.rating ? " " + "★".repeat(p.rating) : ""));
+  if (seen.length) parts.push("✅ " + seen.join(", "));
+  return parts.join(" · ");
+}
+function row(x) {
+  const n = next(x) || "";
+  const time = x.kind === "expo" ? (x.end ? `<b>${T.until}</b>${shortDay(x.end)}` : "<b>expo</b>")
+    : (st.tab === "prog" ? `<b>${n.slice(11) || "—"}</b>` : `<b>${n ? shortDay(n) : "—"}</b>`);
+  const fr = friendsLine(x);
+  const open = st.open === x.id;
+  let h = `<button class="row" data-open="${x.id}" aria-expanded="${open}"><div class="when">${ICON[x.kind] || "🎭"}${time}</div>
+    <div><div class="t">${esc(x.title)}</div><div class="v">${esc(x.venue)}${fr ? " · " + fr : ""}</div></div><span>${badge(x)}</span></button>`;
+  if (!open) return h;
+  const s = state(x), me = x.me || {};
+  const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
+  const dates = x.kind === "expo"
+    ? [x.start && x.start > TODAY ? `${T.from} ${shortDay(x.start)}` : "", x.end ? `${T.until} ${shortDay(x.end)}` : ""].filter(Boolean).join(" ")
+    : upcoming.slice(0, 10).map((d) => `${dayLabel(d)} ${d.slice(11)}`).join(" · ");
+  h += `<div class="detail">${dates ? `<div>🗓 ${esc(dates)}</div>` : ""}${me.booked ? `<div>🎟 ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}</div>` : ""}
+    ${facts(x).map((l) => `<div class="${l.startsWith("📝") ? "" : "m"}">${esc(l)}</div>`).join("")}`;
+  if (st.picking === x.id) {
+    h += `<div class="m">${esc(T.pick)}</div><div class="picker">${upcoming.slice(0, 12).map((d) =>
+      `<button class="act" data-act="bd" data-id="${x.id}" data-arg="${d.replace(/\D/g, "").slice(0, 12)}">${esc(dayLabel(d))} ${d.slice(11)}</button>`).join("")}
+      ${me.booked ? `<button class="act" data-act="bx" data-id="${x.id}">${esc(T.cancelBook)}</button>` : ""}</div>`;
+  } else if (s === "seen") {
+    h += `<div class="acts">${[1,2,3,4,5].map((n) => `<button class="act ${me.rating === n ? "on" : ""}" data-act="r" data-id="${x.id}" data-arg="${n}">${"★".repeat(n)}</button>`).join("")}
+      <button class="act" data-act="u" data-id="${x.id}">↩︎</button></div>`;
+  } else {
+    h += `<div class="acts">
+      <button class="act ${me.star ? "on" : ""}" data-act="i" data-id="${x.id}">${T.star}</button>
+      ${x.kind !== "expo" && upcoming.length ? `<button class="act ${me.booked ? "on" : ""}" data-pick="${x.id}">${T.book}</button>` : ""}
+      <button class="act" data-act="v" data-id="${x.id}">${T.seen}</button>
+      ${s === "ignored" ? `<button class="act on" data-act="u" data-id="${x.id}">${T.unignore}</button>` : `<button class="act" data-act="x" data-id="${x.id}">${T.ignore}</button>`}
+      ${x.url ? `<a class="act" href="${esc(x.url)}" data-link="1">${T.site}</a>` : ""}</div>`;
+  }
+  return h + "</div>";
+}
+function render() {
+  document.querySelectorAll(".tab").forEach((b, i) => { b.textContent = T.tabs[i]; b.setAttribute("aria-selected", b.dataset.tab === st.tab); });
+  const K = $("kinds"), W = $("whens"), list = $("list");
+  if (!S) return;
+  K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog";
+  if (st.tab === "set") {
+    list.innerHTML = `<div class="set"><h3>${esc(T.venues)}</h3>${S.venues.map((v) =>
+      `<div>${ICON[v.kind === "cinema" ? "film" : v.kind] || "🎭"} ${esc(v.name)}<span>${v.followed ? "✓ " + esc(T.followed) : T.notFollowed}</span></div>`).join("")}
+      <p class="m" style="color:var(--muted)">${esc(T.setHint)}</p></div>`;
+    return;
+  }
+  chips(K, [["all", T.all], ["theatre", T.theatre], ["film", T.film], ["expo", T.expo]], "kind");
+  chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
+  let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
+  let h = "";
+  if (st.tab === "prog") {
+    // Ce que j'ai vu ou ignoré n'est plus reproposé (sauf la fiche ouverte, pour voir l'effet du clic).
+    xs = xs.filter((x) => (!["seen", "ignored"].includes(state(x)) || x.id === st.open) && next(x) && next(x).slice(0, 10) < LIMIT[st.when]);
+    const shows = xs.filter((x) => x.kind !== "expo").sort((a, b) => next(a).localeCompare(next(b)));
+    const expos = xs.filter((x) => x.kind === "expo").sort((a, b) => (a.end || "9").localeCompare(b.end || "9"));
+    let cur = "";
+    for (const x of shows) { const d = dayLabel(next(x)); if (d !== cur) { h += `<div class="day">${esc(d)}</div>`; cur = d; } h += row(x); }
+    if (expos.length) h += `<div class="day">${esc(T.expos)}</div>` + expos.map(row).join("");
+    list.innerHTML = h || `<div class="empty">${esc(T.empty)}</div>`;
+  } else {
+    for (const [k, l] of [["booked", T.booked], ["star", T.wish], ["seen", T.done]]) {
+      let g = xs.filter((x) => state(x) === k);
+      g = k === "seen" ? g.sort((a, b) => (b.me.at || "").localeCompare(a.me.at || "")).slice(0, 30)
+        : g.sort((a, b) => (k === "booked" ? a.me.booked : next(a) || "9").localeCompare(k === "booked" ? b.me.booked : next(b) || "9"));
+      if (g.length) h += `<div class="day">${esc(l)} · ${g.length}</div>` + g.map(row).join("");
+    }
+    list.innerHTML = h || `<div class="empty">${esc(T.emptyMine)}</div>`;
+  }
+}
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[data-link]");
+  if (a) { if (tgApp?.openLink) { e.preventDefault(); tgApp.openLink(a.href); } return; }
+  const t = e.target.closest("button"); if (!t) return;
+  if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; window.scrollTo(0, 0); }
+  else if (t.dataset.kind) st.kind = t.dataset.kind;
+  else if (t.dataset.when) st.when = t.dataset.when;
+  else if (t.dataset.pick) st.picking = st.picking === t.dataset.pick ? null : t.dataset.pick;
+  else if (t.dataset.act) return void act(t.dataset.act, t.dataset.id, t.dataset.arg);
+  else if (t.dataset.open) { st.open = st.open === t.dataset.open ? null : t.dataset.open; st.picking = null; }
+  else return;
+  render();
+});
+render(); load();
+</script>
+</body>
+</html>

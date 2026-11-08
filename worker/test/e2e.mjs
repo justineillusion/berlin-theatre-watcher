@@ -191,8 +191,8 @@ try {
   await step("/sorties (alias /interets) : mes ⭐ avec qui d'autre y va, boutons 🎟 ✅ ✖", async () => {
     for (const cmd of ["/sorties", "/interets"]) {
       const m = sends(await say(LEA, cmd), LEA)[0];
-      assert.match(m.text, /^🗂 <b>Mes sorties<\/b>\n\n⭐ <b>Intéressé·e<\/b>\n🎭 <a[^>]*>King Lear<\/a> <i>\(Berliner Ensemble\)<\/i>\n   👥 Justine/);
-      assert.deepEqual(m.reply_markup.inline_keyboard[0], [{ text: "🎭 King Lear · 🎟", callback_data: "b:lear00000001" }]);
+      assert.match(m.text, /^🗂 <b>Mes sorties<\/b>\n\n⭐ <b>Intéressé·e<\/b>\n🎭 <a[^>]*>King Lear<\/a> — <i>Berliner Ensemble<\/i> · ⭐$/);
+      assert.deepEqual(m.reply_markup.inline_keyboard[0], [{ text: "🎭 King Lear · ⭐", callback_data: "lo:lear00000001" }]);
     }
   });
 
@@ -673,23 +673,26 @@ try {
     const row = ann.reply_markup.inline_keyboard[0];
     assert.equal(row[0].callback_data, `j:book00000001:${d1.replace(/-/g, "")}1930`);
     assert.equal(row[1].url, "https://x/book00000001");
-    // /interets : la réservation en tête
-    let t = sends(await say(OWNER, "/interets"), OWNER)[0].text;
-    assert.match(t, /^🗂 <b>Mes sorties<\/b>\n\n🎟 <b>Réservé<\/b>\n🎭 <a href="https:\/\/x\/book00000001">Mutter Courage<\/a> — .* 19:30 <i>\(Berliner Ensemble\)<\/i>/);
-    // /interets : un bouton 🎟 par ⭐ (réservé -> « changer la date ») + ✅
-    const li = sends(await say(OWNER, "/interets"), OWNER)[0];
+    // /sorties : UNE liste dépliable — 🎟 Réservé en tête, ligne compacte, un bouton par item
+    const li = sends(await say(OWNER, "/sorties"), OWNER)[0];
+    assert.match(li.text, /^🗂 <b>Mes sorties<\/b>\n\n🎟 <b>Réservé<\/b>\n🎭 <a href="https:\/\/x\/book00000001">Mutter Courage<\/a> — <i>Berliner Ensemble<\/i> · 🎟 .* 19:30/);
     const lrows = li.reply_markup.inline_keyboard;
-    const mc = lrows.find((r) => r[0].callback_data === "b:book00000001");
-    assert.match(mc[0].text, /^🎭 Mutter Courage · 🎟 \S+ \d+ \S+$/);           // date courte, sans l'heure
+    assert.equal(lrows.find((r) => r[0].callback_data === "lo:book00000001")[0].text, "🎭 Mutter Courage · 🎟");
     assert.ok(lrows.every((r) => r.length === 1));                                  // un bouton pleine largeur par ligne
-    // depuis /sorties : le sélecteur REMPLACE la liste ; ↩︎ y revient
-    c = await click(OWNER, "b:book00000001", li._id, OWNER, "private", "🗂 Mes sorties");
-    const lp = edits(c, OWNER).find((x) => x.message_id === li._id);
-    assert.match(lp.text, /Mutter Courage<\/a> \(Berliner Ensemble\)\n\n🎟 Pour quelle date/);
-    assert.deepEqual(lp.reply_markup.inline_keyboard.slice(-2).map((r) => r.map((b) => b.callback_data)),
-      [["v:book00000001:o", "ui:book00000001:o"], ["bb:book00000001:o"]]);
-    assert.ok(lp.reply_markup.inline_keyboard.flat().some((b) => b.callback_data === "bx:book00000001:o"));
-    c = await click(OWNER, "bb:book00000001:o", li._id, OWNER, "private", "🎭 Mutter Courage");
+    // tap : LA liste devient la fiche (boutons d'état + ↩︎ Liste), aucun nouveau message
+    c = await click(OWNER, "lo:book00000001", li._id);
+    assert.equal(sends(c, OWNER).length, 0);
+    const lc = edits(c, OWNER).find((x) => x.message_id === li._id);
+    assert.match(lc.text, /^🎭 <b>Mutter Courage<\/b>[\s\S]*🎟 <i>Réservé · /);
+    assert.deepEqual(lc.reply_markup.inline_keyboard,
+      [[{ text: "📅 Changer la date", callback_data: "b:book00000001" }], [{ text: "↩︎ Liste", callback_data: "lb" }]]);
+    // 🎟 → sélecteur dans ce même message ; ↩︎ Retour → la fiche (↩︎ Liste gardé) ; ↩︎ Liste → la liste
+    c = await click(OWNER, "b:book00000001", li._id);
+    assert.match(edits(c, OWNER).find((x) => x.message_id === li._id).text, /🎟 Pour quelle date/);
+    c = await click(OWNER, "bb:book00000001", li._id);
+    assert.deepEqual(edits(c, OWNER).find((x) => x.message_id === li._id).reply_markup.inline_keyboard.at(-1),
+      [{ text: "↩︎ Liste", callback_data: "lb" }]);
+    c = await click(OWNER, "lb", li._id);
     assert.match(edits(c, OWNER).find((x) => x.message_id === li._id).text, /^🗂 <b>Mes sorties<\/b>/);
     // Max (groupe) : « J'y vais aussi » → intéressé + lien en privé
     c = await click(MAX, row[0].callback_data, ann._id, GROUP, "group", ann.text);
@@ -727,33 +730,37 @@ try {
     assert.equal(fu[0].reply_markup.inline_keyboard[0][4].callback_data, "r:book00000002:5");
     r = await scan([hedda, ente, lear, bk, past]);
     assert.equal(r.messages.filter((x) => x.kind === "followup").length, 0);
-    // ✅ Déjà vu depuis le sélecteur ouvert par /sorties : la fiche passe en « vu » avec 1–5★
+    // depuis /sorties : la ligne s'ouvre ; ★ Noter → 1–5★ sur place, ↩︎ Liste gardé
     const li2 = sends(await say(OWNER, "/sorties"), OWNER)[0];
-    c = await click(OWNER, "b:book00000002", li2._id, OWNER, "private", "🗂 Mes sorties");
-    c = await click(OWNER, "v:book00000002:o", li2._id, OWNER, "private", "🎭 Woyzeck (Berliner Ensemble)");
-    assert.equal(edits(c, OWNER).find((x) => x.message_id === li2._id).reply_markup.inline_keyboard[0].length, 5);
-    // ✖ depuis /interets : plus ⭐, pas ignoré, liste rafraîchie sur place, revient dans /programme
-    const li3 = sends(await say(OWNER, "/interets"), OWNER)[0];
-    c = await click(OWNER, "b:book00000001", li3._id, OWNER, "private", "🗂 Mes sorties");
-    c = await click(OWNER, "ui:book00000001:o", li3._id, OWNER, "private", "🎭 Mutter Courage (Berliner Ensemble)");
+    c = await click(OWNER, "lo:book00000002", li2._id);
+    assert.deepEqual(edits(c, OWNER).find((x) => x.message_id === li2._id).reply_markup.inline_keyboard[0],
+      [{ text: "★ Noter", callback_data: "v:book00000002" }]);
+    c = await click(OWNER, "v:book00000002", li2._id);
+    const k2 = edits(c, OWNER).find((x) => x.message_id === li2._id).reply_markup.inline_keyboard;
+    assert.equal(k2[0].length, 5);
+    assert.deepEqual(k2.at(-1), [{ text: "↩︎ Liste", callback_data: "lb" }]);
+    // ↩︎ annuler ⭐ dans la fiche dépliée, puis ↩︎ Liste : la ligne a disparu ; pas « ignoré »
+    const li3 = sends(await say(OWNER, "/sorties"), OWNER)[0];
+    c = await click(OWNER, "lo:book00000001", li3._id);
+    c = await click(OWNER, "i:book00000001", li3._id);
+    assert.deepEqual(edits(c, OWNER).find((x) => x.message_id === li3._id).reply_markup.inline_keyboard.at(-1),
+      [{ text: "↩︎ Liste", callback_data: "lb" }]);
+    c = await click(OWNER, "lb", li3._id);
+    assert.doesNotMatch(edits(c, OWNER).find((x) => x.message_id === li3._id).text, /Mutter Courage/);
     assert.equal(sends(c, OWNER).length, 0);
-    const ed = edits(c, OWNER).find((x) => x.message_id === li3._id);
-    assert.ok(ed);
-    assert.doesNotMatch(ed.text, /Mutter Courage/);          // plus dans MES sorties
-    assert.ok(!(ed.reply_markup?.inline_keyboard ?? []).some((r) => r[0].callback_data === "b:book00000001"));
-    assert.ok(c.some((x) => x.method === "answerCallbackQuery" && /Retiré de tes sorties/.test(x.text)));
     assert.doesNotMatch(sends(await say(OWNER, "/ignores"), OWNER)[0].text, /Mutter Courage/);
     c = await click(OWNER, "r:book00000002:4", 8103);
     assert.deepEqual(edits(c, OWNER).find((x) => x.message_id === 8103).reply_markup.inline_keyboard,
       [[{ text: "✍️ Critique", callback_data: "w:book00000002" }]]);
     await say(OWNER, "/passer");
-    // /sorties : section ✅ Vu avec ma note, bouton ✍️ -> carte de notation
+    // /sorties : section ✅ Vu avec ma note ; la ligne s'ouvre sur [✍️ Critique] + ↩︎ Liste
     const so = sends(await say(OWNER, "/sorties"), OWNER)[0];
-    assert.match(so.text, /✅ <b>Vu<\/b>\n[\s\S]*Woyzeck<\/a> ★★★★☆/);
-    const rr = so.reply_markup.inline_keyboard.find((r) => r[0].callback_data === "rt:book00000002");
-    assert.equal(rr[0].text, "🎭 Woyzeck · ✍️");
-    c = await click(OWNER, "rt:book00000002", so._id, OWNER, "private", "🗂 Mes sorties");
-    assert.deepEqual(sends(c, OWNER)[0].reply_markup.inline_keyboard, [[{ text: "✍️ Critique", callback_data: "w:book00000002" }]]);
+    assert.match(so.text, /✅ <b>Vu<\/b>\n[\s\S]*Woyzeck<\/a> — <i>Berliner Ensemble<\/i> · ✅ ★★★★☆/);
+    const rr = so.reply_markup.inline_keyboard.find((r) => r[0].callback_data === "lo:book00000002");
+    assert.equal(rr[0].text, "🎭 Woyzeck · ✅");
+    c = await click(OWNER, "lo:book00000002", so._id);
+    assert.deepEqual(edits(c, OWNER).find((x) => x.message_id === so._id).reply_markup.inline_keyboard,
+      [[{ text: "✍️ Critique", callback_data: "w:book00000002" }], [{ text: "↩︎ Liste", callback_data: "lb" }]]);
   });
 
   await step("un texte sans 📝 n'écrase pas un texte qui en a un (fr et en)", async () => {
@@ -850,7 +857,7 @@ try {
     let c = take();
     const mine = sends(c, OWNER)[0];
     assert.match(mine.text, /^🆕 <b>Nouveau dans tes lieux<\/b> \(1\)\n.*Baal/);
-    assert.deepEqual(mine.reply_markup.inline_keyboard, [[{ text: "🎭 Baal", callback_data: "oc:baal00000001" }]]);
+    assert.deepEqual(mine.reply_markup.inline_keyboard, [[{ text: "🎭 Baal", callback_data: "lo:baal00000001" }]]);
     assert.match(sends(c).find((m) => m.chat_id !== OWNER).text, /^🆕 <b>New at your venues<\/b> \(1\)/);   // abonné·e en anglais
     assert.equal(sends(c, OWNER).length, 1);
     // une nouveauté plus tard dans la journée : attend le lendemain (un seul lot par jour)
@@ -863,13 +870,20 @@ try {
     assert.doesNotMatch(sends(c, OWNER)[0].text, /Baal/);                              // déjà dans le lot d'hier
     // rien en file : rien du tout
     assert.equal((await api("/api/daily-tick", { now: "2030-01-17T08:05:00Z" })).sent, 0);
-    // le bouton ouvre la fiche complète, qui devient « ma notif » (⭐ la met à jour sur place)
-    c = await click(OWNER, "oc:baal00000001", mine._id);
-    const card = sends(c, OWNER)[0];
+    // le bouton déplie la fiche DANS le message du lot ; ⭐ l'édite sur place ; ↩︎ Liste : la ligne porte « ⭐ »
+    c = await click(OWNER, "lo:baal00000001", mine._id);
+    assert.equal(sends(c, OWNER).length, 0);
+    const card = edits(c, OWNER).find((x) => x.message_id === mine._id);
     assert.match(card.text, /^🎭 <b>Baal<\/b>/);
-    assert.deepEqual(card.reply_markup.inline_keyboard[0].map((b) => b.callback_data), ["i:baal00000001", "x:baal00000001", "v:baal00000001"]);
-    c = await click(OWNER, "i:baal00000001", 4343);
-    assert.ok(edits(c, OWNER).some((x) => x.message_id === card._id));
+    assert.deepEqual(card.reply_markup.inline_keyboard.map((r) => r.map((b) => b.callback_data)),
+      [["i:baal00000001", "x:baal00000001", "v:baal00000001"], ["lb"]]);
+    c = await click(OWNER, "i:baal00000001", mine._id);
+    assert.deepEqual(edits(c, OWNER).find((x) => x.message_id === mine._id).reply_markup.inline_keyboard.at(-1),
+      [{ text: "↩︎ Liste", callback_data: "lb" }]);
+    c = await click(OWNER, "lb", mine._id);
+    const back = edits(c, OWNER).find((x) => x.message_id === mine._id);
+    assert.match(back.text, /Baal<\/a> — <i>Berliner Ensemble<\/i> · ⭐/);
+    assert.equal(back.reply_markup.inline_keyboard[0][0].text, "🎭 Baal · ⭐");
     // jour d'ouverture des ventes au BE : nouvelles dates poussées tout de suite (⭐ d'abord, puis les
     // autres pièces du lieu) ; une pièce NOUVELLE va quand même au lot.
     const berlinToday = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin" }).format(new Date());
@@ -902,17 +916,19 @@ try {
     await api("/api/daily-tick", { now: "2030-01-20T08:05:00Z" });                            // 09:05 Berlin
     c = take();
     const so = sends(c, OWNER);
+    assert.equal(so.length, 1);                                                  // un seul message : les films y sont des items
     assert.equal(so[0].text, [
       "🎟 <b>Tes 🎟 cette semaine</b>\n🎭 <a href=\"https://x/baal00000001\">Baal</a> — mar. 22 janv. 19:30 <i>(Berliner Ensemble)</i>",
       "🖼 <b>Expos qui ouvrent cette semaine</b>\n• <a href=\"https://kw/h\">Hito Steyerl</a>\n   🗓 jusqu'au 01/03",
-      "🎬 <b>Ciné de la semaine</b> — 20–26 janv.",
+      "🎬 <b>Ciné de la semaine</b> — 20–26 janv.\n🎬 <a href=\"https://intimes/s\">Stalker</a> — <i>Intimes</i>",
     ].join("\n\n"));
-    assert.match(so[1].text, /^🎬 <b>Stalker<\/b>/);                                   // puis la fiche film
-    assert.equal(so.length, 2);
+    assert.deepEqual(so[0].reply_markup.inline_keyboard, [[{ text: "🎬 Stalker", callback_data: "lo:film00000009" }]]);
     assert.equal((await api("/api/daily-tick", { now: "2030-01-20T10:00:00Z" })).sent, 0);   // une fois
-    // la fiche film envoyée devient « ma notif » : ⭐ la met à jour sur place
-    c = await click(OWNER, "i:film00000009", 4344);
-    assert.ok(edits(c, OWNER).some((x) => x.message_id === so[1]._id));
+    // le film se déplie dans le récap (fiche de SES cinémas) ; ⭐ édite ce même message
+    c = await click(OWNER, "lo:film00000009", so[0]._id);
+    assert.match(edits(c, OWNER).find((x) => x.message_id === so[0]._id).text, /^🎬 <b>Stalker<\/b>/);
+    c = await click(OWNER, "i:film00000009", so[0]._id);
+    assert.ok(edits(c, OWNER).some((x) => x.message_id === so[0]._id));
     // dimanche suivant : l'expo qui ouvre cette semaine-là (hors lot) a sa section ; pas de ciné → n'attend que midi
     const expo2 = { ...expoSoon, id: "expo00000010", title: "Pipilotti Rist", start_date: "2030-01-30" };
     sql("INSERT OR REPLACE INTO deliveries (chat_id, item_id, dates, message_id) VALUES (111, 'expo00000010', '[]', NULL)");
@@ -921,6 +937,23 @@ try {
     assert.equal((await api("/api/daily-tick", { now: "2030-01-27T09:05:00Z" })).sent, 0);   // 10:05 : attend le ciné
     await api("/api/daily-tick", { now: "2030-01-27T11:05:00Z" });                            // 12:05 : sans films
     assert.match(sends(take(), OWNER)[0].text, /^🖼 <b>Expos qui ouvrent cette semaine<\/b>\n.*Pipilotti Rist/);
+    // pagination : 10 nouveautés → 8 + 2, [◀] [1/2] [▶] ; ▶ change de page dans le même message
+    const many = Array.from({ length: 10 }, (_, k) => play(`pg${String(k).padStart(10, "0")}`, `Stück ${k + 1}`, [`${soon(40 + k)} 19:00`]));
+    await scan(many);
+    take();
+    await api("/api/daily-tick", { now: "2030-01-28T08:05:00Z" });
+    const pg = sends(take(), OWNER)[0];
+    const nav = pg.reply_markup.inline_keyboard.at(-1);
+    assert.deepEqual(nav.map((b) => b.text), ["◀", "1/2", "▶"]);
+    assert.equal(pg.reply_markup.inline_keyboard.filter((r) => r[0].callback_data.startsWith("lo:")).length, 8);
+    c = await click(OWNER, nav[2].callback_data, pg._id);
+    const p2 = edits(c, OWNER).find((x) => x.message_id === pg._id);
+    assert.equal(p2.reply_markup.inline_keyboard.filter((r) => r[0].callback_data.startsWith("lo:")).length, 2);
+    assert.equal(p2.reply_markup.inline_keyboard.at(-1)[1].text, "2/2");
+    // déplier depuis la page 2, puis ↩︎ Liste : retour à la page 2
+    c = await click(OWNER, p2.reply_markup.inline_keyboard[0][0].callback_data, pg._id);
+    c = await click(OWNER, "lb", pg._id);
+    assert.equal(edits(c, OWNER).find((x) => x.message_id === pg._id).reply_markup.inline_keyboard.at(-1)[1].text, "2/2");
     sql("INSERT OR REPLACE INTO settings (key, value) VALUES ('immediate_cards', '1')");
   });
 

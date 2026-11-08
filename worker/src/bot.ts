@@ -5,6 +5,7 @@ import {
 } from "./lib";
 import { digestFor } from "./scan";
 import { openCard } from "./daily";
+import { cardMarkup, getList, openItem, sendList, showList } from "./list";
 import { Lang, MENU_VERSION, asLang, guessLang, langKeyboard, setChatMenu, setGlobalMenus, tr } from "./i18n";
 import {
   announceInterest, announceReview, card, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
@@ -105,8 +106,8 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
       return void (await send(env, chat, m.text, m.kb));
     }
     case "/sorties": case "/outings": case "/interets": case "/interests": case "/vus": {
-      const o = await outings(env, chat, lang);
-      return void (await send(env, chat, o.text, o.kb));
+      // Une liste dépliable : chaque ligne s'ouvre en fiche dans ce même message.
+      return void (await sendList(env, chat, { k: "sorties", p: 0, head: T.outingsTitle }, lang, T.outEmpty));
     }
     case "/ignores": return onIgnored(env, chat, lang);
     case "/langue": case "/language": case "/lang":
@@ -550,6 +551,18 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   }
 
   // --- réactions sur une pièce/expo ----------------------------------------
+  // --- listes dépliables (list.ts) ------------------------------------------
+  if (data === "ln") return void (await answer());
+  if (/^l[pbf](:|$)/.test(data) && cq.message?.message_id) {
+    const msg = cq.message.message_id;
+    const st = await getList(env, chat, msg);
+    if (!st) return void (await answer(T.gone));
+    if (data.startsWith("lp:")) st.p = Number(data.slice(3)) || 0;
+    if (data.startsWith("lf:")) { st.f = data.slice(3); st.p = 0; }
+    await showList(env, chat, msg, st, lang);
+    return void (await answer());
+  }
+
   const [op, itemId, arg] = data.split(":");
   const item = itemId ? await getItem(env, itemId) : null;
   if (!item) return void (await answer(T.gone));
@@ -578,6 +591,12 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     await edit(env, chat, clickedId, pickerText(item, venue?.name, lang), bookPicker(item, prev, lang, o));
     return void (await answer());
   }
+  if (op === "lo") {
+    const st = clickedId ? await getList(env, chat, clickedId) : null;
+    if (st && clickedId) await openItem(env, chat, clickedId, st, item, lang);
+    else await openCard(env, chat, item, lang);
+    return void (await answer());
+  }
   if (op === "oc") {
     // Ligne du lot du matin : la fiche complète, en message à part.
     await openCard(env, chat, item, lang);
@@ -589,7 +608,8 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       const mine = await myDelivery(env, chat, item.id);
       const friends = (await friendsByItem(env, [item.id])).get(item.id) ?? [];
       const v = renderFor(item, chat, prev, friends, mine?.message_id === clickedId ? mine.header : null, lang);
-      await edit(env, chat, clickedId, v.text, op === "ed" ? editKeyboard(item, prev, lang) : v.reply_markup);
+      await edit(env, chat, clickedId, v.text,
+        await cardMarkup(env, chat, clickedId, op === "ed" ? editKeyboard(item, prev, lang) : v.reply_markup, lang));
     }
     return void (await answer());
   }
@@ -736,7 +756,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       }
     } else {
       const v = renderFor(item, chat, r, friends, mine && mine.message_id === clicked ? mine.header : null, lang);
-      await edit(env, chat, clicked, v.text, v.reply_markup);
+      await edit(env, chat, clicked, v.text, await cardMarkup(env, chat, clicked, v.reply_markup, lang));
       if (mine?.message_id && mine.message_id !== clicked) {
         const w = renderFor(item, chat, r, friends, mine.header, lang);
         await edit(env, chat, mine.message_id, w.text, w.reply_markup);
@@ -882,7 +902,7 @@ async function restore(env: Env, chat: number, item: Item, r: Reaction | null, m
   const friends = (await friendsByItem(env, [item.id])).get(item.id) ?? [];
   if (where !== "o") {
     const v = renderFor(item, chat, r, friends, mine?.message_id === msgId ? mine.header : null, lang);
-    await edit(env, chat, msgId, v.text, v.reply_markup);
+    await edit(env, chat, msgId, v.text, await cardMarkup(env, chat, msgId, v.reply_markup, lang));
   }
   if (mine?.message_id && mine.message_id !== msgId) {
     const v = renderFor(item, chat, r, friends, mine.header, lang);

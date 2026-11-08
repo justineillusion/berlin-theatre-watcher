@@ -5,11 +5,10 @@
 import { Lang, asLang, tr } from "./i18n";
 import { Env, Item, Reaction, esc, friendsByItem, itemLine, renderFor, send, setSetting, setting, whenLabel } from "./lib";
 import { berlinNow } from "./sales";
+import { Entry, sendList } from "./list";
 import { sundayOf } from "./scan";
 
 const ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", film: "🎬" };
-const short = (t: string) => (t.length > 34 ? t.slice(0, 33) + "…" : t);
-const MAX_ITEMS = 25;
 
 interface Row extends Item { kind_q: string; header: string | null; lang: string | null; chat_id: number }
 
@@ -25,30 +24,6 @@ async function queued(env: Env, chat: number): Promise<Row[]> {
        COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999')`,
   ).bind(chat).all<Row>();
   return results;
-}
-
-/** Texte + boutons du lot ; null si rien (zéro remplissage : sections vides omises). */
-export function batchMessage(rows: Row[], lang: Lang): { text: string; reply_markup: unknown } | null {
-  if (!rows.length) return null;
-  const T = tr(lang);
-  const shown = rows.slice(0, MAX_ITEMS);
-  const blocks: string[] = [];
-  for (const [kind, title] of [["new", T.batchNew], ["new_dates", T.batchNewDates], ["last_weeks", T.batchLastWeeks]] as const) {
-    const part = shown.filter((r) => r.kind_q === kind);
-    if (!part.length) continue;
-    const lines = part.map((r) => {
-      const line = itemLine(r, lang);
-      return kind === "new" || !r.header ? line : `${line}\n   ${r.header}`;
-    });
-    blocks.push(`${title(part.length)}\n${lines.join("\n")}`);
-  }
-  let text = blocks.join("\n\n");
-  if (rows.length > shown.length) text += `\n\n${T.batchMore(rows.length - shown.length)}`;
-  if (text.length > 3900) text = text.slice(0, 3899) + "…";
-  return {
-    text,
-    reply_markup: { inline_keyboard: shown.map((r) => [{ text: `${ICON[r.kind] ?? "🎭"} ${short(r.title)}`, callback_data: `oc:${r.id}` }]) },
-  };
 }
 
 const addDays = (day: string, n: number) => new Date(Date.parse(day + "T12:00:00Z") + n * 86400000).toISOString().slice(0, 10);
@@ -102,40 +77,39 @@ export async function dailyTick(env: Env, now = new Date()): Promise<number> {
     const user = await env.DB.prepare("SELECT lang FROM users WHERE chat_id = ?").bind(chat_id).first<{ lang: string | null }>();
     const lang = asLang(user?.lang ?? null);
     const rows = await queued(env, chat_id);
-    const batch = batchMessage(rows, lang);
-    let text = batch?.text ?? "";
-    let films: { item_id: string; kind: string; header: string | null; dates: string; text: string; markup: string | null }[] = [];
+    // Une liste dépliable (list.ts) : une ligne par item, la fiche s'ouvre dans ce même message.
+    const items: Entry[] = rows.map((r) => ({ id: r.id, section: r.kind_q, header: r.kind_q === "new" ? null : r.header }));
+    let head = "";
+    const titles: Record<string, string> = {};
+    let films: { item_id: string; dates: string; header: string | null }[] = [];
     if (sunday) {
+      // Dimanche : en-tête (mes 🎟, expos qui ouvrent), le lot du jour, puis les films comme items.
       films = (await env.DB.prepare(
-        `SELECT item_id, kind, header, dates, text, markup FROM film_queue
+        `SELECT item_id, dates, header FROM film_queue
          WHERE chat_id = ? AND sent_at IS NULL AND queued_at >= datetime('now', '-1 day') ORDER BY queued_at, rowid`,
       ).bind(chat_id).all<any>()).results;
       const filmHead = films.length ? await setting(env, `film_header:${chat_id}`) : null;
-      const skip = new Set(rows.slice(0, 25).map((r) => r.id));
-      text = [...await sundaySections(env, chat_id, b.day, lang, skip), text, filmHead ?? ""].filter(Boolean).join("\n\n");
+      if (filmHead) titles.film = filmHead;
+      for (const f of films) items.push({ id: f.item_id, section: "film", header: f.header });
+      head = (await sundaySections(env, chat_id, b.day, lang, new Set(rows.map((r) => r.id)))).join("\n\n");
     }
     await setSetting(env, key, now.toISOString());          // avant l'envoi : jamais deux fois
     await env.DB.batch([
       env.DB.prepare("UPDATE daily_queue SET sent_at = datetime('now') WHERE chat_id = ? AND sent_at IS NULL").bind(chat_id),
       env.DB.prepare("UPDATE film_queue SET sent_at = datetime('now') WHERE chat_id = ? AND sent_at IS NULL").bind(chat_id),
     ]);
-    if (!text) continue;                                     // rien : rien du tout
-    const res = await send(env, chat_id, text.length > 4000 ? text.slice(0, 3999) + "…" : text, batch?.reply_markup);
-    if (res?.error_code === 403) {
-      await env.DB.prepare("UPDATE users SET active = 0 WHERE chat_id = ?").bind(chat_id).run();
-      continue;
-    }
+    if (!head && !items.length) continue;                    // rien : rien du tout
+    const id = await sendList(env, chat_id, { k: sunday ? "sunday" : "batch", p: 0, head: head || undefined, titles, items }, lang);
+    if (!id) continue;
     n++;
+    // Films livrés (dates connues) : pas de renvoi la semaine suivante sauf nouvelles séances.
     for (const f of films) {
-      const r = await send(env, chat_id, f.text, f.markup ? JSON.parse(f.markup) : undefined);
-      const id = r?.result?.message_id;
-      if (!id) continue;
       await env.DB.prepare(
-        `INSERT INTO deliveries (chat_id, item_id, dates, message_id, header, sent_at) VALUES (?1, ?2, ?3, ?4, ?5, datetime('now'))
+        `INSERT INTO deliveries (chat_id, item_id, dates, message_id, header, sent_at) VALUES (?1, ?2, ?3, NULL, ?4, datetime('now'))
          ON CONFLICT(chat_id, item_id) DO UPDATE SET
            dates = (SELECT json_group_array(value) FROM (SELECT value FROM json_each(deliveries.dates) UNION SELECT value FROM json_each(?3))),
-           message_id = ?4, header = ?5, sent_at = datetime('now')`,
-      ).bind(chat_id, f.item_id, f.dates, id, f.header).run();
+           sent_at = datetime('now')`,
+      ).bind(chat_id, f.item_id, f.dates, f.header).run();
     }
   }
   return n;

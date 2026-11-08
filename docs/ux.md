@@ -32,6 +32,19 @@
 - Le lendemain de la date : « Alors, c'était comment ? » 1–5★ (une seule fois) ; la note marque « vu ».
 - Un item réservé n'est jamais reproposé.
 
+## Liste dépliable : un message par surface
+
+Composant unique (worker/src/list.ts) pour /sorties, le lot du matin et le récap du dimanche (/programme suit).
+- **Liste** : en-tête + sections, une ligne compacte par item « 🎭 Titre — Lieu · ★★★½ · ⭐ » (état : ⭐,
+  🎟 date, ✅ note « avis », 🙅), un bouton pleine largeur par item « 🎭 Titre · ⭐ ». 8 par page :
+  [◀] [n/m] [▶].
+- **Fiche** : toucher un item transforme LE MÊME message en fiche complète (boutons d'état) + [↩︎ Liste].
+  ⭐, 🎟 (sélecteur), ★, ✏️… éditent ce message ; ↩︎ Liste revient à la même page, ligne à jour.
+- Plus aucune fiche envoyée en message à part depuis une liste. Restent des messages à part : nouvelles dates
+  d'une ⭐ / ouverture des ventes, « X a réservé » (groupe), « Alors, c'était comment ? ».
+- Récap du dimanche : les films sont des items de la liste (section titrée par l'en-tête ciné) ; dépliés,
+  ils montrent la fiche propre à SES cinémas.
+
 ## Boutons d'une fiche : la prochaine étape seulement
 
 Même code (worker/src/lib.ts `keyboard`) pour fr/en, les fiches privées et /programme. Les messages du groupe
@@ -73,8 +86,7 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
 - À partir de 9:00 (Berlin, cron Worker /15 min) : **au plus un message par jour et par personne**.
   Sections (vides = omises) : « 🆕 Nouveau dans tes lieux (n) », « 🗓 Nouvelles dates (n) » (ligne +
   dates), « ⏳ Dernières semaines (n) ». Une ligne compacte par item (25 max, puis « +n autres : /programme »).
-- Un bouton pleine largeur par item (« 🎭 Titre ») → la fiche complète en message à part ; elle devient
-  « ma notif » (mises à jour sur place, ⭐, 🎟…).
+- C'est une liste dépliable (ci-dessus) : un bouton par item déplie sa fiche dans ce même message.
 - Arrivé après le lot du jour : attend le lendemain. Rien en file : rien.
 - Restent immédiats : ouvertures de vente, « X a réservé » (groupe), « Alors, c'était comment ? ».
 - **Nouvelles dates urgentes, hors lot** (un message compact par personne, une ligne par pièce
@@ -85,7 +97,7 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
 
 ## Récap du dimanche (9:00 Berlin, Worker)
 
-- Un message d'en-tête par personne, puis les fiches films de la semaine (une par film, ⭐ ✅ 🙅).
+- Un seul message par personne (liste dépliable) : l'en-tête, puis les films de la semaine comme items.
   Sections (vides = omises ; tout vide et pas de film = rien) :
   « 🎟 Tes 🎟 cette semaine » (mes réservations d'aujourd'hui à dimanche prochain, date + lieu),
   « 🖼 Expos qui ouvrent cette semaine » (lieux suivis, ni vues ni 🙅), le lot du jour (🆕 / 🗓 / ⏳, avec

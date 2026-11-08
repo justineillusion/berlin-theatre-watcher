@@ -7,8 +7,10 @@
 //   POST /api/cinema-recipients │ ciné du dimanche : cinémas -> [{chat_id, venue_ids}]
 //   POST /api/film-plan         │ films + sélection de chacun -> un message par film
 //   POST /api/cinema-done       ┘ récap de la semaine envoyé (idempotence)
+//   GET  /app           mini-app Telegram (+ POST /app/api/state, /app/api/act) : voir app.ts
 //   POST /api/setup     enregistre le webhook + le menu des commandes (Bearer API_TOKEN)
 import { handleUpdate } from "./bot";
+import { handleApp } from "./app";
 import { Env, tg } from "./lib";
 import { setChatMenu, setGlobalMenus } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
@@ -28,6 +30,8 @@ export default {
 
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
+    // Mini-app Telegram (page + ses deux routes, authentifiées par initData).
+    if (url.pathname === "/app" || url.pathname.startsWith("/app/")) return handleApp(req, env, ctx);
     if (req.method !== "POST") return new Response("🎭", { status: 200 });
 
     if (url.pathname === "/tg") {

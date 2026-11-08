@@ -9,7 +9,7 @@ import { Lang, asLang, tr } from "./i18n";
 import { groupInterests } from "./group";
 import { berlinNow } from "./sales";
 import {
-  Env, Horizon, Item, Reaction, esc, frDate, friendsByItem, horizon, inWindow, itemLine, renderFor, setSetting, setting,
+  Env, Horizon, Item, Reaction, esc, frDate, friendsByItem, horizon, inWindow, itemLine, itemText, renderFor, setSetting, setting,
   socialBlock, windowEnd, windowSql,
 } from "./lib";
 
@@ -261,7 +261,8 @@ export async function filmPlan(env: Env, body: any): Promise<Response> {
         h = tr(lang).newSessions(shown + (fresh.length > 6 ? ` (+${fresh.length - 6})` : ""));
       }
       const v = renderFor(item, t.chat_id, r, friends.get(id) ?? [], h, lang);
-      messages.push({ chat_id: t.chat_id, item_id: id, kind, dates, header: h, text: v.text, reply_markup: v.reply_markup });
+      messages.push({ chat_id: t.chat_id, item_id: id, kind, dates, header: h, text: v.text, reply_markup: v.reply_markup,
+        body: itemText(item, lang) });
     }
   }
   // Dimanche (Berlin), envoi demandé en file : les fiches partent avec le récap de 9:00
@@ -275,7 +276,7 @@ export async function filmPlan(env: Env, body: any): Promise<Response> {
       `INSERT INTO film_queue (chat_id, item_id, kind, header, dates, text, markup) VALUES (?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(chat_id, item_id) DO UPDATE SET kind = excluded.kind, header = excluded.header, dates = excluded.dates,
          text = excluded.text, markup = excluded.markup, queued_at = datetime('now'), sent_at = NULL`,
-    ).bind(m.chat_id, m.item_id, m.kind, m.header, JSON.stringify(m.dates), m.text, JSON.stringify(m.reply_markup)));
+    ).bind(m.chat_id, m.item_id, m.kind, m.header, JSON.stringify(m.dates), m.body ?? m.text, JSON.stringify(m.reply_markup)));
     for (const t of targets as any[]) {
       if (typeof t.header === "string" && (messages as any[]).some((m) => m.chat_id === t.chat_id)) {
         stmts.push(env.DB.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)")
@@ -286,6 +287,7 @@ export async function filmPlan(env: Env, body: any): Promise<Response> {
     await setSetting(env, "film_plan_day", berlinNow(now).day);
     return Response.json({ messages: [], queued: messages.length });
   }
+  for (const m of messages as any[]) delete m.body;
   return Response.json({ messages });
 }
 
