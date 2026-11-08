@@ -424,7 +424,36 @@ export async function render(env: Env, body: any): Promise<Response> {
     return (B.starred - A.starred) || String(A.start_date ?? a.dates[0] ?? "").localeCompare(String(B.start_date ?? b.dates[0] ?? ""));
   });
 
-  const messages = pending.map((p) => {
+  // Lot du matin (daily.ts) : les fiches attendent ~9:00 (Berlin), un message par jour et par
+  // personne. On note la livraison tout de suite (dates connues, rappel fait) pour ne pas
+  // remettre en file au scan suivant ; message_id reste NULL jusqu'à l'ouverture de la fiche.
+  // settings.immediate_cards = '1' : ancien envoi fiche par fiche (tests).
+  const immediate = (await setting(env, "immediate_cards")) === "1";
+  if (!immediate && pending.length) {
+    const stmts = pending.flatMap((p) => {
+      const lang = langOf.get(p.chat_id) ?? "fr";
+      const h = header(p, byId.get(p.item_id)!, lang);
+      return [
+        env.DB.prepare(
+          `INSERT INTO daily_queue (chat_id, item_id, kind, header) VALUES (?1, ?2, ?3, ?4)
+           ON CONFLICT(chat_id, item_id) DO UPDATE SET
+             kind = CASE WHEN daily_queue.sent_at IS NULL AND daily_queue.kind = 'new' THEN 'new' ELSE excluded.kind END,
+             header = CASE WHEN daily_queue.sent_at IS NULL AND daily_queue.kind = 'new' THEN NULL ELSE excluded.header END,
+             sent_at = NULL, queued_at = datetime('now')`,
+        ).bind(p.chat_id, p.item_id, p.kind, h),
+        env.DB.prepare(
+          `INSERT INTO deliveries (chat_id, item_id, dates, message_id, header, reminded, sent_at)
+           VALUES (?1, ?2, ?3, NULL, ?4, ?5, datetime('now'))
+           ON CONFLICT(chat_id, item_id) DO UPDATE SET
+             dates = (SELECT json_group_array(value) FROM (
+                        SELECT value FROM json_each(deliveries.dates) UNION SELECT value FROM json_each(?3))),
+             reminded = MAX(deliveries.reminded, ?5)`,
+        ).bind(p.chat_id, p.item_id, JSON.stringify(p.dates), h, p.kind === "last_weeks" ? 1 : 0),
+      ];
+    });
+    for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
+  }
+  const messages = (immediate ? pending : []).map((p) => {
     const item = byId.get(p.item_id)!;
     const lang = langOf.get(p.chat_id) ?? "fr";
     const h = header(p, item, lang);

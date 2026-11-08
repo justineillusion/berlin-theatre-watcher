@@ -36,6 +36,9 @@ rmSync(".wrangler/state", { recursive: true, force: true });
 writeFileSync(".dev.vars",
   `BOT_TOKEN=x\nAPI_TOKEN=${API}\nWEBHOOK_SECRET=${HOOK}\nOWNER_CHAT_ID=${OWNER}\nBOT_USERNAME=TestBot\nTG_API=http://127.0.0.1:${TG_PORT}\n`);
 execSync("npx wrangler d1 execute theatre-bot --local --file=schema.sql", { stdio: "ignore" });
+// Les scénarios historiques reçoivent les fiches tout de suite ; le lot du matin a son étape.
+const sql = (q) => execSync(`npx wrangler d1 execute theatre-bot --local --json --command "${q}"`, { stdio: ["ignore", "pipe", "ignore"] }).toString();
+sql("INSERT OR REPLACE INTO settings (key, value) VALUES ('immediate_cards', '1')");
 const dev = spawn("npx", ["wrangler", "dev", "--local", "--port", String(W_PORT)], { stdio: ["ignore", "pipe", "pipe"] });
 let devLog = "";
 dev.stdout.on("data", (d) => (devLog += d));
@@ -817,6 +820,41 @@ try {
     const today = sends(c, OWNER)[0].text;
     assert.match(today, /^🎟 Ventes Berliner Ensemble pour avril : ouverture aujourd'hui \(heure non publiée\)\n• <a[^>]*>King Lear/);
     assert.ok(!/ouvert :/.test(today));
+  });
+
+  await step("lot du matin : nouveautés en file, un message par jour à 9:00 (Berlin), bouton → fiche", async () => {
+    sql("DELETE FROM settings WHERE key = 'immediate_cards'");
+    const baal = play("baal00000001", "Baal", [`${soon(20)} 19:30`]);
+    let s = await scan([baal]);
+    assert.equal(s.messages.filter((m) => m.item_id === "baal00000001").length, 0);   // pas de push
+    take();
+    let r = await api("/api/daily-tick", { now: "2030-01-15T07:55:00Z" });             // 08:55 Berlin
+    assert.equal(r.sent, 0);
+    r = await api("/api/daily-tick", { now: "2030-01-15T08:05:00Z" });                 // 09:05 Berlin
+    let c = take();
+    const mine = sends(c, OWNER)[0];
+    assert.match(mine.text, /^🆕 <b>Nouveau dans tes lieux<\/b> \(1\)\n.*Baal/);
+    assert.deepEqual(mine.reply_markup.inline_keyboard, [[{ text: "🎭 Baal", callback_data: "oc:baal00000001" }]]);
+    assert.match(sends(c).find((m) => m.chat_id !== OWNER).text, /^🆕 <b>New at your venues<\/b> \(1\)/);   // abonné·e en anglais
+    assert.equal(sends(c, OWNER).length, 1);
+    // une nouveauté plus tard dans la journée : attend le lendemain (un seul lot par jour)
+    s = await scan([baal, play("ubu000000001", "Ubu Roi", [`${soon(21)} 20:00`])]);
+    take();
+    assert.equal((await api("/api/daily-tick", { now: "2030-01-15T10:00:00Z" })).sent, 0);
+    await api("/api/daily-tick", { now: "2030-01-16T08:05:00Z" });
+    c = take();
+    assert.match(sends(c, OWNER)[0].text, /Ubu Roi/);
+    assert.doesNotMatch(sends(c, OWNER)[0].text, /Baal/);                              // déjà dans le lot d'hier
+    // rien en file : rien du tout
+    assert.equal((await api("/api/daily-tick", { now: "2030-01-17T08:05:00Z" })).sent, 0);
+    // le bouton ouvre la fiche complète, qui devient « ma notif » (⭐ la met à jour sur place)
+    c = await click(OWNER, "oc:baal00000001", mine._id);
+    const card = sends(c, OWNER)[0];
+    assert.match(card.text, /^🎭 <b>Baal<\/b>/);
+    assert.deepEqual(card.reply_markup.inline_keyboard[0].map((b) => b.callback_data), ["i:baal00000001", "x:baal00000001", "v:baal00000001"]);
+    c = await click(OWNER, "i:baal00000001", 4343);
+    assert.ok(edits(c, OWNER).some((x) => x.message_id === card._id));
+    sql("INSERT OR REPLACE INTO settings (key, value) VALUES ('immediate_cards', '1')");
   });
 
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {

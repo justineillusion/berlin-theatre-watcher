@@ -63,6 +63,18 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
 - **🙅 Pas pour moi** remplace 🔕 Ignorer et ✖ partout côté utilisateur (sur une fiche : jamais reproposé ;
   dans /sorties, c'est ✖ Retirer).
 
+## Lot du matin (nouveautés)
+
+- Plus de push par fiche : le scan met en file (D1 `daily_queue`) les pièces / expos nouvelles, les
+  nouvelles dates et les « dernières semaines » d'une ⭐.
+- À partir de 9:00 (Berlin, cron Worker /15 min) : **au plus un message par jour et par personne**.
+  Sections (vides = omises) : « 🆕 Nouveau dans tes lieux (n) », « 🗓 Nouvelles dates (n) » (ligne +
+  dates), « ⏳ Dernières semaines (n) ». Une ligne compacte par item (25 max, puis « +n autres : /programme »).
+- Un bouton pleine largeur par item (« 🎭 Titre ») → la fiche complète en message à part ; elle devient
+  « ma notif » (mises à jour sur place, ⭐, 🎟…).
+- Arrivé après le lot du jour : attend le lendemain. Rien en file : rien.
+- Restent immédiats : ouvertures de vente, « X a réservé » (groupe), « Alors, c'était comment ? ».
+
 ## Ouvertures de vente (Schaubühne, Berliner Ensemble, Volksbühne)
 
 - Calendrier recalculé à chaque scan (src/sales.py : règle du théâtre, ou annonce publiée sur sa page).

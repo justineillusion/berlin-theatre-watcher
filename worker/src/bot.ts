@@ -4,6 +4,7 @@ import {
   send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql,
 } from "./lib";
 import { digestFor } from "./scan";
+import { openCard } from "./daily";
 import { Lang, MENU_VERSION, asLang, guessLang, langKeyboard, setChatMenu, setGlobalMenus, tr } from "./i18n";
 import {
   announceInterest, announceReview, card, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
@@ -575,6 +576,11 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     }
     const o = /^🗂 (Mes sorties|My outings)/.test(cq.message?.text ?? "") ? "o" : "c";
     await edit(env, chat, clickedId, pickerText(item, venue?.name, lang), bookPicker(item, prev, lang, o));
+    return void (await answer());
+  }
+  if (op === "oc") {
+    // Ligne du lot du matin : la fiche complète, en message à part.
+    await openCard(env, chat, item, lang);
     return void (await answer());
   }
   if (op === "ed" || op === "eb") {
