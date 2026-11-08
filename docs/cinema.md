@@ -1,13 +1,15 @@
 # 🎬 Ciné de la semaine
 
-Chaque **lundi matin**, un message Telegram avec les films à voir **le soir
-(dès 18h) dans les 7 jours** à l'**Intimes** (Friedrichshain), au
+Chaque **dimanche matin**, un message Telegram avec les films à voir **le soir
+de la semaine qui vient (lundi → dimanche)** — dès 18h, et pas après 22h en
+semaine — plus une section « **Ce soir** » (le dimanche même) si un film passe
+les filtres, à l'**Intimes** (Friedrichshain), au
 **Lichtblick-Kino** (Kastanienallee) et au **Babylon** (Mitte) — uniquement des
 films **bien notés**, **en VO** (OmU / OmeU / OV), et **pas grand public**.
 
 ```bash
 ./.venv/bin/python -m src.cinema --dry-run                    # affiche message + rapport, n'envoie rien
-./.venv/bin/python -m src.cinema --dry-run --start 2026-11-09 # semaine commençant un autre jour
+./.venv/bin/python -m src.cinema --dry-run --start 2026-11-15 # un autre dimanche (un autre jour : jour J + 6)
 ./.venv/bin/python -m src.cinema                              # envoie (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID)
 ```
 
@@ -74,9 +76,33 @@ une ligne compacte « (↑ lun. 9) ».
 
 ## Automatisation
 
-`.github/workflows/cinema.yml` : lundi 06:17 UTC (07:17 ou 08:17 à Berlin),
-+ bouton *Run workflow*. Utilise les mêmes secrets `TELEGRAM_BOT_TOKEN` /
-`TELEGRAM_CHAT_ID` que le reste du bot. Aucun état n'est stocké.
+`.github/workflows/cinema.yml` : **dimanche 05:17 UTC** (06:17 ou 07:17 à
+Berlin) + un créneau de secours à 07:17 UTC (GitHub saute ou retarde parfois
+un cron). Le Worker mémorise la semaine envoyée (`settings.cinema_week`) : le
+second créneau n'envoie rien si le premier est passé. Le bouton *Run workflow*
+force un renvoi (`--force`). Sans bot multi-utilisateurs (pas de mémoire), le
+créneau de secours n'envoie rien. Mêmes secrets `TELEGRAM_BOT_TOKEN` /
+`TELEGRAM_CHAT_ID` que le reste du bot.
+
+## Horaires
+
+- `evening_from: "18:00"` — séances du soir seulement (les séances après minuit
+  comptent pour la veille).
+- `latest_start: {time: "22:00", days: [0,1,2,3,4]}` — du lundi au vendredi,
+  pas de séance qui commence après 22:00 (22:00 pile passe) ; le week-end, pas
+  de limite. L'en-tête l'annonce : « séances 18:00–22:00 en semaine, 18:00+ le
+  week-end ».
+
+## Programme pas encore publié
+
+Les cinémas publient à des rythmes différents : le dimanche, l'Intimes (semaine
+jeudi→mercredi, publiée le mercredi/jeudi) n'a en général que lun.→mer. Le
+récap montre ce qui est connu et ajoute une ligne discrète
+« ⏳ Intimes : programme connu jusqu'au mer. 12 » (date de la dernière soirée
+publiée, si elle s'arrête plus d'un jour avant la fin de la semaine).
+
+Pas de complément du jeudi pour l'instant : il faudrait mémoriser les séances
+déjà envoyées à chacun ; le récap du dimanche reste la seule source.
 
 ## Bot multi-utilisateurs : chacun ses cinémas
 
@@ -103,9 +129,4 @@ Sans ces secrets : un seul récap, tous cinémas, sur `TELEGRAM_CHAT_ID`.
 ./.venv/bin/python -m src.cinema --dry-run --only Lichtblick,Babylon   # le récap d'un ami qui ne suit que ces deux-là
 ```
 
-⚠️ L'Intimes publie sa semaine de programme le mercredi/jeudi (semaine
-cinéma = jeudi→mercredi). Le script demande déjà à kinoheld les 7 jours de la
-fenêtre : dès que la semaine suivante est en ligne, elle est prise. Un lundi,
-ce n'est en général pas encore le cas (vérifié le 08/11/2026 : rien du 12 au
-18/11 hormis la séance spéciale du 13), donc l'Intimes ne couvre que lun.→mer.
 Le Lichtblick et le Babylon publient plusieurs semaines à l'avance.

@@ -27,7 +27,7 @@ export async function inviteCode(env: Env): Promise<string> {
 
 const HELP = `🎭 <b>Comment ça marche</b>
 
-Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis, et chaque lundi 🎬 le <b>ciné de la semaine</b> (films du soir en VO, bien notés) dans les cinémas que tu suis. Sous chaque notif :
+Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis, et chaque dimanche 🎬 le <b>ciné de la semaine</b> (films du soir en VO, bien notés) dans les cinémas que tu suis. Sous chaque notif :
 ⭐ <b>Intéressé·e</b> : la bande voit que ça te tente (et toi, qui d'autre est partant)
 ✅ <b>Vu</b> : plus de notif, et tu peux noter ★ + laisser un petit mot
 🔕 <b>Ignorer</b> : plus jamais de notif sur cette pièce/expo, même quand elle revient

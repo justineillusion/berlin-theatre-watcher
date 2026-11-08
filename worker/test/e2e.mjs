@@ -306,6 +306,17 @@ try {
     assert.equal(byChat(await cine())[MAX], undefined);
   });
 
+  await step("ciné : une fois par semaine (2e créneau cron = rien), sauf force", async () => {
+    const body = { venues: CINEMAS, week: "2026-11-09" };
+    assert.ok((await api("/api/cinema-recipients", body)).recipients.length > 0);
+    await api("/api/cinema-done", { week: "2026-11-09" });
+    const again = await api("/api/cinema-recipients", body);
+    assert.equal(again.already_sent, true);
+    assert.deepEqual(again.recipients, []);
+    assert.ok((await api("/api/cinema-recipients", { ...body, force: true })).recipients.length > 0);
+    assert.ok((await api("/api/cinema-recipients", { ...body, week: "2026-11-16" })).recipients.length > 0);
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);

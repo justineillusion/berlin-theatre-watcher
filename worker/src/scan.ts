@@ -3,7 +3,8 @@
 //   POST /api/plan    lieux + pièces (sans texte) -> ids à rédiger
 //   POST /api/render  textes                     -> messages prêts à envoyer
 //   POST /api/sent    accusés d'envoi            -> mémorise dates + message_id
-//   POST /api/cinema-recipients  cinémas        -> qui suit quels cinémas (ciné du lundi)
+//   POST /api/cinema-recipients  cinémas        -> qui suit quels cinémas (ciné du dimanche)
+//   POST /api/cinema-done        semaine        -> récap envoyé (idempotence des 2 crons)
 import {
   Env, Item, Reaction, esc, frDate, friendsByItem, renderFor, setSetting, setting, socialBlock,
 } from "./lib";
@@ -150,7 +151,14 @@ async function upsertVenues(env: Env, venues: VenueIn[], scope: string): Promise
   }
 }
 
-/** Ciné du lundi : enregistre les cinémas de cinema.yaml, puis dit qui suit
+/** Le récap ciné de la semaine `week` est parti (voir cinemaRecipients). */
+export async function cinemaDone(env: Env, body: any): Promise<Response> {
+  if (typeof body.week !== "string") return Response.json({ ok: false }, { status: 400 });
+  await setSetting(env, "cinema_week", body.week);
+  return Response.json({ ok: true });
+}
+
+/** Ciné du dimanche : enregistre les cinémas de cinema.yaml, puis dit qui suit
  *  quels cinémas (amis actifs suivant au moins un cinéma actif). */
 export async function cinemaRecipients(env: Env, body: any): Promise<Response> {
   const venues: VenueIn[] = (body.venues ?? [])
@@ -159,6 +167,12 @@ export async function cinemaRecipients(env: Env, body: any): Promise<Response> {
   // Liste vide = config illisible : on ne désactive rien, on ne vise personne.
   if (!venues.length) return Response.json({ recipients: [] });
   await upsertVenues(env, venues, "kind = 'cinema'");
+  // Deux créneaux cron le dimanche (GitHub en saute parfois un) : le second
+  // ne renvoie rien si le récap de cette semaine est déjà parti.
+  const week = typeof body.week === "string" ? body.week : null;
+  if (week && !body.force && (await setting(env, "cinema_week")) === week) {
+    return Response.json({ recipients: [], already_sent: true });
+  }
   const { results } = await env.DB.prepare(
     `SELECT s.chat_id, json_group_array(s.venue_id) AS venue_ids FROM subscriptions s
      JOIN users u ON u.chat_id = s.chat_id AND u.active = 1

@@ -29,7 +29,7 @@ def evening_day(s: Screening) -> date:
     return (s.start - timedelta(hours=4)).date()
 
 
-def _fmt_day(d: date) -> str:
+def fmt_day(d: date) -> str:
     return f"{_DAYS[d.weekday()]} {d.day}"
 
 
@@ -58,15 +58,33 @@ def _num(v: float, digits: int) -> str:
 _DAY_NAMES = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
 
 
-def header(start: date, days: int, cinemas: List[str], cfg: dict) -> str:
-    end = start + timedelta(days=days - 1)
-    span = (f"du {start.day} au {end.day} {_MONTHS[end.month - 1]}" if start.month == end.month
-            else f"du {start.day} {_MONTHS[start.month - 1]} au {end.day} {_MONTHS[end.month - 1]}")
+def _span(a: date, b: date) -> str:
+    if a.month == b.month:
+        return f"du {a.day} au {b.day} {_MONTHS[b.month - 1]}"
+    return f"du {a.day} {_MONTHS[a.month - 1]} au {b.day} {_MONTHS[b.month - 1]}"
+
+
+def hours_label(cfg: dict) -> str:
+    """« séances 18:00–22:00 en semaine, 18:00+ le week-end »."""
+    frm = cfg.get("evening_from", "18:00")
+    rule = cfg.get("latest_start") or {}
+    if not rule.get("time"):
+        return f"séances dès {frm}"
+    wd = sorted(set(rule.get("days", [0, 1, 2, 3, 4])))
+    if wd == [0, 1, 2, 3, 4]:
+        return f"séances {frm}–{rule['time']} en semaine, {frm}+ le week-end"
+    jours = ", ".join(_DAYS[d] for d in wd)
+    return f"séances dès {frm} (jusqu'à {rule['time']} les {jours})"
+
+
+def header(win: dict, cinemas: List[str], cfg: dict) -> str:
+    span = _span(win["first"], win["last"])
+    if win.get("tonight"):
+        span += " + ce soir"
     rc = cfg.get("ratings", {})
     seuil = f"SC ≥ {_num(rc.get('senscritique_min', 7.0), 1)} ou Letterboxd ≥ {_num(rc.get('letterboxd_min', 3.6), 1)}"
     return (f"🎬 <b>Ciné de la semaine</b> — {span}\n"
-            f"<i>{esc(' · '.join(cinemas))} — séances dès {esc(cfg.get('evening_from', '18:00'))}, "
-            f"VO, {esc(seuil)}</i>")
+            f"<i>{esc(' · '.join(cinemas))} — {esc(hours_label(cfg))}, VO, {esc(seuil)}</i>")
 
 
 def _short_rating(film: Film, link: bool) -> str:
@@ -105,7 +123,7 @@ def _where(items: List[Screening]) -> str:
     return f"{_a(s.url, esc(s.cinema))} · {esc(ver)}"
 
 
-def day_sections(films: List[Film]) -> List[str]:
+def day_sections(films: List[Film], tonight: Optional[date] = None) -> List[str]:
     """Une section par soirée ; séances triées par heure.
     1re apparition d'un film = bloc complet (titre, note liée, pitch),
     apparitions suivantes = une ligne compacte."""
@@ -121,7 +139,10 @@ def day_sections(films: List[Film]) -> List[str]:
     seen: dict = {}
     sections: List[str] = []
     for d in sorted(by_day):
-        lines = [f"📅 <b>{_DAY_NAMES[d.weekday()]} {d.day}</b>"]
+        label = f"{_DAY_NAMES[d.weekday()]} {d.day}"
+        if d == tonight:
+            label = f"Ce soir ({label.lower()})"
+        lines = [f"📅 <b>{label}</b>"]
         for _, f, items in sorted(by_day[d], key=lambda x: x[0]):
             if id(f) not in seen:
                 seen[id(f)] = d
@@ -132,22 +153,27 @@ def day_sections(films: List[Film]) -> List[str]:
             else:
                 first = seen[id(f)]
                 lines.append(f"🕗 {_times(items)} · {_names(f, False)} · {_short_rating(f, False)}"
-                             f" · {_where(items)} <i>(↑ {_fmt_day(first)})</i>")
+                             f" · {_where(items)} <i>(↑ {fmt_day(first)})</i>")
         sections.append("\n".join(lines))
     return sections
 
 
 def format_week(kept: List[Film], unrated: List[Film], rejected_count: int,
-                start: date, days: int, cinemas: List[str], cfg: dict) -> List[str]:
-    head = header(start, days, cinemas, cfg)
+                win: dict, cinemas: List[str], cfg: dict, coverage: Optional[List[str]] = None) -> List[str]:
+    head = header(win, cinemas, cfg)
+    cov = f"<i>⏳ {esc(' · '.join(coverage))}</i>" if coverage else ""
     if not kept:
         body = "\n\nRien de fou cette semaine 🤷‍♀️ — rien de bien noté en VO le soir."
-        if unrated:
+        if unrated and unrated_line(unrated):
             body += "\n\n" + unrated_line(unrated)
+        if cov:
+            body += "\n\n" + cov
         return [head + body]
 
-    blocks = day_sections(kept)
+    blocks = day_sections(kept, win.get("tonight"))
     tail = []
+    if cov:
+        tail.append(cov)
     if unrated:
         if unrated_line(unrated):
             tail.append(unrated_line(unrated))

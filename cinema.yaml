@@ -1,4 +1,4 @@
-# Ciné du lundi — configuration du récap hebdo « films du soir près de chez toi »
+# Ciné du dimanche — configuration du récap hebdo « films du soir près de chez toi »
 #
 # Lancement :  python -m src.cinema --dry-run      (affiche, n'envoie rien)
 #              python -m src.cinema                (envoie sur Telegram)
@@ -41,8 +41,15 @@ cinemas:
 # ---------------------------------------------------------------------------
 # FENÊTRE
 # ---------------------------------------------------------------------------
-days: 7                    # aujourd'hui + 6 jours
+days: 7                    # la semaine : lancé un dimanche = lundi→dimanche suivants (+ « Ce soir »), sinon aujourd'hui + 6 jours
+tonight_on_sunday: true    # le dimanche, ajoute une section « Ce soir » si un film passe les filtres
 evening_from: "18:00"      # séances qui commencent à partir de… (les séances après minuit comptent aussi)
+# Heure de début maximale, certains soirs seulement (0 = lundi … 6 = dimanche ;
+# le soir compté est celui de la séance : 00:30 = la veille). 22:00 pile passe.
+# Sans limite le week-end. `time: null` pour désactiver.
+latest_start:
+  time: "22:00"
+  days: [0, 1, 2, 3, 4]    # lundi → vendredi
 max_films: 10
 # Places réservées aux films récents (≤ recent_max_age ans) s'il y en a qui
 # passent les filtres — sinon les rétrospectives prennent tout.

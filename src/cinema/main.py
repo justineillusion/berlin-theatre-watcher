@@ -1,4 +1,5 @@
-"""Récap ciné hebdo : films du soir (VO, bien notés, pas grand public).
+"""Récap ciné hebdo (dimanche matin) : films du soir (VO, bien notés, pas grand public)
+pour la semaine lundi→dimanche qui vient, + « Ce soir ».
 
     python -m src.cinema --dry-run             # affiche le message + le rapport de filtrage
     python -m src.cinema                       # envoie sur Telegram
@@ -16,7 +17,7 @@ import os
 import sys
 import traceback
 from dataclasses import replace
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional
 from zoneinfo import ZoneInfo
@@ -24,7 +25,7 @@ from zoneinfo import ZoneInfo
 import yaml
 
 from . import taste
-from .message import first_sentence, format_week
+from .message import evening_day, first_sentence, fmt_day, format_week
 from .models import Film, Screening
 from .ratings import norm_title
 from .sources import SOURCES
@@ -45,26 +46,69 @@ def is_evening(s: Screening, evening_from: str) -> bool:
     return (t.hour, t.minute) >= (hh, mm) or t.hour < 4
 
 
-def collect(cfg: dict, start: date) -> tuple[List[Screening], List[str], set]:
+def not_too_late(s: Screening, cfg: dict) -> bool:
+    """`latest_start` : en semaine, pas de séance qui commence après 22:00
+    (22:00 pile passe). Le jour compté est celui de la soirée (00:30 = la veille)."""
+    rule = cfg.get("latest_start") or {}
+    limit = rule.get("time")
+    if not limit:
+        return True
+    if evening_day(s).weekday() not in set(rule.get("days", [0, 1, 2, 3, 4])):
+        return True
+    hh, mm = (int(x) for x in limit.split(":"))
+    t = s.start.astimezone(_TZ)
+    if t.hour < 4:                       # après minuit = forcément plus tard que la limite
+        return False
+    return (t.hour, t.minute) <= (hh, mm)
+
+
+def window(cfg: dict, start: date) -> dict:
+    """La semaine couverte. Lancé un dimanche (le cas du cron) : lundi→dimanche
+    de la semaine qui vient, plus « Ce soir » (les séances de ce dimanche)."""
     days = int(cfg.get("days", 7))
+    tonight = start if start.weekday() == 6 and cfg.get("tonight_on_sunday", True) else None
+    first = start + timedelta(days=1) if tonight else start
+    return {"start": start, "fetch_days": days + (1 if tonight else 0), "tonight": tonight,
+            "first": first, "last": first + timedelta(days=days - 1), "days": days}
+
+
+def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict[str, Optional[date]]]:
     evening_from = cfg.get("evening_from", "18:00")
     screenings: List[Screening] = []
     dubbed: set = set()          # titres aussi programmés en VF allemande (toute heure)
     errors: List[str] = []
+    known_until: Dict[str, Optional[date]] = {}   # dernier soir avec au moins une séance publiée
     for cin in cfg.get("cinemas", []):
         fetch = SOURCES.get(cin.get("source"))
         if not fetch:
             errors.append(f"{cin.get('name')}: source inconnue {cin.get('source')!r}")
             continue
         try:
-            got = fetch({**cin, "_evening_from": evening_from}, start, days)
+            got = fetch({**cin, "_evening_from": evening_from}, win["start"], win["fetch_days"])
         except Exception as exc:  # noqa: BLE001 — un cinéma en panne ne bloque pas les autres
             errors.append(f"{cin.get('name')}: {exc}")
             traceback.print_exc(file=sys.stderr)
             continue
-        screenings += [s for s in got if is_evening(s, evening_from)]
+        known_until[cin["name"]] = max((evening_day(s) for s in got), default=None)
+        screenings += [s for s in got if is_evening(s, evening_from) and not_too_late(s, cfg)]
         dubbed |= {norm_title(s.original_title or s.title) for s in got if s.version == "DF"}
-    return screenings, errors, dubbed
+    return screenings, errors, dubbed, known_until
+
+
+def coverage_lines(known_until: Dict[str, Optional[date]], names: List[str], win: dict) -> List[str]:
+    """« Intimes : programme connu jusqu'au mer. 12 » quand un cinéma n'a pas
+    encore publié toute la semaine (l'Intimes publie le jeudi pour jeudi→mercredi).
+    Un dernier jour manquant n'est pas signalé (relâche possible)."""
+    out = []
+    for n in names:
+        if n not in known_until:
+            continue                       # source en erreur : voir le rapport
+        last = known_until[n]
+        if last is None:
+            out.append(f"{n} : programme pas encore publié")
+        elif last < win["last"] - timedelta(days=1):
+            out.append(f"{n} : programme connu jusqu'au {fmt_day(last)}")
+    return out
 
 
 def group(screenings: List[Screening]) -> List[Film]:
@@ -132,7 +176,8 @@ def analyse(cfg: dict, start: date) -> dict:
     sous-ensemble de cinémas — chaque ami reçoit le top de SES cinémas."""
     today = datetime.now(_TZ).date()
     max_age = int(cfg.get("recent_max_age", 3))
-    screenings, errors, dubbed = collect(cfg, start)
+    win = window(cfg, start)
+    screenings, errors, dubbed, known_until = collect(cfg, win)
     films = group(screenings)
     for f in films:
         f.dubbed_release = f.key in dubbed
@@ -165,7 +210,8 @@ def analyse(cfg: dict, start: date) -> dict:
         else:
             passed.append(f)
     return {"passed": passed, "rejected": rejected, "unrated": unrated, "errors": errors,
-            "n_screenings": len(screenings), "pitched": set()}
+            "n_screenings": len(screenings), "pitched": set(), "window": win,
+            "known_until": known_until}
 
 
 def _restrict(films: List[Film], names: Optional[set]) -> List[Film]:
@@ -208,8 +254,9 @@ def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]]
     for f in overflow:
         f.rejected = "hors top (plafond max_films)"
 
-    messages = format_week(kept, unrated, len(rejected) + len(overflow), start,
-                           int(cfg.get("days", 7)), shown, cfg)
+    win = analysis["window"]
+    messages = format_week(kept, unrated, len(rejected) + len(overflow), win, shown, cfg,
+                           coverage_lines(analysis["known_until"], shown, win))
     return {"messages": messages, "kept": kept, "rejected": rejected + overflow,
             "errors": analysis["errors"], "n_screenings": analysis["n_screenings"]}
 
@@ -224,9 +271,10 @@ def cinema_venue_id(name: str) -> str:
     return "cinema-" + venue_slug(name)
 
 
-def send_multi(analysis: dict, cfg: dict, start: date, token: str) -> None:
+def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
     """Bot multi-utilisateurs : un récap par ami, limité aux cinémas qu'il suit
-    (/suivre). Personne ne suit de cinéma = aucun envoi."""
+    (/suivre). Personne ne suit de cinéma = aucun envoi. Idempotent par semaine
+    (second créneau cron) sauf `force`."""
     import time
 
     import httpx
@@ -236,12 +284,18 @@ def send_multi(analysis: dict, cfg: dict, start: date, token: str) -> None:
 
     names = [c["name"] for c in cfg.get("cinemas", [])]
     by_id = {cinema_venue_id(n): n for n in names}
+    week = window(cfg, start)["first"].isoformat()
     with _client() as api:
-        resp = api.post("/api/cinema-recipients",
-                        json={"venues": [{"id": i, "name": n} for i, n in by_id.items()]})
+        resp = api.post("/api/cinema-recipients", json={
+            "venues": [{"id": i, "name": n} for i, n in by_id.items()], "week": week, "force": force})
         resp.raise_for_status()
-        recipients = resp.json()["recipients"]
+        data = resp.json()
+        if data.get("already_sent"):
+            print(f"✅ Récap de la semaine du {week} déjà envoyé : rien à faire (--force pour renvoyer).")
+            return
+        recipients = data["recipients"]
         print(f"👥 {len(recipients)} ami·e(s) suivent au moins un cinéma.")
+        analysis = analyse(cfg, start)
 
         cache: Dict[tuple, List[str]] = {}
         failed: List[dict] = []
@@ -268,8 +322,11 @@ def send_multi(analysis: dict, cfg: dict, start: date, token: str) -> None:
                 time.sleep(0.1)                # douceur vis-à-vis des limites Telegram
         if failed:
             api.post("/api/sent", json={"sent": failed}).raise_for_status()
+        if ok or not total:                    # tout a échoué : le 2e créneau retentera
+            api.post("/api/cinema-done", json={"week": week}).raise_for_status()
     print(f"✅ {ok}/{total} message(s) envoyé(s) à {len(recipients)} ami·e(s) "
           f"({len(cache)} combinaison(s) de cinémas).")
+    print(report(compose(analysis, cfg, start)))
 
 
 def report(result: dict) -> str:
@@ -305,6 +362,9 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("--config", default=str(CONFIG_PATH))
     ap.add_argument("--only", help="cinémas (noms de cinema.yaml, séparés par des virgules) : "
                                    "le récap tel que le reçoit un ami qui ne suit qu'eux")
+    ap.add_argument("--force", action="store_true", help="renvoie même si le récap de la semaine est déjà parti")
+    ap.add_argument("--backup", action="store_true",
+                    help="créneau cron de secours : n'envoie que si le 1er n'est pas passé (bot multi-utilisateurs)")
     args = ap.parse_args(argv)
 
     cfg = load_config(Path(args.config))
@@ -322,12 +382,15 @@ def main(argv: List[str] | None = None) -> int:
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     if not token:
         sys.exit("❌ TELEGRAM_BOT_TOKEN manquant (ou utilise --dry-run)")
-    analysis = analyse(cfg, start)
     if os.environ.get("BOT_API_URL"):
-        send_multi(analysis, cfg, start, token)
-        print(report(compose(analysis, cfg, start)))
+        send_multi(cfg, start, token, force=args.force)
+        return 0
+    if args.backup:
+        print("Créneau de secours sans bot multi-utilisateurs : impossible de savoir si le "
+              "récap est déjà parti, on n'envoie rien.")
         return 0
 
+    analysis = analyse(cfg, start)
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
     if not chat_id:
         sys.exit("❌ TELEGRAM_CHAT_ID manquant (ou BOT_API_URL pour le bot multi-utilisateurs)")
