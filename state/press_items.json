@@ -25,17 +25,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Die Seherin (The Seer)",
-  "url": "https://www.schaubuehne.de/en/produktionen/die-seherin.html?ID_Vorstellung=7262&m=398",
-  "opens": "2026-11-24",
-  "aliases": [
-   "Die Seherin",
-   "The Seer"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "Disrupt the Default: Translating Experience",
   "url": "https://www.volksbuehne-berlin.de/en/productions/disrupt-the-default-translating-experience/20261128-1800/",
@@ -78,17 +67,6 @@
   "aliases": [
    "The Picture of Dorian Gray",
    "Das Bildnis des Dorian Gray"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Im Herzen der Gewalt (History of Violence)",
-  "url": "https://www.schaubuehne.de/en/produktionen/im-herzen-der-gewalt-2.html?ID_Vorstellung=7308&m=398",
-  "opens": "2026-12-19",
-  "aliases": [
-   "Im Herzen der Gewalt",
-   "History of Violence"
   ]
  },
  {
@@ -299,14 +277,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Bad Kingdom",
-  "url": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
-  "opens": "2026-11-30",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Dreigroschenoper (The Threepenny Opera)",
   "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
@@ -354,14 +324,6 @@
   "title": "Spooky Paradise",
   "url": "https://www.volksbuehne-berlin.de/en/productions/spooky-paradise/20261228-1830/",
   "opens": "2026-12-28",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Antigone. Der Abschied",
-  "url": "https://www.schaubuehne.de/en/produktionen/antigone-der-abschied.html?ID_Vorstellung=7303&m=398",
-  "opens": "2026-12-30",
   "aliases": []
  },
  {
