@@ -1,0 +1,19 @@
+name = "theatre-bot"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+[vars]
+# À remplir : ton chat_id (= TELEGRAM_CHAT_ID actuel) et le @ du bot, sans @.
+OWNER_CHAT_ID = "2128088613"
+BOT_USERNAME = "Justine_theatre_bot"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "theatre-bot"
+# Donné par : npx wrangler d1 create theatre-bot (les zéros servent aux tests locaux)
+database_id = "7602c36b-2c7b-4168-954d-892f1eac3c31"
+
+# Secrets (jamais dans ce fichier) :
+#   npx wrangler secret put BOT_TOKEN        (token @BotFather)
+#   npx wrangler secret put API_TOKEN        (inventé, partagé avec GitHub Actions)
+#   npx wrangler secret put WEBHOOK_SECRET   (inventé, lettres/chiffres)

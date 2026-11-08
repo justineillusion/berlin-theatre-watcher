@@ -1,0 +1,122 @@
+# Ciné du lundi — configuration du récap hebdo « films du soir près de chez toi »
+#
+# Lancement :  python -m src.cinema --dry-run      (affiche, n'envoie rien)
+#              python -m src.cinema                (envoie sur Telegram)
+# Doc : docs/cinema.md
+
+# ---------------------------------------------------------------------------
+# CINÉMAS — retire / commente une entrée pour ne plus la suivre.
+# ---------------------------------------------------------------------------
+cinemas:
+  - name: Intimes
+    source: kinoheld                 # horaires via l'API kinoheld (le site n'a qu'un iframe)
+    kinoheld_cinema_id: 2423
+    kinoheld_slug: kino-intimes-berlin
+    film_url: https://kino-intimes.de/programm.html
+    # « Filme ohne Kennzeichnung sind auf Deutsch » (site du cinéma)
+    unmarked_version: DF
+
+  - name: Lichtblick
+    source: lichtblick               # calendrier HTML du site + pages film
+    url: https://lichtblick-kino.org/
+    kinoheld_slug: lichtblick-kino-berlin
+    unmarked_version: DF
+
+  - name: Babylon
+    source: babylon                  # page /programm du site (une vignette par séance)
+    url: https://babylonberlin.eu/programm
+    # Préfixes de séries retirés du titre (« Clockwork Kubrick: The Shining »)
+    series_prefixes:
+      - Clockwork Kubrick
+      - La Sur Real Colombia
+      - MetFilm @Babylon
+      - CinemAperitivo
+      - IndoGerman Film
+      - CineBrasil
+      - Cine en Espanol
+      - Free Friday
+      - Stummfilm um Mitternacht
+      - Lubitsch im Babylon
+
+# ---------------------------------------------------------------------------
+# FENÊTRE
+# ---------------------------------------------------------------------------
+days: 7                    # aujourd'hui + 6 jours
+evening_from: "18:00"      # séances qui commencent à partir de… (les séances après minuit comptent aussi)
+max_films: 10
+# Places réservées aux films récents (≤ recent_max_age ans) s'il y en a qui
+# passent les filtres — sinon les rétrospectives prennent tout.
+min_recent: 3
+recent_max_age: 3
+
+# ---------------------------------------------------------------------------
+# NOTES — SensCritique est la source principale. Une note SC ne compte que
+# si elle a assez de votes ; sinon (film introuvable, trop récent, trop
+# confidentiel) on se rabat sur Letterboxd.
+# ---------------------------------------------------------------------------
+ratings:
+  # fallback = Letterboxd seulement si SC n'a pas de note fiable (défaut)
+  # any      = Letterboxd peut aussi « repêcher » un film sous le seuil SC
+  #            (plus généreux : Digger, Primetime, Marie Antoinette passeraient)
+  letterboxd_when: fallback
+  senscritique_min: 7.0    # /10
+  senscritique_min_votes: 50
+  letterboxd_min: 3.6      # /5
+  letterboxd_min_votes: 300
+  # Films RÉCENTS sans note fiable (premières, festivals, docs) qui passent
+  # tous les autres filtres : true = une ligne « 🆕 Pas encore notés » en fin
+  # de message (titre · cinéma · jour) ; false = ignorés.
+  show_unrated: true
+
+# ---------------------------------------------------------------------------
+# VERSIONS
+# ---------------------------------------------------------------------------
+# Séances en version allemande d'un film NON germanophone = doublées -> exclues.
+exclude_dubbed: true
+# Versions acceptées pour un film non germanophone (« version non précisée » = null).
+accept_versions: [OmeU, OmU, OV, muet, null]
+
+# ---------------------------------------------------------------------------
+# GOÛT — pas de blockbusters, pas de films pour enfants, pas de comédies grand public
+# ---------------------------------------------------------------------------
+blocklist:
+  # Genres (kinoheld en allemand, SensCritique en français, Letterboxd en anglais)
+  genres: [Familie, Kinderfilm, Familienfilm, Famille, Familial, Jeunesse, Family, Superhelden, Super-héros]
+  # Mots-clés dans le titre / la rubrique / les flags du cinéma
+  keywords:
+    - Marvel
+    - Avengers
+    - Spider-Man
+    - Batman
+    - Superman
+    - Jurassic
+    - Fast & Furious
+    - "Mission: Impossible"
+    - Minions
+    - Paw Patrol
+    - Shaun das Schaf
+    - Disney
+    - Pixar
+    - DreamWorks
+    - Kinderkino
+    - Kinderwagenkino
+    - Kinderfilm
+    - Children's Program
+    - Fright Night         # séances nanar/trash de l'Intimes
+  # Flags kinoheld
+  flags: [family, kinderkino]
+  # Rubriques Babylon qui ne sont pas des projections de films
+  categories: [LITERATUR, KONZERTE, THEATER, KINDERWAGENKINO, AUSSTELLUNGEN]
+  # Événements non-film (titre) — sauf ciné-concert (muet + orgue/orchestre)
+  non_film_keywords: [Talk, Workshop, Networking, Lesung, Konzert, Party, literatur live, Diskussion, Podium]
+
+# Blockbuster récent = sorti il y a ≤ max_age_years, ≥ min_votes sur SensCritique
+# ET un genre « spectacle ». Exclu même s'il est bien noté.
+blockbuster:
+  max_age_years: 3
+  min_votes: 8000
+  genres: [Action, Aventure, Fantastique, Science-fiction, Abenteuer, Fantasy, Animation, Super-héros]
+
+# Toujours garder / toujours exclure (titres, insensible à la casse)
+always_include: []
+always_exclude: []

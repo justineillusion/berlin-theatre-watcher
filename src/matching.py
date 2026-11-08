@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import OrderedDict
+from datetime import date
 from typing import List
 
 from .models import Show
@@ -29,9 +30,14 @@ def select(shows: List[Show], config: dict) -> List[Show]:
     avoid = config.get("keywords_avoid") or []
     require_match = bool(config.get("require_keyword_match", False))
 
+    today = date.today().isoformat()
     kept: List[Show] = []
     for show in shows:
-        if not show.has_english_surtitles or show.sold_out is True:
+        if show.kind == "expo":
+            # Pas de surtitres ni de « complet » : on écarte juste les expos finies.
+            if show.end_date and show.end_date < today:
+                continue
+        elif not show.has_english_surtitles or show.sold_out is True:
             continue
         hay = show.haystack()
         if _find(avoid, hay):
@@ -49,6 +55,9 @@ def select(shows: List[Show], config: dict) -> List[Show]:
 
     reps: List[Show] = []
     for members in groups.values():
+        if members[0].kind == "expo":
+            reps.append(members[0])
+            continue
         members.sort(key=lambda s: s.date or "9999")
         rep = members[0]                       # la prochaine date à venir
         rep.other_dates_count = len(members) - 1

@@ -30,10 +30,26 @@ class Show:
     available_iso: List[str] = field(default_factory=list)    # idem, brut, pour l'état
     new_dates: List[str] = field(default_factory=list)        # dates inédites ce scan
     critics: Optional[CriticsRating] = None  # note presse estimée (Nachtkritik)
+    kind: str = "theatre"                 # "theatre" | "expo"
+    end_date: Optional[str] = None        # expos : "YYYY-MM-DD" de fin (date = début)
+    venue_id: str = ""                    # slug du lieu dans config.yaml (abonnements)
+    venue_name: str = ""                  # nom du lieu tel que dans config.yaml
 
     def key(self) -> str:
         """Identité d'une PIÈCE (pour la déduplication : 1 alerte par pièce)."""
         return f"{self.theater}|{self.title.strip().lower()}".strip()
+
+    def item_id(self) -> str:
+        """Identifiant court et stable d'une pièce/expo, partagé avec le bot
+        multi-utilisateurs (boutons Telegram : 64 octets max par callback).
+
+        Fondé sur le lieu + le titre normalisé : quand une pièce de répertoire
+        revient la saison suivante, elle garde le même id, donc un « Vu » ou un
+        « Ignorer » reste valable."""
+        import hashlib
+
+        base = f"{self.venue_id or self.theater}|{self.title.strip().lower()}"
+        return hashlib.sha1(base.encode()).hexdigest()[:12]
 
     def haystack(self) -> str:
         """Texte concaténé pour la recherche de mots-clés (minuscules)."""

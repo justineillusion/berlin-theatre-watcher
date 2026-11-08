@@ -57,8 +57,13 @@ require_keyword_match: false
 critics_rating: true
 
 # ---------------------------------------------------------------------------
-# THÉÂTRES À SCANNER
+# LIEUX À SCANNER (théâtres + expos)
 # ---------------------------------------------------------------------------
+# - name   : nom affiché (et dans /suivre du bot) — le changer = nouveau lieu
+# - parser : module dans src/parsers/
+# - kind   : theatre (défaut) ou expo. Les expos n'ont pas de filtre surtitres
+#            ni « complet » : une alerte à l'annonce, puis un rappel « dernières
+#            semaines » pour qui a cliqué ⭐ Intéressé·e.
 theaters:
   - name: Schaubühne
     parser: schaubuehne
@@ -80,3 +85,43 @@ theaters:
   - name: Berliner Festspiele — Theatertreffen
     parser: festspiele
     url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=theatertreffen
+
+  # --- Expos -----------------------------------------------------------------
+  - name: Hamburger Bahnhof
+    parser: smb
+    kind: expo
+    url: https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/current/
+
+  - name: Neue Nationalgalerie
+    parser: smb
+    kind: expo
+    url: https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/current/
+
+  - name: KW Institute for Contemporary Art
+    parser: kw
+    kind: expo
+    url: https://www.kw-berlin.de/en/exhibitions
+
+  - name: C/O Berlin
+    parser: co_berlin
+    kind: expo
+    url: https://co-berlin.org/en/program/exhibitions
+
+  - name: Berlinische Galerie
+    parser: berlinische_galerie
+    kind: expo
+    url: https://berlinischegalerie.de/en/exhibitions/
+
+  - name: Fotografiska Berlin
+    parser: fotografiska
+    kind: expo
+    url: https://berlin.fotografiska.com/en/exhibition
+
+# ---------------------------------------------------------------------------
+# BOT MULTI-UTILISATEURS (amis)
+# ---------------------------------------------------------------------------
+# Sans effet tant que BOT_API_URL / BOT_API_TOKEN ne sont pas définis : le bot
+# reste alors en mode « un seul chat » (TELEGRAM_CHAT_ID). Voir worker/README.md.
+# Rappel « dernières semaines » d'une expo, N jours avant la fin, pour ceux
+# qui ont cliqué ⭐ Intéressé·e (et ne l'ont pas encore vue).
+expo_last_weeks_days: 14

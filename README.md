@@ -9,6 +9,11 @@ réservation**.
 > pages « programme / English surtitles » et filtre par mots-clés. Aucun compte
 > à créer pour tester.
 
+> 👥 **Nouveau : mode bande d'amis.** Invitations, choix des lieux par personne,
+> boutons ⭐ Intéressé·e / ✅ Vu / 🔕 Ignorer, notes des amis, lieux d'expo
+> (Hamburger Bahnhof, Neue Nationalgalerie, KW, C/O Berlin, Berlinische Galerie).
+> Mise en service : [`worker/README.md`](worker/README.md).
+
 ## Comment ça marche
 
 1. **Fetch + parse** — récupère les pages des théâtres et en extrait les
@@ -65,6 +70,34 @@ set -a; source .env; set +a
 - Onglet **Actions** → *Scan Berlin theatres* → **Run workflow** pour un test.
 - Ensuite ça tourne tous les jours à ~10h (Berlin).
 
+## 🔕 Ne plus suivre une pièce (mode un seul chat)
+
+Chaque notification (pièce ou expo) porte un bouton **🔕 Ne plus suivre**.
+Touche-le et la pièce disparaît des scans quotidiens, des ouvertures de vente
+et du récap du dimanche — fini les « 🆕 Nouvelles dates » pour une pièce qui ne
+t'intéresse pas.
+
+- **Pas instantané** : aucun serveur n'écoute Telegram en continu. Le clic
+  reste en attente chez Telegram et c'est le **prochain scan** (2 par jour) qui
+  le lit (`getUpdates`), modifie le bouton en « ↩️ Réactiver » et t'envoie une
+  petite confirmation silencieuse. Telegram garde ces clics **24 h** : avec
+  deux scans par jour, aucun ne se perd.
+- **Réactiver** : bouton « ↩️ Réactiver » sous la notification, ou envoie
+  `/muets` au bot : il répond (au scan suivant) avec la liste des pièces
+  masquées, une touche « Réactiver » par pièce.
+- **État** : `state/muted.json` (pièces masquées + position de lecture
+  Telegram), committé par les workflows *scan* et *presale*. Le *récap* ne fait
+  que le lire (il applique en mémoire les clics pas encore traités, sans rien
+  écrire). Pour démasquer à la main : supprime l'entrée du fichier.
+- L'identifiant d'une pièce est un hash court du couple théâtre + titre
+  (`Show.key()`) : une pièce de répertoire qui revient reste masquée.
+- Envie de boutons instantanés ? C'est ce que fait le bot multi-utilisateurs
+  ([`worker/`](worker/README.md), bouton 🔕 Ignorer) une fois déployé. Attention :
+  avec son webhook actif, `getUpdates` ne marche plus, donc ce mode-ci s'éteint
+  de lui-même (le scan affiche un avertissement et garde la liste connue).
+
+Test hors-ligne : `./.venv/bin/python -m tests.test_mute`.
+
 ## Personnalisation — `config.yaml`
 
 - `keywords_love` — tes goûts (mis en avant avec ⭐).
@@ -90,8 +123,23 @@ l'ironie ; la répartition 👍/😐/👎 aide à repérer les avis partagés. P
 ligne 📰 = pas de critique trouvée (ou moins de 2 avis). Désactivable avec
 `critics_rating: false`.
 
-La recherche Nachtkritik est lente (5–30 s/requête) : le scan quotidien ne la
-lance que pour les pièces à notifier, mais le récap du dimanche prend ~25 min.
+Pour trouver la critique, le bot lit d'abord la **rubrique Nachtkritik du
+théâtre** (`/nachtkritiken/…/berlin/schaubuehne-berlin`, 4 pages ≈ 150
+critiques) et y compare le titre — y compris le titre allemand tiré de l'URL
+du spectacle (`…/en/produktionen/der-geizige.html` → « Der Geizige » pour
+« The Miser »). La recherche plein texte de Nachtkritik, lente (5–30 s) et
+capricieuse, ne sert plus que de repli (Festspiele, créations à l'étranger).
+
+Tout est mis en cache dans `state/critics_cache.json` (rubriques : 6 h pour la
+1re page, 30 j pour les suivantes ; recherches : 3 j ; notes : 12 h tant que la
+critique a moins d'un mois — la Rundschau s'étoffe après la première — puis
+60 j). Un échec réseau n'est jamais mis en cache. Les ouvertures de vente
+(`--no-critics`) n'interrogent pas Nachtkritik mais reprennent les notes déjà
+en cache. ⚠️ Pour que le cache serve d'un run à l'autre, les workflows doivent
+committer `state/critics_cache.json` avec `state/seen.json`.
+
+Une pièce pas encore créée n'a pas de critique : la note apparaît dans les
+alertes suivantes (nouvelles dates) et dans le récap du dimanche.
 
 ## Limites connues
 
@@ -111,9 +159,12 @@ lance que pour les pièces à notifier, mais le récap du dimanche prend ~25 min
 | Fichier | Rôle |
 |---|---|
 | `config.yaml` | mots-clés + théâtres à scanner |
-| `src/parsers/` | un parser HTML par théâtre |
+| `src/parsers/` | un parser HTML par théâtre (+ `expos.py` pour les lieux d'expo) |
+| `src/botapi.py` | mode multi-utilisateurs : dialogue avec le Worker |
+| `worker/` | bot Telegram multi-utilisateurs (Cloudflare Worker + D1) |
 | `src/matching.py` | filtres durs + mots-clés |
 | `src/notify.py` | message Telegram |
 | `src/state.py` | `seen.json` (anti-doublon) |
+| `src/mute.py` | bouton 🔕 Ne plus suivre + `/muets` (`state/muted.json`) |
 | `src/main.py` | orchestration (`--dry-run` dispo) |
 | `.github/workflows/scan.yml` | cron quotidien |

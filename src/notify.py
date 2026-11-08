@@ -13,7 +13,13 @@ from .models import Show
 _API = "https://api.telegram.org/bot{token}/sendMessage"
 
 
-def send_telegram(token: str, chat_id: str, text: str, retries: int = 3) -> None:
+def send_telegram(
+    token: str,
+    chat_id: str,
+    text: str,
+    retries: int = 3,
+    reply_markup: dict | None = None,
+) -> int | None:
     """Envoie un message, en réessayant les échecs réseau.
 
     Sans retry, un simple « read operation timed out » fait perdre l'alerte du
@@ -23,6 +29,9 @@ def send_telegram(token: str, chat_id: str, text: str, retries: int = 3) -> None
 
     Un 4xx (token ou chat_id faux, message mal formé) n'est pas réessayé : il ne
     se résoudra pas tout seul.
+
+    Renvoie le message_id (le bot multi-utilisateurs s'en sert pour mettre à
+    jour la liste « Intéressé·es » sur le message déjà envoyé).
     """
     payload = {
         "chat_id": chat_id,
@@ -30,12 +39,19 @@ def send_telegram(token: str, chat_id: str, text: str, retries: int = 3) -> None
         "parse_mode": "HTML",
         "disable_web_page_preview": False,
     }
+    if reply_markup:
+        payload["reply_markup"] = reply_markup
     last_error: Exception | None = None
     for attempt in range(retries):
         try:
             resp = httpx.post(_API.format(token=token), json=payload, timeout=30.0)
+            if resp.status_code == 429:        # rate-limit : on attend ce qu'on nous dit
+                wait = resp.json().get("parameters", {}).get("retry_after", 5)
+                time.sleep(min(float(wait), 60.0))
+                last_error = httpx.HTTPStatusError("429", request=resp.request, response=resp)
+                continue
             resp.raise_for_status()
-            return
+            return (resp.json().get("result") or {}).get("message_id")
         except httpx.HTTPStatusError as exc:
             if 400 <= exc.response.status_code < 500:
                 raise
@@ -68,6 +84,67 @@ def _short_dates(show: Show) -> str:
     return f"{head} (+{extra} autre{'s' if extra > 1 else ''})" if extra > 0 else head
 
 
+def _fr_date(iso: str | None) -> str:
+    """'2027-01-10' -> '10/01/27'."""
+    if not iso or len(iso) < 10:
+        return iso or ""
+    return f"{iso[8:10]}/{iso[5:7]}/{iso[2:4]}"
+
+
+def expo_period(show: Show) -> str:
+    if show.date and show.end_date:
+        return f"du {_fr_date(show.date)} au {_fr_date(show.end_date)}"
+    if show.end_date:
+        return f"jusqu'au {_fr_date(show.end_date)}"
+    return f"à partir du {_fr_date(show.date)}" if show.date else ""
+
+
+def digest_line(show: Show) -> str:
+    """Bloc d'une pièce/expo dans un récap (sans la ligne « amis », ajoutée par
+    le bot multi-utilisateurs)."""
+    star = " ⭐" if show.matched_keywords else ""
+    title = _esc(show.title)
+    if show.url:
+        title = f'<a href="{html.escape(show.url)}">{title}</a>'
+    lines = [f"• {title}{star}"]
+    if show.kind == "expo":
+        period = expo_period(show)
+        if period:
+            lines.append(f"   🗓 {_esc(period)}")
+        return "\n".join(lines)
+    detail = " · ".join(p for p in (_short_dates(show), show.spoken_language) if p)
+    if detail:
+        line = f"   🗓 {_esc(detail)}"
+        if show.booking_url:
+            line += f' · <a href="{html.escape(show.booking_url)}">réserver</a>'
+        lines.append(line)
+    if show.critics:
+        lines.append(
+            f'   📰 <a href="{html.escape(show.critics.url)}">{show.critics.star_bar()}</a>'
+            f" ({show.critics.count} critiques)"
+        )
+    return "\n".join(lines)
+
+
+def format_expo(show: Show) -> str:
+    """Message Telegram (HTML) pour une expo."""
+    lines = [f"🖼 <b>{_esc(show.title)}</b>", f"📍 {_esc(show.venue_name or show.theater)}"]
+    period = expo_period(show)
+    if period:
+        lines.append(f"🗓 {_esc(period[0].upper() + period[1:])}")
+    if show.languages:
+        lines.append(f"✍️ {_esc(show.languages)}")
+    if show.summary:
+        lines.append(f"\n📝 {_esc(show.summary)}")
+    if show.url:
+        lines.append(f'\n🔗 <a href="{html.escape(show.url)}">Page de l\'expo</a>')
+    return "\n".join(lines)
+
+
+def format_item(show: Show) -> str:
+    return format_expo(show) if show.kind == "expo" else format_show(show)
+
+
 def format_digest(shows: List[Show]) -> List[str]:
     """Récap hebdomadaire : tout ce qui est réservable, groupé par théâtre.
 
@@ -93,24 +170,7 @@ def format_digest(shows: List[Show]) -> List[str]:
     for theater, items in by_theater.items():
         block = [f"\n📍 <b>{_esc(theater)}</b>"]
         for show in items:
-            star = " ⭐" if show.matched_keywords else ""
-            title = _esc(show.title)
-            if show.url:
-                title = f'<a href="{html.escape(show.url)}">{title}</a>'
-            block.append(f"• {title}{star}")
-            detail = " · ".join(
-                p for p in (_short_dates(show), show.spoken_language) if p
-            )
-            if detail:
-                line = f"   🗓 {_esc(detail)}"
-                if show.booking_url:
-                    line += f' · <a href="{html.escape(show.booking_url)}">réserver</a>'
-                block.append(line)
-            if show.critics:
-                block.append(
-                    f'   📰 <a href="{html.escape(show.critics.url)}">{show.critics.star_bar()}</a>'
-                    f" ({show.critics.count} critiques)"
-                )
+            block.append(digest_line(show))
         blocks.append("\n".join(block))
 
     # Regroupe les blocs en messages sous la limite Telegram.

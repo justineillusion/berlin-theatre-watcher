@@ -9,7 +9,9 @@ on:
   workflow_dispatch: {}   # bouton "Run workflow" pour tester à la main
 
 permissions:
-  contents: read           # le récap ne touche pas à state/seen.json
+  contents: read           # le récap ne touche pas à state/seen.json ni à state/muted.json :
+                           # il LIT les pièces masquées et applique en mémoire les clics
+                           # « 🔕 » en attente, sans avancer l'offset (le scan s'en charge).
 
 concurrency:
   group: theatre-digest
@@ -32,4 +34,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Bot multi-utilisateurs (worker/) : si ces secrets existent, les notifs
+          # partent à chaque ami selon ses choix ; sinon, mode « un seul chat ».
+          BOT_API_URL: ${{ secrets.BOT_API_URL }}
+          BOT_API_TOKEN: ${{ secrets.BOT_API_TOKEN }}
         run: python -m src.main --digest
