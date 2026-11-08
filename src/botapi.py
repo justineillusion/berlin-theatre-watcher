@@ -56,6 +56,12 @@ def _meta(show: Show) -> dict:
     }
 
 
+def _complete(show: Show, need_ids: set) -> bool:
+    """Texte complet (écrase l'ancien) : ce qui part, ou ce qui a un résumé / une note.
+    Sinon version courte qui ne remplace jamais un texte complet déjà en base."""
+    return show.item_id() in need_ids or bool(show.summary or show.summary_en or show.critics)
+
+
 def _texts(show: Show, langs: tuple) -> dict:
     out = {"id": show.item_id(), "text": format_item(show), "line": digest_line(show)}
     if "en" in langs:
@@ -94,18 +100,22 @@ def run_multi(
               f" ({', '.join(langs)}).")
 
         need_ids = {s.item_id() for s in need}
-        enrich(need, digest, langs)
-        add_critics(need, config)
+        # TOUT le catalogue est rédigé (résumé + note presse), pas seulement ce qui
+        # part : /programme et le parcours par lieu montrent des fiches complètes.
+        # Les nouveautés d'abord (budget de temps) ; caches = coût faible ensuite.
+        ordered = need + [s for s in hits if s.item_id() not in need_ids]
+        enrich(ordered, digest, langs)
+        add_critics(ordered, config)
 
         rendered = api.post(
             "/api/render",
             json={
                 "mode": mode,
-                "items": [_texts(s, langs) for s in need],
+                "items": [_texts(s, langs) for s in ordered if _complete(s, need_ids)],
                 # Tout le reste du catalogue, en version courte (sans résumé ni
                 # critiques) : /programme et les récaps ont toujours une ligne.
                 # Le Worker n'écrase pas un texte complet déjà rédigé.
-                "basic": [_texts(s, langs) for s in hits if s.item_id() not in need_ids],
+                "basic": [_texts(s, langs) for s in ordered if not _complete(s, need_ids)],
             },
         )
         rendered.raise_for_status()

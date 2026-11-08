@@ -82,13 +82,15 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
 
   switch (cmd) {
     case "/suivre": return void (await send(env, chat, T.followPrompt, await followKeyboard(env, chat, lang)));
-    case "/programme": {
-      for (const m of await digestFor(env, chat, null, T.nowShowing, lang)) await send(env, chat, m);
-      return void (await send(env, chat, T.browsePrompt, await venuePicker(env, chat, lang, null)));
+    case "/programme": case "/program": {
+      const m = await programmeMenu(env, chat, lang);
+      return void (await send(env, chat, m.text, m.kb));
     }
-    case "/expos": return void (await send(env, chat, T.browsePrompt, await venuePicker(env, chat, lang, "expo")));
-    case "/theatre": case "/theatres": case "/theater":
-      return void (await send(env, chat, T.browsePrompt, await venuePicker(env, chat, lang, "theatre")));
+    case "/expos": case "/theatre": case "/theatres": case "/theater": case "/films": {
+      const kind = cmd === "/expos" ? "expo" : cmd === "/films" ? "film" : "theatre";
+      const m = await programmeMenu(env, chat, lang, kind);
+      return void (await send(env, chat, m.text, m.kb));
+    }
     case "/interets": return void (await send(env, chat, await interestsText(env, chat, lang)));
     case "/vus": return void (await send(env, chat, await seenText(env, chat, lang)));
     case "/ignores": return onIgnored(env, chat, lang);
@@ -176,7 +178,7 @@ async function membersText(env: Env, lang: Lang): Promise<string> {
 // ---------------------------------------------------------------------------
 // /suivre
 // ---------------------------------------------------------------------------
-const KIND_ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", cinema: "🎬" };
+const KIND_ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", cinema: "🎬", film: "🎬" };
 
 async function followKeyboard(env: Env, chat: number, lang: Lang): Promise<unknown> {
   const T = tr(lang);
@@ -212,7 +214,9 @@ async function interestsText(env: Env, chat: number, lang: Lang): Promise<string
        MAX(r.chat_id = ?1) AS mine
      FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
      JOIN items i ON i.id = r.item_id JOIN venues v ON v.id = i.venue_id
-     WHERE r.interested = 1 AND r.status IS NULL AND i.last_seen >= datetime(?2, '-2 days')
+     WHERE r.interested = 1 AND r.status IS NULL
+       AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
+                 ELSE i.last_seen >= datetime(?2, '-2 days') END)
      GROUP BY i.id ORDER BY n DESC, i.title LIMIT 30`,
   ).bind(chat, since).all<any>();
   if (!results.length) return T.noInterests;
@@ -221,7 +225,7 @@ async function interestsText(env: Env, chat: number, lang: Lang): Promise<string
     const t = r.url ? `<a href="${esc(r.url)}">${esc(r.title)}</a>` : esc(r.title);
     const who = (friends.get(r.id) ?? []).filter((f) => f.interested && !f.status)
       .map((f) => (f.chat_id === chat ? T.youBold : esc(f.first_name))).join(", ");
-    return `${r.kind === "expo" ? "🖼" : "🎭"} ${t} <i>(${esc(r.venue)})</i>\n   ⭐ ${who}`;
+    return `${KIND_ICON[r.kind] ?? "🎭"} ${t} <i>(${esc(r.venue)})</i>\n   ⭐ ${who}`;
   });
   return `${T.interestsTitle}\n\n${lines.join("\n")}`;
 }
@@ -292,34 +296,69 @@ async function myDelivery(env: Env, chat: number, item: string) {
 
 /** Annonce au groupe, dans la langue du groupe (`make` reçoit le dictionnaire). */
 // ---------------------------------------------------------------------------
-// Parcourir un lieu (/programme, /expos, /theatre) : une notif par item, avec ⭐ ✅ 🔕
+// /programme : menu court (catégories + lieux suivis, avec comptes), puis les
+// fiches complètes du choix, 5 par 5 (« Plus ▸ »), chacune avec ⭐ ✅ 🔕.
 // ---------------------------------------------------------------------------
-async function venuePicker(env: Env, chat: number, lang: Lang, kind: string | null): Promise<unknown> {
+const PAGE = 5;
+
+/** Items « à l'affiche » vus par `chat` : lieux suivis, encore programmés, pas ignorés. */
+const CURRENT = `
+  i.venue_id IN (SELECT venue_id FROM subscriptions WHERE chat_id = ?1)
+  AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
+            ELSE i.last_seen >= ?2 END)
+  AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now'))
+  AND NOT EXISTS (SELECT 1 FROM reactions x WHERE x.item_id = i.id AND x.chat_id = ?1 AND x.status = 'ignored')`;
+
+async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | null = null): Promise<{ text: string; kb: unknown }> {
   const T = tr(lang);
   const since = (await setting(env, "current_since")) ?? "";
-  const { results } = await env.DB.prepare(
-    `SELECT v.id, v.name, v.kind, COUNT(i.id) AS n FROM venues v
-     JOIN subscriptions s ON s.venue_id = v.id AND s.chat_id = ?1
-     JOIN items i ON i.venue_id = v.id AND i.last_seen >= ?2
-     WHERE v.active = 1 AND (?3 IS NULL OR v.kind = ?3)
+  const { results: venues } = await env.DB.prepare(
+    `SELECT v.id, v.name, v.kind AS vkind, COUNT(*) AS n FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+     WHERE ${CURRENT} AND (?3 IS NULL OR i.kind = ?3)
      GROUP BY v.id ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
-  ).bind(chat, since, kind).all<{ id: string; name: string; kind: string; n: number }>();
-  if (!results.length) return { inline_keyboard: [[{ text: T.noFollowed.slice(0, 60), callback_data: "sd" }]] };
-  return { inline_keyboard: results.map((v) => [{ text: `${KIND_ICON[v.kind] ?? "🎭"} ${v.name} (${v.n})`, callback_data: `pv:${v.id}` }]) };
+  ).bind(chat, since, kind).all<{ id: string; name: string; vkind: string; n: number }>();
+  const { results: kinds } = await env.DB.prepare(
+    `SELECT i.kind, COUNT(*) AS n FROM items i WHERE ${CURRENT} GROUP BY i.kind`,
+  ).bind(chat, since).all<{ kind: string; n: number }>();
+  const star = await env.DB.prepare(
+    `SELECT COUNT(DISTINCT r.item_id) AS n FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
+     JOIN items i ON i.id = r.item_id WHERE r.interested = 1 AND r.status IS NULL AND ${CURRENT}`,
+  ).bind(chat, since).first<{ n: number }>();
+  const count = (k: string) => kinds.find((x) => x.kind === k)?.n ?? 0;
+  const rows: unknown[][] = [];
+  if (!kind) {
+    const cats = [
+      { k: "theatre", t: T.catTheatre, n: count("theatre") },
+      { k: "expo", t: T.catExpo, n: count("expo") },
+      { k: "film", t: T.catFilm, n: count("film") },
+      { k: "star", t: T.catStar, n: star?.n ?? 0 },
+    ].filter((c) => c.n > 0).map((c) => ({ text: `${c.t} (${c.n})`, callback_data: `pk:${c.k}:0` }));
+    for (let j = 0; j < cats.length; j += 2) rows.push(cats.slice(j, j + 2));
+  }
+  for (const v of venues) rows.push([{ text: `${KIND_ICON[v.vkind] ?? "🎭"} ${v.name} (${v.n})`, callback_data: `pv:${v.id}:0` }]);
+  if (!rows.length) return { text: T.noFollowed, kb: { inline_keyboard: [] } };
+  return { text: T.browsePrompt, kb: { inline_keyboard: rows } };
 }
 
-const BROWSE_MAX = 12;   // Worker gratuit : 50 requêtes sortantes par appel
-
-async function browseVenue(env: Env, chat: number, lang: Lang, venueId: string): Promise<void> {
+/** Une page de fiches : `filter` = « pk:<theatre|expo|film|star> » ou « pv:<lieu> ». */
+async function browse(env: Env, chat: number, lang: Lang, filter: string, offset: number): Promise<void> {
   const T = tr(lang);
   const since = (await setting(env, "current_since")) ?? "";
+  const [type, value] = [filter.slice(0, 2), filter.slice(3)];
+  const where = type === "pv" ? "i.venue_id = ?3"
+    : value === "star"
+      ? `EXISTS (SELECT 1 FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
+                 WHERE r.item_id = i.id AND r.interested = 1 AND r.status IS NULL) AND ?3 = ?3`
+      : "i.kind = ?3";
   const { results } = await env.DB.prepare(
-    `SELECT i.* FROM items i LEFT JOIN reactions r ON r.item_id = i.id AND r.chat_id = ?1
-     WHERE i.venue_id = ?2 AND i.last_seen >= ?3 AND (r.status IS NULL OR r.status != 'ignored')
-     ORDER BY COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999') LIMIT ?4`,
-  ).bind(chat, venueId, since, BROWSE_MAX + 1).all<Item>();
+    `SELECT i.* FROM items i JOIN venues v ON v.id = i.venue_id
+     WHERE ${CURRENT} AND ${where}
+     ORDER BY CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position,
+       COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999'), i.title
+     LIMIT ?4 OFFSET ?5`,
+  ).bind(chat, since, value, PAGE + 1, offset).all<Item>();
   if (!results.length) return void (await send(env, chat, T.browseEmpty));
-  const shown = results.slice(0, BROWSE_MAX);
+  const shown = results.slice(0, PAGE);
   const friends = await friendsByItem(env, shown.map((i) => i.id));
   const { results: mine } = await env.DB.prepare(
     "SELECT * FROM reactions WHERE chat_id = ? AND item_id IN (SELECT value FROM json_each(?))",
@@ -329,7 +368,9 @@ async function browseVenue(env: Env, chat: number, lang: Lang, venueId: string):
     const v = renderFor(it, chat, react.get(it.id) ?? null, friends.get(it.id) ?? [], null, lang);
     await send(env, chat, v.text, v.reply_markup);
   }
-  if (results.length > BROWSE_MAX) await send(env, chat, T.browseMore(results.length - BROWSE_MAX));
+  if (results.length > PAGE) {
+    await send(env, chat, T.more, { inline_keyboard: [[{ text: T.moreButton, callback_data: `${filter}:${offset + PAGE}` }]] });
+  }
 }
 
 function label(item: Item, venueName?: string): string {
@@ -374,9 +415,11 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   }
 
   // --- parcourir un lieu ---------------------------------------------------
-  if (data.startsWith("pv:")) {
+  if (data.startsWith("pv:") || data.startsWith("pk:")) {
     await answer();
-    return browseVenue(env, chat, lang, data.slice(3));
+    const cut = data.lastIndexOf(":");
+    const hasOffset = cut > 2 && /^\d+$/.test(data.slice(cut + 1));
+    return browse(env, chat, lang, hasOffset ? data.slice(0, cut) : data, hasOffset ? Number(data.slice(cut + 1)) : 0);
   }
 
   // --- /suivre -----------------------------------------------------------

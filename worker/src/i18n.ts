@@ -28,6 +28,7 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
 /interets — ce qui tente la bande
 /vus — ce que tu as vu et tes notes
 /ignores — réactiver une pièce/expo ignorée
+/expos, /theatre — parcourir un lieu, avec ⭐ ✅ 🔕 sous chaque fiche
 /langue — 🇫🇷 Français / 🇬🇧 English
 /stop — ne plus rien recevoir`,
   ownerHelp: `\n\n👑 <b>Admin</b>
@@ -79,7 +80,7 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
   annStar: (who: string, what: string) => `⭐ <b>${who}</b> est intéressé·e par ${what}`,
   annSeen: (who: string, what: string, s: string) => `✅ <b>${who}</b> a vu ${what} : ${s}`,
   annComment: (who: string, what: string) => `💬 <b>${who}</b> sur ${what}`,
-  meToo: "⭐ Moi aussi",
+  meToo: "🙋 Moi aussi",
   interestedList: "Intéressé·es :",
   // lib.ts
   band: "👥 <b>La bande</b>",
@@ -94,10 +95,11 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
   btnSeen: (expo: boolean): string => (expo ? "✅ Vue" : "✅ Vu"),
   btnIgnore: "🔕 Ignorer",
   stIgnored: (expo: boolean) => `\n🔕 <i>Ignoré : plus aucune notif sur ${expo ? "cette expo" : "cette pièce"}, même si elle revient.</i>`,
-  stRated: (s: string, c: string) => `\n✅ <i>Ta note : ${s}${c ? ` — « ${c} »` : ""}</i>`,
+  stRated: (s: string, c: string) => `\n✅ <i>Vu · ${s}${c ? ` · « ${c} »` : ""}</i>`,
   stSeen: (expo: boolean) => `\n✅ <i>Noté comme ${expo ? "vue" : "vu"} — plus de notif. Une note pour la bande ?</i>`,
   // scan.ts
   newDates: (d: string) => `🆕 <b>Nouvelles dates</b> : ${d}`,
+  newSessions: (d: string) => `🆕 <b>Nouvelles séances</b> : ${d}`,
   lastWeeks: (d: string) => `⏳ <b>Dernières semaines !</b> Fin le ${d} — tu avais mis ⭐`,
   sundayDigest: "📅 <b>Récap du dimanche</b>",
   digestEmpty: "Rien de neuf dans tes lieux suivis (ou tout est déjà vu / ignoré). /suivre pour en ajouter.",
@@ -105,6 +107,8 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
   expos: (n: number) => `${n} expo${n > 1 ? "s" : ""}`,
   theatreSection: "\n🎭 <b>THÉÂTRE</b>",
   expoSection: "\n🖼 <b>EXPOS</b>",
+  filmSection: "\n🎬 <b>CINÉ</b>",
+  films: (n: number) => `${n} film${n > 1 ? "s" : ""}`,
   legend: "<i>⭐ = tes mots-clés · 👥 = la bande</i>",
   // langue
   langPrompt: "🌍 Langue des messages · Message language :",
@@ -132,13 +136,18 @@ Ici, ⭐ « Moi aussi » sous une annonce = tu es partant·e. Les notifs perso, 
   days: ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
   book: "réserver",
   annSaw: (who: string) => `✅ <b>${who}</b> a vu`,
-  wantToSee: "⭐ Je veux le voir",
+  starHead: (who: string) => `⭐ <b>${who}</b> est intéressé·e`,
+  planHead: (names: string) => `🎟 <b>Plan !</b> ${names} veulent y aller`,
   sawToo: "✅ Je l'ai vu aussi",
   checkPrivate: "Regarde ton chat privé avec le bot ✉️",
   rateIt: (what: string) => `✅ ${what}\n\nTa note pour la bande ?`,
-  browsePrompt: "👀 Parcourir un lieu pour réagir (⭐ ✅ 🔕) :",
-  browseAll: "Tout le programme (liste)",
-  browseMore: (n: number) => `… et ${n} de plus : /programme pour la liste complète.`,
+  browsePrompt: "📅 <b>À l'affiche</b> — choisis une catégorie ou un lieu :",
+  catTheatre: "🎭 Théâtre",
+  catExpo: "🖼 Expos",
+  catFilm: "🎬 Films de la semaine",
+  catStar: "⭐ Nos envies",
+  more: "Il y en a d'autres :",
+  moreButton: "Plus ▸",
   browseEmpty: "Rien à l'affiche dans ce lieu pour l'instant.",
   noFollowed: "Tu ne suis aucun lieu de ce type. /suivre pour en ajouter.",
 };
@@ -158,6 +167,7 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
 /interets — what the gang fancies
 /vus — what you've seen and your ratings
 /ignores — un-ignore a play/exhibition
+/expos, /theatre — browse a venue, with ⭐ ✅ 🔕 under each card
 /language — 🇫🇷 Français / 🇬🇧 English
 /stop — stop all messages`,
   ownerHelp: `\n\n👑 <b>Admin</b>
@@ -209,7 +219,7 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
   annStar: (who: string, what: string) => `⭐ <b>${who}</b> is interested in ${what}`,
   annSeen: (who: string, what: string, s: string) => `✅ <b>${who}</b> saw ${what}: ${s}`,
   annComment: (who: string, what: string) => `💬 <b>${who}</b> on ${what}`,
-  meToo: "⭐ Me too",
+  meToo: "🙋 Me too",
   interestedList: "Interested:",
   band: "👥 <b>The gang</b>",
   interested: (names: string) => `⭐ Interested: ${names}`,
@@ -223,9 +233,10 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
   btnSeen: () => "✅ Seen",
   btnIgnore: "🔕 Ignore",
   stIgnored: (expo: boolean) => `\n🔕 <i>Ignored: no more alerts about this ${expo ? "exhibition" : "play"}, even if it comes back.</i>`,
-  stRated: (s: string, c: string) => `\n✅ <i>Your rating: ${s}${c ? ` — “${c}”` : ""}</i>`,
+  stRated: (s: string, c: string) => `\n✅ <i>Seen · ${s}${c ? ` · “${c}”` : ""}</i>`,
   stSeen: () => `\n✅ <i>Marked as seen — no more alerts. A rating for the gang?</i>`,
   newDates: (d: string) => `🆕 <b>New dates</b>: ${d}`,
+  newSessions: (d: string) => `🆕 <b>New screenings</b>: ${d}`,
   lastWeeks: (d: string) => `⏳ <b>Last weeks!</b> Ends ${d} — you ⭐-ed it`,
   sundayDigest: "📅 <b>Sunday round-up</b>",
   digestEmpty: "Nothing new in the venues you follow (or it's all seen / ignored). /suivre to add some.",
@@ -233,6 +244,8 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
   expos: (n: number) => `${n} exhibition${n > 1 ? "s" : ""}`,
   theatreSection: "\n🎭 <b>THEATRE</b>",
   expoSection: "\n🖼 <b>EXHIBITIONS</b>",
+  filmSection: "\n🎬 <b>FILMS</b>",
+  films: (n: number) => `${n} film${n > 1 ? "s" : ""}`,
   legend: "<i>⭐ = your keywords · 👥 = the gang</i>",
   langPrompt: "🌍 Langue des messages · Message language :",
   langSet: "🇬🇧 Done: I'll talk to you in English.",
@@ -258,13 +271,18 @@ Here, ⭐ “Me too” under an announcement = you're in. Personal alerts, “se
   days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   book: "book",
   annSaw: (who: string) => `✅ <b>${who}</b> saw`,
-  wantToSee: "⭐ I want to see it",
+  starHead: (who: string) => `⭐ <b>${who}</b> is interested`,
+  planHead: (names: string) => `🎟 <b>Plan!</b> ${names} both want to go`,
   sawToo: "✅ I saw it too",
   checkPrivate: "Check your private chat with the bot ✉️",
   rateIt: (what: string) => `✅ ${what}\n\nHow would you rate it for the gang?`,
-  browsePrompt: "👀 Browse a venue to react (⭐ ✅ 🔕):",
-  browseAll: "Whole programme (list)",
-  browseMore: (n: number) => `… and ${n} more: /programme for the full list.`,
+  browsePrompt: "📅 <b>What's on</b> — pick a category or a venue:",
+  catTheatre: "🎭 Theatre",
+  catExpo: "🖼 Exhibitions",
+  catFilm: "🎬 Films this week",
+  catStar: "⭐ Our picks",
+  more: "There's more:",
+  moreButton: "More ▸",
   browseEmpty: "Nothing on at this venue right now.",
   noFollowed: "You don't follow any venue of this kind. /suivre to add some.",
 };

@@ -152,6 +152,74 @@ async function upsertVenues(env: Env, venues: VenueIn[], scope: string): Promise
   }
 }
 
+/** Films du récap ciné -> items (kind 'film') : ⭐ ✅ 🔕 comme une pièce. */
+async function upsertFilms(env: Env, list: any[]): Promise<void> {
+  const now = new Date().toISOString().replace("T", " ").slice(0, 19);
+  const stmts = list.map((f) => env.DB.prepare(
+    `INSERT INTO items (id, venue_id, kind, title, url, dates, starred, text, line, text_en, line_en, last_seen)
+     VALUES (?, ?, 'film', ?, ?, ?, 0, ?, ?, ?, ?, ?)
+     ON CONFLICT(id) DO UPDATE SET venue_id = excluded.venue_id, kind = 'film', title = excluded.title,
+       url = excluded.url, dates = excluded.dates, text = excluded.text, line = excluded.line,
+       text_en = excluded.text_en, line_en = excluded.line_en, last_seen = excluded.last_seen`,
+  ).bind(f.id, f.venue_id, f.title, f.url ?? null, JSON.stringify(f.dates ?? []), f.text ?? null, f.line ?? null,
+    f.text_en ?? null, f.line_en ?? null, now));
+  for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
+}
+
+/** Ciné du dimanche, un message par film :
+ *    films   : les films retenus (fiches fr/en, séances = dates)
+ *    targets : [{chat_id, ids}] — la sélection de chacun (selon SES cinémas), faite par le scraper
+ *  -> messages prêts à envoyer (⭐ ✅ 🔕, ligne 👥). Pas de renvoi d'un film déjà reçu sauf
+ *     nouvelles séances ; jamais s'il est vu ou ignoré. Accusés via /api/sent, comme les pièces. */
+export async function filmPlan(env: Env, body: any): Promise<Response> {
+  const list: any[] = (body.films ?? []).filter((f: any) => f && typeof f.id === "string" && f.title);
+  await upsertFilms(env, list);
+  const targets: { chat_id: number; ids: string[] }[] = body.targets ?? [];
+  const ids = [...new Set(targets.flatMap((t) => t.ids))];
+  if (!ids.length) return Response.json({ messages: [] });
+  const json = JSON.stringify(ids);
+  const [items, reactions, deliveries, users] = await Promise.all([
+    env.DB.prepare("SELECT * FROM items WHERE id IN (SELECT value FROM json_each(?))").bind(json).all<Item>(),
+    env.DB.prepare("SELECT * FROM reactions WHERE item_id IN (SELECT value FROM json_each(?))").bind(json).all<Reaction>(),
+    env.DB.prepare("SELECT chat_id, item_id, dates FROM deliveries WHERE item_id IN (SELECT value FROM json_each(?))")
+      .bind(json).all<{ chat_id: number; item_id: string; dates: string }>(),
+    env.DB.prepare("SELECT chat_id, lang FROM users WHERE active = 1").all<{ chat_id: number; lang: string }>(),
+  ]);
+  const byId = new Map(items.results.map((i) => [i.id, i]));
+  const react = new Map(reactions.results.map((r) => [`${r.chat_id}|${r.item_id}`, r]));
+  const deliv = new Map(deliveries.results.map((d) => [`${d.chat_id}|${d.item_id}`, d]));
+  const langOf = new Map(users.results.map((u) => [u.chat_id, asLang(u.lang)]));
+  const friends = await friendsByItem(env, ids);
+
+  const messages: unknown[] = [];
+  for (const t of targets) {
+    const lang = langOf.get(t.chat_id);
+    if (!lang) continue;                                   // inactif / inconnu
+    for (const id of t.ids) {
+      const item = byId.get(id);
+      if (!item) continue;
+      const key = `${t.chat_id}|${id}`;
+      const r = react.get(key) ?? null;
+      if (r?.status === "seen" || r?.status === "ignored") continue;
+      const dates: string[] = JSON.parse(item.dates || "[]");
+      const d = deliv.get(key);
+      let kind: "new" | "new_dates" = "new";
+      let h: string | null = null;
+      if (d) {
+        const known = new Set<string>(JSON.parse(d.dates || "[]"));
+        const fresh = dates.filter((x) => !known.has(x)).sort();
+        if (!fresh.length) continue;                       // déjà reçu, rien de neuf
+        kind = "new_dates";
+        const shown = fresh.slice(0, 6).map((x) => `${frDate(x)} ${x.slice(11, 16)}`.trim()).join(", ");
+        h = tr(lang).newSessions(shown + (fresh.length > 6 ? ` (+${fresh.length - 6})` : ""));
+      }
+      const v = renderFor(item, t.chat_id, r, friends.get(id) ?? [], h, lang);
+      messages.push({ chat_id: t.chat_id, item_id: id, kind, dates, header: h, text: v.text, reply_markup: v.reply_markup });
+    }
+  }
+  return Response.json({ messages });
+}
+
 /** Le récap ciné de la semaine `week` est parti (voir cinemaRecipients). */
 export async function cinemaDone(env: Env, body: any): Promise<Response> {
   if (typeof body.week !== "string") return Response.json({ ok: false }, { status: 400 });
@@ -332,18 +400,20 @@ export async function digestFor(
      LEFT JOIN reactions r ON r.item_id = i.id AND r.chat_id = ?1
      WHERE (r.status IS NULL)
        AND (?2 IS NULL OR i.id IN (SELECT value FROM json_each(?2)))
-       AND (?2 IS NOT NULL OR i.last_seen >= ?3)
-       AND (i.kind = 'theatre' OR i.start_date IS NULL OR i.start_date = '' OR i.start_date <= ?4)
-     ORDER BY i.kind DESC, v.position, COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999')`,
-  ).bind(chat_id, ids ? JSON.stringify(ids) : null, since ?? "", horizon).all<Item & { venue_name: string }>();
+       AND (?2 IS NOT NULL OR i.last_seen >= ?3 OR i.kind = 'film')
+       AND (i.kind != 'film' OR (SELECT MAX(value) FROM json_each(i.dates)) >= ?5)
+       AND (i.kind = 'theatre' OR i.kind = 'film' OR i.start_date IS NULL OR i.start_date = '' OR i.start_date <= ?4)
+     ORDER BY CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position, COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999')`,
+  ).bind(chat_id, ids ? JSON.stringify(ids) : null, since ?? "", horizon, today()).all<Item & { venue_name: string }>();
 
   if (!results.length) {
     return [`${title}\n\n${T.digestEmpty}`];
   }
   const friends = await friendsByItem(env, results.map((r) => r.id));
   const nTheatre = results.filter((r) => r.kind === "theatre").length;
-  const nExpo = results.length - nTheatre;
-  const counts = [nTheatre && T.plays(nTheatre), nExpo && T.expos(nExpo)]
+  const nFilm = results.filter((r) => r.kind === "film").length;
+  const nExpo = results.length - nTheatre - nFilm;
+  const counts = [nTheatre && T.plays(nTheatre), nExpo && T.expos(nExpo), nFilm && T.films(nFilm)]
     .filter(Boolean).join(" · ");
 
   const blocks: string[] = [];
@@ -351,7 +421,7 @@ export async function digestFor(
   for (const it of results) {
     if (it.kind !== section) {
       section = it.kind;
-      blocks.push(section === "theatre" ? T.theatreSection : T.expoSection);
+      blocks.push(section === "theatre" ? T.theatreSection : section === "film" ? T.filmSection : T.expoSection);
       venue = "";
     }
     if (it.venue_name !== venue) {

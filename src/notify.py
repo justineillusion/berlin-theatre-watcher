@@ -214,18 +214,19 @@ def format_digest(shows: List[Show]) -> List[str]:
 
 
 def format_show(show: Show, lang: str = "fr") -> str:
-    """Message Telegram (HTML) pour une représentation retenue."""
+    """Fiche (HTML) d'une pièce — même gabarit que les expos et les films :
+    titre · 📍 lieu · 🗓 dates · 🗣 langue · ★ note (si connue) · 📝 description · liens."""
     en = lang == "en"
-    lines = [f"🎭 <b>{_esc(show.title)}</b>", f"📍 {_esc(show.theater)}"]
+    lines = [f"🎭 <b>{_esc(show.title)}</b>"]
+    lines.append(f"📍 {_esc(show.theater)}" + (f" · {_esc(show.venue)}" if show.venue else ""))
     if show.new_dates:
         lines.append("🆕 New dates for a play already announced" if en
                      else "🆕 Nouvelles dates pour une pièce déjà signalée")
-
     dates = show.available_dates or ([show.date] if show.date else [])
     if dates:
         lines.append(("🗓 Seats available: " if en else "🗓 Places libres : ") + _esc(" | ".join(dates)))
-    if show.venue:
-        lines.append(f"🏛 {_esc(show.venue)}")
+    if show.sold_out is None:
+        lines.append("⚪️ Availability unknown" if en else "⚪️ Disponibilité inconnue")
     if show.production_type:
         lines.append(f"🎬 {_esc(show.production_type)}")
     if show.languages and not is_pure_language_note(show.languages):
@@ -233,23 +234,20 @@ def format_show(show: Show, lang: str = "fr") -> str:
     spoken = " · ".join(p for p in _labels(show, lang) if p)
     if spoken:
         lines.append(f"🗣 {_esc(spoken)}")
+    if show.critics:
+        lines.append(
+            (f"📰 Press: {show.critics.label(lang)}" if en else f"📰 Presse : {show.critics.label()}")
+            + f' (<a href="{html.escape(show.critics.url)}">Nachtkritik</a>, '
+            + ("estimated)" if en else "note estimée)")
+        )
     summary = _summary(show, lang)
     if summary:
         lines.append(f"\n📝 {_esc(summary)}")
-    if show.critics:
-        lines.append(
-            (f"\n📰 Press: {show.critics.label(lang)}\n" if en else f"\n📰 Presse : {show.critics.label()}\n")
-            + f'   <a href="{html.escape(show.critics.url)}">Kritikenrundschau '
-            + ("on Nachtkritik</a> · estimated rating" if en else "sur Nachtkritik</a> · note estimée")
-        )
-    if show.sold_out is None:
-        lines.append("⚪️ Availability unknown" if en else "⚪️ Disponibilité inconnue")
     links = []
     if show.booking_url:
         links.append(f'🎟 <a href="{html.escape(show.booking_url)}">{"Book" if en else "Réserver"}</a>')
     if show.url:
         links.append(f'🔗 <a href="{html.escape(show.url)}">{"Play page" if en else "Page de la pièce"}</a>')
     if links:
-        lines.append("\n" + "\n".join(links))
-
+        lines.append("\n" + " · ".join(links))
     return "\n".join(lines)

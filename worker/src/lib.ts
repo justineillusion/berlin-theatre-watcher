@@ -14,7 +14,7 @@ export interface Env {
 export interface Item {
   id: string;
   venue_id: string;
-  kind: "theatre" | "expo";
+  kind: "theatre" | "expo" | "film";
   title: string;
   url: string | null;
   dates: string;           // JSON
@@ -221,7 +221,7 @@ function statusLine(item: Item, r: Reaction | null, lang: Lang): string {
 
 /** Corps minimal d'une notif quand le texte n'a pas (encore) été rédigé. */
 export function basicText(item: Item, lang: Lang): string {
-  const icon = item.kind === "expo" ? "🖼" : "🎭";
+  const icon = item.kind === "expo" ? "🖼" : item.kind === "film" ? "🎬" : "🎭";
   const lines = basicLine(item, lang).split("\n").slice(1).map((l) => l.trim());
   const link = item.url ? `\n🔗 <a href="${esc(item.url)}">${lang === "en" ? "Details" : "Détails"}</a>` : "";
   return `${icon} <b>${esc(item.title)}</b>${lines.length ? "\n" + lines.join("\n") : ""}${link}`;

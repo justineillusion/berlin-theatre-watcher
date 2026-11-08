@@ -65,6 +65,15 @@ class Film:
     dubbed_release: bool = False     # le cinéma le passe aussi en VF (à n'importe quelle heure)
     unrated: bool = False            # aucune source n'a assez de votes pour juger
 
+    def item_id(self) -> str:
+        """Id stable côté bot (items, boutons ⭐) : titre original normalisé + année.
+        Le même film dans deux cinémas, ou repris l'an prochain, garde le même id."""
+        import hashlib
+
+        from .ratings import norm_title
+        base = f"film|{norm_title(self.original_title or self.title)}|{self.year or ''}"
+        return hashlib.sha1(base.encode()).hexdigest()[:12]
+
     def is_recent(self, today_year: int, max_age: int = 3) -> bool:
         y = self.year or (self.senscritique.year if self.senscritique else None)
         return bool(y and y >= today_year - max_age)

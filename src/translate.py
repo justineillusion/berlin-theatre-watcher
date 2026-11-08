@@ -86,3 +86,12 @@ def to_english(text: Optional[str], retries: int = 3) -> Optional[str]:
     if not text or looks_english(text):
         return text
     return translate(text, "en", retries)
+
+
+_FR_WORDS = {"le", "la", "les", "et", "est", "des", "une", "du", "dans", "pour", "qui", "sur", "avec", "pas", "au"}
+
+
+def looks_french(text: Optional[str]) -> bool:
+    words = re.findall(r"[a-zàâçéèêëîïôûùüÿœ]+", (text or "").lower())
+    fr = sum(w in _FR_WORDS for w in words)
+    return fr >= 2 and fr > 2 * sum(w in _EN_WORDS for w in words)

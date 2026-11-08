@@ -26,7 +26,8 @@ from zoneinfo import ZoneInfo
 import yaml
 
 from . import taste
-from .message import evening_day, first_sentence, fmt_day, format_week, text
+from .message import (evening_day, film_card, film_line, first_sentence, fmt_day, format_week,
+                      text, week_header)
 from .models import Film, Screening
 from .ratings import norm_title
 from ..budget import call_with_timeout, map_with_budget
@@ -305,9 +306,10 @@ def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]]
         f.rejected = "hors top (plafond max_films)"
 
     win = analysis["window"]
-    messages = format_week(kept, unrated, len(rejected) + len(overflow), win, shown, cfg,
-                           coverage_lines(analysis["known_until"], shown, win, lang), lang)
-    return {"messages": messages, "kept": kept, "rejected": rejected + overflow,
+    coverage = coverage_lines(analysis["known_until"], shown, win, lang)
+    messages = format_week(kept, unrated, len(rejected) + len(overflow), win, shown, cfg, coverage, lang)
+    head = week_header(win, shown, cfg, len(kept), unrated, coverage, lang)
+    return {"messages": messages, "header": head, "kept": kept, "rejected": rejected + overflow,
             "errors": analysis["errors"], "n_screenings": analysis["n_screenings"]}
 
 
@@ -319,6 +321,22 @@ def cinema_venue_id(name: str) -> str:
     """Id du cinéma côté bot (table venues) : « cinema-intimes »."""
     from ..main import venue_slug
     return "cinema-" + venue_slug(name)
+
+
+def _film_item(f: Film, by_id: Dict[str, str]) -> dict:
+    """Film -> item du bot (venue = cinéma de la 1re séance)."""
+    first = min(f.screenings, key=lambda s: s.start)
+    names = {n: i for i, n in by_id.items()}
+    return {
+        "id": f.item_id(),
+        "venue_id": names.get(first.cinema, cinema_venue_id(first.cinema)),
+        "title": (f.senscritique.original_title if f.senscritique and f.senscritique.original_title else None)
+                 or f.original_title or f.title,
+        "url": first.url,
+        "dates": sorted({s.start.astimezone(_TZ).strftime("%Y-%m-%d %H:%M") for s in f.screenings}),
+        "text": film_card(f, "fr"), "line": film_line(f, "fr"),
+        "text_en": film_card(f, "en"), "line_en": film_line(f, "en"),
+    }
 
 
 def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
@@ -347,9 +365,8 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
         print(f"👥 {len(recipients)} ami·e(s) suivent au moins un cinéma.")
         analysis = analyse(cfg, start)
 
-        cache: Dict[tuple, List[str]] = {}         # (cinémas, langue) -> messages
-        failed: List[dict] = []
-        ok = total = 0
+        cache: Dict[tuple, dict] = {}         # (cinémas, langue) -> compose()
+        plan = []
         for rcp in recipients:
             subset = tuple(n for n in names if n in {by_id.get(v) for v in rcp["venue_ids"]})
             if not subset:
@@ -357,12 +374,48 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
             lang = "en" if rcp.get("lang") == "en" else "fr"
             key = (subset, lang)
             if key not in cache:
-                cache[key] = compose(analysis, cfg, start, list(subset), lang)["messages"]
-            for msg in cache[key]:
+                cache[key] = compose(analysis, cfg, start, list(subset), lang)
+            plan.append((rcp, lang, cache[key]))
+
+        # Un message par film, comme une pièce : le Worker enregistre les films
+        # (items kind 'film'), écarte ce que chacun a déjà reçu (sauf nouvelles
+        # séances), vu ou ignoré, et rend chaque message dans la langue de l'ami.
+        by_key = {f.key: f for f in analysis["passed"]}
+        films: Dict[str, Film] = {}
+        for res in cache.values():
+            for f in res["kept"]:
+                films.setdefault(f.item_id(), by_key.get(f.key, f))
+        for f in films.values():           # pitch des deux langues sur la fiche complète
+            for lang in {lg for _, lg, _ in plan}:
+                if (f.key, lang) not in analysis["pitched"]:
+                    (make_pitch_en if lang == "en" else make_pitch)(f)
+                    analysis["pitched"].add((f.key, lang))
+        resp = api.post("/api/film-plan", json={
+            "films": [_film_item(f, by_id) for f in films.values()],
+            "targets": [{"chat_id": rcp["chat_id"], "ids": [f.item_id() for f in res["kept"]]}
+                        for rcp, _, res in plan],
+        })
+        resp.raise_for_status()
+        per_chat: Dict[int, List[dict]] = {}
+        for m in resp.json()["messages"]:
+            per_chat.setdefault(m["chat_id"], []).append(m)
+
+        failed: List[dict] = []
+        sent: List[dict] = []
+        ok = total = 0
+        for rcp, lang, res in plan:
+            film_msgs = per_chat.get(rcp["chat_id"], [])
+            if not film_msgs:
+                continue                       # rien de neuf pour cette personne : pas d'en-tête seul
+            msgs = [{"text": res["header"]}] + film_msgs
+            for msg in msgs:
                 total += 1
                 try:
-                    send_telegram(token, str(rcp["chat_id"]), msg)
+                    mid = send_telegram(token, str(rcp["chat_id"]), msg["text"], reply_markup=msg.get("reply_markup"))
                     ok += 1
+                    if msg.get("item_id"):
+                        sent.append({**{k: v for k, v in msg.items() if k not in ("text", "reply_markup")},
+                                     "message_id": mid})
                 except httpx.HTTPStatusError as exc:
                     code = exc.response.status_code
                     print(f"   ⚠️  envoi refusé ({code}) pour {rcp['chat_id']}")
@@ -372,10 +425,13 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
                 except Exception as exc:  # noqa: BLE001 — un ami en échec ne bloque pas les autres
                     print(f"   ⚠️  échec de l'envoi pour {rcp['chat_id']} : {exc}")
                 time.sleep(0.1)                # douceur vis-à-vis des limites Telegram
+        if sent:
+            api.post("/api/sent", json={"sent": sent}).raise_for_status()
         if failed:
             api.post("/api/sent", json={"sent": failed}).raise_for_status()
         if ok or not total:                    # tout a échoué : le 2e créneau retentera
             api.post("/api/cinema-done", json={"week": week}).raise_for_status()
+    print(f"🎬 {len(films)} film(s) retenu(s), un message par film (⭐ ✅ 🔕).")
     print(f"✅ {ok}/{total} message(s) envoyé(s) à {len(recipients)} ami·e(s) "
           f"({len(cache)} combinaison(s) de cinémas).")
     print(report(compose(analysis, cfg, start)))
@@ -430,6 +486,11 @@ def main(argv: List[str] | None = None) -> int:
         for i, msg in enumerate(result["messages"], 1):
             print(f"----- message {i}/{len(result['messages'])} ({len(msg)} car.) -----")
             print(msg)
+        print("\n===== BOT MULTI-UTILISATEURS : en-tête + un message par film =====")
+        print(result["header"])
+        for f in result["kept"]:
+            print("-----")
+            print(film_card(f, args.lang))
         print(report(result))
         return 0
 

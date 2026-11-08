@@ -26,11 +26,13 @@ _T = {
     "fr": {"title": "Ciné de la semaine", "tonight_span": " + ce soir", "tonight": "Ce soir", "or": "ou",
            "ov": "VO", "live": " + musique live", "unrated": "Pas encore notés",
            "nothing": "Rien de fou cette semaine 🤷‍♀️ — rien de bien noté en VO le soir.",
-           "known_until": "programme connu jusqu'au", "not_published": "programme pas encore publié"},
+           "known_until": "programme connu jusqu'au", "not_published": "programme pas encore publié",
+           "pick": "⭐ <b>Ça te tente ?</b> Touche un film : la bande le verra (et toi, qui d'autre est partant)."},
     "en": {"title": "Films of the week", "tonight_span": " + tonight", "tonight": "Tonight", "or": "or",
            "ov": "original version", "live": " + live music", "unrated": "Not rated yet",
            "nothing": "Nothing great this week 🤷‍♀️ — no well-rated original-version evening shows.",
-           "known_until": "programme known until", "not_published": "programme not published yet"},
+           "known_until": "programme known until", "not_published": "programme not published yet",
+           "pick": "⭐ <b>Fancy one?</b> Tap a film: the gang will see it (and you'll see who else is in)."},
 }
 
 
@@ -242,3 +244,54 @@ def unrated_line(films: List[Film], limit: int = 5, lang: str = "fr") -> str:
     extra = len(items) - limit
     txt = " · ".join(items[:limit]) + (f" · +{extra}" if extra > 0 else "")
     return f"🆕 <i>{text(lang, 'unrated')}</i>{'' if lang == 'en' else ' '}: " + txt
+
+
+# ---------------------------------------------------------------------------
+# Fiche d'un film pour le bot (items kind='film' : ⭐ ✅ 🔕, annonces du groupe)
+# ---------------------------------------------------------------------------
+def _sessions(film: Film, lang: str, limit: int = 6) -> List[str]:
+    """['<a>Babylon</a> (OmU) : lun. 9 20:00 · jeu. 12 18:30', …] (heures = liens de réservation)."""
+    by_cinema: "OrderedDict[tuple, List[Screening]]" = OrderedDict()
+    for s in sorted(film.screenings, key=lambda x: x.start):
+        by_cinema.setdefault((s.cinema, s.version, s.live_music), []).append(s)
+    out = []
+    for (cin, ver, live), items in by_cinema.items():
+        v = _SHORT_VERSION[lang].get(ver, ver or "?") + (text(lang, "live") if live else "")
+        shown = " · ".join(_a(s.booking_url, f"{fmt_day(evening_day(s), lang)} {_fmt_time(s)}") for s in items[:limit])
+        more = f" (+{len(items) - limit})" if len(items) > limit else ""
+        colon = ":" if lang == "en" else " :"
+        out.append(f"{_a(items[0].url, esc(cin))} ({esc(v)}){colon} {shown}{more}")
+    return out
+
+
+def film_card(film: Film, lang: str = "fr") -> str:
+    """Un message par film : titre (original + titre FR), année, réalisateur, ★ note liée,
+    pitch, puis les séances de la semaine par cinéma."""
+    lines = [f"🎬 {_names(film, True, lang)}"]
+    lines += [f"📍 {x}" for x in _sessions(film, lang)]
+    lines.append(_short_rating(film, True, lang))
+    pitch = film.pitch_en if lang == "en" else film.pitch
+    if pitch:
+        lines.append(f"\n📝 {esc(pitch)}")
+    return "\n".join(lines)
+
+
+def week_header(win: dict, cinemas: List[str], cfg: dict, n: int, unrated: List[Film],
+                coverage: List[str], lang: str = "fr") -> str:
+    """Message d'en-tête du dimanche (avant un message par film)."""
+    head = header(win, cinemas, cfg, lang)
+    picks = (f"{n} film{'s' if n > 1 else ''}" if lang == "en"
+             else f"{n} film{'s' if n > 1 else ''} retenu{'s' if n > 1 else ''}")
+    first, rest = head.split("\n", 1)
+    parts = [f"{first} · {picks}", rest]
+    if coverage:
+        parts.append(f"<i>⏳ {esc(' · '.join(coverage))}</i>")
+    unr = unrated_line(unrated, lang=lang) if unrated else ""
+    if unr:
+        parts.append(unr)
+    return "\n".join(parts)
+
+
+def film_line(film: Film, lang: str = "fr") -> str:
+    head = f"• {_names(film, False, lang)} · {_short_rating(film, True, lang)}"
+    return head + "".join(f"\n   📍 {x}" for x in _sessions(film, lang, limit=3))

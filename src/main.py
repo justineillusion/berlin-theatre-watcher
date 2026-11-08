@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import List
 
@@ -18,7 +20,7 @@ from .language import detect as detect_language
 from .mute import filter_muted, load_muted, mute_keyboard, sync as sync_muted
 from .critics import fetch_rating
 from .summary import fetch_details
-from .translate import to_english, to_french
+from .translate import looks_english, looks_french, to_english, to_french
 from .budget import call_with_timeout, map_with_budget
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
@@ -98,40 +100,76 @@ _ENRICH_BUDGET_S = 360      # pages détail + traductions : 6 min max (config en
 _VENUE_TIMEOUT_S = 90       # un lieu qui ne répond pas en 90 s est sauté (config venue_timeout_s)
 
 
-def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> None:
-    """Pages détail : résumé traduit en FR (et en EN si `langs` le demande :
-    tel quel quand la page est déjà en anglais) + langue parlée (théâtre).
+_SUMMARY_CACHE = Path(__file__).resolve().parent.parent / "state" / "summary_cache.json"
+_SUMMARY_TTL_DAYS = 30
 
-    Le récap ne montre pas les résumés : on saute alors la traduction, lente et
-    rate-limitée, et on ne garde que la détection de langue.
+
+def _load_summary_cache() -> dict:
+    try:
+        return json.loads(_SUMMARY_CACHE.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001 — pas de cache : on refait
+        return {}
+
+
+def _save_summary_cache(cache: dict) -> None:
+    try:
+        _SUMMARY_CACHE.parent.mkdir(exist_ok=True)
+        _SUMMARY_CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=0, sort_keys=True), encoding="utf-8")
+    except Exception as exc:  # noqa: BLE001
+        print(f"   ⚠️  cache des résumés non sauvegardé : {exc}")
+
+
+def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> None:
+    """Pages détail : résumé (2–3 phrases) en FR, et en EN si `langs` le demande
+    (tel quel quand la page est déjà en anglais) + langue parlée (théâtre).
+
+    Cache state/summary_cache.json (30 jours) : une pièce n'est lue et traduite
+    qu'une fois, ce qui permet de rédiger TOUT le catalogue à chaque scan dans
+    le budget de temps. `digest` est gardé pour compatibilité (même traitement).
     """
     if not shows:
         return
     budget = float(_ENRICH_BUDGET_S)
-    print("📝 Récupération des pages détail (langue" + ("" if digest else " + résumés " + "/".join(langs).upper())
-          + f", {budget:.0f} s max)…")
+    cache = _load_summary_cache()
+    fresh_after = (datetime.now(timezone.utc) - timedelta(days=_SUMMARY_TTL_DAYS)).isoformat()
+    print(f"📝 Pages détail + résumés {'/'.join(langs).upper()} ({len(shows)} item(s), {budget:.0f} s max, cache)…")
 
     def one(show: Show):
+        c = cache.get(show.item_id())
+        if c and c.get("at", "") >= fresh_after and all(c.get(lg) is not None for lg in langs):
+            return c
         summary, page_text = fetch_details(show.theater, show.url)
-        fr = en = None
-        if not digest:
-            if "fr" in langs:
-                fr = to_french(summary)
-            if "en" in langs:
-                en = to_english(summary)
-        lang = (detect_language(show.languages, page_text, show.has_english_surtitles)
-                if show.kind != "expo" else (show.spoken_language, show.surtitles))
-        return fr, en, lang
+        out = dict(c or {})
+        out["src"] = summary
+        # Traduction ratée (= texte d'origine renvoyé) : pas mise en cache, on
+        # retentera ; l'affichage se rabat sur le texte d'origine.
+        if "fr" in langs:
+            fr = to_french(summary)
+            out["fr"] = "" if not summary else (fr if fr and (fr != summary or looks_french(summary)) else None)
+        if "en" in langs:
+            en = to_english(summary)
+            out["en"] = "" if not summary else (en if en and (en != summary or looks_english(summary)) else None)
+        if show.kind != "expo":
+            out["spoken"], out["surtitles"] = detect_language(show.languages, page_text, show.has_english_surtitles)
+        out["at"] = datetime.now(timezone.utc).isoformat()
+        time.sleep(1.0)                    # la traduction gratuite rate-limite les rafales
+        return out
 
-    # Un seul worker + 1 s entre deux pièces : la traduction gratuite rate-limite.
-    done, late = map_with_budget(shows, one, budget, workers=1, pause=0.0 if digest else 1.0)
+    done, late = map_with_budget(shows, one, budget, workers=1)
     for i, out in done.items():
-        if out is None:
+        if not out:
             continue
-        shows[i].summary, shows[i].summary_en, (shows[i].spoken_language, shows[i].surtitles) = out
+        show = shows[i]
+        cache[show.item_id()] = out
+        show.summary = out.get("fr") or out.get("src") or None
+        show.summary_en = out.get("en") or (out.get("src") if out.get("en") is None and looks_english(out.get("src")) else None)
+        if show.kind != "expo":
+            show.spoken_language, show.surtitles = out.get("spoken"), out.get("surtitles")
+    _save_summary_cache(cache)
     if late:
-        print(f"   ⏱  budget de {budget:.0f} s dépassé : {len(late)} pièce(s) sans résumé "
-              f"({', '.join(shows[i].title for i in late[:5])}{'…' if len(late) > 5 else ''}).")
+        print(f"   ⏱  budget de {budget:.0f} s dépassé : {len(late)} item(s) sans résumé ce coup-ci "
+              f"(le cache avancera au prochain scan) : "
+              f"{', '.join(shows[i].title for i in late[:5])}{'…' if len(late) > 5 else ''}.")
 
 
 def _print_console(show: Show) -> None:

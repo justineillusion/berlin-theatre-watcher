@@ -99,6 +99,7 @@ jobs:
           # Boutons « 🔕 Ne plus suivre » : pièces masquées + offset getUpdates.
           if [ -f state/muted.json ]; then git add state/muted.json; fi
           if [ -f state/critics_cache.json ]; then git add state/critics_cache.json; fi
+          if [ -f state/summary_cache.json ]; then git add state/summary_cache.json; fi
           if ! git diff --cached --quiet; then
             git commit -m "chore: update seen/muted state [skip ci]"
             git pull --rebase -X theirs origin main || git rebase --abort

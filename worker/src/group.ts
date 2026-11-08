@@ -2,9 +2,9 @@
 // « plan » quand 2+ personnes veulent voir la même chose, avis complets, récap hebdo.
 // Tout est dans la langue du groupe (settings.group_lang, celle de qui a tapé /groupe).
 import { Lang, asLang, tr } from "./i18n";
-import { Env, Item, edit, esc, send, setSetting, setting, stars, tg } from "./lib";
+import { Env, Item, basicText, edit, esc, itemText, send, setSetting, setting, stars, tg } from "./lib";
 
-const ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", cinema: "🎬" };
+const ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", cinema: "🎬", film: "🎬" };
 const today = () => new Date().toISOString().slice(0, 10);
 
 export async function groupChat(env: Env): Promise<string | null> {
@@ -64,7 +64,9 @@ async function wanted(env: Env) {
     `SELECT i.*, v.name AS venue, group_concat(u.first_name, '|') AS names, COUNT(*) AS n
      FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
      JOIN items i ON i.id = r.item_id JOIN venues v ON v.id = i.venue_id
-     WHERE r.interested = 1 AND r.status IS NULL AND i.last_seen >= datetime(?1, '-2 days')
+     WHERE r.interested = 1 AND r.status IS NULL
+       AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= ?2
+                 ELSE i.last_seen >= datetime(?1, '-2 days') END)
        AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= ?2)
      GROUP BY i.id ORDER BY n DESC, i.title LIMIT 40`,
   ).bind(since, today()).all<Item & { venue: string; names: string; n: number }>();
@@ -114,10 +116,17 @@ export async function groupProgramme(env: Env, lang: Lang): Promise<{ text: stri
   return out;
 }
 
+/** Annonce du groupe = en-tête (qui, note, petit mot ENTIER) + la fiche commune de l'item. */
+function card(head: string, item: Item, lang: Lang): string {
+  const body = itemText(item, lang) || basicText(item, lang);
+  const room = 4000 - head.length - 2;
+  return `${head}\n\n${body.length > room ? body.slice(0, room - 1) + "…" : body}`;
+}
+
 /** Boutons sous une annonce du groupe : ⭐ (moi aussi / je veux le voir) + ✅ je l'ai vu aussi. */
-export const groupButtons = (item: Item, lang: Lang, review = false) => ({
+export const groupButtons = (item: Item, lang: Lang, _review = false) => ({
   inline_keyboard: [[
-    { text: review ? tr(lang).wantToSee : tr(lang).meToo, callback_data: `i:${item.id}` },
+    { text: tr(lang).meToo, callback_data: `i:${item.id}` },
     { text: tr(lang).sawToo, callback_data: `v:${item.id}` },
   ]],
 });
@@ -140,9 +149,9 @@ export async function announceInterest(
   ).bind(item.id).all<{ first_name: string }>();
   const names = results.map((r) => esc(r.first_name));
   if (!names.length) names.push(esc(who));
-  const where = whereWhen(item, venue, lang);
-  const head = names.length >= 2 ? T.plan(joinNames(names, lang), titleLink(item)) : T.annStar(names[0], titleLink(item));
-  const text = `${head}${where ? `\n${where}` : ""}`;
+  // Même fiche que partout (titre, lieu, dates, note, description, liens), précédée de qui est partant.
+  const head = names.length >= 2 ? T.planHead(joinNames(names, lang)) : T.starHead(names[0]);
+  const text = card(head, item, lang);
   if (editId) await edit(env, group, editId, text, groupButtons(item, lang));
   else await send(env, group, text, groupButtons(item, lang));
 }
@@ -156,13 +165,10 @@ export async function announceReview(
   if (!group) return;
   const lang = await groupLang(env);
   const T = tr(lang);
-  const lines = [T.annSaw(esc(who)), titleLink(item)];
-  const where = whereWhen(item, venue, lang);
-  if (where) lines.push(where);
-  if (rating) lines.push(`${stars(rating)} ${rating}/5`);
-  if (comment) lines.push(`💬 “${esc(comment)}”`);
-  if (item.url) lines.push(`🔗 ${esc(item.url)}`);
-  const text = lines.join("\n");
+  const head = [T.annSaw(esc(who))];
+  if (rating) head.push(`${stars(rating)} ${rating}/5`);
+  if (comment) head.push(`💬 “${esc(comment)}”`);
+  const text = card(head.join("\n"), item, lang);
   const markup = groupButtons(item, lang, true);
   const key = `grp_review:${chat}:${item.id}`;
   const prev = await setting(env, key);
