@@ -354,7 +354,7 @@ try {
   });
 
   await step("/programme, /vus, /aide répondent", async () => {
-    assert.match(sends(await say(LEA, "/programme"), LEA)[0].text, /À l'affiche<\/b> — choisis/);
+    assert.match(sends(await say(LEA, "/programme"), LEA)[0].text, /^📅 <b>À l'affiche<\/b> \(\d+\)/);
     assert.match(sends(await say(LEA, "/vus"), LEA)[0].text, /King Lear.*★★★★☆/);
     assert.match(sends(await say(OWNER, "/aide"), OWNER)[0].text, /Admin/);
   });
@@ -463,7 +463,7 @@ try {
     const l = s.messages.filter((m) => m.chat_id === LEA).map((m) => m.text).join("\n");
     assert.match(l, /Sunday round-up/);
     assert.match(l, /• Hedda \[EN\]/);
-    assert.match(sends(await say(LEA, "/programme"), LEA)[0].text, /What's on/);
+    assert.match(sends(await say(LEA, "/programme"), LEA)[0].text, /^📅 <b>What's on<\/b> \(\d+\)/);
   });
 
   await step("langue : à l'inscription, choix proposé ; 🇬🇧 redonne l'accueil en anglais", async () => {
@@ -505,30 +505,37 @@ try {
     assert.match(g, /plan de la semaine/);
   });
 
-  await step("/programme : menu court (catégories + lieux), puis fiches complètes 5 par 5 avec ⭐ ✅ 🔕", async () => {
+  await step("/programme : UNE liste dépliable — filtre [Tout] [🎭] [🖼] [🎬], 8 par page, fiche sur place", async () => {
     let c = await say(OWNER, "/programme");
     const menu = sends(c, OWNER)[0];
-    assert.equal(sends(c, OWNER).length, 1);                              // pas de déversoir
-    const btns = menu.reply_markup.inline_keyboard.flat();
-    assert.ok(btns.some((b) => b.callback_data === "pk:theatre:0" && /^🎭 Théâtre \(\d+\)$/.test(b.text)));
-    assert.ok(btns.some((b) => b.callback_data === "pv:berliner-ensemble:0"));
-    c = await click(OWNER, "pv:berliner-ensemble:0", 6100);
-    const cards = sends(c, OWNER).filter((m) => !m.text.startsWith("Il y en a"));
-    assert.ok(cards.length >= 1 && cards.length <= 5);
-    for (const m of cards) {
-      assert.deepEqual(m.reply_markup.inline_keyboard[0].map((b) => b.callback_data[0]), ["i", "x", "v"]);
-    }
-    // pagination : 7 pièces au Berliner Ensemble → 5 + « Plus ▸ » → 2
-    const extra = [1, 2, 3, 4, 5].map((n) => play(`page0000000${n}`, `Pièce ${n}`, [`2027-0${n}-10 19:00`]));
+    assert.equal(sends(c, OWNER).length, 1);                              // un seul message
+    const kb = menu.reply_markup.inline_keyboard;
+    assert.deepEqual(kb[0].map((b) => b.callback_data), ["lf:all", "lf:theatre", "lf:expo", "lf:film"]);
+    assert.deepEqual(kb[0].map((b) => b.text), ["· Tout ·", "🎭", "🖼", "🎬"]);
+    assert.match(menu.text, /^📅 <b>À l'affiche<\/b> \(\d+\)\n\n🎭 <b>THÉÂTRE<\/b>\n🎭 <a[^>]*>[^<]+<\/a> — <i>[^<]+<\/i>/);
+    // un item se déplie dans ce message : boutons d'état + ↩︎ Liste ; ↩︎ revient au filtre et à la page
+    const first = kb.find((r) => r[0].callback_data.startsWith("lo:"))[0];
+    c = await click(OWNER, first.callback_data, menu._id);
+    assert.equal(sends(c, OWNER).length, 0);
+    const card = edits(c, OWNER).find((x) => x.message_id === menu._id);
+    assert.deepEqual(card.reply_markup.inline_keyboard.at(-1), [{ text: "↩︎ Liste", callback_data: "lb" }]);
+    c = await click(OWNER, "lb", menu._id);
+    assert.deepEqual(edits(c, OWNER).find((x) => x.message_id === menu._id).reply_markup.inline_keyboard[0][0].text, "· Tout ·");
+    // pagination : assez de pièces → [◀] [1/n] [▶]
+    const extra = Array.from({ length: 9 }, (_, n) => play(`page000000${String(n).padStart(2, "0")}`, `Pièce ${n + 1}`, [`2027-0${(n % 9) + 1}-10 19:00`]));
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, ...extra] });
-    c = await click(OWNER, "pv:berliner-ensemble:0", 6101);
-    const more = sends(c, OWNER).at(-1);
-    assert.equal(sends(c, OWNER).length, 6);
-    assert.equal(more.reply_markup.inline_keyboard[0][0].callback_data, "pv:berliner-ensemble:5");
-    c = await click(OWNER, "pv:berliner-ensemble:5", 6102);
-    assert.ok(sends(c, OWNER).length >= 1 && !sends(c, OWNER).some((m) => m.text.startsWith("Il y en a")));
+    const p1 = sends(await say(OWNER, "/programme"), OWNER)[0];
+    assert.match(p1.reply_markup.inline_keyboard.at(-1)[1].text, /^1\/\d+$/);
+    assert.equal(p1.reply_markup.inline_keyboard.filter((r) => r[0].callback_data.startsWith("lo:")).length, 8);
+    // filtre 🖼 : seulement des expos, page 1
+    c = await click(OWNER, "lf:expo", p1._id);
+    const ex = edits(c, OWNER).find((x) => x.message_id === p1._id);
+    assert.equal(ex.reply_markup.inline_keyboard[0][2].text, "· 🖼 ·");
+    assert.ok(ex.reply_markup.inline_keyboard.filter((r) => r[0].callback_data.startsWith("lo:")).every((r) => r[0].text.startsWith("🖼")));
+    assert.doesNotMatch(ex.text, /THÉÂTRE/);
+    // /expos = la même liste, pré-filtrée
     c = await say(OWNER, "/expos");
-    assert.ok(sends(c, OWNER)[0].reply_markup.inline_keyboard.flat().every((b) => b.callback_data.startsWith("pv:kw")));
+    assert.equal(sends(c, OWNER)[0].reply_markup.inline_keyboard[0][2].text, "· 🖼 ·");
   });
 
   await step("item jamais rédigé : sa fiche existe quand même (titre + dates + lien) avec les boutons", async () => {
@@ -541,13 +548,12 @@ try {
   });
 
   await step("lieu sauté par un scan (site en panne) : son programme reste dans /programme", async () => {
-    const menu = async () => sends(await say(OWNER, "/programme"), OWNER)[0].reply_markup.inline_keyboard.flat().map((b) => b.text).join("|");
+    const total = async () => (sends(await say(OWNER, "/programme"), OWNER)[0].text.match(/À l'affiche<\/b> \((\d+)\)/) || [])[1];
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear] });
-    const schau = (m) => (m.match(/Schaubühne \(\d+\)/) || [""])[0];
-    const before = schau(await menu());
-    assert.ok(before);
+    const before = await total();
+    assert.ok(Number(before) > 0);
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, lear] });   // rien de la Schaubühne
-    assert.equal(schau(await menu()), before);   // (comparaison ciblée : horodatage à la seconde)
+    assert.equal(await total(), before);
   });
 
   await step("horizon : expos ouvertes / sous 7 j, pièces jouées sous 14 j (ces dates seulement) ; annoncé en entrant", async () => {
@@ -602,13 +608,13 @@ try {
     c = await click(LEA, "i:film00000001", 6300, GROUP, "group", "⭐ Justine …");
     assert.match(edits(c, GROUP)[0].text, /Plan !<\/b> Justine et Léa veulent y aller\n\n🎬/);
     assert.match(sends(await say(OWNER, "/interets"), OWNER)[0].text, /🎬 .*Barry Lyndon/);
-    // ⭐ : plus reproposé dans « Films de la semaine », il vit dans « Nos envies »
-    const menu = sends(await say(OWNER, "/programme"), OWNER)[0].reply_markup.inline_keyboard.flat();
-    assert.ok(!menu.some((b) => b.callback_data === "pk:film:0"));
-    assert.ok(menu.some((b) => b.callback_data === "pk:star:0"));
-    const cards = sends(await click(OWNER, "pk:star:0", 6400), OWNER).filter((m) => /Barry Lyndon/.test(m.text));
-    assert.match(cards[0].text, /Barry Lyndon/);
-    assert.deepEqual(cards[0].reply_markup.inline_keyboard.map((r) => r.map((b) => b.callback_data[0])), [["b", "v"], ["i"]]);   // ⭐
+    // /films : le film ⭐ reste dans la liste, sa ligne porte « ⭐ » ; déplié : boutons de l'état ⭐ + ↩︎ Liste
+    const fl = sends(await say(OWNER, "/films"), OWNER)[0];
+    assert.match(fl.text, /Barry Lyndon<\/a> — <i>Intimes<\/i>.* · ⭐/);
+    const fb = fl.reply_markup.inline_keyboard.find((r) => r[0].callback_data === "lo:film00000001")[0];
+    assert.equal(fb.text, "🎬 Barry Lyndon · ⭐");
+    const fc = edits(await click(OWNER, fb.callback_data, fl._id), OWNER).find((x) => x.message_id === fl._id);
+    assert.deepEqual(fc.reply_markup.inline_keyboard.map((r) => r.map((b) => b.callback_data[0])), [["b", "v"], ["i"], ["l"]]);
     // 🔕 : plus jamais, même avec de nouvelles séances
     await click(OWNER, "x:film00000001", jm);
     r = await run({ ...film, dates: [d1, d2, `${soon(6)} 19:00`] });
@@ -627,9 +633,8 @@ try {
     // scan : aucune notif à Léa pour ces lieux
     const s = await scan([hedda, ente, lear, theatre, expoU]);
     assert.ok(!s.messages.some((m) => m.chat_id === LEA && ["unselT00001", "unselE00001"].includes(m.item_id)));
-    // /programme : ni BE ni KW au menu
-    const menu = sends(await say(LEA, "/programme"), LEA)[0].reply_markup.inline_keyboard.flat().map((b) => b.callback_data);
-    assert.ok(!menu.includes("pv:berliner-ensemble:0") && !menu.includes("pv:kw:0"), menu.join(" "));
+    // /programme : rien de BE ni de KW
+    assert.doesNotMatch(sends(await say(LEA, "/programme"), LEA)[0].text, /Berliner Ensemble|KW Institute/);
     // récap : rien de ces lieux
     const d = (await scan([hedda, ente, lear, theatre, expoU], "digest")).messages
       .filter((m) => m.chat_id === LEA).map((m) => m.text).join("\n");

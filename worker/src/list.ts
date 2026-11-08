@@ -6,7 +6,8 @@
 // L'état d'une liste vit dans settings (« list:<chat>:<message> »).
 import { Lang, tr } from "./i18n";
 import {
-  Env, Item, Reaction, edit, esc, friendsByItem, renderFor, send, setSetting, setting, stars, whenLabel,
+  Env, Horizon, Item, Reaction, edit, esc, friendsByItem, horizon, renderFor, send, setSetting, setting, stars, whenLabel,
+  windowSql,
 } from "./lib";
 
 export const PAGE_SIZE = 8;
@@ -52,8 +53,32 @@ async function sortiesEntries(env: Env, chat: number): Promise<Entry[]> {
   ];
 }
 
+/** Items « à l'affiche » vus par `chat` (?1) : lieux suivis, encore programmés (?2 = current_since).
+ *  `keepStarred` : les ⭐ restent (la ligne porte « ⭐ ») ; vu / 🙅 sortent toujours. */
+export const currentSql = (h: Horizon, keepStarred = false) => `
+  ${windowSql(h)} AND
+  i.venue_id IN (SELECT venue_id FROM subscriptions WHERE chat_id = ?1)
+  AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
+            ELSE i.last_seen >= ?2 END)
+  AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now'))
+  AND NOT EXISTS (SELECT 1 FROM reactions x WHERE x.item_id = i.id AND x.chat_id = ?1
+                  AND (x.status IS NOT NULL ${keepStarred ? "" : "OR x.interested = 1"}))`;
+
+/** /programme : tout ce qui est à l'affiche dans mes lieux (⭐ compris), par type, filtrable. */
+async function progEntries(env: Env, chat: number, f = "all"): Promise<Entry[]> {
+  const since = (await setting(env, "current_since")) ?? "";
+  const { results } = await env.DB.prepare(
+    `SELECT i.id, i.kind FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+     WHERE ${currentSql(await horizon(env), true)} AND (?3 = 'all' OR i.kind = ?3)
+     ORDER BY CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position,
+       COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999'), i.title LIMIT 300`,
+  ).bind(chat, since, f).all<{ id: string; kind: string }>();
+  return results.map((r) => ({ id: r.id, section: r.kind }));
+}
+
 async function entriesFor(env: Env, chat: number, s: ListState): Promise<Entry[]> {
   if (s.k === "sorties") return sortiesEntries(env, chat);
+  if (s.k === "prog") return progEntries(env, chat, s.f ?? "all");
   return s.items ?? [];
 }
 
@@ -107,6 +132,7 @@ export async function renderList(env: Env, chat: number, s: ListState, lang: Lan
   const react = new Map(rs.map((r) => [r.item_id, r]));
 
   const blocks: string[] = [];
+  if (s.k === "prog") blocks.push(T.progHead(all.length));
   if (s.head) blocks.push(s.head);
   let cur = "";
   const lines: string[] = [];

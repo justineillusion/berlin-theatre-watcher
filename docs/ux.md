@@ -34,7 +34,10 @@
 
 ## Liste dépliable : un message par surface
 
-Composant unique (worker/src/list.ts) pour /sorties, le lot du matin et le récap du dimanche (/programme suit).
+Composant unique (worker/src/list.ts) pour /programme, /sorties, le lot du matin et le récap du dimanche.
+- **/programme** : tout ce qui est à l'affiche dans mes lieux (⭐ compris, ligne « · ⭐ » ; vu / 🙅 exclus),
+  sections 🎭 / 🖼 / 🎬, filtre en tête [Tout] [🎭] [🖼] [🎬] (/expos, /theatre, /films = pré-filtré).
+  Remplace l'ancien menu lieux → fiches 5 par 5 (anciens boutons encore acceptés).
 - **Liste** : en-tête + sections, une ligne compacte par item « 🎭 Titre — Lieu · ★★★½ · ⭐ » (état : ⭐,
   🎟 date, ✅ note « avis », 🙅), un bouton pleine largeur par item « 🎭 Titre · ⭐ ». 8 par page :
   [◀] [n/m] [▶].

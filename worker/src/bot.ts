@@ -5,7 +5,7 @@ import {
 } from "./lib";
 import { digestFor } from "./scan";
 import { openCard } from "./daily";
-import { cardMarkup, getList, openItem, sendList, showList } from "./list";
+import { cardMarkup, currentSql, getList, openItem, sendList, showList } from "./list";
 import { Lang, MENU_VERSION, asLang, guessLang, langKeyboard, setChatMenu, setGlobalMenus, tr } from "./i18n";
 import {
   announceInterest, announceReview, card, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
@@ -96,14 +96,11 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
     case "/reglages": case "/settings":
       return void (await send(env, chat, T.settingsTitle, settingsKeyboard(lang)));
     case "/suivre": return void (await send(env, chat, T.followPrompt, await followKeyboard(env, chat, lang)));
-    case "/programme": case "/program": {
-      const m = await programmeMenu(env, chat, lang);
-      return void (await send(env, chat, m.text, m.kb));
-    }
+    case "/programme": case "/program":
     case "/expos": case "/theatre": case "/theatres": case "/theater": case "/films": {
-      const kind = cmd === "/expos" ? "expo" : cmd === "/films" ? "film" : "theatre";
-      const m = await programmeMenu(env, chat, lang, kind);
-      return void (await send(env, chat, m.text, m.kb));
+      // Une liste dépliable, filtre [Tout] [🎭] [🖼] [🎬] en tête (les alias pré-filtrent).
+      const f = cmd === "/expos" ? "expo" : cmd === "/films" ? "film" : cmd.startsWith("/theat") ? "theatre" : "all";
+      return void (await sendList(env, chat, { k: "prog", p: 0, f }, lang, f === "all" ? T.noFollowedAny : undefined));
     }
     case "/sorties": case "/outings": case "/interets": case "/interests": case "/vus": {
       // Une liste dépliable : chaque ligne s'ouvre en fiche dans ce même message.
@@ -385,14 +382,7 @@ const PAGE = 5;
 /** Items « à l'affiche » vus par `chat` : lieux suivis, encore programmés, pas ignorés. */
 /** `keepStarred` : « Nos envies » montre justement les ⭐ ; ailleurs, ce que
  *  la personne a déjà vu, ignoré ou marqué ⭐ n'est plus reproposé. */
-const current = (h: Horizon, keepStarred = false) => `
-  ${windowSql(h)} AND
-  i.venue_id IN (SELECT venue_id FROM subscriptions WHERE chat_id = ?1)
-  AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
-            ELSE i.last_seen >= ?2 END)
-  AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now'))
-  AND NOT EXISTS (SELECT 1 FROM reactions x WHERE x.item_id = i.id AND x.chat_id = ?1
-                  AND (x.status IS NOT NULL ${keepStarred ? "" : "OR x.interested = 1"}))`;
+const current = currentSql;
 
 async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | null = null): Promise<{ text: string; kb: unknown }> {
   const T = tr(lang);
