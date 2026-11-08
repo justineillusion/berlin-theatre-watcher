@@ -55,6 +55,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .when small{display:block;font:500 12px var(--sans);color:var(--muted);margin-top:3px}
 .t{font:700 16px/1.3 var(--sans);letter-spacing:-.005em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .v{font-size:14px;color:var(--muted);margin-top:2px}
+.v .sc{color:var(--ink);font-weight:700;white-space:nowrap}
 .v .k{color:var(--gold)}
 .badge{font-size:15px;padding-top:2px}
 .social{font-size:14px;color:var(--ink);margin-top:4px}
@@ -172,8 +173,11 @@ function facts(x) {
   const txt = (x.text || "").replace(/<br\s*\/?>/g, "\n").replace(/<[^>]*>?/g, "");
   const d = document.createElement("textarea"); d.innerHTML = txt; const lines = d.value.split("\n").map((l) => l.trim());
   const pick = (p) => lines.filter((l) => l.startsWith(p));
-  return { meta: [...pick("📍"), ...pick("✍️"), ...pick("🗣"), ...pick("📰")],
-           syn: pick("📝").map((l) => l.replace(/^📝\s*/, "")).join(" ").slice(0, 420) };
+  // Films : « (2026, Réalisateur) » sur la 1re ligne, « ★ 6,9 SC » / « ★ 3,8 LB » sur une ligne à part.
+  const credits = x.kind === "film" ? ((lines[0] || "").match(/\(([^)]*\d{4}[^)]*)\)\s*$/) || [])[1] || "" : "";
+  const rating = lines.find((l) => /^★\s*\d/.test(l)) || "";
+  return { meta: [...(credits ? ["🎬 " + credits] : []), ...pick("📍"), ...pick("✍️"), ...pick("🗣"), ...pick("📰")],
+           rating, syn: pick("📝").map((l) => l.replace(/^📝\s*/, "")).join(" ").slice(0, 420) };
 }
 
 async function api(path, extra = {}) {
@@ -238,7 +242,7 @@ function item(x) {
   const open = st.open === x.id, s = state(x), me = x.me || {};
   let h = `<div class="item${open ? " open" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div>
-    <div><div class="t">${esc(x.title)}</div><div class="v">${esc(x.venue)}${x.kind === "expo" && x.end ? ` · ${esc(T.until)} ${esc(shortDay(x.end))}` : ""}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}</div>
+    <div><div class="t">${esc(x.title)}</div><div class="v">${esc(x.venue)}${x.kind === "expo" && x.end ? ` · ${esc(T.until)} ${esc(shortDay(x.end))}` : ""}${facts(x).rating ? ` · <b class="sc">${esc(facts(x).rating)}</b>` : ""}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}</div>
     ${badge(x)}</button>`;
   if (!open) return h + "</div>";
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
@@ -258,6 +262,7 @@ function item(x) {
     `<div class="friend"><b>${esc(p.name)} ${stars(p.rating)}</b>${p.comment ? `<div class="quote">« ${esc(p.comment)} »</div>` : ""}</div>`).join("");
   if (s !== "seen" && dates) h += `<div>🗓 ${esc(dates)}</div>`;
   if (me.booked && s !== "seen") h += `<div>🎟 ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}</div>`;
+  if (f.rating) h += `<div><b class="sc">${esc(f.rating)}</b></div>`;
   h += f.meta.map((l) => `<div class="m">${esc(l)}</div>`).join("");
   if (f.syn) h += `<div class="syn">${esc(f.syn)}${f.syn.length >= 420 ? "…" : ""}</div>`;
   const people = S.people || [];
