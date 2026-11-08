@@ -1,0 +1,117 @@
+// Test local de la mini-app : wrangler dev (D1 local, dossier à part) + faux Telegram.
+//   node test/app.mjs
+// Vérifie : la page, la signature initData (refus si absente/falsifiée/non inscrit),
+// le programme renvoyé, et que ⭐ 🙅 ↩︎ 🎟 ✅ ★ passent par le même code que les boutons du chat.
+import { spawn, execSync } from "node:child_process";
+import http from "node:http";
+import { createHmac } from "node:crypto";
+import { rmSync, writeFileSync } from "node:fs";
+import assert from "node:assert/strict";
+
+const TG_PORT = 8789, W_PORT = 8788, W = `http://127.0.0.1:${W_PORT}`;
+const TOKEN = "123:test", ME = 111, OTHER = 444, GROUP = -999, STATE = ".wrangler/app-test-state";
+
+let calls = [];
+const tgServer = http.createServer((req, res) => {
+  let body = ""; req.on("data", (c) => (body += c));
+  req.on("end", () => {
+    calls.push({ method: req.url.split("/").pop(), ...JSON.parse(body || "{}") });
+    res.setHeader("content-type", "application/json");
+    res.end(JSON.stringify({ ok: true, result: { message_id: 1 } }));
+  });
+});
+await new Promise((r) => tgServer.listen(TG_PORT, r));
+
+rmSync(STATE, { recursive: true, force: true });
+writeFileSync(".dev.vars", `BOT_TOKEN=${TOKEN}\nAPI_TOKEN=a\nWEBHOOK_SECRET=h\nOWNER_CHAT_ID=${ME}\nBOT_USERNAME=TestBot\nTG_API=http://127.0.0.1:${TG_PORT}\n`);
+const d1 = (args) => execSync(`npx wrangler d1 execute theatre-bot --local --persist-to ${STATE} ${args}`, { stdio: ["ignore", "pipe", "ignore"] }).toString();
+d1("--file=schema.sql");
+for (const m of ["003_bookings.sql"]) { try { d1(`--file=migrations/${m}`); } catch {} }
+const day = (n) => new Date(Date.now() + n * 864e5).toISOString().slice(0, 10);
+const seed = `
+INSERT INTO users (chat_id, first_name) VALUES (${ME}, 'Justine');
+INSERT INTO users (chat_id, first_name, lang) VALUES (555, 'Joss', 'en');
+INSERT INTO venues (id, name, kind) VALUES ('be', 'Berliner Ensemble', 'theatre'), ('kw', 'KW', 'expo');
+INSERT INTO subscriptions (chat_id, venue_id, primed) VALUES (${ME}, 'be', 1), (${ME}, 'kw', 1);
+INSERT INTO settings (key, value) VALUES ('current_since', '2000-01-01'), ('group_chat_id', '${GROUP}');
+INSERT INTO items (id, venue_id, kind, title, url, dates, text) VALUES
+  ('p1', 'be', 'theatre', 'Twelfth Night', 'https://x/p1', '["${day(2)} 19:30", "${day(5)} 20:00"]', '🎭 <b>Twelfth Night</b>\n📍 Berliner Ensemble\n📝 Une île.'),
+  ('p2', 'be', 'theatre', 'Mutter Courage', null, '["${day(3)} 19:00"]', '🎭 <b>Mutter Courage</b>');
+INSERT INTO items (id, venue_id, kind, title, start_date, end_date) VALUES ('e1', 'kw', 'expo', 'Expo', '${day(-10)}', '${day(30)}');
+INSERT INTO reactions (chat_id, item_id, interested) VALUES (555, 'p1', 1);`;
+writeFileSync(`${STATE}-seed.sql`, seed);
+d1(`--file=${STATE}-seed.sql`);
+
+const dev = spawn("npx", ["wrangler", "dev", "--local", "--persist-to", STATE, "--port", String(W_PORT)], { stdio: ["ignore", "pipe", "pipe"] });
+let log = ""; dev.stdout.on("data", (d) => (log += d)); dev.stderr.on("data", (d) => (log += d));
+for (let i = 0; ; i++) { try { await fetch(W); break; } catch { if (i > 60) throw new Error(log); } await new Promise((r) => setTimeout(r, 500)); }
+
+/** initData signé comme Telegram le fait. */
+function initData(user, token = TOKEN, authDate = Math.floor(Date.now() / 1000)) {
+  const p = new URLSearchParams({ auth_date: String(authDate), query_id: "q", user: JSON.stringify(user) });
+  const check = [...p.entries()].map(([k, v]) => `${k}=${v}`).sort().join("\n");
+  const secret = createHmac("sha256", "WebAppData").update(token).digest();
+  p.set("hash", createHmac("sha256", secret).update(check).digest("hex"));
+  return p.toString();
+}
+const me = initData({ id: ME, first_name: "Justine" });
+const post = async (path, body) => {
+  const r = await fetch(W + path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  await new Promise((r) => setTimeout(r, 300));
+  return { status: r.status, json: await r.json().catch(() => null) };
+};
+const act = async (op, id, arg) => { calls = []; const r = await post("/app/api/act", { initData: me, op, id, arg }); assert.equal(r.status, 200, JSON.stringify(r.json)); return r.json; };
+const item = (s, id) => s.items.find((x) => x.id === id);
+
+let ok = 0;
+const step = async (name, fn) => {
+  try { await fn(); ok++; console.log(`  ✓ ${name}`); }
+  catch (e) { console.log(`  ✗ ${name}\n${e.stack}\n--- wrangler ---\n${log.slice(-2500)}`); dev.kill(); tgServer.close(); process.exit(1); }
+};
+
+await step("GET /app sert la page", async () => {
+  const r = await fetch(W + "/app"); assert.equal(r.status, 200);
+  assert.match(await r.text(), /telegram-web-app\.js/);
+});
+await step("sans initData / falsifié / trop vieux : 401", async () => {
+  assert.equal((await post("/app/api/state", {})).status, 401);
+  assert.equal((await post("/app/api/state", { initData: initData({ id: ME }, "autre:token") })).status, 401);
+  assert.equal((await post("/app/api/state", { initData: me.replace("Justine", "Justin") })).status, 401);
+  assert.equal((await post("/app/api/state", { initData: initData({ id: ME }, TOKEN, 1000) })).status, 401);
+});
+await step("pas inscrit au bot : 403 + nom du bot", async () => {
+  const r = await post("/app/api/state", { initData: initData({ id: OTHER, first_name: "X" }) });
+  assert.equal(r.status, 403); assert.equal(r.json.bot, "TestBot");
+});
+await step("programme : mes lieux, envies des amis", async () => {
+  const s = (await post("/app/api/state", { initData: me })).json;
+  assert.deepEqual(s.items.map((x) => x.id).sort(), ["e1", "p1", "p2"]);
+  assert.deepEqual(item(s, "p1").friends.map((f) => f.name), ["Joss"]);
+  assert.equal(item(s, "p1").me, null);
+  assert.equal(s.venues.length, 2);
+});
+await step("⭐ : envie enregistrée + annonce au groupe", async () => {
+  const s = await act("i", "p1");
+  assert.equal(item(s, "p1").me.star, 1);
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id == GROUP), JSON.stringify(calls.map((c) => c.method)));
+});
+await step("🙅 Pas pour moi puis ↩︎", async () => {
+  assert.equal(item(await act("x", "p2"), "p2").me.status, "ignored");
+  assert.equal(item(await act("u", "p2"), "p2").me.status, null);
+});
+await step("🎟 réservé à une séance", async () => {
+  const s = await act("bd", "p1", day(5).replace(/\D/g, "") + "2000");
+  assert.equal(item(s, "p1").me.booked, `${day(5)} 20:00`);
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id == GROUP));
+});
+await step("✅ vu puis ★★★★", async () => {
+  assert.equal(item(await act("v", "p2"), "p2").me.status, "seen");
+  assert.equal(item(await act("r", "p2", "4"), "p2").me.rating, 4);
+});
+await step("action inconnue / id bizarre : 400", async () => {
+  assert.equal((await post("/app/api/act", { initData: me, op: "stop", id: "p1" })).status, 400);
+  assert.equal((await post("/app/api/act", { initData: me, op: "i", id: "p1:x" })).status, 400);
+});
+
+console.log(`\n${ok} étapes OK`);
+dev.kill(); tgServer.close(); rmSync(STATE, { recursive: true, force: true }); rmSync(`${STATE}-seed.sql`, { force: true });
