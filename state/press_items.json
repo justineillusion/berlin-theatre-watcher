@@ -245,14 +245,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Mononoke",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261108-1700/",
-  "opens": "2026-11-08",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "The Last Sky: My Search for Palestine (Der letzte Himmel)",
   "url": "https://www.berliner-ensemble.de/en/production/last-sky-my-search-palestine-der-letzte-himmel",
@@ -276,6 +268,14 @@
   "title": "T-Boy on Grindr",
   "url": "https://www.berliner-ensemble.de/en/production/t-boy-grindr",
   "opens": "2026-11-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Mononoke",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261122-1700/",
+  "opens": "2026-11-22",
   "aliases": []
  },
  {
@@ -304,17 +304,6 @@
   "url": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
   "opens": "2026-11-30",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
-  "opens": "2026-12-01",
-  "aliases": [
-   "Die Dreigroschenoper",
-   "The Threepenny Opera"
-  ]
  },
  {
   "kind": "theatre",
@@ -347,6 +336,17 @@
   "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
   "opens": "2026-12-26",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Ensemble",
+  "title": "Die Dreigroschenoper (The Threepenny Opera)",
+  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
+  "opens": "2026-12-27",
+  "aliases": [
+   "Die Dreigroschenoper",
+   "The Threepenny Opera"
+  ]
  },
  {
   "kind": "theatre",
