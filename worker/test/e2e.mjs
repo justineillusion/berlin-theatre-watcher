@@ -712,6 +712,16 @@ try {
     await click(OWNER, "i:syn000000001", 9101);
   });
 
+  await step("/reglages : un message, 4 boutons -> lieux, langue, pas pour moi, groupe", async () => {
+    const m = sends(await say(OWNER, "/reglages"), OWNER)[0];
+    assert.match(m.text, /Réglages/);
+    assert.deepEqual(m.reply_markup.inline_keyboard.flat().map((b) => b.callback_data), ["st:v", "st:l", "st:i", "st:g"]);
+    assert.match(sends(await click(OWNER, "st:v", m._id), OWNER)[0].text, /Que veux-tu suivre/);
+    assert.ok(sends(await click(OWNER, "st:l", m._id), OWNER)[0].reply_markup.inline_keyboard.flat().some((b) => b.callback_data.startsWith("l:")));
+    assert.match(sends(await click(OWNER, "st:i", m._id), OWNER)[0].text, /Ignor|Rien|rien/);
+    assert.match(sends(await click(OWNER, "st:g", m._id), OWNER)[0].text, /groupe de la bande est relié/);
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);

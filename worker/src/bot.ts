@@ -81,6 +81,8 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
   const T = tr(lang);
 
   switch (cmd) {
+    case "/reglages": case "/settings":
+      return void (await send(env, chat, T.settingsTitle, settingsKeyboard(lang)));
     case "/suivre": return void (await send(env, chat, T.followPrompt, await followKeyboard(env, chat, lang)));
     case "/programme": case "/program": {
       const m = await programmeMenu(env, chat, lang);
@@ -234,6 +236,15 @@ async function followKeyboard(env: Env, chat: number, lang: Lang): Promise<unkno
   ]);
   return { inline_keyboard: rows };
 }
+
+/** /reglages : un message, quatre boutons (lieux, langue, pas pour moi, groupe). */
+const settingsKeyboard = (lang: Lang) => {
+  const T = tr(lang);
+  return { inline_keyboard: [
+    [{ text: T.setVenues, callback_data: "st:v" }, { text: T.setLang, callback_data: "st:l" }],
+    [{ text: T.setIgnored, callback_data: "st:i" }, { text: T.setGroup, callback_data: "st:g" }],
+  ] };
+};
 
 // ---------------------------------------------------------------------------
 // Listes
@@ -474,6 +485,17 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     const cut = data.lastIndexOf(":");
     const hasOffset = cut > 2 && /^\d+$/.test(data.slice(cut + 1));
     return browse(env, chat, lang, hasOffset ? data.slice(0, cut) : data, hasOffset ? Number(data.slice(cut + 1)) : 0);
+  }
+
+  // --- /reglages ----------------------------------------------------------
+  if (data.startsWith("st:")) {
+    await answer();
+    const k = data.slice(3);
+    if (k === "v") return void (await send(env, chat, T.followPrompt, await followKeyboard(env, chat, lang)));
+    if (k === "l") return void (await send(env, chat, T.langPrompt, langKeyboard()));
+    if (k === "i") return onIgnored(env, chat, lang);
+    if (k === "g") return void (await send(env, chat, T.groupInfo(!!(await groupChat(env)))));
+    return;
   }
 
   // --- /suivre -----------------------------------------------------------
