@@ -120,7 +120,7 @@ export async function groupProgramme(env: Env, lang: Lang): Promise<{ text: stri
 }
 
 /** Annonce du groupe = en-tête (qui, note, petit mot ENTIER) + la fiche commune de l'item. */
-function card(head: string, item: Item, lang: Lang): string {
+export function card(head: string, item: Item, lang: Lang): string {
   const body = itemText(item, lang) || basicText(item, lang);
   const room = 4000 - head.length - 2;
   return `${head}\n\n${body.length > room ? body.slice(0, room - 1) + "…" : body}`;

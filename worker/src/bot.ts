@@ -1,12 +1,12 @@
 // Webhook Telegram : commandes, boutons ⭐ / ✅ / 🔕, notes, petits mots.
 import {
   Env, Friend, Horizon, Item, Reaction, edit, esc, friendsByItem, getItem, getReaction, horizon, keyboard, renderFor,
-  send, setSetting, setting, socialBlock, stars, tg, windowSql,
+  send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql,
 } from "./lib";
 import { digestFor } from "./scan";
 import { Lang, asLang, guessLang, langKeyboard, setChatMenu, tr } from "./i18n";
 import {
-  announceInterest, announceReview, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
+  announceInterest, announceReview, card, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
 } from "./group";
 
 interface TgUser { id: number; first_name: string; username?: string; language_code?: string }
@@ -130,12 +130,22 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
     // l'invitation ouverte la plus récente (plusieurs peuvent être ouvertes).
     const replyTo = msg.reply_to_message?.message_id;
     const prompt = replyTo
-      ? await env.DB.prepare("SELECT item_id FROM review_prompts WHERE chat_id = ? AND message_id = ?")
-        .bind(chat, replyTo).first<{ item_id: string }>()
+      ? await env.DB.prepare("SELECT item_id, kind, message_id FROM review_prompts WHERE chat_id = ? AND message_id = ?")
+        .bind(chat, replyTo).first<{ item_id: string; kind: string; message_id: number }>()
       : null;
     const latest = prompt ?? await env.DB.prepare(
-      `SELECT item_id FROM review_prompts WHERE chat_id = ? AND closed = 0
-       ORDER BY created_at DESC, message_id DESC LIMIT 1`).bind(chat).first<{ item_id: string }>();
+      `SELECT item_id, kind, message_id FROM review_prompts WHERE chat_id = ? AND closed = 0
+       ORDER BY created_at DESC, message_id DESC LIMIT 1`).bind(chat).first<{ item_id: string; kind: string; message_id: number }>();
+    if (latest?.kind === "date") {
+      // « 📅 Autre date » : la réponse est une date (14/12 20:00), pas un avis.
+      const iso = parseDate(text);
+      if (!iso) return void (await send(env, chat, T.bookBadDate));
+      await env.DB.prepare("UPDATE review_prompts SET closed = 1 WHERE chat_id = ? AND message_id = ?")
+        .bind(chat, latest.message_id).run();
+      const it = await getItem(env, latest.item_id);
+      if (it) await book(env, chat, user.first_name, it, iso, lang, null, ctx);
+      return;
+    }
     const itemId = latest?.item_id ?? user.pending_item;
     if (itemId) return onComment(env, chat, user.first_name, itemId, text, ctx, lang);
   }
@@ -240,7 +250,19 @@ async function interestsText(env: Env, chat: number, lang: Lang): Promise<string
        AND ${windowSql(await horizon(env))}
      GROUP BY i.id ORDER BY n DESC, i.title LIMIT 30`,
   ).bind(chat, since).all<any>();
-  if (!results.length) return T.noInterests;
+  // 🎟 Réservations d'abord (les miennes et celles de la bande, à venir).
+  const { results: bk } = await env.DB.prepare(
+    `SELECT i.title, i.url, r.booked_at, r.chat_id, u.first_name, v.name AS venue FROM reactions r
+     JOIN users u ON u.chat_id = r.chat_id AND u.active = 1 JOIN items i ON i.id = r.item_id
+     JOIN venues v ON v.id = i.venue_id
+     WHERE r.booked_at IS NOT NULL AND substr(r.booked_at, 1, 10) >= date('now') AND r.status IS NULL
+     ORDER BY r.booked_at LIMIT 20`,
+  ).all<any>();
+  const booked = bk.length ? `${T.bookingsHead}\n` + bk.map((b) => {
+    const t = b.url ? `<a href="${esc(b.url)}">${esc(b.title)}</a>` : esc(b.title);
+    return `🎟 ${t} — ${whenLabel(b.booked_at, lang)} <i>(${esc(b.venue)})</i> · ${b.chat_id === chat ? T.youBold : esc(b.first_name)}`;
+  }).join("\n") + "\n\n" : "";
+  if (!results.length) return booked ? booked.trim() : T.noInterests;
   const friends = await friendsByItem(env, results.map((r) => r.id));
   const lines = results.map((r) => {
     const t = r.url ? `<a href="${esc(r.url)}">${esc(r.title)}</a>` : esc(r.title);
@@ -248,7 +270,7 @@ async function interestsText(env: Env, chat: number, lang: Lang): Promise<string
       .map((f) => (f.chat_id === chat ? T.youBold : esc(f.first_name))).join(", ");
     return `${KIND_ICON[r.kind] ?? "🎭"} ${t} <i>(${esc(r.venue)})</i>\n   ⭐ ${who}`;
   });
-  return `${T.interestsTitle}\n\n${lines.join("\n")}`;
+  return `${booked}${T.interestsTitle}\n\n${lines.join("\n")}`;
 }
 
 async function seenText(env: Env, chat: number, lang: Lang): Promise<string> {
@@ -282,14 +304,17 @@ async function onIgnored(env: Env, chat: number, lang: Lang): Promise<void> {
 // ---------------------------------------------------------------------------
 async function setReaction(env: Env, chat: number, item: string, patch: Partial<Reaction>): Promise<Reaction> {
   const cur = (await getReaction(env, chat, item)) ??
-    { chat_id: chat, item_id: item, interested: 0, status: null, rating: null, comment: null };
+    { chat_id: chat, item_id: item, interested: 0, status: null, rating: null, comment: null,
+      booked_at: null, booked_on: null, followup_sent: 0 };
   const next = { ...cur, ...patch };
   await env.DB.prepare(
-    `INSERT INTO reactions (chat_id, item_id, interested, status, rating, comment, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+    `INSERT INTO reactions (chat_id, item_id, interested, status, rating, comment, booked_at, booked_on, followup_sent, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
      ON CONFLICT(chat_id, item_id) DO UPDATE SET interested = excluded.interested, status = excluded.status,
-       rating = excluded.rating, comment = excluded.comment, updated_at = excluded.updated_at`,
-  ).bind(chat, item, next.interested, next.status, next.rating, next.comment).run();
+       rating = excluded.rating, comment = excluded.comment, booked_at = excluded.booked_at,
+       booked_on = excluded.booked_on, followup_sent = excluded.followup_sent, updated_at = excluded.updated_at`,
+  ).bind(chat, item, next.interested, next.status, next.rating, next.comment,
+    next.booked_at ?? null, next.booked_on ?? null, next.followup_sent ?? 0).run();
   return next;
 }
 
@@ -380,7 +405,9 @@ async function browse(env: Env, chat: number, lang: Lang, filter: string, offset
   const { results } = await env.DB.prepare(
     `SELECT i.* FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
      WHERE ${cur} AND ${where}
-     ORDER BY CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position,
+     ORDER BY ${value === "star" ? `(SELECT MIN(b.booked_at) FROM reactions b WHERE b.item_id = i.id AND b.booked_at IS NOT NULL
+                  AND b.status IS NULL) IS NULL,` : ""}
+       CASE i.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position,
        COALESCE(NULLIF(i.start_date, ''), json_extract(i.dates, '$[0]'), '9999'), i.title
      LIMIT ?4 OFFSET ?5`,
   ).bind(chat, since, value, PAGE + 1, offset).all<Item>();
@@ -483,6 +510,41 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   let r: Reaction;
   let toast = "";
   let socialChanged = true;
+
+  // --- 🎟 réservations ------------------------------------------------------
+  if (op === "b") {
+    await send(env, chat, T.bookPick(esc(item.title)), bookPicker(item, prev, lang));
+    return void (await answer());
+  }
+  if (op === "bd") {
+    await book(env, chat, from.first_name, item, decodeWhen(arg), lang, cq.message?.message_id ?? null, ctx);
+    return void (await answer());
+  }
+  if (op === "bo") {
+    const res = await tg(env, "sendMessage", {
+      chat_id: chat, text: T.bookAskDate(esc(item.title)), parse_mode: "HTML",
+      reply_markup: { force_reply: true, input_field_placeholder: T.bookDatePlaceholder.slice(0, 64) },
+    });
+    const id = res?.result?.message_id;
+    if (id) {
+      await env.DB.prepare("INSERT OR REPLACE INTO review_prompts (chat_id, message_id, item_id, kind) VALUES (?, ?, ?, 'date')")
+        .bind(chat, id, item.id).run();
+    }
+    return void (await answer());
+  }
+  if (op === "bx") {
+    const r2 = await setReaction(env, chat, item.id, { booked_at: null, booked_on: null, followup_sent: 0 });
+    if (cq.message?.message_id) await edit(env, chat, cq.message.message_id, T.bookCancelled);
+    await refreshMine(env, chat, item, r2, lang);
+    return void (await answer(T.bookCancelled));
+  }
+  if (op === "j") {
+    // « 🙋 J'y vais aussi » sous une annonce de réservation du groupe.
+    if (!prev?.interested) await setReaction(env, chat, item.id, { interested: 1 });
+    await send(env, chat, T.joinDm(esc(item.title), whenLabel(decodeWhen(arg), lang), esc(item.url ?? "")));
+    ctx.waitUntil(refreshAll(env, item, null));
+    return void (await answer(T.toastJoin));
+  }
 
   switch (op) {
     case "i": {
@@ -597,6 +659,94 @@ async function onComment(
   ctx.waitUntil((async () => {
     await announceReview(env, item, venue?.name, chat, name, r.rating, comment);
     await refreshAll(env, item, null);
+  })());
+}
+
+// ---------------------------------------------------------------------------
+// 🎟 Réservations
+// ---------------------------------------------------------------------------
+const isoDay = (d: Date) => d.toISOString().slice(0, 10);
+/** '2026-12-14 20:00' <-> '202612142000' (callback_data ≤ 64 octets). */
+const encodeWhen = (iso: string) => iso.replace(/\D/g, "").slice(0, 12);
+const decodeWhen = (s = "") =>
+  `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}` + (s.length >= 12 ? ` ${s.slice(8, 10)}:${s.slice(10, 12)}` : "");
+
+/** « 14/12 », « 14/12 20:00 », « 14.12.2026 20h30 » -> '2026-12-14 20:00' (année : la prochaine occurrence). */
+export function parseDate(text: string, today = new Date()): string | null {
+  const m = text.trim().match(/^(\d{1,2})[\/.\-](\d{1,2})(?:[\/.\-](\d{2,4}))?(?:\s+(?:à\s+|at\s+)?(\d{1,2})(?:[:hH.](\d{2}))?h?)?$/);
+  if (!m) return null;
+  const [day, mon] = [Number(m[1]), Number(m[2])];
+  if (mon < 1 || mon > 12 || day < 1 || day > 31) return null;
+  let year = m[3] ? Number(m[3].length === 2 ? "20" + m[3] : m[3]) : today.getUTCFullYear();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  let date = `${year}-${pad(mon)}-${pad(day)}`;
+  if (!m[3] && date < isoDay(today)) date = `${++year}-${pad(mon)}-${pad(day)}`;
+  if (isNaN(new Date(date + "T12:00:00Z").getTime()) || new Date(date + "T12:00:00Z").getUTCDate() !== day) return null;
+  if (m[4] === undefined) return date;
+  const [h, mi] = [Number(m[4]), Number(m[5] ?? 0)];
+  if (h > 23 || mi > 59) return null;
+  return `${date} ${pad(h)}:${pad(mi)}`;
+}
+
+/** Sélecteur : ~6 prochaines dates connues (pièces/films) ; expos : aujourd'hui / demain / ce week-end. */
+function bookPicker(item: Item, r: Reaction | null, lang: Lang): unknown {
+  const T = tr(lang);
+  const rows: { text: string; callback_data: string }[][] = [];
+  const today = isoDay(new Date());
+  if (item.kind === "expo") {
+    const now = new Date();
+    const tomorrow = new Date(now.getTime() + 86400000);
+    const sat = new Date(now.getTime() + ((6 - now.getUTCDay() + 7) % 7) * 86400000);
+    rows.push([
+      { text: T.bookToday, callback_data: `bd:${item.id}:${encodeWhen(isoDay(now))}` },
+      { text: T.bookTomorrow, callback_data: `bd:${item.id}:${encodeWhen(isoDay(tomorrow))}` },
+      { text: T.bookWeekend, callback_data: `bd:${item.id}:${encodeWhen(isoDay(sat))}` },
+    ]);
+  } else {
+    const dates = [...new Set((JSON.parse(item.dates || "[]") as string[])
+      .map((d) => d.replace("T", " ").slice(0, 16)).filter((d) => d.slice(0, 10) >= today))].sort().slice(0, 6);
+    for (let i = 0; i < dates.length; i += 2) {
+      rows.push(dates.slice(i, i + 2).map((d) => ({ text: whenLabel(d, lang), callback_data: `bd:${item.id}:${encodeWhen(d)}` })));
+    }
+  }
+  rows.push([{ text: T.bookOther, callback_data: `bo:${item.id}` }]);
+  if (r?.booked_at) rows.push([{ text: T.bookCancel, callback_data: `bx:${item.id}` }]);
+  return { inline_keyboard: rows };
+}
+
+/** Remet ma fiche (notif d'origine) à jour : statut « 🎟 Réservé · … ». */
+async function refreshMine(env: Env, chat: number, item: Item, r: Reaction, lang: Lang): Promise<void> {
+  const mine = await myDelivery(env, chat, item.id);
+  if (!mine?.message_id) return;
+  const friends = (await friendsByItem(env, [item.id])).get(item.id) ?? [];
+  const v = renderFor(item, chat, r, friends, mine.header, lang);
+  await edit(env, chat, mine.message_id, v.text, v.reply_markup);
+}
+
+/** Réserver = intéressé·e + date ; annonce au groupe avec « 🙋 J'y vais aussi ». */
+async function book(
+  env: Env, chat: number, who: string, item: Item, iso: string, lang: Lang, pickerId: number | null, ctx: ExecutionContext,
+): Promise<void> {
+  const T = tr(lang);
+  const r = await setReaction(env, chat, item.id, {
+    interested: 1, booked_at: iso, booked_on: new Date().toISOString().slice(0, 19).replace("T", " "), followup_sent: 0,
+  });
+  const msg = T.booked(esc(item.title), whenLabel(iso, lang));
+  if (pickerId) await edit(env, chat, pickerId, msg);
+  else await send(env, chat, msg);
+  await refreshMine(env, chat, item, r, lang);
+  ctx.waitUntil((async () => {
+    const group = await groupChat(env);
+    if (group) {
+      const glang = await grpLang(env);
+      const G = tr(glang);
+      const venue = await env.DB.prepare("SELECT name FROM venues WHERE id = ?").bind(item.venue_id).first<{ name: string }>();
+      const head = G.groupBooked(esc(who), esc(item.title), whenLabel(iso, glang), esc(venue?.name ?? ""));
+      const row: any[] = [{ text: G.imIn, callback_data: `j:${item.id}:${encodeWhen(iso)}` }];
+      if (item.url) row.push({ text: G.imInLink, url: item.url });
+      await send(env, group, card(head, item, glang), { inline_keyboard: [row] });
+    }
+    await refreshAll(env, item, chat);
   })());
 }
 

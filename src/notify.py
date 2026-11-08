@@ -276,8 +276,7 @@ def format_show(show: Show, lang: str = "fr") -> str:
         more = len(dates) - 5
         shown = " | ".join(dates[:5]) + ((f" (+{more} more)" if en else f" (+{more} autres)") if more > 0 else "")
         lines.append(("🗓 Seats available: " if en else "🗓 Places libres : ") + _esc(shown))
-    if show.sold_out is None:
-        lines.append("⚪️ Availability unknown" if en else "⚪️ Disponibilité inconnue")
+    # Disponibilité inconnue : on n'écrit rien (docs/ux.md, zéro remplissage).
     if show.production_type:
         lines.append(f"🎬 {_esc(show.production_type)}")
     if show.languages and not is_pure_language_note(show.languages):

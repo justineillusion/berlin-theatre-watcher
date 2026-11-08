@@ -271,7 +271,7 @@ def _buzz(film: Film, lang: str) -> str:
         cinema = film.screenings[0].cinema if film.screenings else ""
         b = press_for("film", cinema, film.original_title or film.title, film.screenings[0].url if film.screenings else "",
                       aliases=[t for t in {film.title} if t != film.original_title])
-        return esc(format_buzz(b, lang)) if b["status"] in ("verdict", "covered") else ""
+        return esc(format_buzz(b, lang)) if b["status"] == "verdict" else ""
     except Exception:  # noqa: BLE001
         return ""
 
@@ -281,7 +281,9 @@ def film_card(film: Film, lang: str = "fr") -> str:
     pitch, puis les séances de la semaine par cinéma."""
     lines = [f"🎬 {_names(film, True, lang)}"]
     lines += [f"📍 {x}" for x in _sessions(film, lang)]
-    lines.append(_short_rating(film, True, lang))
+    rating = _short_rating(film, True, lang)
+    if rating != "★ ?":                    # pas de note connue : pas de ligne
+        lines.append(rating)
     buzz = _buzz(film, lang)
     if buzz:
         lines.append(buzz)

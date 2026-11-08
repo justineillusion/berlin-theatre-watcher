@@ -598,6 +598,65 @@ try {
     assert.ok(!rc || !JSON.parse(JSON.stringify(rc.venue_ids)).includes("cinema-intimes"));
   });
 
+  await step("🎟 réserver : date proposée, autre date, annuler ; groupe « J'y vais aussi » ; « c'était comment ? »", async () => {
+    const d1 = soon(5), d2 = soon(6);
+    const bk = play("book00000001", "Mutter Courage", [`${d1} 19:30`, `${d2} 20:00`]);
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, bk] });
+    // la fiche a le bouton 🎟
+    let c = await click(OWNER, "i:book00000001", 8101);
+    const kb = edits(c, OWNER)[0].reply_markup.inline_keyboard.flat();
+    assert.ok(kb.some((b) => b.callback_data === "b:book00000001" && b.text === "🎟 Réservé !"));
+    // sélecteur : les dates connues + « Autre date »
+    c = await click(OWNER, "b:book00000001", 8101);
+    const picker = sends(c, OWNER)[0];
+    const btns = picker.reply_markup.inline_keyboard.flat();
+    assert.equal(btns[0].callback_data, `bd:book00000001:${d1.replace(/-/g, "")}1930`);
+    assert.ok(btns.some((b) => b.callback_data === "bo:book00000001"));
+    // réserver une date proposée : confirmation, annonce au groupe avec 🙋 + lien
+    c = await click(OWNER, btns[0].callback_data, picker._id);
+    assert.match(edits(c, OWNER)[0].text, /Mutter Courage<\/b> : réservé pour le .* 19:30/);
+    const ann = sends(c, GROUP)[0];
+    assert.match(ann.text, /^🎟 <b>Justine<\/b> a réservé <b>Mutter Courage<\/b> — .* 19:30 · Berliner Ensemble/);
+    const row = ann.reply_markup.inline_keyboard[0];
+    assert.equal(row[0].callback_data, `j:book00000001:${d1.replace(/-/g, "")}1930`);
+    assert.equal(row[1].url, "https://x/book00000001");
+    // /interets : la réservation en tête
+    let t = sends(await say(OWNER, "/interets"), OWNER)[0].text;
+    assert.match(t, /^🎟 <b>Réservations<\/b>\n🎟 <a href="https:\/\/x\/book00000001">Mutter Courage<\/a> — .* 19:30 .*<b>toi<\/b>/);
+    // Max (groupe) : « J'y vais aussi » → intéressé + lien en privé
+    c = await click(MAX, row[0].callback_data, ann._id, GROUP, "group", ann.text);
+    assert.match(sends(c, MAX)[0].text, /Mutter Courage[\s\S]*https:\/\/x\/book00000001/);
+    // autre date : force_reply, date incomprise puis comprise
+    c = await click(OWNER, "bo:book00000001", 8101);
+    const ask = sends(c, OWNER).find((m) => m.reply_markup?.force_reply);
+    assert.ok(ask);
+    c = await say(OWNER, "bientôt", ask._id);
+    assert.match(sends(c, OWNER)[0].text, /pas compris la date/);
+    const [y, m, d] = d2.split("-");
+    c = await say(OWNER, `${d}/${m} 20:00`, ask._id);
+    assert.match(sends(c, OWNER)[0].text, /réservé pour le .* 20:00/);
+    // le picker propose maintenant « Annuler la réservation »
+    c = await click(OWNER, "b:book00000001", 8101);
+    const p2 = sends(c, OWNER)[0];
+    assert.ok(p2.reply_markup.inline_keyboard.flat().some((b) => b.callback_data === "bx:book00000001"));
+    c = await click(OWNER, "bx:book00000001", p2._id);
+    assert.match(edits(c, OWNER)[0].text, /Réservation annulée/);
+    // lendemain : « Alors, c'était comment ? » une seule fois ; la note le marque vu
+    const past = play("book00000002", "Woyzeck", [`${soon(-1)} 19:30`]);
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, bk, past] });
+    c = await click(OWNER, `bd:book00000002:${soon(-1).replace(/-/g, "")}1930`, 8102);
+    let r = await scan([hedda, ente, lear, bk, past]);
+    const fu = r.messages.filter((x) => x.kind === "followup");
+    assert.equal(fu.length, 1);
+    assert.match(fu[0].text, /c'était comment, <b>Woyzeck<\/b>/);
+    assert.equal(fu[0].reply_markup.inline_keyboard[0][4].callback_data, "r:book00000002:5");
+    r = await scan([hedda, ente, lear, bk, past]);
+    assert.equal(r.messages.filter((x) => x.kind === "followup").length, 0);
+    c = await click(OWNER, "r:book00000002:4", 8103);
+    assert.match(sends(c, OWNER).find((x) => x.reply_markup?.force_reply).text, /Woyzeck/);
+    await say(OWNER, "/passer");
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);

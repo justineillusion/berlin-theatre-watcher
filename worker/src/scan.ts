@@ -398,8 +398,22 @@ export async function render(env: Env, body: any): Promise<Response> {
     const h = header(p, item, lang);
     const { text, reply_markup } = renderFor(item, p.chat_id, react.get(`${p.chat_id}|${p.item_id}`) ?? null,
       friends.get(p.item_id) ?? [], h, lang);
-    return { chat_id: p.chat_id, item_id: p.item_id, kind: p.kind, dates: p.dates, header: h, text, reply_markup };
+    return { chat_id: p.chat_id, item_id: p.item_id, kind: p.kind, dates: p.dates, header: h, text, reply_markup } as any;
   });
+  // 🎟 Le lendemain d'une réservation : « Alors, c'était comment ? » (1–5★ puis avis).
+  const { results: due } = await env.DB.prepare(
+    `SELECT r.chat_id, r.item_id, i.title, u.lang FROM reactions r
+     JOIN users u ON u.chat_id = r.chat_id AND u.active = 1 JOIN items i ON i.id = r.item_id
+     WHERE r.booked_at IS NOT NULL AND substr(r.booked_at, 1, 10) < date('now')
+       AND r.status IS NULL AND COALESCE(r.followup_sent, 0) = 0 LIMIT 40`,
+  ).all<{ chat_id: number; item_id: string; title: string; lang: string }>();
+  for (const f of due) {
+    messages.push({
+      chat_id: f.chat_id, item_id: f.item_id, kind: "followup",
+      text: tr(asLang(f.lang)).howWasIt(esc(f.title)),
+      reply_markup: { inline_keyboard: [[1, 2, 3, 4, 5].map((n) => ({ text: `${n}★`, callback_data: `r:${f.item_id}:${n}` }))] },
+    });
+  }
   return Response.json({ messages });
 }
 
@@ -412,6 +426,10 @@ export async function sent(env: Env, body: any): Promise<Response> {
       continue;
     }
     if (!s.item_id || s.kind === "digest") continue;
+    if (s.kind === "followup") {
+      stmts.push(env.DB.prepare("UPDATE reactions SET followup_sent = 1 WHERE chat_id = ? AND item_id = ?").bind(s.chat_id, s.item_id));
+      continue;
+    }
     stmts.push(env.DB.prepare(
       `INSERT INTO deliveries (chat_id, item_id, dates, message_id, header, reminded, sent_at)
        VALUES (?1, ?2, ?3, ?4, ?5, ?6, datetime('now'))

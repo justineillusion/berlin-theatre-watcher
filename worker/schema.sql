@@ -60,6 +60,9 @@ CREATE TABLE IF NOT EXISTS reactions (
   rating     INTEGER,                        -- 1..5 (après « Vu »)
   comment    TEXT,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  booked_at  TEXT,                           -- 🎟 date choisie (migrations/003)
+  booked_on  TEXT,
+  followup_sent INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (chat_id, item_id)
 );
 
@@ -93,6 +96,7 @@ CREATE TABLE IF NOT EXISTS review_prompts (
   item_id    TEXT NOT NULL,
   closed     INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  kind       TEXT NOT NULL DEFAULT 'review',   -- review | date (migrations/003)
   PRIMARY KEY (chat_id, message_id)
 );
 CREATE INDEX IF NOT EXISTS review_prompts_open ON review_prompts (chat_id, closed, created_at);

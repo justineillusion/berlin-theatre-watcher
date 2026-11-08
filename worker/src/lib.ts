@@ -87,6 +87,9 @@ export interface Reaction {
   status: "seen" | "ignored" | null;
   rating: number | null;
   comment: string | null;
+  booked_at?: string | null;
+  booked_on?: string | null;
+  followup_sent?: number;
 }
 
 export interface Friend extends Reaction {
@@ -241,8 +244,19 @@ export function keyboard(item: Item, r: Reaction | null, lang: Lang = "fr"): unk
       { text: r?.interested ? T.btnInterestedOn : T.btnInterested, callback_data: `i:${id}` },
       { text: T.btnSeen(item.kind === "expo"), callback_data: `v:${id}` },
       { text: T.btnIgnore, callback_data: `x:${id}` },
+    ], [
+      { text: r?.booked_at ? T.btnBookChange : T.btnBook, callback_data: `b:${id}` },
     ]],
   };
+}
+
+/** « sam. 9 janv. 19:30 » / « Sat 9 Jan 19:30 » (date seule : sans l'heure). */
+export function whenLabel(iso: string, lang: Lang): string {
+  const T = tr(lang);
+  const d = new Date(iso.slice(0, 10) + "T12:00:00Z");
+  if (isNaN(d.getTime())) return iso;
+  const time = iso.length > 10 && iso.slice(11, 16) !== "00:00" ? ` ${iso.slice(11, 16)}` : "";
+  return `${T.days[d.getUTCDay()]} ${d.getUTCDate()} ${T.months[d.getUTCMonth()]}${time}`;
 }
 
 function statusLine(item: Item, r: Reaction | null, lang: Lang): string {
@@ -252,6 +266,7 @@ function statusLine(item: Item, r: Reaction | null, lang: Lang): string {
   if (r?.status === "seen") {
     return r.rating ? T.stRated(stars(r.rating), r.comment ? esc(r.comment.slice(0, 140)) : "") : T.stSeen(expo);
   }
+  if (r?.booked_at) return T.stBooked(whenLabel(r.booked_at, lang));
   return "";
 }
 
