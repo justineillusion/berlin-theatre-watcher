@@ -20,3 +20,16 @@
 - /interets et « Nos envies » : les réservations d'abord.
 - Le lendemain de la date : « Alors, c'était comment ? » 1–5★ (une seule fois) ; la note marque « vu ».
 - Un item réservé n'est jamais reproposé.
+
+## Trois commandes
+
+Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« Mes sorties » / « My outings »),
+**/reglages** (« Réglages » / « Settings »). Les anciennes (/interets, /vus, /suivre, /ignores, /langue,
+/aide…) restent en alias cachés. Le groupe garde /interets et /programme.
+
+- **/sorties** : une seule liste — 🎟 Réservé (date ↑), ⭐ Intéressé·e, ✅ Vu (10 derniers, ma note) ;
+  les noms de la bande sous chaque item. Boutons : [🎟 titre] [✅] [🙅] pour réservé / ⭐,
+  [★ titre] (noter) ou [✍️ titre] (avis) pour le vu. 🙅 = retirer ⭐ (et la réservation), sans « ignorer ».
+- **/reglages** : un message, 4 boutons — 📍 Lieux, 🌐 Langue, 🙅 Pas pour moi, 👥 Groupe.
+- **🙅 Pas pour moi** remplace 🔕 Ignorer et ✖ partout côté utilisateur (sur une fiche : jamais reproposé ;
+  dans /sorties : retiré de mes sorties).
