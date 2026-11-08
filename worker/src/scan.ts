@@ -3,6 +3,7 @@
 //   POST /api/plan    lieux + pièces (sans texte) -> ids à rédiger
 //   POST /api/render  textes                     -> messages prêts à envoyer
 //   POST /api/sent    accusés d'envoi            -> mémorise dates + message_id
+//   POST /api/cinema-recipients  cinémas        -> qui suit quels cinémas (ciné du lundi)
 import {
   Env, Item, Reaction, esc, frDate, friendsByItem, renderFor, setSetting, setting, socialBlock,
 } from "./lib";
@@ -115,30 +116,22 @@ function header(p: Pending, item: Item): string | null {
 }
 
 // ---------------------------------------------------------------------------
-export async function plan(env: Env, body: any): Promise<Response> {
-  const mode: "scan" | "digest" = body.mode === "digest" ? "digest" : "scan";
-  const venues: { id: string; name: string; kind: string }[] = body.venues ?? [];
-  const items: MetaIn[] = body.items ?? [];
-  const started = new Date().toISOString().replace("T", " ").slice(0, 19);
+// Lieux
+// ---------------------------------------------------------------------------
+interface VenueIn { id: string; name: string; kind: string }
 
+/** Enregistre les lieux d'un job. `scope` (SQL) = les lieux dont CE job est
+ *  responsable : seuls ceux-là sont désactivés s'ils ont disparu de sa config
+ *  (le scan théâtre ne touche pas aux cinémas, et inversement). */
+async function upsertVenues(env: Env, venues: VenueIn[], scope: string): Promise<void> {
   const stmts: D1PreparedStatement[] = [
-    env.DB.prepare("UPDATE venues SET active = 0"),
+    env.DB.prepare(`UPDATE venues SET active = 0 WHERE ${scope}`),
     ...venues.map((v, i) => env.DB.prepare(
       `INSERT INTO venues (id, name, kind, position, active) VALUES (?, ?, ?, ?, 1)
        ON CONFLICT(id) DO UPDATE SET name = excluded.name, kind = excluded.kind,
          position = excluded.position, active = 1`,
     ).bind(v.id, v.name, v.kind, i)),
-    ...items.map((it) => env.DB.prepare(
-      `INSERT INTO items (id, venue_id, kind, title, url, dates, start_date, end_date, starred, last_seen)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-       ON CONFLICT(id) DO UPDATE SET venue_id = excluded.venue_id, kind = excluded.kind,
-         title = excluded.title, url = excluded.url, dates = excluded.dates,
-         start_date = excluded.start_date, end_date = excluded.end_date,
-         starred = excluded.starred, last_seen = excluded.last_seen`,
-    ).bind(it.id, it.venue_id, it.kind, it.title, it.url, JSON.stringify(it.dates ?? []),
-      it.start_date, it.end_date, it.starred ? 1 : 0, started)),
   ];
-  // D1 : pas plus de ~100 requêtes par batch, on découpe.
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
 
   // Les nouveaux lieux sont proposés… mais pas imposés : un ami qui suivait
@@ -151,8 +144,53 @@ export async function plan(env: Env, body: any): Promise<Response> {
        AND (SELECT COUNT(*) FROM subscriptions s WHERE s.chat_id = u.chat_id)
          >= (SELECT COUNT(*) FROM settings WHERE key LIKE 'known_venue:%')`,
   ).run();
-  await env.DB.batch(venues.map((v) => env.DB.prepare(
-    "INSERT OR IGNORE INTO settings (key, value) VALUES ('known_venue:' || ?, '1')").bind(v.id)));
+  if (venues.length) {
+    await env.DB.batch(venues.map((v) => env.DB.prepare(
+      "INSERT OR IGNORE INTO settings (key, value) VALUES ('known_venue:' || ?, '1')").bind(v.id)));
+  }
+}
+
+/** Ciné du lundi : enregistre les cinémas de cinema.yaml, puis dit qui suit
+ *  quels cinémas (amis actifs suivant au moins un cinéma actif). */
+export async function cinemaRecipients(env: Env, body: any): Promise<Response> {
+  const venues: VenueIn[] = (body.venues ?? [])
+    .filter((v: any) => v && typeof v.id === "string" && typeof v.name === "string")
+    .map((v: any) => ({ id: v.id, name: v.name, kind: "cinema" }));
+  // Liste vide = config illisible : on ne désactive rien, on ne vise personne.
+  if (!venues.length) return Response.json({ recipients: [] });
+  await upsertVenues(env, venues, "kind = 'cinema'");
+  const { results } = await env.DB.prepare(
+    `SELECT s.chat_id, json_group_array(s.venue_id) AS venue_ids FROM subscriptions s
+     JOIN users u ON u.chat_id = s.chat_id AND u.active = 1
+     JOIN venues v ON v.id = s.venue_id AND v.active = 1 AND v.kind = 'cinema'
+     GROUP BY s.chat_id ORDER BY s.chat_id`,
+  ).all<{ chat_id: number; venue_ids: string }>();
+  return Response.json({
+    recipients: results.map((r) => ({ chat_id: r.chat_id, venue_ids: JSON.parse(r.venue_ids) })),
+  });
+}
+
+// ---------------------------------------------------------------------------
+export async function plan(env: Env, body: any): Promise<Response> {
+  const mode: "scan" | "digest" = body.mode === "digest" ? "digest" : "scan";
+  const venues: { id: string; name: string; kind: string }[] = body.venues ?? [];
+  const items: MetaIn[] = body.items ?? [];
+  const started = new Date().toISOString().replace("T", " ").slice(0, 19);
+
+  // Les cinémas (kind = 'cinema') sont enregistrés par le job ciné : ce scan-ci
+  // ne désactive que les théâtres / lieux d'expo absents de config.yaml.
+  await upsertVenues(env, venues, "kind != 'cinema'");
+  const stmts: D1PreparedStatement[] = items.map((it) => env.DB.prepare(
+      `INSERT INTO items (id, venue_id, kind, title, url, dates, start_date, end_date, starred, last_seen)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(id) DO UPDATE SET venue_id = excluded.venue_id, kind = excluded.kind,
+         title = excluded.title, url = excluded.url, dates = excluded.dates,
+         start_date = excluded.start_date, end_date = excluded.end_date,
+         starred = excluded.starred, last_seen = excluded.last_seen`,
+    ).bind(it.id, it.venue_id, it.kind, it.title, it.url, JSON.stringify(it.dates ?? []),
+      it.start_date, it.end_date, it.starred ? 1 : 0, started));
+  // D1 : pas plus de ~100 requêtes par batch, on découpe.
+  for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
 
   const ids = items.map((i) => i.id);
   await setSetting(env, "current_since", started);

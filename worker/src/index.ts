@@ -3,18 +3,19 @@
 //   POST /tg            webhook Telegram (vérifié par X-Telegram-Bot-Api-Secret-Token)
 //   POST /api/plan      ┐
 //   POST /api/render    ├ appelés par le scraper (Authorization: Bearer API_TOKEN)
-//   POST /api/sent      ┘
+//   POST /api/sent      │
+//   POST /api/cinema-recipients ┘ ciné du lundi : cinémas -> [{chat_id, venue_ids}]
 //   POST /api/setup     enregistre le webhook + le menu des commandes (Bearer API_TOKEN)
 import { handleUpdate } from "./bot";
 import { Env, tg } from "./lib";
-import { plan, render, sent } from "./scan";
+import { cinemaRecipients, plan, render, sent } from "./scan";
 
 function authorized(req: Request, env: Env): boolean {
   return !!env.API_TOKEN && req.headers.get("authorization") === `Bearer ${env.API_TOKEN}`;
 }
 
 const COMMANDS = [
-  { command: "suivre", description: "Choisir ses théâtres et lieux d'expo" },
+  { command: "suivre", description: "Choisir ses théâtres, lieux d'expo et cinémas" },
   { command: "programme", description: "Tout ce qui est à l'affiche dans mes lieux" },
   { command: "interets", description: "Ce qui tente la bande ⭐" },
   { command: "vus", description: "Mes sorties et mes notes" },
@@ -49,6 +50,7 @@ export default {
       case "/api/plan": return plan(env, body);
       case "/api/render": return render(env, body);
       case "/api/sent": return sent(env, body);
+      case "/api/cinema-recipients": return cinemaRecipients(env, body);
       case "/api/setup": {
         const hook = await tg(env, "setWebhook", {
           url: `${url.origin}/tg`,

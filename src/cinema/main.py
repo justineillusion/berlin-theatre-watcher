@@ -2,6 +2,11 @@
 
     python -m src.cinema --dry-run             # affiche le message + le rapport de filtrage
     python -m src.cinema                       # envoie sur Telegram
+    python -m src.cinema --dry-run --only Intimes,Babylon   # le récap d'un ami qui ne suit que ces cinémas
+
+Envoi : avec BOT_API_URL / BOT_API_TOKEN (bot multi-utilisateurs), chaque ami
+reçoit le récap des cinémas qu'il suit via /suivre ; sinon tout part sur
+TELEGRAM_CHAT_ID.
     python -m src.cinema --dry-run --start 2026-11-09
 """
 from __future__ import annotations
@@ -10,9 +15,10 @@ import argparse
 import os
 import sys
 import traceback
+from dataclasses import replace
 from datetime import date, datetime
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 from zoneinfo import ZoneInfo
 
 import yaml
@@ -119,14 +125,18 @@ def select(passed: List[Film], cfg: dict, this_year: int) -> tuple[List[Film], L
     return chosen, [f for f in ranked if f not in chosen]
 
 
-def run(cfg: dict, start: date) -> dict:
+def analyse(cfg: dict, start: date) -> dict:
+    """Lecture des programmes + notes + filtres de goût, tous cinémas confondus
+    (la partie lente, faite une seule fois). La sélection finale (plafond
+    max_films, places « récents ») se fait ensuite par `compose`, pour un
+    sous-ensemble de cinémas — chaque ami reçoit le top de SES cinémas."""
     today = datetime.now(_TZ).date()
     max_age = int(cfg.get("recent_max_age", 3))
     screenings, errors, dubbed = collect(cfg, start)
     films = group(screenings)
     for f in films:
         f.dubbed_release = f.key in dubbed
-    kept: List[Film] = []
+    passed: List[Film] = []
     rejected: List[Film] = []
     unrated: List[Film] = []
 
@@ -153,19 +163,113 @@ def run(cfg: dict, start: date) -> dict:
                     and (f.is_recent(today.year, max_age) or not f.year):
                 unrated.append(f)
         else:
-            kept.append(f)
+            passed.append(f)
+    return {"passed": passed, "rejected": rejected, "unrated": unrated, "errors": errors,
+            "n_screenings": len(screenings), "pitched": set()}
 
-    kept, overflow = select(kept, cfg, today.year)
+
+def _restrict(films: List[Film], names: Optional[set]) -> List[Film]:
+    """Copies des films réduites aux séances des cinémas `names` (None = tous)."""
+    if names is None:
+        return list(films)
+    out = []
+    for f in films:
+        keep = [s for s in f.screenings if s.cinema in names]
+        if keep:
+            out.append(replace(f, screenings=keep, dropped_screenings=list(f.dropped_screenings)))
+    return out
+
+
+def _touches(f: Film, names: Optional[set]) -> bool:
+    if names is None:
+        return True
+    return (any(s.cinema in names for s in f.screenings)
+            or any(d.split(" ")[0] in names for d in f.dropped_screenings))
+
+
+def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]] = None) -> dict:
+    """Messages du récap pour les cinémas `cinemas` (None = tous ceux de cinema.yaml)."""
+    today = datetime.now(_TZ).date()
+    all_names = [c["name"] for c in cfg.get("cinemas", [])]
+    names = None if cinemas is None else set(cinemas)
+    shown = all_names if names is None else [n for n in all_names if n in names]
+
+    kept, overflow = select(_restrict(analysis["passed"], names), cfg, today.year)
+    unrated = _restrict(analysis["unrated"], names)
+    rejected = [f for f in analysis["rejected"] if _touches(f, names)]
+    by_key = {f.key: f for f in analysis["passed"]}
+    for f in kept:
+        # Le pitch (traduction éventuelle) est calculé une fois par film, pas par ami.
+        orig = by_key.get(f.key, f)
+        if orig.key not in analysis["pitched"]:
+            make_pitch(orig)
+            analysis["pitched"].add(orig.key)
+        f.pitch = orig.pitch
     for f in overflow:
         f.rejected = "hors top (plafond max_films)"
-        rejected.append(f)
-    for f in kept:
-        make_pitch(f)
 
-    messages = format_week(kept, unrated, len(rejected), start, int(cfg.get("days", 7)),
-                           [c["name"] for c in cfg.get("cinemas", [])], cfg)
-    return {"messages": messages, "kept": kept, "rejected": rejected, "errors": errors,
-            "n_screenings": len(screenings)}
+    messages = format_week(kept, unrated, len(rejected) + len(overflow), start,
+                           int(cfg.get("days", 7)), shown, cfg)
+    return {"messages": messages, "kept": kept, "rejected": rejected + overflow,
+            "errors": analysis["errors"], "n_screenings": analysis["n_screenings"]}
+
+
+def run(cfg: dict, start: date, cinemas: Optional[List[str]] = None) -> dict:
+    return compose(analyse(cfg, start), cfg, start, cinemas)
+
+
+def cinema_venue_id(name: str) -> str:
+    """Id du cinéma côté bot (table venues) : « cinema-intimes »."""
+    from ..main import venue_slug
+    return "cinema-" + venue_slug(name)
+
+
+def send_multi(analysis: dict, cfg: dict, start: date, token: str) -> None:
+    """Bot multi-utilisateurs : un récap par ami, limité aux cinémas qu'il suit
+    (/suivre). Personne ne suit de cinéma = aucun envoi."""
+    import time
+
+    import httpx
+
+    from ..botapi import _client
+    from ..notify import send_telegram
+
+    names = [c["name"] for c in cfg.get("cinemas", [])]
+    by_id = {cinema_venue_id(n): n for n in names}
+    with _client() as api:
+        resp = api.post("/api/cinema-recipients",
+                        json={"venues": [{"id": i, "name": n} for i, n in by_id.items()]})
+        resp.raise_for_status()
+        recipients = resp.json()["recipients"]
+        print(f"👥 {len(recipients)} ami·e(s) suivent au moins un cinéma.")
+
+        cache: Dict[tuple, List[str]] = {}
+        failed: List[dict] = []
+        ok = total = 0
+        for rcp in recipients:
+            subset = tuple(n for n in names if n in {by_id.get(v) for v in rcp["venue_ids"]})
+            if not subset:
+                continue
+            if subset not in cache:
+                cache[subset] = compose(analysis, cfg, start, list(subset))["messages"]
+            for msg in cache[subset]:
+                total += 1
+                try:
+                    send_telegram(token, str(rcp["chat_id"]), msg)
+                    ok += 1
+                except httpx.HTTPStatusError as exc:
+                    code = exc.response.status_code
+                    print(f"   ⚠️  envoi refusé ({code}) pour {rcp['chat_id']}")
+                    if code == 403:            # l'ami a bloqué le bot : le Worker le désactive
+                        failed.append({"chat_id": rcp["chat_id"], "kind": "cinema", "error": 403})
+                        break
+                except Exception as exc:  # noqa: BLE001 — un ami en échec ne bloque pas les autres
+                    print(f"   ⚠️  échec de l'envoi pour {rcp['chat_id']} : {exc}")
+                time.sleep(0.1)                # douceur vis-à-vis des limites Telegram
+        if failed:
+            api.post("/api/sent", json={"sent": failed}).raise_for_status()
+    print(f"✅ {ok}/{total} message(s) envoyé(s) à {len(recipients)} ami·e(s) "
+          f"({len(cache)} combinaison(s) de cinémas).")
 
 
 def report(result: dict) -> str:
@@ -199,13 +303,16 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("--dry-run", action="store_true", help="affiche sans envoyer (aucun token requis)")
     ap.add_argument("--start", help="premier jour (YYYY-MM-DD), défaut : aujourd'hui à Berlin")
     ap.add_argument("--config", default=str(CONFIG_PATH))
+    ap.add_argument("--only", help="cinémas (noms de cinema.yaml, séparés par des virgules) : "
+                                   "le récap tel que le reçoit un ami qui ne suit qu'eux")
     args = ap.parse_args(argv)
 
     cfg = load_config(Path(args.config))
     start = date.fromisoformat(args.start) if args.start else datetime.now(_TZ).date()
-    result = run(cfg, start)
+    only = [x.strip() for x in args.only.split(",") if x.strip()] if args.only else None
 
     if args.dry_run:
+        result = run(cfg, start, only)
         for i, msg in enumerate(result["messages"], 1):
             print(f"----- message {i}/{len(result['messages'])} ({len(msg)} car.) -----")
             print(msg)
@@ -213,10 +320,19 @@ def main(argv: List[str] | None = None) -> int:
         return 0
 
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    if not token:
+        sys.exit("❌ TELEGRAM_BOT_TOKEN manquant (ou utilise --dry-run)")
+    analysis = analyse(cfg, start)
+    if os.environ.get("BOT_API_URL"):
+        send_multi(analysis, cfg, start, token)
+        print(report(compose(analysis, cfg, start)))
+        return 0
+
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
-    if not token or not chat_id:
-        sys.exit("❌ TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID manquants (ou utilise --dry-run)")
+    if not chat_id:
+        sys.exit("❌ TELEGRAM_CHAT_ID manquant (ou BOT_API_URL pour le bot multi-utilisateurs)")
     from ..notify import send_telegram
+    result = compose(analysis, cfg, start, only)
     for msg in result["messages"]:
         send_telegram(token, chat_id, msg)
     print(f"✅ {len(result['messages'])} message(s) envoyé(s), {len(result['kept'])} film(s).")

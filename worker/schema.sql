@@ -12,11 +12,11 @@ CREATE TABLE IF NOT EXISTS users (
   joined_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Lieux (théâtres + expos), poussés par le scraper depuis config.yaml.
+-- Lieux : théâtres + expos (config.yaml, scan) et cinémas (cinema.yaml, job ciné).
 CREATE TABLE IF NOT EXISTS venues (
   id       TEXT PRIMARY KEY,
   name     TEXT NOT NULL,
-  kind     TEXT NOT NULL DEFAULT 'theatre',  -- theatre | expo
+  kind     TEXT NOT NULL DEFAULT 'theatre',  -- theatre | expo | cinema
   position INTEGER NOT NULL DEFAULT 0,
   active   INTEGER NOT NULL DEFAULT 1        -- 0 = retiré de config.yaml
 );

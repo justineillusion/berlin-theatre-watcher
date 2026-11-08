@@ -1,7 +1,7 @@
 // Test de bout en bout, 100 % local : wrangler dev (D1 local) + faux Telegram.
 //   npm test
 // Rejoue un scénario complet : inscription, invitation, scan, ⭐, ✅ + note +
-// petit mot, 🔕, nouvelles dates, récap, /suivre, rappel expo.
+// petit mot, 🔕, nouvelles dates, récap, /suivre, rappel expo, cinémas.
 import { spawn, execSync } from "node:child_process";
 import http from "node:http";
 import { rmSync, writeFileSync } from "node:fs";
@@ -257,9 +257,59 @@ try {
     assert.match(sends(await say(MAX, `/start ${code}`), MAX)[0].text, /pas \(ou plus\) valable/);
   });
 
+  // ------------------------------------------------------------ ciné du lundi
+  const CINEMAS = [
+    { id: "cinema-intimes", name: "Intimes" },
+    { id: "cinema-lichtblick", name: "Lichtblick" },
+    { id: "cinema-babylon", name: "Babylon" },
+  ];
+  const cine = async (venues = CINEMAS) => (await api("/api/cinema-recipients", { venues })).recipients;
+  const byChat = (rs) => Object.fromEntries(rs.map((r) => [r.chat_id, [...r.venue_ids].sort()]));
+  const ALL_CINE = CINEMAS.map((c) => c.id).sort();
+  const suivre = async (id) => sends(await say(id, "/suivre"), id)[0].reply_markup.inline_keyboard.flat().map((b) => b.text);
+
+  await step("ciné : cinémas enregistrés ; qui suivait tout y est abonné d'office, pas Léa", async () => {
+    const r = byChat(await cine());
+    assert.deepEqual(r, { [OWNER]: ALL_CINE });       // Léa a décoché la Schaubühne : pas « tout »
+  });
+
+  await step("ciné : le scan théâtre ne désactive pas les cinémas (ni l'inverse)", async () => {
+    await scan([hedda, ente, lear]);
+    let kb = await suivre(LEA);
+    const order = kb.filter((t) => /[🎭🖼🎬]/u.test(t)).map((t) => t.split(" ")[1]);
+    assert.deepEqual(order, ["🎭", "🎭", "🖼", "🎬", "🎬", "🎬"]);   // théâtres, expos, cinémas
+    assert.ok(kb.includes("⬜️ 🎬 Intimes"));
+    await cine(CINEMAS.slice(0, 2));                   // Babylon retiré de cinema.yaml
+    kb = await suivre(LEA);
+    assert.ok(kb.some((t) => t.includes("Berliner Ensemble")) && kb.some((t) => t.includes("KW")));
+    assert.ok(!kb.some((t) => t.includes("Babylon")));
+    assert.deepEqual(byChat(await cine(CINEMAS.slice(0, 2))), { [OWNER]: ALL_CINE.filter((x) => x !== "cinema-babylon") });
+    assert.deepEqual(await cine([]), []);              // config vide : ne touche à rien
+    assert.deepEqual(byChat(await cine()), { [OWNER]: ALL_CINE });   // Babylon revient, abonnement intact
+  });
+
+  await step("ciné : Léa coche l'Intimes dans /suivre → digest pour ce cinéma seulement", async () => {
+    const c = await click(LEA, "s:cinema-intimes", 7778);
+    const kb = c.find((x) => x.method === "editMessageReplyMarkup").reply_markup.inline_keyboard.flat().map((b) => b.text);
+    assert.ok(kb.includes("✅ 🎬 Intimes"));
+    assert.deepEqual(byChat(await cine()), { [OWNER]: ALL_CINE, [LEA]: ["cinema-intimes"] });
+    await click(OWNER, "s:cinema-babylon", 7779);      // la propriétaire décoche le Babylon
+    assert.deepEqual(byChat(await cine())[OWNER], ["cinema-intimes", "cinema-lichtblick"]);
+  });
+
+  await step("ciné : un nouvel ami suit tous les cinémas par défaut ; /aide en parle", async () => {
+    const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/start=(\w+)/)[1];
+    await say(MAX, `/start ${link}`);
+    assert.deepEqual(byChat(await cine())[MAX], ALL_CINE);
+    assert.match(sends(await say(MAX, "/aide"), MAX)[0].text, /ciné de la semaine/);
+    await click(MAX, "sn", 7780);                      // « Rien » : plus de digest ciné
+    assert.equal(byChat(await cine())[MAX], undefined);
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);
+    assert.equal((await fetch(`${W}/api/cinema-recipients`, { method: "POST", body: "{}" })).status, 401);
   });
 
   console.log(`\n✅ ${ok} étapes OK`);

@@ -27,12 +27,12 @@ export async function inviteCode(env: Env): Promise<string> {
 
 const HELP = `🎭 <b>Comment ça marche</b>
 
-Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis. Sous chaque notif :
+Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis, et chaque lundi 🎬 le <b>ciné de la semaine</b> (films du soir en VO, bien notés) dans les cinémas que tu suis. Sous chaque notif :
 ⭐ <b>Intéressé·e</b> : la bande voit que ça te tente (et toi, qui d'autre est partant)
 ✅ <b>Vu</b> : plus de notif, et tu peux noter ★ + laisser un petit mot
 🔕 <b>Ignorer</b> : plus jamais de notif sur cette pièce/expo, même quand elle revient
 
-/suivre — choisir ses théâtres et lieux d'expo
+/suivre — choisir ses théâtres, lieux d'expo et cinémas 🎬
 /programme — tout ce qui est à l'affiche dans tes lieux
 /interets — ce qui tente la bande
 /vus — ce que tu as vu et tes notes
@@ -163,17 +163,20 @@ async function membersText(env: Env): Promise<string> {
 // ---------------------------------------------------------------------------
 // /suivre
 // ---------------------------------------------------------------------------
+const KIND_ICON: Record<string, string> = { theatre: "🎭", expo: "🖼", cinema: "🎬" };
+
 async function followKeyboard(env: Env, chat: number): Promise<unknown> {
   const { results } = await env.DB.prepare(
     `SELECT v.id, v.name, v.kind, (s.chat_id IS NOT NULL) AS on_ FROM venues v
      LEFT JOIN subscriptions s ON s.venue_id = v.id AND s.chat_id = ?
-     WHERE v.active = 1 ORDER BY v.kind DESC, v.position`,
+     WHERE v.active = 1
+     ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
   ).bind(chat).all<{ id: string; name: string; kind: string; on_: number }>();
   if (!results.length) {
     return { inline_keyboard: [[{ text: "Aucun lieu encore — réessaie après le prochain scan", callback_data: "sd" }]] };
   }
   const rows = results.map((v) => [{
-    text: `${v.on_ ? "✅" : "⬜️"} ${v.kind === "expo" ? "🖼" : "🎭"} ${v.name}`,
+    text: `${v.on_ ? "✅" : "⬜️"} ${KIND_ICON[v.kind] ?? "🎭"} ${v.name}`,
     callback_data: `s:${v.id}`,
   }]);
   rows.push([

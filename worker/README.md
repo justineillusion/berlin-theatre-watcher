@@ -3,7 +3,8 @@
 Transforme le watcher en bot pour une bande d'amis :
 
 - **Invitation** par lien secret (`/invite`), régénérable (`/nouveaulien`).
-- **Chacun choisit ce qu'il suit** (`/suivre`) : théâtre par théâtre, lieu d'expo par lieu d'expo.
+- **Chacun choisit ce qu'il suit** (`/suivre`) : théâtre par théâtre, lieu d'expo par lieu d'expo,
+  cinéma par cinéma (🎬 : le ciné de la semaine ne contient que les cinémas suivis, voir `docs/cinema.md`).
 - **Sous chaque notif** : ⭐ Intéressé·e · ✅ Vu · 🔕 Ignorer
   - ⭐ : la notif de chacun affiche « 👥 Intéressé·es : Léa, Max, toi » (mise à jour en direct) ;
     `/interets` liste ce qui tente la bande.
@@ -27,6 +28,7 @@ GitHub Actions (Python, inchangé : scraping, résumés, Nachtkritik)
    │  2. enrichit ces pièces (pages détail, critiques)
    │  3. POST /api/render  textes                    → messages par ami (+ boutons, ligne 👥)
    │  4. envoie sur Telegram, puis POST /api/sent    → mémorise dates + message_id
+   │  (ciné) POST /api/cinema-recipients cinémas     → [{chat_id, venue_ids}], récap par ami
    ▼
 Cloudflare Worker + D1  ◀── webhook Telegram (clics ⭐ ✅ 🔕, commandes)
    amis · abonnements · réactions · notes · ce qui a été envoyé à qui
@@ -94,7 +96,7 @@ Admin : `/invite` `/nouveaulien` `/membres` `/groupe` (dans un groupe) `/plusdeg
 
 ```bash
 npm run typecheck
-npm test        # wrangler dev + D1 local + faux Telegram : scénario complet en 20 étapes
+npm test        # wrangler dev + D1 local + faux Telegram : scénario complet en 24 étapes
 ```
 
 ## Ajouter un lieu

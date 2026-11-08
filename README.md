@@ -11,7 +11,9 @@ réservation**.
 
 > 👥 **Nouveau : mode bande d'amis.** Invitations, choix des lieux par personne,
 > boutons ⭐ Intéressé·e / ✅ Vu / 🔕 Ignorer, notes des amis, lieux d'expo
-> (Hamburger Bahnhof, Neue Nationalgalerie, KW, C/O Berlin, Berlinische Galerie).
+> (Hamburger Bahnhof, Neue Nationalgalerie, KW, C/O Berlin, Berlinische Galerie),
+> et 🎬 cinémas (Intimes, Lichtblick, Babylon : chacun reçoit le ciné de la semaine
+> de ses cinémas, voir [`docs/cinema.md`](docs/cinema.md)).
 > Mise en service : [`worker/README.md`](worker/README.md).
 
 ## Comment ça marche

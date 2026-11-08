@@ -78,6 +78,31 @@ une ligne compacte « (↑ lun. 9) ».
 + bouton *Run workflow*. Utilise les mêmes secrets `TELEGRAM_BOT_TOKEN` /
 `TELEGRAM_CHAT_ID` que le reste du bot. Aucun état n'est stocké.
 
+## Bot multi-utilisateurs : chacun ses cinémas
+
+Avec les secrets `BOT_API_URL` / `BOT_API_TOKEN` (voir `worker/README.md`),
+les cinémas de `cinema.yaml` apparaissent dans `/suivre` (groupe 🎬, après les
+théâtres et les expos) et le récap part **à chaque ami, limité aux cinémas
+qu'il suit** — rien s'il n'en suit aucun :
+
+1. `POST /api/cinema-recipients` enregistre les cinémas (`venues.kind =
+   'cinema'`, id `cinema-<slug>`) et renvoie `[{chat_id, venue_ids}]`. Les amis
+   qui suivaient tout y sont abonnés d'office, comme pour un nouveau théâtre.
+   Le scan théâtre ne désactive jamais un cinéma, et inversement.
+2. Lecture des programmes, notes et filtres : **une seule fois**.
+3. La sélection (plafond `max_films`, places « récents ») est **refaite par
+   combinaison de cinémas** : qui ne suit que le Lichtblick reçoit le top 10
+   du Lichtblick, pas les 2 films du Lichtblick qui ont survécu au top 10
+   global. Les pitchs (traductions) sont calculés une fois par film.
+4. Envoi depuis GitHub Actions (429 respectés, petite pause entre messages) ;
+   un ami qui a bloqué le bot (403) est désactivé via `POST /api/sent`.
+
+Sans ces secrets : un seul récap, tous cinémas, sur `TELEGRAM_CHAT_ID`.
+
+```bash
+./.venv/bin/python -m src.cinema --dry-run --only Lichtblick,Babylon   # le récap d'un ami qui ne suit que ces deux-là
+```
+
 ⚠️ L'Intimes publie sa semaine de programme le mercredi/jeudi (semaine
 cinéma = jeudi→mercredi). Le script demande déjà à kinoheld les 7 jours de la
 fenêtre : dès que la semaine suivante est en ligne, elle est prise. Un lundi,
