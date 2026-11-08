@@ -12,8 +12,16 @@
 
 ## 🎟 Réservé !
 
-- Sur chaque fiche privée (pièce, expo, film) : **🎟 Réservé !** → les ~6 prochaines dates connues
-  (expos : Aujourd'hui / Demain / Ce week-end) + **📅 Autre date** (réponse « 14/12 20:00 »).
+- **Une fiche = un message qui évolue** (édition sur place, pas de nouveau message) :
+  🎟 transforme LA fiche en sélecteur (en-tête « 🎭 Titre (Lieu) » + « 🎟 Pour quelle date ? ») : les ~6
+  prochaines dates connues (expos : Aujourd'hui / Demain / Ce week-end), **📅 Autre date**, **↩︎ Retour**.
+  Choisir une date remet la fiche complète, avec « 🎟 Réservé · sam. 9 janv. 20:00 ».
+- 📅 Autre date : force_reply (inévitable) ; à la réponse, la fiche d'origine est mise à jour, puis
+  l'invitation et la réponse sont supprimées (si Telegram le permet ; erreurs ignorées).
+- ✅ Vu : les 1–5★ apparaissent sur la fiche. ✍️ avis : force_reply ; ensuite la fiche affiche
+  « ✅ Vu · 4★ · « … » » et l'invitation + la réponse sont supprimées.
+- Depuis /sorties : le sélecteur remplace la liste (même message) ; ↩︎ revient à la liste ; une date,
+  ✖ Retirer ou ❌ Annuler la réservation la remettent à jour.
 - Réserver = ⭐ intéressé·e. La fiche affiche « 🎟 Réservé · sam. 9 janv. 19:30 » et le bouton
   « Annuler / changer la date ».
 - Groupe : « 🎟 X a réservé Y — quand · lieu » + **🙋 J'y vais aussi** (⭐ + lien de réservation en privé).

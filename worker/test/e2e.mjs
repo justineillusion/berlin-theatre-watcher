@@ -222,11 +222,15 @@ try {
     const p2 = sends(c, LEA).find((m) => m.reply_markup?.force_reply);
     assert.match(p2.text, /Die Möwe/);
     // réponse à la 1re invitation d'abord (ordre inverse) → Hedda
+    // l'avis met à jour LA fiche (« ✅ Vu · ★★★★★ · « … » ») ; invitation et réponse supprimées
     c = await say(LEA, "Gabler : magistral", p1._id);
-    assert.match(sends(c, LEA)[0].text, /Avis enregistré pour <b>Hedda Gabler<\/b>/);
-    // puis texte libre sans « répondre » → l'invitation ouverte restante (Wildente)
+    assert.match(edits(c, LEA).find((x) => x.message_id === 7001).text, /Vu · ★★★★★ · « Gabler : magistral »/);
+    assert.ok(c.some((x) => x.method === "deleteMessage" && x.message_id === p1._id));
+    assert.ok(c.some((x) => x.method === "deleteMessage" && x.chat_id === LEA && x.message_id !== p1._id));
+    assert.equal(sends(c, LEA).length, 0);                          // pas de nouveau message
+    // puis texte libre sans « répondre » → l'invitation ouverte restante (Möwe)
     c = await say(LEA, "Möwe : un peu long");
-    assert.match(sends(c, LEA)[0].text, /Avis enregistré pour <b>Die Möwe<\/b>/);
+    assert.match(edits(c, LEA).find((x) => x.message_id === 7002).text, /Vu · ★★★☆☆ · « Möwe : un peu long »/);
     const vus = sends(await say(LEA, "/vus"), LEA)[0].text;
     assert.match(vus, /Hedda Gabler[\s\S]*magistral/);
     assert.match(vus, /Möwe[\s\S]*un peu long/);
@@ -613,15 +617,22 @@ try {
     let c = await click(OWNER, "i:book00000001", 8101);
     const kb = edits(c, OWNER)[0].reply_markup.inline_keyboard.flat();
     assert.ok(kb.some((b) => b.callback_data === "b:book00000001" && b.text === "🎟 Réservé !"));
-    // sélecteur : les dates connues + « Autre date »
+    // 🎟 : LA fiche devient le sélecteur (même message) — en-tête gardé, dates, Autre date, ↩︎
     c = await click(OWNER, "b:book00000001", 8101);
-    const picker = sends(c, OWNER)[0];
+    assert.equal(sends(c, OWNER).length, 0);
+    const picker = edits(c, OWNER).find((x) => x.message_id === 8101);
+    assert.match(picker.text, /^🎭 <a href="https:\/\/x\/book00000001">Mutter Courage<\/a> \(Berliner Ensemble\)\n\n🎟 Pour quelle date \?$/);
     const btns = picker.reply_markup.inline_keyboard.flat();
     assert.equal(btns[0].callback_data, `bd:book00000001:${d1.replace(/-/g, "")}1930`);
     assert.ok(btns.some((b) => b.callback_data === "bo:book00000001"));
-    // réserver une date proposée : confirmation, annonce au groupe avec 🙋 + lien
-    c = await click(OWNER, btns[0].callback_data, picker._id);
-    assert.match(edits(c, OWNER)[0].text, /Mutter Courage<\/b> : réservé pour le .* 19:30/);
+    assert.deepEqual(picker.reply_markup.inline_keyboard.at(-1), [{ text: "↩︎ Retour", callback_data: "bb:book00000001" }]);
+    // ↩︎ : la fiche revient telle quelle
+    c = await click(OWNER, "bb:book00000001", 8101);
+    assert.match(edits(c, OWNER).find((x) => x.message_id === 8101).text, /^🎭 <b>Mutter Courage<\/b>/);
+    // réserver une date proposée : la fiche revient, avec « 🎟 Réservé · … 19:30 » ; annonce au groupe avec 🙋 + lien
+    c = await click(OWNER, btns[0].callback_data, 8101);
+    assert.equal(sends(c, OWNER).length, 0);
+    assert.match(edits(c, OWNER).find((x) => x.message_id === 8101).text, /^🎭 <b>Mutter Courage<\/b>[\s\S]*🎟 <i>Réservé · .* 19:30<\/i>$/);
     const ann = sends(c, GROUP)[0];
     assert.match(ann.text, /^🎟 <b>Justine<\/b> a réservé <b>Mutter Courage<\/b> — .* 19:30 · Berliner Ensemble/);
     const row = ann.reply_markup.inline_keyboard[0];
@@ -636,14 +647,19 @@ try {
     const mc = lrows.find((r) => r[0].callback_data === "b:book00000001");
     assert.match(mc[0].text, /^🎭 Mutter Courage · 🎟 \S+ \d+ \S+$/);           // date courte, sans l'heure
     assert.ok(lrows.every((r) => r.length === 1));                                  // un bouton pleine largeur par ligne
+    // depuis /sorties : le sélecteur REMPLACE la liste ; ↩︎ y revient
     c = await click(OWNER, "b:book00000001", li._id, OWNER, "private", "🗂 Mes sorties");
-    assert.match(sends(c, OWNER)[0].text, /Mutter Courage<\/b> : pour quelle date/);
-    assert.deepEqual(sends(c, OWNER)[0].reply_markup.inline_keyboard.at(-1).map((b) => b.callback_data),
-      ["v:book00000001", `ui:book00000001:${li._id}`]);
+    const lp = edits(c, OWNER).find((x) => x.message_id === li._id);
+    assert.match(lp.text, /Mutter Courage<\/a> \(Berliner Ensemble\)\n\n🎟 Pour quelle date/);
+    assert.deepEqual(lp.reply_markup.inline_keyboard.slice(-2).map((r) => r.map((b) => b.callback_data)),
+      [["v:book00000001:o", "ui:book00000001:o"], ["bb:book00000001:o"]]);
+    assert.ok(lp.reply_markup.inline_keyboard.flat().some((b) => b.callback_data === "bx:book00000001:o"));
+    c = await click(OWNER, "bb:book00000001:o", li._id, OWNER, "private", "🎭 Mutter Courage");
+    assert.match(edits(c, OWNER).find((x) => x.message_id === li._id).text, /^🗂 <b>Mes sorties<\/b>/);
     // Max (groupe) : « J'y vais aussi » → intéressé + lien en privé
     c = await click(MAX, row[0].callback_data, ann._id, GROUP, "group", ann.text);
     assert.match(sends(c, MAX)[0].text, /Mutter Courage[\s\S]*https:\/\/x\/book00000001/);
-    // autre date : force_reply, date incomprise puis comprise
+    // autre date : force_reply, date incomprise puis comprise → LA fiche est mise à jour, invitation + réponse supprimées
     c = await click(OWNER, "bo:book00000001", 8101);
     const ask = sends(c, OWNER).find((m) => m.reply_markup?.force_reply);
     assert.ok(ask);
@@ -651,13 +667,17 @@ try {
     assert.match(sends(c, OWNER)[0].text, /pas compris la date/);
     const [y, m, d] = d2.split("-");
     c = await say(OWNER, `${d}/${m} 20:00`, ask._id);
-    assert.match(sends(c, OWNER)[0].text, /réservé pour le .* 20:00/);
-    // le picker propose maintenant « Annuler la réservation »
+    assert.equal(sends(c, OWNER).length, 0);
+    assert.match(edits(c, OWNER).find((x) => x.message_id === 8101).text, /🎟 <i>Réservé · .* 20:00<\/i>$/);
+    assert.ok(c.some((x) => x.method === "deleteMessage" && x.message_id === ask._id));
+    // le sélecteur propose maintenant « Annuler la réservation » ; annuler remet la fiche sans 🎟
     c = await click(OWNER, "b:book00000001", 8101);
-    const p2 = sends(c, OWNER)[0];
+    const p2 = edits(c, OWNER).find((x) => x.message_id === 8101);
     assert.ok(p2.reply_markup.inline_keyboard.flat().some((b) => b.callback_data === "bx:book00000001"));
-    c = await click(OWNER, "bx:book00000001", p2._id);
-    assert.match(edits(c, OWNER)[0].text, /Réservation annulée/);
+    c = await click(OWNER, "bx:book00000001", 8101);
+    const cancelled = edits(c, OWNER).find((x) => x.message_id === 8101);
+    assert.match(cancelled.text, /^🎭 <b>Mutter Courage<\/b>/);
+    assert.doesNotMatch(cancelled.text, /Réservé ·/);
     // lendemain : « Alors, c'était comment ? » une seule fois ; la note le marque vu
     const past = play("book00000002", "Woyzeck", [`${soon(-1)} 19:30`]);
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, bk, past] });
@@ -672,15 +692,13 @@ try {
     // ✅ Déjà vu depuis le sélecteur ouvert par /sorties : la fiche passe en « vu » avec 1–5★
     const li2 = sends(await say(OWNER, "/sorties"), OWNER)[0];
     c = await click(OWNER, "b:book00000002", li2._id, OWNER, "private", "🗂 Mes sorties");
-    const pk = sends(c, OWNER)[0];
-    c = await click(OWNER, "v:book00000002", pk._id, OWNER, "private", "🎟 Woyzeck : pour quelle date ?");
-    assert.equal(edits(c, OWNER).find((x) => x.message_id === pk._id).reply_markup.inline_keyboard[0].length, 5);
+    c = await click(OWNER, "v:book00000002:o", li2._id, OWNER, "private", "🎭 Woyzeck (Berliner Ensemble)");
+    assert.equal(edits(c, OWNER).find((x) => x.message_id === li2._id).reply_markup.inline_keyboard[0].length, 5);
     // ✖ depuis /interets : plus ⭐, pas ignoré, liste rafraîchie sur place, revient dans /programme
     const li3 = sends(await say(OWNER, "/interets"), OWNER)[0];
     c = await click(OWNER, "b:book00000001", li3._id, OWNER, "private", "🗂 Mes sorties");
-    const pk3 = sends(c, OWNER)[0];
-    c = await click(OWNER, `ui:book00000001:${li3._id}`, pk3._id, OWNER, "private", "🎟 Mutter Courage : pour quelle date ?");
-    assert.ok(c.some((x) => x.method === "deleteMessage" && x.message_id === pk3._id));   // le sélecteur disparaît
+    c = await click(OWNER, "ui:book00000001:o", li3._id, OWNER, "private", "🎭 Mutter Courage (Berliner Ensemble)");
+    assert.equal(sends(c, OWNER).length, 0);
     const ed = edits(c, OWNER).find((x) => x.message_id === li3._id);
     assert.ok(ed);
     assert.doesNotMatch(ed.text, /Mutter Courage/);          // plus dans MES sorties

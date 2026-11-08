@@ -157,11 +157,20 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
       await env.DB.prepare("UPDATE review_prompts SET closed = 1 WHERE chat_id = ? AND message_id = ?")
         .bind(chat, latest.message_id).run();
       const it = await getItem(env, latest.item_id);
-      if (it) await book(env, chat, user.first_name, it, iso, lang, null, ctx);
+      if (!it) return;
+      const r2 = await book(env, chat, user.first_name, it, iso, lang, ctx);
+      const card = await promptCard(env, chat, latest.message_id);
+      if (card) {
+        await restore(env, chat, it, r2, card.id, card.where, lang);
+        await cleanup(env, chat, latest.message_id, msg.message_id);
+      } else {
+        await refreshMine(env, chat, it, r2, lang);
+        await send(env, chat, T.booked(esc(it.title), whenLabel(iso, lang)));
+      }
       return;
     }
     const itemId = latest?.item_id ?? user.pending_item;
-    if (itemId) return onComment(env, chat, user.first_name, itemId, text, ctx, lang);
+    if (itemId) return onComment(env, chat, user.first_name, itemId, text, ctx, lang, latest?.message_id ?? null, msg.message_id);
   }
   await send(env, chat, T.notUnderstood);
 }
@@ -551,15 +560,31 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   let socialChanged = true;
 
   // --- 🎟 réservations ------------------------------------------------------
+  // Une fiche = un message qui évolue : 🎟 transforme CE message (fiche, ou /sorties) en
+  // sélecteur ; date / ↩︎ / annuler le remettent en fiche (ou en liste). `where` : "o" = /sorties.
+  const clickedId: number | null = cq.message?.message_id ?? null;
+  const where = data.split(":")[3] === "o" || (op !== "bd" && arg === "o") ? "o" : "c";
   if (op === "b") {
-    // Depuis /sorties : le sélecteur sait quel message rafraîchir après ✖.
-    const fromOutings = /^🗂 (Mes sorties|My outings)/.test(cq.message?.text ?? "") ? cq.message.message_id : null;
-    await send(env, chat, T.bookPick(esc(item.title)), bookPicker(item, prev, lang, fromOutings));
+    if (inGroup || !clickedId) {
+      // Pas de sélecteur dans le groupe (message partagé) : en privé, sur ma fiche.
+      const mine = await myDelivery(env, chat, item.id);
+      const text = pickerText(item, venue?.name, lang);
+      if (mine?.message_id) await edit(env, chat, mine.message_id, text, bookPicker(item, prev, lang, "c"));
+      else await send(env, chat, text, bookPicker(item, prev, lang, "c"));
+      return void (await answer(inGroup ? T.checkPrivate : undefined));
+    }
+    const o = /^🗂 (Mes sorties|My outings)/.test(cq.message?.text ?? "") ? "o" : "c";
+    await edit(env, chat, clickedId, pickerText(item, venue?.name, lang), bookPicker(item, prev, lang, o));
+    return void (await answer());
+  }
+  if (op === "bb") {
+    if (clickedId) await restore(env, chat, item, prev, clickedId, where, lang);
     return void (await answer());
   }
   if (op === "bd") {
-    await book(env, chat, from.first_name, item, decodeWhen(arg), lang, cq.message?.message_id ?? null, ctx);
-    return void (await answer());
+    const r2 = await book(env, chat, from.first_name, item, decodeWhen(arg), lang, ctx);
+    if (clickedId) await restore(env, chat, item, r2, clickedId, where, lang);
+    return void (await answer(T.toastBooked(whenLabel(decodeWhen(arg), lang))));
   }
   if (op === "bo") {
     const res = await tg(env, "sendMessage", {
@@ -570,13 +595,13 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     if (id) {
       await env.DB.prepare("INSERT OR REPLACE INTO review_prompts (chat_id, message_id, item_id, kind) VALUES (?, ?, ?, 'date')")
         .bind(chat, id, item.id).run();
+      if (clickedId) await setSetting(env, cardKey(chat, id), `${clickedId}:${where}`);
     }
     return void (await answer());
   }
   if (op === "bx") {
     const r2 = await setReaction(env, chat, item.id, { booked_at: null, booked_on: null, followup_sent: 0 });
-    if (cq.message?.message_id) await edit(env, chat, cq.message.message_id, T.bookCancelled);
-    await refreshMine(env, chat, item, r2, lang);
+    if (clickedId) await restore(env, chat, item, r2, clickedId, where, lang);
     return void (await answer(T.bookCancelled));
   }
   if (op === "rt") {
@@ -588,13 +613,15 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     // ✖ depuis /interets : retire ⭐ (et la réservation), sans « ignoré » : l'item
     // revient dans /programme. La liste est rafraîchie sur place.
     const r2 = await setReaction(env, chat, item.id, { interested: 0, booked_at: null, booked_on: null, followup_sent: 0 });
-    // ✖ depuis le sélecteur : on rafraîchit /sorties (arg = son message) et on retire le sélecteur.
-    const target = arg ? Number(arg) : cq.message?.message_id;
+    // ✖ depuis le sélecteur (qui EST le message /sorties : arg « o ») : retour à la liste, à jour.
+    // Ancien format (arg = id du message /sorties, sélecteur à part) : on rafraîchit et on retire le sélecteur.
+    const legacy = arg && /^\d+$/.test(arg) ? Number(arg) : null;
+    const target = legacy ?? clickedId;
     if (target) {
       const o = await outings(env, chat, lang);
       await edit(env, chat, target, o.text, o.kb);
     }
-    if (arg && cq.message?.message_id) await tg(env, "deleteMessage", { chat_id: chat, message_id: cq.message.message_id });
+    if (legacy && clickedId) await tg(env, "deleteMessage", { chat_id: chat, message_id: clickedId });
     await refreshMine(env, chat, item, r2, lang);
     ctx.waitUntil(refreshAll(env, item, chat));
     return void (await answer(T.toastNotForMe));
@@ -637,14 +664,14 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       r = await setReaction(env, chat, item.id, { status: "seen", rating: n });
       toast = T.toastRated(stars(n));
       ctx.waitUntil((async () => {
-        await askReview(env, chat, item, lang, T.askComment(stars(n), esc(item.title)));
+        await askReview(env, chat, item, lang, T.askComment(stars(n), esc(item.title)), inGroup ? null : clickedId);
         if (prev?.rating !== n) await announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null);
       })());
       break;
     }
     case "w":
       // « ✍️ Écrire / modifier mon avis » : rouvre une invitation pour cet item.
-      await askReview(env, chat, item, lang, T.askReview(esc(item.title)));
+      await askReview(env, chat, item, lang, T.askReview(esc(item.title)), inGroup ? null : clickedId);
       return void (await answer());
     case "x":
       r = await setReaction(env, chat, item.id, { status: "ignored" });
@@ -694,6 +721,10 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     } else {
       const v = renderFor(item, chat, r, friends, mine && mine.message_id === clicked ? mine.header : null, lang);
       await edit(env, chat, clicked, v.text, v.reply_markup);
+      if (mine?.message_id && mine.message_id !== clicked) {
+        const w = renderFor(item, chat, r, friends, mine.header, lang);
+        await edit(env, chat, mine.message_id, w.text, w.reply_markup);
+      }
     }
   }
   await answer(toast);
@@ -703,7 +734,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
 // ---------------------------------------------------------------------------
 /** Invitation à laisser un avis : force_reply (Telegram ouvre la réponse à CE
  *  message, avec « Ton avis sur X… » dans le champ) ; message_id -> item. */
-async function askReview(env: Env, chat: number, item: Item, lang: Lang, text: string): Promise<void> {
+async function askReview(env: Env, chat: number, item: Item, lang: Lang, text: string, cardId: number | null = null): Promise<void> {
   const res = await tg(env, "sendMessage", {
     chat_id: chat, text, parse_mode: "HTML", disable_web_page_preview: true,
     reply_markup: { force_reply: true, input_field_placeholder: tr(lang).reviewPlaceholder(item.title).slice(0, 64) },
@@ -712,11 +743,31 @@ async function askReview(env: Env, chat: number, item: Item, lang: Lang, text: s
   if (id) {
     await env.DB.prepare("INSERT OR REPLACE INTO review_prompts (chat_id, message_id, item_id) VALUES (?, ?, ?)")
       .bind(chat, id, item.id).run();
+    if (cardId) await setSetting(env, cardKey(chat, id), `${cardId}:c`);
   }
+}
+
+/** Invitation (date / avis) -> la fiche d'où elle vient : « 1234:c » (fiche) ou « 1234:o » (/sorties). */
+const cardKey = (chat: number, prompt: number) => `prompt_card:${chat}:${prompt}`;
+
+async function promptCard(env: Env, chat: number, prompt: number | null): Promise<{ id: number; where: string } | null> {
+  if (!prompt) return null;
+  const v = await setting(env, cardKey(chat, prompt));
+  if (!v) return null;
+  const [id, where] = v.split(":");
+  return { id: Number(id), where: where || "c" };
+}
+
+/** Une fois la réponse reçue : on retire l'invitation et la réponse (erreurs ignorées : un message
+ *  d'utilisateur ne se supprime pas partout). */
+async function cleanup(env: Env, chat: number, prompt: number | null, reply: number | null): Promise<void> {
+  for (const id of [prompt, reply]) if (id) await tg(env, "deleteMessage", { chat_id: chat, message_id: id });
+  if (prompt) await setSetting(env, cardKey(chat, prompt), null);
 }
 
 async function onComment(
   env: Env, chat: number, name: string, itemId: string, text: string, ctx: ExecutionContext, lang: Lang,
+  promptId: number | null = null, replyId: number | null = null,
 ): Promise<void> {
   const item = await getItem(env, itemId);
   await env.DB.batch([
@@ -726,7 +777,13 @@ async function onComment(
   if (!item) return;
   const comment = text.slice(0, 500);
   const r = await setReaction(env, chat, item.id, { status: "seen", comment });
-  await send(env, chat, tr(lang).commentSaved(esc(item.title)));
+  const card = await promptCard(env, chat, promptId);
+  if (card) {
+    await restore(env, chat, item, r, card.id, "c", lang);   // « ✅ Vu · 4★ · « … » » sur la fiche
+    await cleanup(env, chat, promptId, replyId);
+  } else {
+    await send(env, chat, tr(lang).commentSaved(esc(item.title)));
+  }
   const venue = await env.DB.prepare("SELECT name FROM venues WHERE id = ?").bind(item.venue_id).first<{ name: string }>();
   ctx.waitUntil((async () => {
     await announceReview(env, item, venue?.name, chat, name, r.rating, comment);
@@ -761,8 +818,9 @@ export function parseDate(text: string, today = new Date()): string | null {
 }
 
 /** Sélecteur : ~6 prochaines dates connues (pièces/films) ; expos : aujourd'hui / demain / ce week-end. */
-function bookPicker(item: Item, r: Reaction | null, lang: Lang, outingsMsg: number | null = null): unknown {
+function bookPicker(item: Item, r: Reaction | null, lang: Lang, where: "c" | "o" = "c"): unknown {
   const T = tr(lang);
+  const sfx = where === "o" ? ":o" : "";
   const rows: { text: string; callback_data: string }[][] = [];
   const today = isoDay(new Date());
   if (item.kind === "expo") {
@@ -770,26 +828,50 @@ function bookPicker(item: Item, r: Reaction | null, lang: Lang, outingsMsg: numb
     const tomorrow = new Date(now.getTime() + 86400000);
     const sat = new Date(now.getTime() + ((6 - now.getUTCDay() + 7) % 7) * 86400000);
     rows.push([
-      { text: T.bookToday, callback_data: `bd:${item.id}:${encodeWhen(isoDay(now))}` },
-      { text: T.bookTomorrow, callback_data: `bd:${item.id}:${encodeWhen(isoDay(tomorrow))}` },
-      { text: T.bookWeekend, callback_data: `bd:${item.id}:${encodeWhen(isoDay(sat))}` },
+      { text: T.bookToday, callback_data: `bd:${item.id}:${encodeWhen(isoDay(now))}${sfx}` },
+      { text: T.bookTomorrow, callback_data: `bd:${item.id}:${encodeWhen(isoDay(tomorrow))}${sfx}` },
+      { text: T.bookWeekend, callback_data: `bd:${item.id}:${encodeWhen(isoDay(sat))}${sfx}` },
     ]);
   } else {
     const dates = [...new Set((JSON.parse(item.dates || "[]") as string[])
       .map((d) => d.replace("T", " ").slice(0, 16)).filter((d) => d.slice(0, 10) >= today))].sort().slice(0, 6);
     for (let i = 0; i < dates.length; i += 2) {
-      rows.push(dates.slice(i, i + 2).map((d) => ({ text: whenLabel(d, lang), callback_data: `bd:${item.id}:${encodeWhen(d)}` })));
+      rows.push(dates.slice(i, i + 2).map((d) => ({ text: whenLabel(d, lang), callback_data: `bd:${item.id}:${encodeWhen(d)}${sfx}` })));
     }
   }
-  rows.push([{ text: T.bookOther, callback_data: `bo:${item.id}` }]);
-  if (r?.booked_at) rows.push([{ text: T.bookCancel, callback_data: `bx:${item.id}` }]);
-  if (outingsMsg) {
+  rows.push([{ text: T.bookOther, callback_data: `bo:${item.id}${sfx}` }]);
+  if (r?.booked_at) rows.push([{ text: T.bookCancel, callback_data: `bx:${item.id}${sfx}` }]);
+  if (where === "o") {
     rows.push([
-      { text: T.btnAlreadySeen, callback_data: `v:${item.id}` },
-      { text: T.btnRemove, callback_data: `ui:${item.id}:${outingsMsg}` },
+      { text: T.btnAlreadySeen, callback_data: `v:${item.id}:o` },
+      { text: T.btnRemove, callback_data: `ui:${item.id}:o` },
     ]);
   }
+  rows.push([{ text: T.btnBack, callback_data: `bb:${item.id}${sfx}` }]);
   return { inline_keyboard: rows };
+}
+
+/** En-tête de la fiche gardé pendant le choix de la date. */
+function pickerText(item: Item, venueName: string | undefined, lang: Lang): string {
+  return `${label(item, venueName)}\n\n🎟 ${tr(lang).bookWhich}`;
+}
+
+/** Remet le message `msgId` en fiche complète (« c ») ou en liste /sorties (« o ») ; ma notif d'origine suit. */
+async function restore(env: Env, chat: number, item: Item, r: Reaction | null, msgId: number, where: string, lang: Lang): Promise<void> {
+  if (where === "o") {
+    const o = await outings(env, chat, lang);
+    await edit(env, chat, msgId, o.text, o.kb);
+  }
+  const mine = await myDelivery(env, chat, item.id);
+  const friends = (await friendsByItem(env, [item.id])).get(item.id) ?? [];
+  if (where !== "o") {
+    const v = renderFor(item, chat, r, friends, mine?.message_id === msgId ? mine.header : null, lang);
+    await edit(env, chat, msgId, v.text, v.reply_markup);
+  }
+  if (mine?.message_id && mine.message_id !== msgId) {
+    const v = renderFor(item, chat, r, friends, mine.header, lang);
+    await edit(env, chat, mine.message_id, v.text, v.reply_markup);
+  }
 }
 
 /** Remet ma fiche (notif d'origine) à jour : statut « 🎟 Réservé · … ». */
@@ -803,16 +885,11 @@ async function refreshMine(env: Env, chat: number, item: Item, r: Reaction, lang
 
 /** Réserver = intéressé·e + date ; annonce au groupe avec « 🙋 J'y vais aussi ». */
 async function book(
-  env: Env, chat: number, who: string, item: Item, iso: string, lang: Lang, pickerId: number | null, ctx: ExecutionContext,
-): Promise<void> {
-  const T = tr(lang);
+  env: Env, chat: number, who: string, item: Item, iso: string, lang: Lang, ctx: ExecutionContext,
+): Promise<Reaction> {
   const r = await setReaction(env, chat, item.id, {
     interested: 1, booked_at: iso, booked_on: new Date().toISOString().slice(0, 19).replace("T", " "), followup_sent: 0,
   });
-  const msg = T.booked(esc(item.title), whenLabel(iso, lang));
-  if (pickerId) await edit(env, chat, pickerId, msg);
-  else await send(env, chat, msg);
-  await refreshMine(env, chat, item, r, lang);
   ctx.waitUntil((async () => {
     const group = await groupChat(env);
     if (group) {
@@ -826,6 +903,7 @@ async function book(
     }
     await refreshAll(env, item, chat);
   })());
+  return r;
 }
 
 export { socialBlock, type Friend };
