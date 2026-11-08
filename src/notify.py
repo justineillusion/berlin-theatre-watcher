@@ -161,6 +161,7 @@ _CREDIT_NOISE = re.compile(
 def clean_credits(text: str) -> str:
     """« by Falk Richter Director: Falk Richter World Premiere Stage A … » -> « by Falk Richter »."""
     t = _CREDIT_NOISE.sub("", text or "").strip(" ,;·-")
+    t = re.sub(r"\s+(?:German|English|Deutsch|Englisch)\s*$", "", t)   # « … Director: X German »
     t = re.sub(r"\s+Director:\s*(.+)$", lambda m: "" if m.group(1).strip() in t[:m.start()] else m.group(0), t)
     if len(t) > 110:
         t = t[:110].rsplit(" ", 1)[0] + "…"
@@ -168,7 +169,7 @@ def clean_credits(text: str) -> str:
 
 
 _CREDIT_WORDS = {
-    "fr": [(r"\bin an adaptation by\b", "dans une adaptation de"), (r"\bin collaboration with\b", "en collaboration avec"),
+    "fr": [(r"\btranslation by\b", "traduction de"), (r"\bin an adaptation by\b", "dans une adaptation de"), (r"\bin collaboration with\b", "en collaboration avec"),
            (r"\badapted by\b", "adapté par"), (r"\bdirected by\b", "mis en scène par"), (r"^\s*(?:by|von)\b", "De"),
            (r"\bafter\b|\bnach\b", "d'après"), (r"\bby\b|\bvon\b", "de"), (r"\band\b|\bund\b", "et"),
            (r"\(Book\)", "(livret)"), (r"\(Music\)", "(musique)"), (r"\bDirector:", "Mise en scène :"),
