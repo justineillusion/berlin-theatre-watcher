@@ -56,6 +56,8 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .t{font:700 16px/1.3 var(--sans);letter-spacing:-.005em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .v{font-size:14px;color:var(--muted);margin-top:2px}
 .v .sc{color:var(--ink);font-weight:700;white-space:nowrap}
+.venue{margin:14px 16px 2px;padding-top:10px;border-top:2px solid var(--ink);font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.more{display:block;margin:0 0 4px 76px;border:0;background:none;padding:6px 0;font:700 13.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 .v .k{color:var(--gold)}
 .badge{font-size:15px;padding-top:2px}
 .social{font-size:14px;color:var(--ink);margin-top:4px}
@@ -119,7 +121,7 @@ if (tgApp) {
 
 const L = {
   fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos",
-        week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par date de fin",
+        week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
         star:"⭐ Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation",
         booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ⭐ ce qui te tente.",
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
@@ -129,7 +131,7 @@ const L = {
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibitions",
-        week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by closing date",
+        week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"⭐ Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking",
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: ⭐ what tempts you.",
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
@@ -140,7 +142,7 @@ const L = {
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
 };
 let T = L.fr, S = null;
-const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS };
+const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set() };
 if (FOCUS) st.open = FOCUS;
 const ICON = { theatre:"🎭", expo:"🏛", film:"🎬" };
 const $ = (id) => document.getElementById(id);
@@ -242,7 +244,7 @@ function item(x) {
   const open = st.open === x.id, s = state(x), me = x.me || {};
   let h = `<div class="item${open ? " open" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div>
-    <div><div class="t">${esc(x.title)}</div><div class="v">${esc(x.venue)}${x.kind === "expo" && x.end ? ` · ${esc(T.until)} ${esc(shortDay(x.end))}` : ""}${facts(x).rating ? ` · <b class="sc">${esc(facts(x).rating)}</b>` : ""}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}</div>
+    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · <b class="sc">${esc(facts(x).rating)}</b>` : ""}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}</div>
     ${badge(x)}</button>`;
   if (!open) return h + "</div>";
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
@@ -290,6 +292,24 @@ function item(x) {
   }
   return h + "</div></div>";
 }
+// Expos : groupées par lieu (ordre des Réglages), 2 par lieu, d'abord celles qui intéressent
+// quelqu'un (⭐ 🎟), puis celles dont la presse parle (ligne 📰 avec des sources), puis la fin la plus proche.
+function exposByVenue(expos) {
+  const order = new Map((S.venues || []).map((v, i) => [v.name, i]));
+  const groups = new Map();
+  for (const x of expos) (groups.get(x.venue) || groups.set(x.venue, []).get(x.venue)).push(x);
+  const score = (x) => ((x.me && (x.me.star || x.me.booked)) || (x.friends || []).some((p) => p.star || p.booked) ? 2 : 0)
+    + (/📰[^\n]*\d+\s*(source|critique|review)/i.test(x.text || "") ? 1 : 0) + (x.starred ? 1 : 0);
+  let h = "";
+  for (const [venue, xs] of [...groups].sort((a, b) => (order.get(a[0]) ?? 99) - (order.get(b[0]) ?? 99))) {
+    xs.sort((a, b) => score(b) - score(a) || (a.end || "9").localeCompare(b.end || "9"));
+    const open = st.venuesOpen.has(venue) || xs.some((x) => x.id === st.open && xs.indexOf(x) >= 2);
+    const shown = open ? xs : xs.slice(0, 2);
+    st.grouped = true; h += `<div class="venue">${esc(venue)}</div>` + shown.map(item).join(""); st.grouped = false;
+    if (xs.length > 2) h += `<button class="more" data-venue="${esc(venue)}">${esc(open ? T.lessExpos : T.moreExpos(xs.length - 2, venue))}</button>`;
+  }
+  return h;
+}
 const dayHead = (label, note = "") => { const [a, b] = String(label).split(" · "); return `<div class="day">${esc(a)}${b ? ` <span>${esc(b)}</span>` : ""}${note ? ` <span>${esc(note)}</span>` : ""}</div>`; };
 function render() {
   const now = dt(TODAY);
@@ -319,7 +339,7 @@ function render() {
     const expos = xs.filter((x) => x.kind === "expo").sort((a, b) => (a.end || "9").localeCompare(b.end || "9"));
     let cur = "";
     for (const x of shows) { const d = dayLabel(next(x)); if (d !== cur) { h += dayHead(d); cur = d; } h += item(x); }
-    if (expos.length) h += dayHead(T.expos, T.exposNote) + expos.map(item).join("");
+    if (expos.length) h += dayHead(T.expos, T.exposNote) + exposByVenue(expos);
     list.innerHTML = h || `<div class="empty">${esc(T.empty)}</div>`;
   } else {
     for (const [k, l] of [["booked", T.booked], ["star", T.wish], ["seen", T.done]]) {
@@ -345,6 +365,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.share) return void act("share", t.dataset.share, "", { path: "share", body: { to: [...st.sel] } });
   else if (t.dataset.act === "bd") return void act("bd", t.dataset.id, t.dataset.arg, { body: { with: [...st.withs] } });
   else if (t.dataset.act) return void act(t.dataset.act, t.dataset.id, t.dataset.arg);
+  else if (t.dataset.venue) { const v = t.dataset.venue; st.venuesOpen.has(v) ? st.venuesOpen.delete(v) : st.venuesOpen.add(v); }
   else if (t.dataset.open) { st.open = st.open === t.dataset.open ? null : t.dataset.open; st.picking = null; st.sharing = null; st.sent = null; }
   else return;
   render();
