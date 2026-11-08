@@ -70,6 +70,7 @@ _BUDGET = 300.0          # 5 min de wall-clock pour tout le refresh
 _RESERVE = 10.0          # on garde 10 s pour écrire le cache
 _WINDOW_DAYS = 183       # ~6 mois d'articles
 _SEARCH_TTL_DAYS = 3
+_SEARCH_WINDOW_DAYS = 365  # une expo longue peut avoir été critiquée il y a 8 mois
 _DEK_MAX = 300
 
 TIP = "tip Berlin"
@@ -108,6 +109,28 @@ _WP_SEARCH = {
     BERLINER: "https://www.the-berliner.com/?s={q}&feed=rss2",
 }
 _MONOPOL_SEARCH = "https://www.monopol-magazin.de/suche?search_api_fulltext={q}"
+_TAZ_SEARCH = "https://taz.de/!s={q};rss/"           # flux RSS de la recherche taz
+
+# Sitemaps mensuelles (Tagesspiegel, Berliner Zeitung) : toutes les URL culture
+# d'un mois, avec un slug parlant. Les mois révolus ne sont lus qu'une fois.
+_MONTHLY_SITEMAPS = {
+    "Tagesspiegel": {
+        "index": "https://www.tagesspiegel.de/contentexport/static/sitemap-index_{year}.xml",
+        "month_re": r"sitemap_(\d{2})_(\d{4})\.xml", "month_order": ("m", "y"),
+        "section": "/kultur/",
+    },
+    "Berliner Zeitung": {
+        "index": "https://www.berliner-zeitung.de/sitemap.xml",
+        "month_re": r"sitemap\.articles\.(\d{4})-(\d{2})_\d+\.xml", "month_order": ("y", "m"),
+        # pas de rubrique dans l'URL (/article/<slug>-<id>) : ~2000 articles/mois,
+        # on ne garde que ceux dont le slug nomme un item (et on relit chaque nuit).
+        "section": None,
+    },
+}
+# Médias dont on peut lire le chapô (meta description) d'un article qui
+# correspond à un item mais n'a qu'un slug (sitemap) ou un titre (recherche).
+_ENRICHABLE = {"Tagesspiegel", "Berliner Zeitung", "taz", MONOPOL}
+_ENRICH_MAX = 40
 
 _TIP_BASE = "https://www.tip-berlin.de"
 _TB_BASE = "https://www.the-berliner.com"
@@ -146,14 +169,14 @@ def _clean(fragment: str) -> str:
 
 _VENUE_ALIASES: Dict[str, Tuple[str, ...]] = {
     "Hamburger Bahnhof": ("hamburger bahnhof",),
-    "Neue Nationalgalerie": ("neue nationalgalerie",),
+    "Neue Nationalgalerie": ("neue nationalgalerie", "neuen nationalgalerie"),
     "KW Institute for Contemporary Art": ("kw institute", "kunst werke", "kunstwerke", "kw berlin"),
     "C/O Berlin": ("c o berlin", "co berlin"),
-    "Berlinische Galerie": ("berlinische galerie",),
+    "Berlinische Galerie": ("berlinische galerie", "berlinischen galerie"),
     "Fotografiska Berlin": ("fotografiska",),
     "Schaubühne": ("schaubuehne",),
     "Berliner Ensemble": ("berliner ensemble",),
-    "Volksbühne": ("volksbuehne",),
+    "Volksbühne": ("volksbuehne", "volksbuhne"),
     "Berliner Festspiele": ("berliner festspiele", "haus der berliner festspiele", "theatertreffen"),
     # lieux fréquents ailleurs (pour écarter un homonyme : Schlingensief au Gropius Bau…)
     "Gropius Bau": ("gropius bau",),
@@ -226,13 +249,16 @@ _EN_NEGATIVE = {
     "flat": 1, "jarring": 1, "overlook": 1, "waffle": 1, "confusing": 1, "clumsy": 1.5,
     "unsuccessful": 1.5, "lacks": 1, "lacking": 1, "forgettable": 1.5, "mediocre": 1.5,
     "lukewarm": 1.5, "uneven": 1, "flawed": 1, "falls short": 1.5, "hollow": 1.5,
+    "stale": 1.5, "tired": 1, "gimmick": 1.5, "gimmicky": 1.5, "one note": 1.5,
 }
 # DE en plus de critics.py (titres / chapôs de presse, pas Rundschau)
 _DE_POSITIVE = {"lohnend": 1.5, "lohnenswert": 1.5, "sehenswert": 1.5, "unbedingt": 1,
                 "muss man sehen": 2, "grossartig": 2, "glanzvoll": 1.5, "meisterlich": 2,
-                "betoerend": 1.5, "fabelhaft": 1.5, "empfehlenswert": 1.5, "beglueckend": 2}
+                "betoerend": 1.5, "fabelhaft": 1.5, "empfehlenswert": 1.5, "beglueckend": 2,
+                "ein spektakel": 1.5, "tiefsinn": 1, "sehr lohnend": 2}
 _DE_NEGATIVE = {"enttaeuschend": 2, "verzichtbar": 1.5, "misslungen": 2, "duerftig": 1.5,
-                "zaeh": 2, "oede": 2, "lauwarm": 1.5, "ueberschaetzt": 1.5}
+                "zaeh": 2, "oede": 2, "lauwarm": 1.5, "ueberschaetzt": 1.5,
+                "abgestanden": 1.5, "effekthascherei": 1.5, "schrumpft zum": 1.5, "schrumpft zur": 1.5}
 _MAYBE_NEGATED = {"successful": 1.0, "successfully": 1.0, "success": 1.0}
 _NEGATORS = {"not", "never", "no", "hardly", "isn", "isnt", "nicht", "kein", "keine",
              "keinen", "kaum", "wenig", "nie"}
@@ -295,7 +321,7 @@ def verdict_fragment(headline: str, dek: str, max_words: int = 15) -> Optional[s
     best, best_w = None, 0.0
     for chunk in re.split(r"(?<=[.!?;:])\s+|\s+[–—]\s+|\s*\|\s*", f"{headline}. {dek}"):
         chunk = chunk.strip(" .\"'“”„«»‘’")
-        if not chunk:
+        if not chunk or chunk.endswith("?"):
             continue
         s, w = text_score(chunk)
         if w > best_w and abs(s) >= 0.2:
@@ -442,9 +468,10 @@ def parse_feed(xml_text: str, outlet: str, origin: str = "feed") -> List[dict]:
 # ---------------------------------------------------------------------------
 # The Berliner (API REST WordPress)
 # ---------------------------------------------------------------------------
+# Une vraie SÉLECTION (« Best of », « Editor's picks », « Unmissable »…). Un agenda
+# (« What's On », « Guide », « What to See ») n'est qu'une mention : « covered ».
 _PICK_LIST_RE = re.compile(
-    r"\b(best|highlights?|what'?s on|whats on|unmissable|must[- ]see|picks?|recommend\w*|"
-    r"guide|what to see|don'?t miss|great|top \d+|on now|(?:are|is) on)\b", re.I)
+    r"\b(best|highlights?|unmissable|must[- ]see|picks?|recommend\w*|don'?t miss|top \d+)\b", re.I)
 _DATE_HEADING_RE = re.compile(
     r"^(through|throgh|throguh|until|from|ongoing|\d|(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b)",
     re.I)
@@ -519,13 +546,14 @@ def _berliner(f: _Fetcher, since: datetime) -> Optional[List[dict]]:
         stars = parse_stars(excerpt) or parse_stars(title)
         entries = _list_entries(p.get("content", {}).get("rendered", ""))
         is_list = len(entries) >= 3 and stars is None
+        tagged = bool(pick_tags.intersection(p.get("tags", [])))
         out.append(_article(
             BERLINER, link, (p.get("date") or "")[:10], title, excerpt,
             section="/".join(sorted(cat_kind[c] for c in p.get("categories", []) if c in cat_kind)),
             stars=stars,
-            is_pick=bool(pick_tags.intersection(p.get("tags", [])))
-            or bool(is_list and _PICK_LIST_RE.search(title + " " + slug_words)),
+            is_pick=tagged or bool(is_list and _PICK_LIST_RE.search(title + " " + slug_words)),
             subjects=_subjects(excerpt), entries=entries if is_list else [], origin="rest"))
+        out[-1]["tagged_pick"] = tagged
     return out
 
 
@@ -589,10 +617,93 @@ def _search_monopol(f: _Fetcher, query: str) -> Optional[List[dict]]:
     if r is None:
         return None
     out = []
-    for href, label in re.findall(r'<h[23][^>]*>\s*<a href="([^"]+)"[^>]*>([^<]+)</a>', r.text):
+    qk = _key(query)
+    for href, label in re.findall(r'<h[23][^>]*>\s*<a href="([^"]+)"[^>]*>([^<]+)</a>', r.text)[:10]:
         url = href if href.startswith("http") else "https://www.monopol-magazin.de" + href
-        out.append(_article(MONOPOL, url, "", _clean(label), origin="search"))
-    return out[:10]
+        title, dek, day = _clean(label), "", ""
+        # La page de recherche n'a ni chapô ni date : pour les résultats qui nomment
+        # vraiment l'item (slug ou titre), on lit le chapô (meta description) + la date.
+        if _contains(_key(title), qk) or _contains(_key(url.replace("-", " ")), qk):
+            meta = _page_meta(f, url)
+            if meta:
+                dek, day = meta.get("dek", ""), meta.get("date", "")
+        out.append(_article(MONOPOL, url, day, title, dek, origin="search"))
+    return out
+
+
+def _page_meta(f: _Fetcher, url: str) -> Optional[dict]:
+    """Titre, chapô (meta description) et date d'une page d'article — pas le corps."""
+    page = f.get(url)
+    if page is None:
+        return None
+    t = page.text[:400_000]
+
+    def meta(*names: str) -> str:
+        for n in names:
+            m = (re.search(rf'<meta[^>]+(?:name|property)="{n}"[^>]+content="([^"]*)"', t)
+                 or re.search(rf'<meta[^>]+content="([^"]*)"[^>]+(?:name|property)="{n}"', t))
+            if m and m.group(1).strip():
+                return _clean(m.group(1))
+        return ""
+    m = re.search(r'(?:"datePublished"\s*:\s*"|article:published_time"\s+content=")([0-9T:.\-+Z]+)', t)
+    return {"headline": meta("og:title", "twitter:title"),
+            "dek": meta("og:description", "description", "twitter:description")[:_DEK_MAX],
+            "date": _parse_date(m.group(1)) if m else ""}
+
+
+def _search_taz(f: _Fetcher, query: str) -> Optional[List[dict]]:
+    r = f.get(_TAZ_SEARCH.format(q=quote_plus(query)))
+    if r is None:
+        return None
+    out = parse_feed(r.text, "taz", origin="search")[:10]
+    for a in out:   # « …/!6211637&s=Ryuichi+Sakamoto// » -> URL propre
+        a["url"] = re.sub(r"&s=[^/]*/*$", "/", a["url"])
+    return out
+
+
+def _monthly(f: _Fetcher, outlet: str, since: datetime, done: List[str],
+             item_phrases: Iterable[str] = ()) -> Optional[Tuple[List[dict], List[str]]]:
+    """Articles culture des sitemaps mensuelles depuis `since` (mois révolus : une fois)."""
+    cfg = _MONTHLY_SITEMAPS[outlet]
+    now = datetime.now(timezone.utc)
+    indexes = sorted({cfg["index"].format(year=y) for y in range(since.year, now.year + 1)})
+    maps = []
+    for idx in indexes:
+        r = f.get(idx)
+        if r is None:
+            continue
+        for loc in re.findall(r"<loc>([^<]+)</loc>", r.text):
+            m = re.search(cfg["month_re"], loc)
+            if not m:
+                continue
+            parts = dict(zip(cfg["month_order"], m.groups()))
+            month = f'{parts["y"]}-{parts["m"]}'
+            if month >= since.strftime("%Y-%m"):
+                maps.append((month, loc))
+    if not maps:
+        return None
+    current = {now.strftime("%Y-%m"), (now.replace(day=1) - timedelta(days=1)).strftime("%Y-%m")}
+    out, newly_done = [], []
+    for month, loc in sorted(maps, reverse=True):
+        if cfg["section"] and loc in done and month not in current:
+            continue                     # mois révolu déjà indexé
+        r = f.get(loc)
+        if r is None:
+            continue                     # > 8 s : réessai au prochain run
+        for u, lm in re.findall(r"<loc>([^<]+)</loc>\s*(?:<lastmod>([^<]*)</lastmod>)?", r.text):
+            slug = urlparse(u).path.rstrip("/").rsplit("/", 1)[-1]
+            if cfg["section"]:
+                if cfg["section"] not in u:
+                    continue
+            elif not any(_contains(_key(slug.replace("-", " ")), ph) for ph in item_phrases):
+                continue
+            slug = re.sub(r"(-li\.\d+|-\d{5,})(\.html)?$|\.html$", "", slug)
+            slug = re.sub(r"^dpa-", "", slug).replace("-", " ")
+            out.append(_article(outlet, u, (lm or "")[:10] or f"{month}-01",
+                                slug[:1].upper() + slug[1:], origin="sitemap"))
+        if month not in current and cfg["section"]:
+            newly_done.append(loc)
+    return out, newly_done
 
 
 def _search_wp(f: _Fetcher, outlet: str, query: str) -> Optional[List[dict]]:
@@ -612,12 +723,14 @@ def _searches(f: _Fetcher, items: List[dict], old: dict, now: datetime) -> Tuple
                 if now.timestamp() - v.get("at", 0) < _WINDOW_DAYS * 86400}
     queries = []
     for it in sorted(items, key=lambda i: i.get("kind") != "expo"):
-        q = search_query(it.get("title", ""))
-        if q and q not in queries:
-            queries.append(q)
+        for t in [it.get("title", "")] + list(it.get("aliases") or []):
+            q = search_query(t)
+            if q and q not in queries:
+                queries.append(q)
     engines: Dict[str, Callable[[str], Optional[List[dict]]]] = {
         o: (lambda q, o=o: _search_wp(f, o, q)) for o in _WP_SEARCH}
     engines[MONOPOL] = lambda q: _search_monopol(f, q)
+    engines["taz"] = lambda q: _search_taz(f, q)
     found: List[dict] = []
     lock = threading.Lock()
 
@@ -652,6 +765,11 @@ def _load(path: Path = _CACHE_PATH) -> dict:
     data.setdefault("articles", [])
     data.setdefault("sources", {})
     data.setdefault("searches", {})
+    for a in data["articles"]:
+        # règle « sélection » appliquée aussi aux listes déjà en cache
+        if a.get("outlet") == BERLINER and a.get("entries"):
+            a["is_pick"] = bool(a.get("tagged_pick")) or bool(
+                _PICK_LIST_RE.search(f'{a.get("headline", "")} {a.get("match", "")}'))
     return data
 
 
@@ -679,6 +797,8 @@ def _merge(old: List[dict], new: List[dict]) -> List[dict]:
             continue
         if prev and not a.get("date"):
             a = {**a, "date": prev.get("date", "")}
+        if prev and prev.get("enriched") and not a.get("dek"):
+            a = {**a, **{k: prev[k] for k in ("dek", "headline", "stars", "enriched") if k in prev}}
         by_url[a["url"]] = a
     return list(by_url.values())
 
@@ -702,6 +822,7 @@ def refresh(path: Path = _CACHE_PATH, budget: float = _BUDGET,
     now = datetime.now(timezone.utc)
     since = now - timedelta(days=_WINDOW_DAYS)
     cutoff = since.date().isoformat()
+    search_cutoff = (now - timedelta(days=_SEARCH_WINDOW_DAYS)).date().isoformat()
     old = _load(path)
     old_by_outlet: Dict[str, List[dict]] = {}
     for a in old["articles"]:
@@ -713,6 +834,21 @@ def refresh(path: Path = _CACHE_PATH, budget: float = _BUDGET,
     }
     for outlet, urls in _FEEDS.items():
         jobs[f"{outlet} (RSS)"] = (lambda o=outlet, u=urls: _feeds(f, o, u))
+    months_done: Dict[str, List[str]] = dict(old.get("sitemap_months", {}))
+    # phrases d'items assez précises pour filtrer une sitemap sans rubrique
+    item_phrases = sorted({ph for it in (items or []) for t in [it.get("title", "")] + list(it.get("aliases") or [])
+                           for ph in _phrases(t) if _strong(ph) or ph in _artist_phrases(t)})
+    monthly_new: Dict[str, List[str]] = {}
+
+    def monthly_job(o: str) -> Optional[List[dict]]:
+        res = _monthly(f, o, since, months_done.get(o, []), item_phrases)
+        if res is None:
+            return None
+        arts, newly = res
+        monthly_new[o] = newly
+        return arts
+    for outlet in _MONTHLY_SITEMAPS:
+        jobs[f"{outlet} (sitemap)"] = (lambda o=outlet: monthly_job(o))
 
     results: Dict[str, Tuple[Optional[List[dict]], float]] = {}
 
@@ -731,7 +867,7 @@ def refresh(path: Path = _CACHE_PATH, budget: float = _BUDGET,
     sources = dict(old.get("sources", {}))
     fresh: Dict[str, List[dict]] = {}
     for name, (got, secs) in results.items():
-        outlet = name.replace(" (RSS)", "")
+        outlet = name.replace(" (RSS)", "").replace(" (sitemap)", "")
         if got is None:
             sources[name] = {**sources.get(name, {}), "ok": False, "last_try": now.isoformat(timespec="seconds")}
         else:
@@ -755,16 +891,65 @@ def refresh(path: Path = _CACHE_PATH, budget: float = _BUDGET,
             # source exhaustive : on remplace (en gardant les résultats de recherche)
             prev = [a for a in prev if a.get("origin") == "search"]
         merged = _merge(prev, (new or []) + [a for a in found if a["outlet"] == outlet])
-        articles += [a for a in merged if not a.get("date") or a["date"] >= cutoff]
+        articles += [a for a in merged if not a.get("date") or a["date"] >= cutoff
+                     or (a.get("origin") == "search" and a["date"] >= search_cutoff)]
     articles.sort(key=lambda a: (a["outlet"], a.get("date", ""), a["url"]), reverse=True)
-    data = {"version": 2, "refreshed_at": now.isoformat(timespec="seconds"),
-            "window_days": _WINDOW_DAYS, "sources": sources, "log": f.log[-40:],
-            "searches": searches, "articles": articles}
+    for o, newly in monthly_new.items():
+        months_done[o] = sorted(set(months_done.get(o, [])) | set(newly))
+    data = {"version": 3, "refreshed_at": now.isoformat(timespec="seconds"),
+            "window_days": _WINDOW_DAYS, "sources": sources, "log": [],
+            "searches": searches, "sitemap_months": months_done, "articles": articles}
+    _write(path, data)
+    if items:
+        n = _enrich(f, path, items)
+        data = _load(path)
+        data["sources"]["enrich"] = {"ok": True, "at": now.isoformat(timespec="seconds"), "pages": n}
+    data["log"] = f.log[-40:]
+    _write(path, data)
+    return data
+
+
+def _write(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True))
     tmp.replace(path)
-    return data
+
+
+def _enrich(f: _Fetcher, path: Path, items: List[dict]) -> int:
+    """Chapô + date des articles qui correspondent à un item mais n'ont qu'un slug
+    ou un titre (sitemaps, recherches) : une page par article, une seule fois."""
+    data = _load(path)
+    by_url = {a["url"]: a for a in data["articles"]}
+    todo: List[str] = []
+    for it in items:
+        for h in press_hits(it.get("kind", ""), it.get("venue", ""), it.get("title", ""),
+                            it.get("url", ""), path, it.get("aliases") or ()):
+            a = by_url.get(h["url"])
+            if (a and a["outlet"] in _ENRICHABLE and not a.get("dek") and not a.get("enriched")
+                    and a["url"] not in todo):
+                todo.append(a["url"])
+    done = 0
+    for u in todo[:_ENRICH_MAX]:
+        if f.remaining() < _RESERVE + _REQ_TIMEOUT:
+            break
+        meta = _page_meta(f, u)
+        if meta is None:
+            continue
+        a = by_url[u]
+        a["enriched"] = True
+        a["dek"] = meta["dek"] or a.get("dek", "")
+        if meta["headline"]:
+            a["headline"] = re.sub(r"\s*[|–-]\s*(taz|Tagesspiegel|Berliner Zeitung|Monopol).*$", "",
+                                   meta["headline"])[:200]
+        a["date"] = a.get("date") or meta["date"]
+        a["stars"] = a.get("stars") or parse_stars(a["dek"])
+        a["venues"] = _venues_in(_key(" ".join([a["headline"], a["dek"], a.get("match", "")])))
+        done += 1
+    _write(path, data)
+    global _cache
+    _cache = None
+    return done
 
 
 # ---------------------------------------------------------------------------
@@ -799,13 +984,28 @@ def _phrases(title: str, url: str = "") -> List[str]:
     return list(dict.fromkeys(out))
 
 
+def _artist_phrases(title: str) -> set:
+    """Le nom d'artiste seul (« Katharina Sieverding », « Christoph Schlingensief ») :
+    l'artiste expose ailleurs aussi, donc il faut que le lieu soit nommé."""
+    t = title.strip(" []")
+    parts = re.split(r"\s+[—–]\s+|\.\s+|:\s+", t)
+    head = re.sub(r"^.*?\b(commission|presents?)\b\s*", "", parts[0], flags=re.I)
+    out = {_key(head)}
+    if len(parts) == 1 and not re.fullmatch(r"(?:[A-ZÄÖÜ][\w’'\-]+\s?){2,3}", t.strip()):
+        return set()           # « Ruin and Rush » : un titre, pas un nom
+    if len(parts) == 1:
+        out.add(_key(t))
+    return {k for k in out if k}
+
+
 def _strong(phrase: str) -> bool:
     """Assez spécifique pour matcher sans que le lieu soit nommé ?"""
     return len(phrase.split()) >= 2 and len(phrase) >= 12
 
 
 def _match_unit(phrases: List[str], unit_text: str, unit_venues: List[str],
-                item_venue_keys: Tuple[str, ...], item_venue: str) -> bool:
+                item_venue_keys: Tuple[str, ...], item_venue: str, require_venue: bool = False,
+                weak: Iterable[str] = ()) -> bool:
     venue_named = any(_contains(unit_text, a) for a in item_venue_keys) or any(
         set(_venue_keys(v)) == set(item_venue_keys) for v in unit_venues)
     other_venue_only = bool(unit_venues) and not venue_named
@@ -814,16 +1014,23 @@ def _match_unit(phrases: List[str], unit_text: str, unit_venues: List[str],
             continue
         if other_venue_only:
             continue           # « Christoph Schlingensief » … au Gropius Bau : autre expo
+        if (require_venue or ph in weak) and not venue_named:
+            continue           # « Hamlet », « De Profundis », un nom d'artiste seul : il y en a partout
         if _strong(ph) or (venue_named and len(ph) >= 4):
             return True
     return False
 
 
 def press_hits(kind: str, venue: str, title: str, url: str = "",
-               cache_path: Path = _CACHE_PATH) -> List[dict]:
-    """Articles qui parlent de l'item (cache seul ; débogage : avec URL)."""
+               cache_path: Path = _CACHE_PATH, aliases: Iterable[str] = ()) -> List[dict]:
+    """Articles qui parlent de l'item (cache seul ; débogage : avec URL).
+
+    aliases : autres titres (titre allemand « Ruin und Rausch »…).
+    Pièces et articles non datés : le lieu doit être nommé.
+    """
     data = _cached(cache_path)
-    phrases = _phrases(title, url)
+    phrases = list(dict.fromkeys(_phrases(title, url) + [p for a in aliases for p in _phrases(a)]))
+    weak = _artist_phrases(title) if kind == "expo" else set()
     vkeys = _venue_keys(venue)
     hits: Dict[Tuple[str, str], dict] = {}
     for a in data["articles"]:
@@ -831,14 +1038,15 @@ def press_hits(kind: str, venue: str, title: str, url: str = "",
             continue
         text = " ".join([_key(a.get("headline", "")), _key(a.get("dek", "")), a.get("match", "")]
                         + [_key(s) for s in a.get("subjects", [])])
+        need_venue = kind == "theatre" or not a.get("date")
         if not a.get("entries"):
-            if _match_unit(phrases, text, a.get("venues", []), vkeys, venue):
+            if _match_unit(phrases, text, a.get("venues", []), vkeys, venue, need_venue, weak):
                 hits[(a["url"], "")] = {k: a.get(k) for k in
                                         ("outlet", "url", "date", "headline", "dek", "stars", "is_pick")}
                 hits[(a["url"], "")]["section"] = ""
             continue
         for e in a["entries"]:
-            if _match_unit(phrases, _key(e["name"]), e.get("venues", []), vkeys, venue):
+            if _match_unit(phrases, _key(e["name"]), e.get("venues", []), vkeys, venue, kind == "theatre", weak):
                 hits[(a["url"], e["name"])] = {
                     "outlet": a["outlet"], "url": a["url"], "date": a["date"],
                     "headline": e["name"], "dek": "", "stars": None,
@@ -858,13 +1066,16 @@ LEVELS = {
     "mixed": ("😐", "mixed", "mitigé"),
     "negative": ("👎", "negative", "plutôt négatif"),
 }
-_MIN_WEIGHT = 0.5        # en dessous : pas de verdict (simple mention)
+_MIN_WEIGHT = 0.5
+_GIVEAWAY_RE = re.compile(r"verlost|gewinnspiel|gewinnen|giveaway|win tickets|/gewinnspiele/", re.I)        # en dessous : pas de verdict (simple mention)
 _MONTHS_FR = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
 _MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 
 def _signals(hit: dict) -> List[Tuple[float, float]]:
     """[(score [-1,1], poids)] d'un article."""
+    if _GIVEAWAY_RE.search(f'{hit.get("headline", "")} {hit.get("url", "")}'):
+        return []                      # « Monopol verlost 2 Karten für… » : pas un avis
     sig = []
     if hit.get("stars") is not None:
         sig.append(((hit["stars"] - 3.0) / 2.0, 1.0))
@@ -876,7 +1087,7 @@ def _signals(hit: dict) -> List[Tuple[float, float]]:
         sig.append((0.4, 0.6))          # dans une sélection : « plutôt positif »
     s, w = text_score(f'{hit.get("headline", "")}. {hit.get("dek", "")}')
     if w and abs(s) >= 0.25:
-        sig.append((s, 0.5))
+        sig.append((s * 0.8, 0.5))      # le lexique est moins fiable qu'une note : atténué
     return sig
 
 
@@ -915,7 +1126,7 @@ def _as_date(opens) -> Optional[date]:
 
 def press_for(kind: str, venue: str, title: str, url: str = "", opens=None,
               cache_path: Path = _CACHE_PATH, use_nachtkritik: bool = True,
-              today: Optional[date] = None) -> dict:
+              today: Optional[date] = None, aliases: Iterable[str] = ()) -> dict:
     """Buzz presse d'un item, depuis les caches uniquement (aucun réseau).
 
     status :
@@ -926,9 +1137,15 @@ def press_for(kind: str, venue: str, title: str, url: str = "", opens=None,
     hits : articles trouvés (avec URL, pour déboguer — à ne pas afficher).
     """
     try:
-        hits = press_hits(kind, venue, title, url, cache_path)
+        hits = press_hits(kind, venue, title, url, cache_path, aliases)
     except Exception:  # noqa: BLE001 — bonus, jamais bloquant
         hits = []
+    d_open = _as_date(opens)
+    if d_open and d_open > (today or date.today()) and not any(h.get("stars") is not None for h in hits):
+        # pas encore ouvert : une annonce ou une liste « à venir » n'est pas une critique
+        return {"status": "not_open", "key": None, "level": None, "level_fr": None, "basis": "",
+                "basis_fr": "", "score": None, "sources": [], "covered_by": sorted({h["outlet"] for h in hits}),
+                "example": None, "opens": d_open.isoformat(), "hits": hits}
     weighted: List[Tuple[float, float, str]] = []
     example = None
     for h in hits:
@@ -966,21 +1183,18 @@ def press_for(kind: str, venue: str, title: str, url: str = "", opens=None,
         n = len(covered)
         result.update(status="covered", basis=f"{n} source{'s' if n > 1 else ''}",
                       basis_fr=f"{n} source{'s' if n > 1 else ''}")
-        return result
-    d = _as_date(opens)
-    if d and d > (today or date.today()):
-        result.update(status="not_open", opens=d.isoformat())
     return result
 
 
 def buzz_line(kind: str, venue: str, title: str, url: str = "", lang: str = "fr",
-              opens=None, cache_path: Path = _CACHE_PATH, with_example: bool = True) -> str:
+              opens=None, cache_path: Path = _CACHE_PATH, with_example: bool = True,
+              aliases: Iterable[str] = ()) -> str:
     """Ligne prête pour la carte, sans lien.
 
     fr : « 📰 Buzz : 👍 plutôt positif (2 sources) · ex. « klein, aber sehr lohnend » (Jüdische Allgemeine) »
     en : « 📰 Buzz: 👍 positive (2 sources) · e.g. “klein, aber sehr lohnend” (Jüdische Allgemeine) »
     """
-    b = press_for(kind, venue, title, url, opens=opens, cache_path=cache_path)
+    b = press_for(kind, venue, title, url, opens=opens, cache_path=cache_path, aliases=aliases)
     return format_buzz(b, lang, with_example)
 
 
@@ -1013,7 +1227,8 @@ def _report(items: Iterable[dict], lang: str, verbose: bool = True) -> None:
     n = 0
     for it in items:
         n += 1
-        b = press_for(it["kind"], it["venue"], it["title"], it.get("url", ""), opens=it.get("opens"))
+        b = press_for(it["kind"], it["venue"], it["title"], it.get("url", ""), opens=it.get("opens"),
+                      aliases=it.get("aliases") or ())
         stats[b["status"]] += 1
         print(f"- [{it['kind']}] {it['venue']} — {it['title']}\n    {format_buzz(b, lang)}")
         if verbose:
