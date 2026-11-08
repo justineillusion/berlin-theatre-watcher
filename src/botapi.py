@@ -85,6 +85,25 @@ def _windowed(show: Show) -> Show:
     return out
 
 
+def write_press_items(shows: List[Show]) -> None:
+    """state/press_items.json : ce que le job presse de nuit doit chercher."""
+    import json
+    from pathlib import Path
+    from .notify import _aliases
+    items = [{
+        "kind": s.kind, "venue": (s.venue_name or s.theater) if s.kind == "expo" else s.theater,
+        "title": s.title, "url": s.url or "",
+        "opens": s.date if s.kind == "expo" else (sorted(s.available_iso)[0][:10] if s.available_iso else None),
+        "aliases": _aliases(s),
+    } for s in shows]
+    path = Path(__file__).resolve().parent.parent / "state" / "press_items.json"
+    try:
+        path.write_text(json.dumps(items, ensure_ascii=False, indent=1))
+        print(f"📰 {len(items)} item(s) écrits pour le job presse ({path.name}).")
+    except OSError as exc:
+        print(f"   ⚠️  {path.name} non écrit : {exc}")
+
+
 def _texts(show: Show, langs: tuple) -> dict:
     show = _windowed(show)
     out = {"id": show.item_id(), "text": format_item(show), "line": digest_line(show)}
@@ -107,6 +126,7 @@ def run_multi(
 
     mode = "digest" if digest else "scan"
     by_id: Dict[str, Show] = {s.item_id(): s for s in hits}
+    write_press_items(hits)
 
     with _client() as api:
         plan = api.post(

@@ -244,16 +244,17 @@ try {
     assert.match(edits(c, OWNER)[0].text, /Ignoré/);
   });
 
-  await step("nouvelles dates : seulement à qui n'a ni vu ni ignoré", async () => {
+  await step("nouvelles dates : seulement à qui n'a ni vu, ni ignoré, ni déjà ⭐", async () => {
     const s = await scan([
       { ...hedda, dates: [...hedda.dates, "2026-12-10 20:00"] },
       ente,
       { ...lear, dates: [...lear.dates, "2026-12-15 19:30"] },
     ]);
-    // Hedda : Justine ignore → Léa seule. Lear : Léa a vu → Justine seule.
+    // Hedda : Justine ignore → Léa seule. Lear : Léa a vu, Justine l'a déjà ⭐
+    // (dans /interets) → personne : on ne repropose pas ce qui est déjà noté.
     const got = s.messages.map((m) => `${m.chat_id}:${m.item_id}`).sort();
-    assert.deepEqual(got, [`${LEA}:hedda0000001`, `${OWNER}:lear00000001`].sort());
-    assert.match(s.messages.find((m) => m.chat_id === OWNER).text, /🆕 <b>Nouvelles dates<\/b> : 15\/12/);
+    assert.deepEqual(got, [`${LEA}:hedda0000001`]);
+    assert.match(s.messages[0].text, /🆕 <b>Nouvelles dates<\/b> : 10\/12/);
   });
 
   await step("le même scan rejoué : rien (idempotent)", async () => {
@@ -273,12 +274,13 @@ try {
     assert.deepEqual(s.messages.map((m) => m.chat_id), [OWNER]);
   });
 
-  await step("récap : par personne, sans le vu/ignoré, avec la ligne 👥", async () => {
+  await step("récap : par personne, sans le vu / ignoré / déjà ⭐, avec la ligne 👥", async () => {
     const s = await scan([hedda, ente, lear], "digest");
     const j = s.messages.filter((m) => m.chat_id === OWNER).map((m) => m.text).join("\n");
     const l = s.messages.filter((m) => m.chat_id === LEA).map((m) => m.text).join("\n");
     assert.doesNotMatch(j, /Hedda/);               // ignorée par Justine
-    assert.match(j, /King Lear\n   👥 ⭐ toi · ✅ ★★★★☆ \(1 avis\)/);
+    assert.doesNotMatch(j, /King Lear/);           // déjà ⭐ par Justine : dans /interets, pas reproposée
+    assert.match(j, /Die Wildente/);
     assert.doesNotMatch(l, /King Lear/);           // vue par Léa
     assert.doesNotMatch(l, /Wildente/);            // Schaubühne décochée
   });
@@ -389,6 +391,9 @@ try {
     const kb = sends(c, LEA)[0].reply_markup.inline_keyboard[0].map((b) => b.callback_data);
     assert.deepEqual(kb, ["l:fr", "l:en"]);
     c = await click(LEA, "l:en", 9001);
+    // menu « / » de CE chat en anglais (Telegram suit sinon la langue de l'appli)
+    const menu = c.find((x) => x.method === "setMyCommands" && x.scope?.type === "chat" && x.scope.chat_id === LEA);
+    assert.ok(menu && menu.commands.some((m) => m.command === "language"), "menu par chat en anglais");
     assert.match(edits(c, LEA)[0].text, /English/);
     assert.match(sends(await say(LEA, "/aide"), LEA)[0].text, /How it works[\s\S]*\/language/);
     assert.match(sends(await say(LEA, "/suivre"), LEA)[0].text, /What do you want to follow/);
@@ -497,10 +502,11 @@ try {
   await step("lieu sauté par un scan (site en panne) : son programme reste dans /programme", async () => {
     const menu = async () => sends(await say(OWNER, "/programme"), OWNER)[0].reply_markup.inline_keyboard.flat().map((b) => b.text).join("|");
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear] });
-    const before = await menu();
-    assert.match(before, /Schaub/);
+    const schau = (m) => (m.match(/Schaubühne \(\d+\)/) || [""])[0];
+    const before = schau(await menu());
+    assert.ok(before);
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, lear] });   // rien de la Schaubühne
-    assert.equal(await menu(), before);
+    assert.equal(schau(await menu()), before);   // (comparaison ciblée : horodatage à la seconde)
   });
 
   await step("horizon : expos ouvertes / sous 7 j, pièces jouées sous 14 j (ces dates seulement) ; annoncé en entrant", async () => {
@@ -555,15 +561,17 @@ try {
     c = await click(LEA, "i:film00000001", 6300, GROUP, "group", "⭐ Justine …");
     assert.match(edits(c, GROUP)[0].text, /Plan !<\/b> Justine et Léa veulent y aller\n\n🎬/);
     assert.match(sends(await say(OWNER, "/interets"), OWNER)[0].text, /🎬 .*Barry Lyndon/);
+    // ⭐ : plus reproposé dans « Films de la semaine », il vit dans « Nos envies »
     const menu = sends(await say(OWNER, "/programme"), OWNER)[0].reply_markup.inline_keyboard.flat();
-    assert.ok(menu.some((b) => b.text === "🎬 Films de la semaine (1)" && b.callback_data === "pk:film:0"));
-    const cards = sends(await click(OWNER, "pk:film:0", 6400), OWNER);
+    assert.ok(!menu.some((b) => b.callback_data === "pk:film:0"));
+    assert.ok(menu.some((b) => b.callback_data === "pk:star:0"));
+    const cards = sends(await click(OWNER, "pk:star:0", 6400), OWNER).filter((m) => /Barry Lyndon/.test(m.text));
     assert.match(cards[0].text, /Barry Lyndon/);
     assert.equal(cards[0].reply_markup.inline_keyboard[0].length, 3);
     // 🔕 : plus jamais, même avec de nouvelles séances
     await click(OWNER, "x:film00000001", jm);
     r = await run({ ...film, dates: [d1, d2, `${soon(6)} 19:00`] });
-    assert.deepEqual(r.messages.map((m) => m.chat_id), [LEA]);
+    assert.deepEqual(r.messages.map((m) => m.chat_id), []);   // Justine 🔕, Léa déjà ⭐ : rien
   });
 
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {

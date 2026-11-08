@@ -307,3 +307,35 @@ export const langKeyboard = (onboarding = false) => ({
     { text: "🇬🇧 English", callback_data: `l:en${onboarding ? ":1" : ""}` },
   ]],
 });
+
+// ---------------------------------------------------------------------------
+// Menus de commandes (« / »). Telegram choisit selon la langue de l'APPLI ; on
+// pose en plus un menu PAR CHAT dans la langue choisie (setChatMenu).
+// ---------------------------------------------------------------------------
+export const COMMANDS = [
+  { command: "programme", description: "Tout ce qui est à l'affiche dans mes lieux" },
+  { command: "suivre", description: "Choisir ses théâtres, lieux d'expo et cinémas" },
+  { command: "interets", description: "Ce qui tente la bande ⭐" },
+  { command: "vus", description: "Mes sorties et mes notes" },
+  { command: "ignores", description: "Réactiver une pièce/expo ignorée" },
+  { command: "langue", description: "🇫🇷 Français / 🇬🇧 English" },
+  { command: "aide", description: "Comment ça marche" },
+];
+export const COMMANDS_EN = [
+  { command: "programme", description: "Everything on in my venues" },
+  { command: "suivre", description: "Choose theatres, exhibition venues and cinemas" },
+  { command: "interets", description: "What the gang fancies ⭐" },
+  { command: "vus", description: "My outings and ratings" },
+  { command: "ignores", description: "Un-ignore a play/exhibition" },
+  { command: "language", description: "🇫🇷 Français / 🇬🇧 English" },
+  { command: "aide", description: "How it works" },
+];
+
+/** Menu « / » de CE chat dans la langue choisie (inscription, /langue, /api/setup). */
+export async function setChatMenu(env: { BOT_TOKEN: string; TG_API?: string }, chat: number, lang: string | null | undefined) {
+  const base = env.TG_API || "https://api.telegram.org";
+  await fetch(`${base}/bot${env.BOT_TOKEN}/setMyCommands`, {
+    method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ commands: asLang(lang) === "en" ? COMMANDS_EN : COMMANDS, scope: { type: "chat", chat_id: chat } }),
+  }).catch(() => undefined);
+}

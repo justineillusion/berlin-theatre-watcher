@@ -121,6 +121,30 @@ def _summary(show: Show, lang: str):
     return show.summary_en if lang == "en" else show.summary
 
 
+def _aliases(show: Show) -> List[str]:
+    """Autres titres pour la presse : « Die Wildente (The Wild Duck) » -> les deux."""
+    import re as _re
+    m = _re.match(r"^(.*?)\s*\((.*?)\)\s*$", show.title or "")
+    out = [m.group(1), m.group(2)] if m else []
+    return [a for a in out + list(getattr(show, "aliases", None) or []) if a and a != show.title]
+
+
+def press_line(show: Show, lang: str = "fr") -> str:
+    """Ligne 📰 unique de la fiche : buzz presse (cache seul, src/press.py, qui
+    intègre déjà Nachtkritik) + lien vers la critique Nachtkritik si connue."""
+    try:
+        from .press import buzz_line
+        venue = (show.venue_name or show.theater) if show.kind == "expo" else show.theater
+        opens = show.date if show.kind == "expo" else (sorted(show.available_iso)[0][:10] if show.available_iso else None)
+        line = _esc(buzz_line(show.kind, venue, show.title, show.url or "", lang, opens=opens, aliases=_aliases(show)))
+    except Exception:  # noqa: BLE001 — la presse est un bonus, jamais bloquante
+        line = ""
+    if show.critics:
+        nk = f'<a href="{html.escape(show.critics.url)}">Nachtkritik {show.critics.star_bar()}</a>'
+        line = f"{line} · {nk}" if line else f"📰 {nk}"
+    return line
+
+
 def digest_line(show: Show, lang: str = "fr") -> str:
     """Bloc d'une pièce/expo dans un récap (sans la ligne « amis », ajoutée par
     le bot multi-utilisateurs)."""
@@ -159,6 +183,9 @@ def format_expo(show: Show, lang: str = "fr") -> str:
         lines.append(f"🗓 {_esc(period[0].upper() + period[1:])}")
     if show.languages:
         lines.append(f"✍️ {_esc(show.languages)}")
+    press = press_line(show, lang)
+    if press:
+        lines.append(press)
     summary = _summary(show, lang)
     if summary:
         lines.append(f"\n📝 {_esc(summary)}")
@@ -234,12 +261,9 @@ def format_show(show: Show, lang: str = "fr") -> str:
     spoken = " · ".join(p for p in _labels(show, lang) if p)
     if spoken:
         lines.append(f"🗣 {_esc(spoken)}")
-    if show.critics:
-        lines.append(
-            (f"📰 Press: {show.critics.label(lang)}" if en else f"📰 Presse : {show.critics.label()}")
-            + f' (<a href="{html.escape(show.critics.url)}">Nachtkritik</a>, '
-            + ("estimated)" if en else "note estimée)")
-        )
+    press = press_line(show, lang)
+    if press:
+        lines.append(press)
     summary = _summary(show, lang)
     if summary:
         lines.append(f"\n📝 {_esc(summary)}")

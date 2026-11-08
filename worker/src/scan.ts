@@ -70,6 +70,9 @@ async function computePending(
       const key = `${sub.chat_id}|${item.id}`;
       const r = react.get(key);
       if (r?.status === "seen" || r?.status === "ignored") continue;   // ✅ / 🔕 : silence
+      // ⭐ : déjà dans /interets — on ne le repropose pas (ni « nouveau », ni
+      // nouvelles dates). Seule exception : le rappel « dernières semaines » d'une expo.
+      const wanted = !!r?.interested;
       const d = deliv.get(key);
 
       if (!sub.primed) {
@@ -88,12 +91,14 @@ async function computePending(
       // l'item entre dans la fenêtre (pas encore de livraison = « nouveau »).
       const win = item.kind === "theatre" ? inWindow(dates, h) : dates;
       if (!d) {
+        if (wanted) continue;
         if (item.kind === "theatre" && !win.length) continue;
         if (item.kind === "expo" && item.start_date && item.start_date > windowEnd(h.expo)) continue;
         out.push({ chat_id: sub.chat_id, item_id: item.id, kind: "new", dates, fresh: [] });
         continue;
       }
       if (item.kind === "theatre") {
+        if (wanted) continue;
         const known = new Set<string>(JSON.parse(d.dates || "[]"));
         // Dates vraiment nouvelles ET dans la fenêtre ; celles d'après attendront
         // (non mémorisées, elles seront annoncées en y entrant).
@@ -223,7 +228,7 @@ export async function filmPlan(env: Env, body: any): Promise<Response> {
         : base;
       const key = `${t.chat_id}|${id}`;
       const r = react.get(key) ?? null;
-      if (r?.status === "seen" || r?.status === "ignored") continue;
+      if (r?.status === "seen" || r?.status === "ignored" || r?.interested) continue;   // vu / ignoré / ⭐ déjà noté
       const dates: string[] = JSON.parse(item.dates || "[]");
       const d = deliv.get(key);
       let kind: "new" | "new_dates" = "new";
@@ -437,7 +442,7 @@ export async function digestFor(
      JOIN venues v ON v.id = i.venue_id AND v.active = 1
      JOIN subscriptions s ON s.venue_id = i.venue_id AND s.chat_id = ?1
      LEFT JOIN reactions r ON r.item_id = i.id AND r.chat_id = ?1
-     WHERE (r.status IS NULL)
+     WHERE (r.status IS NULL) AND COALESCE(r.interested, 0) = 0
        AND (?2 IS NULL OR i.id IN (SELECT value FROM json_each(?2)))
        AND (?2 IS NOT NULL OR i.last_seen >= ?3 OR i.kind = 'film')
        AND (i.kind != 'film' OR (SELECT MAX(value) FROM json_each(i.dates)) >= ?5)

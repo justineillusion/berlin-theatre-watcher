@@ -10,31 +10,12 @@
 //   POST /api/setup     enregistre le webhook + le menu des commandes (Bearer API_TOKEN)
 import { handleUpdate } from "./bot";
 import { Env, tg } from "./lib";
+import { COMMANDS, COMMANDS_EN, setChatMenu } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
 
 function authorized(req: Request, env: Env): boolean {
   return !!env.API_TOKEN && req.headers.get("authorization") === `Bearer ${env.API_TOKEN}`;
 }
-
-const COMMANDS = [
-  { command: "programme", description: "Tout ce qui est à l'affiche dans mes lieux" },
-  { command: "suivre", description: "Choisir ses théâtres, lieux d'expo et cinémas" },
-  { command: "interets", description: "Ce qui tente la bande ⭐" },
-  { command: "vus", description: "Mes sorties et mes notes" },
-  { command: "ignores", description: "Réactiver une pièce/expo ignorée" },
-  { command: "langue", description: "🇫🇷 Français / 🇬🇧 English" },
-  { command: "aide", description: "Comment ça marche" },
-];
-// Menu affiché aux applis Telegram en anglais (la langue des MESSAGES, elle, se choisit par /langue).
-const COMMANDS_EN = [
-  { command: "programme", description: "Everything on in my venues" },
-  { command: "suivre", description: "Choose theatres, exhibition venues and cinemas" },
-  { command: "interets", description: "What the gang fancies ⭐" },
-  { command: "vus", description: "My outings and ratings" },
-  { command: "ignores", description: "Un-ignore a play/exhibition" },
-  { command: "language", description: "🇫🇷 Français / 🇬🇧 English" },
-  { command: "aide", description: "How it works" },
-];
 
 export default {
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -85,6 +66,11 @@ export default {
           scope: { type: "all_group_chats" },
         });
         await tg(env, "setChatMenuButton", { menu_button: { type: "commands" } });
+        // Telegram choisit le menu selon la langue de l'APPLI : on pose donc, par
+        // chat, le menu dans la langue choisie par la personne (users.lang).
+        const { results: users } = await env.DB.prepare(
+          "SELECT chat_id, lang FROM users WHERE active = 1 LIMIT 40").all<{ chat_id: number; lang: string | null }>();
+        for (const u of users) await setChatMenu(env, u.chat_id, u.lang);
         return Response.json({ webhook: hook, commands: cmds });
       }
     }

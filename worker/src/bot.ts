@@ -4,7 +4,7 @@ import {
   send, setSetting, setting, socialBlock, stars, tg, windowSql,
 } from "./lib";
 import { digestFor } from "./scan";
-import { Lang, asLang, guessLang, langKeyboard, tr } from "./i18n";
+import { Lang, asLang, guessLang, langKeyboard, setChatMenu, tr } from "./i18n";
 import {
   announceInterest, announceReview, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
 } from "./group";
@@ -164,6 +164,7 @@ async function onStart(env: Env, from: TgUser, user: any, code?: string): Promis
       .bind(chat),
   ]);
   // Langue par défaut : français (users.lang). Le choix est proposé tout de suite.
+  await setChatMenu(env, chat, "fr");
   const T = tr("fr");
   await send(env, chat, T.welcome(esc(from.first_name)) + help(env, chat, "fr") + "\n\n" + T.noSpam);
   await send(env, chat, T.defaultAll, await followKeyboard(env, chat, "fr"));
@@ -322,13 +323,16 @@ async function myDelivery(env: Env, chat: number, item: string) {
 const PAGE = 5;
 
 /** Items « à l'affiche » vus par `chat` : lieux suivis, encore programmés, pas ignorés. */
-const current = (h: Horizon) => `
+/** `keepStarred` : « Nos envies » montre justement les ⭐ ; ailleurs, ce que
+ *  la personne a déjà vu, ignoré ou marqué ⭐ n'est plus reproposé. */
+const current = (h: Horizon, keepStarred = false) => `
   ${windowSql(h)} AND
   i.venue_id IN (SELECT venue_id FROM subscriptions WHERE chat_id = ?1)
   AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
             ELSE i.last_seen >= ?2 END)
   AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now'))
-  AND NOT EXISTS (SELECT 1 FROM reactions x WHERE x.item_id = i.id AND x.chat_id = ?1 AND x.status = 'ignored')`;
+  AND NOT EXISTS (SELECT 1 FROM reactions x WHERE x.item_id = i.id AND x.chat_id = ?1
+                  AND (x.status IS NOT NULL ${keepStarred ? "" : "OR x.interested = 1"}))`;
 
 async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | null = null): Promise<{ text: string; kb: unknown }> {
   const T = tr(lang);
@@ -344,7 +348,7 @@ async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | 
   ).bind(chat, since).all<{ kind: string; n: number }>();
   const star = await env.DB.prepare(
     `SELECT COUNT(DISTINCT r.item_id) AS n FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
-     JOIN items i ON i.id = r.item_id WHERE r.interested = 1 AND r.status IS NULL AND ${cur}`,
+     JOIN items i ON i.id = r.item_id WHERE r.interested = 1 AND r.status IS NULL AND ${current(await horizon(env), true)}`,
   ).bind(chat, since).first<{ n: number }>();
   const count = (k: string) => kinds.find((x) => x.kind === k)?.n ?? 0;
   const rows: unknown[][] = [];
@@ -365,9 +369,9 @@ async function programmeMenu(env: Env, chat: number, lang: Lang, kind: string | 
 /** Une page de fiches : `filter` = « pk:<theatre|expo|film|star> » ou « pv:<lieu> ». */
 async function browse(env: Env, chat: number, lang: Lang, filter: string, offset: number): Promise<void> {
   const T = tr(lang);
-  const cur = current(await horizon(env));
-  const since = (await setting(env, "current_since")) ?? "";
   const [type, value] = [filter.slice(0, 2), filter.slice(3)];
+  const cur = current(await horizon(env), value === "star");
+  const since = (await setting(env, "current_since")) ?? "";
   const where = type === "pv" ? "i.venue_id = ?3"
     : value === "star"
       ? `EXISTS (SELECT 1 FROM reactions r JOIN users u ON u.chat_id = r.chat_id AND u.active = 1
@@ -427,6 +431,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     lang = asLang(code);
     T = tr(lang);
     await env.DB.prepare("UPDATE users SET lang = ? WHERE chat_id = ?").bind(lang, chat).run();
+    await setChatMenu(env, chat, lang);
     await edit(env, cq.message.chat.id, cq.message.message_id, T.langSet);
     await answer();
     // Inscription : l'accueil est parti en français ; on le redonne dans la langue choisie.
