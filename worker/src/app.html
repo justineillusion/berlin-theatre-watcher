@@ -81,6 +81,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .who .lbl{font-size:12.5px;color:var(--muted);margin-right:2px}
 .sent{font-size:13px;color:var(--ok)}
 .note{width:100%;border:1.5px solid var(--ink);border-radius:0;padding:9px 10px;font:500 15px var(--sans);background:var(--bg);color:var(--ink)}
+.review-in{resize:vertical;margin:8px 0 2px;line-height:1.4}
 .note:focus{outline:2px solid var(--velvet);outline-offset:0}
 .detail .m{color:var(--muted);font-size:14px}
 .detail .syn{font:400 15px/1.5 var(--sans)}
@@ -135,7 +136,7 @@ const L = {
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
-        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", undoSeen:"↩︎ Pas vu", band:"La bande",
+        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
@@ -145,7 +146,7 @@ const L = {
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
-        reviewInChat:"The bot is waiting in the chat: reply with your review.", undoSeen:"↩︎ Not seen", band:"The gang",
+        reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
 };
@@ -269,7 +270,9 @@ function item(x) {
   if (s === "seen") {
     h += `<div class="mine"><div class="sect">${esc(T.myReview)}</div>${me.rating || me.comment ? reviewBlock(x, true) : ""}
       <div class="acts">${[1,2,3,4,5].map((n) => `<button class="act rate ${me.rating === n ? "on" : ""}" data-act="r" data-id="${x.id}" data-arg="${n}">${n}★</button>`).join("")}</div>
-      <div class="acts"><button class="act" data-act="w" data-id="${x.id}">${me.comment ? T.editReview : T.writeReview}</button>
+      ${st.writing === x.id ? `<textarea id="review" class="note review-in" maxlength="500" rows="4" placeholder="${esc(T.reviewPh)}">${esc(me.comment || "")}</textarea>
+      <div class="acts"><button class="act on" data-savereview="${x.id}">${esc(T.save)}</button><button class="act" data-writing="">${esc(T.cancel)}</button></div>` : ""}
+      <div class="acts">${st.writing === x.id ? "" : `<button class="act" data-writing="${x.id}">${me.comment ? T.editReview : T.writeReview}</button>`}
       <button class="act" data-act="u" data-id="${x.id}">${T.undoSeen}</button></div></div>`;
   }
   const friends = (x.friends || []).filter((p) => p.seen && (p.rating || p.comment));
@@ -403,6 +406,8 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.sharing) { st.sharing = st.sharing === t.dataset.sharing ? null : t.dataset.sharing; st.picking = null; st.sel.clear(); }
   else if (t.dataset.sel) { const n = +t.dataset.sel; st.sel.has(n) ? st.sel.delete(n) : st.sel.add(n); }
   else if (t.dataset.with) { const n = +t.dataset.with; st.withs.has(n) ? st.withs.delete(n) : st.withs.add(n); }
+  else if (t.dataset.writing !== undefined) { st.writing = t.dataset.writing || null; render(); if (st.writing) setTimeout(() => $("review")?.focus(), 0); return; }
+  else if (t.dataset.savereview) { const txt = $("review")?.value || ""; st.writing = null; return void act("review", t.dataset.savereview, "", { path: "review", body: { text: txt } }); }
   else if (t.dataset.note) { st.note = t.dataset.note; }
   else if (t.dataset.share) { const n = st.note; st.note = ""; return void act("share", t.dataset.share, "", { path: "share", body: { to: [...st.sel], note: n } }); }
   else if (t.dataset.act === "bd") return void act("bd", t.dataset.id, t.dataset.arg, { body: { with: [...st.withs] } });

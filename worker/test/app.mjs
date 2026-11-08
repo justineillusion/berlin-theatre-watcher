@@ -94,12 +94,11 @@ await step("programme : mes lieux, envies des amis", async () => {
   assert.equal(item(s, "p1").me, null);
   assert.equal(s.venues.length, 3);
 });
-await step("⭐ : envie enregistrée + annonce au groupe", async () => {
+const noMessages = () => assert.ok(!calls.some((c) => /^send/.test(c.method)), JSON.stringify(calls.map((c) => [c.method, c.chat_id])));
+await step("⭐ : envie enregistrée, aucun message (ni groupe ni privé)", async () => {
   const s = await act("i", "p1");
   assert.equal(item(s, "p1").me.star, 1);
-  const ann = calls.find((c) => c.method === "sendMessage" && c.chat_id == GROUP);
-  assert.ok(ann, JSON.stringify(calls.map((c) => c.method)));
-  assert.ok(JSON.stringify(ann.reply_markup).includes("t.me/TestBot/Programme?startapp=p1"), JSON.stringify(ann.reply_markup));
+  noMessages();
 });
 await step("ouvert depuis le groupe (startapp) : la fiche est là même hors de mes lieux", async () => {
   const without = (await post("/app/api/state", { initData: me })).json;
@@ -114,11 +113,20 @@ await step("🙅 Pas pour moi puis ↩︎", async () => {
 await step("🎟 réservé à une séance", async () => {
   const s = await act("bd", "p1", day(5).replace(/\D/g, "") + "2000");
   assert.equal(item(s, "p1").me.booked, `${day(5)} 20:00`);
-  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id == GROUP));
+  await new Promise((r) => setTimeout(r, 300)); noMessages();
 });
 await step("✅ vu puis ★★★★", async () => {
   assert.equal(item(await act("v", "p2"), "p2").me.status, "seen");
   assert.equal(item(await act("r", "p2", "4"), "p2").me.rating, 4);
+  await new Promise((r) => setTimeout(r, 300)); noMessages();
+});
+await step("✍️ critique écrite dans l'app : enregistrée, rien d'envoyé", async () => {
+  calls = [];
+  const r = await post("/app/api/review", { initData: me, id: "p2", text: "  Sublime, un peu long.  " });
+  assert.equal(r.status, 200, JSON.stringify(r.json));
+  assert.equal(item(r.json, "p2").me.comment, "Sublime, un peu long.");
+  assert.equal(item(r.json, "p2").me.rating, 4);
+  await new Promise((r) => setTimeout(r, 300)); noMessages();
 });
 await step("💌 envoyer à Joss : message privé, dans sa langue", async () => {
   calls = [];

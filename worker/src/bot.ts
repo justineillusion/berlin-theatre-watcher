@@ -572,6 +572,9 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   const venue = await env.DB.prepare("SELECT name FROM venues WHERE id = ?").bind(item.venue_id).first<{ name: string }>();
   const prev = await getReaction(env, chat, item.id);
   const inGroup = cq.message?.chat?.type !== "private";
+  // Depuis la mini-app : rien n'est posté au groupe (⭐, note, réservation). On n'écrit
+  // aux autres que quand on clique « Envoyer à… ».
+  const quiet = cq.id === "app";
   let r: Reaction;
   let toast = "";
   let socialChanged = true;
@@ -621,7 +624,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     return void (await answer());
   }
   if (op === "bd") {
-    const r2 = await book(env, chat, from.first_name, item, decodeWhen(arg), lang, ctx);
+    const r2 = await book(env, chat, from.first_name, item, decodeWhen(arg), lang, ctx, quiet);
     if (clickedId) await restore(env, chat, item, r2, clickedId, where, lang);
     return void (await answer(T.toastBooked(whenLabel(decodeWhen(arg), lang))));
   }
@@ -683,7 +686,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
         // ailleurs (avis, liste /programme, notif privée) : nouvelle annonce.
         const clickedText = String(cq.message?.text ?? "");
         const editId = inGroup && /^(⭐|🎟)/u.test(clickedText) ? cq.message.message_id : undefined;
-        ctx.waitUntil(announceInterest(env, item, venue?.name, from.first_name, editId));
+        if (!quiet) ctx.waitUntil(announceInterest(env, item, venue?.name, from.first_name, editId));
       }
       break;
     }
@@ -704,7 +707,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
       toast = T.toastRated(stars(n));
       // Plus d'invitation automatique : la fiche montre [✍️ Critique] (une étape à la fois).
       // Changer sa note ne ré-annonce pas au groupe : seulement la 1re note.
-      if (!prev?.rating) ctx.waitUntil(announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null));
+      if (!prev?.rating && !quiet) ctx.waitUntil(announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null));
       break;
     }
     case "w":
@@ -924,13 +927,13 @@ async function refreshMine(env: Env, chat: number, item: Item, r: Reaction, lang
 
 /** Réserver = intéressé·e + date ; annonce au groupe avec « 🙋 J'y vais aussi ». */
 async function book(
-  env: Env, chat: number, who: string, item: Item, iso: string, lang: Lang, ctx: ExecutionContext,
+  env: Env, chat: number, who: string, item: Item, iso: string, lang: Lang, ctx: ExecutionContext, quiet = false,
 ): Promise<Reaction> {
   const r = await setReaction(env, chat, item.id, {
     interested: 1, booked_at: iso, booked_on: new Date().toISOString().slice(0, 19).replace("T", " "), followup_sent: 0,
   });
   ctx.waitUntil((async () => {
-    const group = await groupChat(env);
+    const group = quiet ? null : await groupChat(env);
     if (group) {
       const glang = await grpLang(env);
       const G = tr(glang);
@@ -946,3 +949,19 @@ async function book(
 }
 
 export { socialBlock, type Friend };
+
+/** Critique écrite dans la mini-app : enregistrée sans rien poster (ni au groupe, ni en privé) ;
+ *  ma fiche et celles de mes amis se mettent à jour en silence. */
+export async function saveReviewFromApp(env: Env, chat: number, itemId: string, text: string, ctx: ExecutionContext): Promise<boolean> {
+  const item = await getItem(env, itemId);
+  if (!item) return false;
+  const u = await env.DB.prepare("SELECT lang FROM users WHERE chat_id = ?").bind(chat).first<{ lang: string | null }>();
+  const comment = text.trim().slice(0, 500) || null;
+  const r = await setReaction(env, chat, item.id, { status: "seen", comment });
+  await env.DB.prepare("UPDATE review_prompts SET closed = 1 WHERE chat_id = ? AND item_id = ?").bind(chat, itemId).run();
+  ctx.waitUntil((async () => {
+    await refreshMine(env, chat, item, r, asLang(u?.lang));
+    await refreshAll(env, item, chat);
+  })());
+  return true;
+}

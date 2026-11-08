@@ -11,7 +11,7 @@
 // on le vérifie (HMAC), on n'a donc ni login ni mot de passe.
 // Les actions passent par le même code que les boutons du chat (handleUpdate) :
 // annonces au groupe, fiches mises à jour, tout reste cohérent.
-import { handleUpdate } from "./bot";
+import { handleUpdate, saveReviewFromApp } from "./bot";
 import { Env, Item, esc, getItem, getReaction, inCircle, loadCircles, itemText, keyboard, send, whenLabel } from "./lib";
 import { acceptFriend, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
 import { Lang, asLang } from "./i18n";
@@ -77,6 +77,13 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     // La langue a pu changer (« l ») : on la relit.
     const lang = op === "l" ? asLang(id) : asLang(me.lang);
     return Response.json(await state(env, me.chat_id, lang, focus));
+  }
+  if (url.pathname === "/app/api/review") {
+    // ✍️ Critique écrite dans l'app : enregistrée, rien n'est envoyé à personne.
+    const id = String(body.id ?? "");
+    if (!/^[\w-]{1,40}$/.test(id) || typeof body.text !== "string") return Response.json({ error: "bad_request" }, { status: 400 });
+    if (!(await saveReviewFromApp(env, me.chat_id, id, body.text, ctx))) return Response.json({ error: "not_found" }, { status: 404 });
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   if (url.pathname === "/app/api/friend") {
     // 👋 Mes amis : add (ami d'ami) | accept | ignore | remove (sans prévenir).
