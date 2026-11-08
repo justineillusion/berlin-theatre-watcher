@@ -296,13 +296,17 @@ async function outings(env: Env, chat: number, lang: Lang): Promise<{ text: stri
     parts.push(`${T.outSeen}\n` + seen.map((r) => `${KIND_ICON[r.kind] ?? "🎭"} ${link(r)}${r.rating ? ` ${stars(r.rating)}` : ""}`
       + (r.comment ? `\n   « ${esc(r.comment)} »` : "")).join("\n"));
   }
-  const short = (t: string) => (t.length > 28 ? t.slice(0, 27) + "…" : t);
-  const rows: any[][] = active.map((r) => [
-    { text: T.btnBookList(short(r.title), !!r.booked_at), callback_data: `b:${r.id}` },
-    { text: T.btnSeen(r.kind === "expo"), callback_data: `v:${r.id}` },
-    { text: "✖", callback_data: `ui:${r.id}` },
-  ]);
-  for (const r of seen) rows.push([{ text: T.btnRateList(short(r.title), !!r.rating), callback_data: `rt:${r.id}` }]);
+  // Une ligne = un bouton pleine largeur (Telegram donne la même largeur à chaque
+  // bouton d'une ligne) : « 🎭 Titre · 🎟 » -> sélecteur de dates (+ ✅ Déjà vu / ✖ Retirer).
+  const short = (t: string) => (t.length > 34 ? t.slice(0, 33) + "…" : t);
+  const icon = (r: any) => KIND_ICON[r.kind] ?? "🎭";
+  const rows: any[][] = active.map((r) => [{
+    text: `${icon(r)} ${short(r.title)} · 🎟${r.booked_at ? ` ${whenLabel(r.booked_at.slice(0, 10), lang)}` : ""}`,
+    callback_data: `b:${r.id}`,
+  }]);
+  for (const r of seen) {
+    rows.push([{ text: `${icon(r)} ${short(r.title)} · ${r.rating ? "✍️" : "★"}`, callback_data: `rt:${r.id}` }]);
+  }
   return { text: parts.join("\n\n").slice(0, 4000), kb: rows.length ? { inline_keyboard: rows.slice(0, 40) } : undefined };
 }
 
@@ -548,7 +552,9 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
 
   // --- 🎟 réservations ------------------------------------------------------
   if (op === "b") {
-    await send(env, chat, T.bookPick(esc(item.title)), bookPicker(item, prev, lang));
+    // Depuis /sorties : le sélecteur sait quel message rafraîchir après ✖.
+    const fromOutings = /^🗂 (Mes sorties|My outings)/.test(cq.message?.text ?? "") ? cq.message.message_id : null;
+    await send(env, chat, T.bookPick(esc(item.title)), bookPicker(item, prev, lang, fromOutings));
     return void (await answer());
   }
   if (op === "bd") {
@@ -582,10 +588,13 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     // ✖ depuis /interets : retire ⭐ (et la réservation), sans « ignoré » : l'item
     // revient dans /programme. La liste est rafraîchie sur place.
     const r2 = await setReaction(env, chat, item.id, { interested: 0, booked_at: null, booked_on: null, followup_sent: 0 });
-    if (cq.message?.message_id) {
+    // ✖ depuis le sélecteur : on rafraîchit /sorties (arg = son message) et on retire le sélecteur.
+    const target = arg ? Number(arg) : cq.message?.message_id;
+    if (target) {
       const o = await outings(env, chat, lang);
-      await edit(env, chat, cq.message.message_id, o.text, o.kb);
+      await edit(env, chat, target, o.text, o.kb);
     }
+    if (arg && cq.message?.message_id) await tg(env, "deleteMessage", { chat_id: chat, message_id: cq.message.message_id });
     await refreshMine(env, chat, item, r2, lang);
     ctx.waitUntil(refreshAll(env, item, chat));
     return void (await answer(T.toastNotForMe));
@@ -752,7 +761,7 @@ export function parseDate(text: string, today = new Date()): string | null {
 }
 
 /** Sélecteur : ~6 prochaines dates connues (pièces/films) ; expos : aujourd'hui / demain / ce week-end. */
-function bookPicker(item: Item, r: Reaction | null, lang: Lang): unknown {
+function bookPicker(item: Item, r: Reaction | null, lang: Lang, outingsMsg: number | null = null): unknown {
   const T = tr(lang);
   const rows: { text: string; callback_data: string }[][] = [];
   const today = isoDay(new Date());
@@ -774,6 +783,12 @@ function bookPicker(item: Item, r: Reaction | null, lang: Lang): unknown {
   }
   rows.push([{ text: T.bookOther, callback_data: `bo:${item.id}` }]);
   if (r?.booked_at) rows.push([{ text: T.bookCancel, callback_data: `bx:${item.id}` }]);
+  if (outingsMsg) {
+    rows.push([
+      { text: T.btnAlreadySeen, callback_data: `v:${item.id}` },
+      { text: T.btnRemove, callback_data: `ui:${item.id}:${outingsMsg}` },
+    ]);
+  }
   return { inline_keyboard: rows };
 }
 

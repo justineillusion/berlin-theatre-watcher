@@ -189,8 +189,7 @@ try {
     for (const cmd of ["/sorties", "/interets"]) {
       const m = sends(await say(LEA, cmd), LEA)[0];
       assert.match(m.text, /^🗂 <b>Mes sorties<\/b>\n\n⭐ <b>Intéressé·e<\/b>\n🎭 <a[^>]*>King Lear<\/a> <i>\(Berliner Ensemble\)<\/i>\n   👥 Justine/);
-      assert.deepEqual(m.reply_markup.inline_keyboard[0].map((b) => b.callback_data),
-        ["b:lear00000001", "v:lear00000001", "ui:lear00000001"]);
+      assert.deepEqual(m.reply_markup.inline_keyboard[0], [{ text: "🎭 King Lear · 🎟", callback_data: "b:lear00000001" }]);
     }
   });
 
@@ -635,11 +634,12 @@ try {
     const li = sends(await say(OWNER, "/interets"), OWNER)[0];
     const lrows = li.reply_markup.inline_keyboard;
     const mc = lrows.find((r) => r[0].callback_data === "b:book00000001");
-    assert.equal(mc[0].text, "🎟 Mutter Courage · changer la date");
-    assert.equal(mc[1].callback_data, "v:book00000001");
-    assert.ok(lrows.every((r) => r[0].text.length <= 31 + 20));
+    assert.match(mc[0].text, /^🎭 Mutter Courage · 🎟 \S+ \d+ \S+$/);           // date courte, sans l'heure
+    assert.ok(lrows.every((r) => r.length === 1));                                  // un bouton pleine largeur par ligne
     c = await click(OWNER, "b:book00000001", li._id, OWNER, "private", "🗂 Mes sorties");
     assert.match(sends(c, OWNER)[0].text, /Mutter Courage<\/b> : pour quelle date/);
+    assert.deepEqual(sends(c, OWNER)[0].reply_markup.inline_keyboard.at(-1).map((b) => b.callback_data),
+      ["v:book00000001", `ui:book00000001:${li._id}`]);
     // Max (groupe) : « J'y vais aussi » → intéressé + lien en privé
     c = await click(MAX, row[0].callback_data, ann._id, GROUP, "group", ann.text);
     assert.match(sends(c, MAX)[0].text, /Mutter Courage[\s\S]*https:\/\/x\/book00000001/);
@@ -669,18 +669,18 @@ try {
     assert.equal(fu[0].reply_markup.inline_keyboard[0][4].callback_data, "r:book00000002:5");
     r = await scan([hedda, ente, lear, bk, past]);
     assert.equal(r.messages.filter((x) => x.kind === "followup").length, 0);
-    // ✅ depuis /interets : la ligne disparaît, la note est proposée à part
-    const li2 = sends(await say(OWNER, "/interets"), OWNER)[0];
-    assert.ok(li2.reply_markup.inline_keyboard.some((r) => r[1].callback_data === "v:book00000002"));
-    c = await click(OWNER, "v:book00000002", li2._id, OWNER, "private", "🗂 Mes sorties");
-    const km = c.find((x) => x.method === "editMessageReplyMarkup");
-    assert.ok(!km.reply_markup.inline_keyboard.some((r) => r[1]?.callback_data === "v:book00000002"));
-    assert.match(sends(c, OWNER)[0].text, /Woyzeck[\s\S]*Ta note/);
+    // ✅ Déjà vu depuis le sélecteur ouvert par /sorties : la fiche passe en « vu » avec 1–5★
+    const li2 = sends(await say(OWNER, "/sorties"), OWNER)[0];
+    c = await click(OWNER, "b:book00000002", li2._id, OWNER, "private", "🗂 Mes sorties");
+    const pk = sends(c, OWNER)[0];
+    c = await click(OWNER, "v:book00000002", pk._id, OWNER, "private", "🎟 Woyzeck : pour quelle date ?");
+    assert.equal(edits(c, OWNER).find((x) => x.message_id === pk._id).reply_markup.inline_keyboard[0].length, 5);
     // ✖ depuis /interets : plus ⭐, pas ignoré, liste rafraîchie sur place, revient dans /programme
     const li3 = sends(await say(OWNER, "/interets"), OWNER)[0];
-    const row1 = li3.reply_markup.inline_keyboard.find((r) => r[0].callback_data === "b:book00000001");
-    assert.deepEqual(row1.map((b) => b.callback_data), ["b:book00000001", "v:book00000001", "ui:book00000001"]);
-    c = await click(OWNER, "ui:book00000001", li3._id, OWNER, "private", "🗂 Mes sorties");
+    c = await click(OWNER, "b:book00000001", li3._id, OWNER, "private", "🗂 Mes sorties");
+    const pk3 = sends(c, OWNER)[0];
+    c = await click(OWNER, `ui:book00000001:${li3._id}`, pk3._id, OWNER, "private", "🎟 Mutter Courage : pour quelle date ?");
+    assert.ok(c.some((x) => x.method === "deleteMessage" && x.message_id === pk3._id));   // le sélecteur disparaît
     const ed = edits(c, OWNER).find((x) => x.message_id === li3._id);
     assert.ok(ed);
     assert.doesNotMatch(ed.text, /Mutter Courage/);          // plus dans MES sorties
@@ -694,7 +694,7 @@ try {
     const so = sends(await say(OWNER, "/sorties"), OWNER)[0];
     assert.match(so.text, /✅ <b>Vu<\/b>\n[\s\S]*Woyzeck<\/a> ★★★★☆/);
     const rr = so.reply_markup.inline_keyboard.find((r) => r[0].callback_data === "rt:book00000002");
-    assert.equal(rr[0].text, "✍️ Woyzeck");
+    assert.equal(rr[0].text, "🎭 Woyzeck · ✍️");
     c = await click(OWNER, "rt:book00000002", so._id, OWNER, "private", "🗂 Mes sorties");
     assert.equal(sends(c, OWNER)[0].reply_markup.inline_keyboard[0].length, 5);
   });
