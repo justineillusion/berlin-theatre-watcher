@@ -6,16 +6,14 @@
 <title>Berlin Encore!</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,600&family=Jost:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
-/* Berlin Encore! — un programme de salle : papier ivoire le jour, velours la nuit.
-   Titres en Bodoni (comme l'affiche), texte en Jost (géométrique, cousin de Futura). */
 :root{
-  /* Toujours sur fond blanc (choix de Justine), un seul accent : le rouge velours. */
+  /* Noir sur blanc, police moderne (Manrope). Accents rares : rouge (actions, « ! » du nom), or (étoiles). */
   --bg:#ffffff; --card:#f2f2f5; --ink:#111214; --muted:#686e75;
   --line:#e6e6ea;
-  --velvet:#b3243a; --velvet-ink:#ffffff; --gold:#b9801a; --gold-soft:#fbf3e2;
-  --ok:#2f9e5b; --serif:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif; --sans:"Jost","Futura","Avenir Next",-apple-system,sans-serif;
+  --velvet:#d7263d; --velvet-ink:#ffffff; --gold:#e0a100; --gold-soft:#fff6dc;
+  --ok:#2f9e5b; --sans:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; --serif:var(--sans);
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -27,28 +25,29 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 /* En-tête : le nom comme sur l'affiche, puis onglets et filtres collants. */
 .mast{padding:14px 16px 8px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:baseline;gap:8px;line-height:1}
-.brand small{font:600 11px var(--sans);letter-spacing:.3em;color:var(--muted)}
-.brand b{font:italic 600 26px var(--serif);letter-spacing:-.01em}
+.brand small{display:none}
+.brand b{font:800 24px var(--sans);letter-spacing:-.03em}
+.brand b i{font-style:normal;color:var(--velvet)}
 .mast time{font:500 13px var(--sans);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 .top{position:sticky;top:0;z-index:3;background:var(--bg);padding:4px 12px 8px;border-bottom:1px solid var(--line)}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--card);border-radius:12px;padding:3px}
 .tab{border:0;background:none;padding:9px 4px;font:600 15px var(--sans);color:var(--muted);border-radius:9px}
-.tab[aria-selected="true"]{background:var(--velvet);color:var(--velvet-ink)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
 .filters{display:flex;gap:6px;overflow-x:auto;padding:8px 0 0;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--card);font:500 14px var(--sans);padding:6px 13px;border-radius:999px}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 
 /* Liste : un jour = un intertitre en italique, une ligne = heure | titre. */
-.day{display:flex;align-items:baseline;gap:8px;padding:18px 16px 6px;font:700 16px var(--sans);color:var(--ink)}
+.day{display:flex;align-items:baseline;gap:8px;padding:20px 16px 6px;font:800 17px var(--sans);letter-spacing:-.01em;color:var(--ink)}
 .day span{font:500 14px var(--sans);color:var(--muted)}
 .day em{font:600 11px var(--sans);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .item{margin:0 10px;border-radius:14px}
 .item.open{background:var(--card);box-shadow:0 1px 0 var(--line),0 10px 24px -18px rgba(60,20,30,.35);margin-block:6px}
 .row{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 8px;border:0;background:none;width:100%;text-align:left}
-.when{font:600 16px var(--sans);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px;line-height:1.1}
+.when{font:700 15.5px var(--sans);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px;line-height:1.1}
 .when small{display:block;font:500 12px var(--sans);color:var(--muted);margin-top:3px}
-.t{font:600 16.5px/1.3 var(--sans);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.t{font:700 16px/1.3 var(--sans);letter-spacing:-.005em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .v{font-size:14px;color:var(--muted);margin-top:2px}
 .v .k{color:var(--gold)}
 .badge{font-size:15px;padding-top:2px}
@@ -58,7 +57,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .review{margin-top:6px;display:flex;flex-direction:column;gap:2px}
 .stars{color:var(--gold);letter-spacing:.06em;font-size:15px}
 .stars i{font-style:normal;color:var(--line)}
-.quote{font:italic 400 15px/1.45 var(--sans);color:var(--ink);overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.quote{font:italic 500 15px/1.45 var(--sans);color:var(--ink);overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
 .quote.full{-webkit-line-clamp:unset;display:block}
 .noreview{font-size:14px;color:var(--velvet)}
 
@@ -90,7 +89,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 </style>
 </head>
 <body>
-<header class="mast"><div class="brand"><small>BERLIN</small><b>Encore!</b></div><time id="today"></time></header>
+<header class="mast"><div class="brand"><small>BERLIN</small><b>Berlin Encore<i>!</i></b></div><time id="today"></time></header>
 <div class="top">
   <div class="tabs" role="tablist">
     <button class="tab" data-tab="prog" aria-selected="true"></button>
