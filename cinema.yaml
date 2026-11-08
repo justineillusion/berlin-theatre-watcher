@@ -59,9 +59,9 @@ ratings:
   # any      = Letterboxd peut aussi « repêcher » un film sous le seuil SC
   #            (plus généreux : Digger, Primetime, Marie Antoinette passeraient)
   letterboxd_when: fallback
-  senscritique_min: 7.0    # /10
+  senscritique_min: 6.5    # /10
   senscritique_min_votes: 50
-  letterboxd_min: 3.6      # /5
+  letterboxd_min: 3.4      # /5
   letterboxd_min_votes: 300
   # Films RÉCENTS sans note fiable (premières, festivals, docs) qui passent
   # tous les autres filtres : true = une ligne « 🆕 Pas encore notés » en fin
@@ -81,7 +81,8 @@ accept_versions: [OmeU, OmU, OV, muet, null]
 # ---------------------------------------------------------------------------
 blocklist:
   # Genres (kinoheld en allemand, SensCritique en français, Letterboxd en anglais)
-  genres: [Familie, Kinderfilm, Familienfilm, Famille, Familial, Jeunesse, Family, Superhelden, Super-héros]
+  genres: [Familie, Kinderfilm, Familienfilm, Famille, Familial, Jeunesse, Family, Superhelden, Super-héros,
+           Horror, Horreur, Épouvante-horreur, Épouvante, Slasher, Gore]   # pas d'horreur
   # Mots-clés dans le titre / la rubrique / les flags du cinéma
   keywords:
     - Marvel
@@ -119,4 +120,5 @@ blockbuster:
 
 # Toujours garder / toujours exclure (titres, insensible à la casse)
 always_include: []
-always_exclude: []
+always_exclude:
+  - Scene        # film commercial tamoul (star vehicle), passé via Letterboxd seul

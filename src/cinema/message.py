@@ -149,7 +149,8 @@ def format_week(kept: List[Film], unrated: List[Film], rejected_count: int,
     blocks = day_sections(kept)
     tail = []
     if unrated:
-        tail.append(unrated_line(unrated))
+        if unrated_line(unrated):
+            tail.append(unrated_line(unrated))
     n = rejected_count
     tail.append(f"<i>{len(kept)} film{'s' if len(kept) > 1 else ''} retenu{'s' if len(kept) > 1 else ''}, "
                 f"{n} écarté{'s' if n > 1 else ''} (note, VF, jeunesse, blockbuster, plafond…)</i>")
@@ -166,11 +167,18 @@ def format_week(kept: List[Film], unrated: List[Film], rejected_count: int,
     return messages
 
 
-def unrated_line(films: List[Film], limit: int = 10) -> str:
+def unrated_line(films: List[Film], limit: int = 5) -> str:
+    """Une ligne courte : 5 titres max (raccourcis), sans les programmes de courts."""
+    import re
+    films = [f for f in films if not re.search(r"short ?films?|kurzfilm", f.title, re.I)]
     items = []
     for f in sorted(films, key=lambda f: min(s.start for s in f.screenings)):
         first = min(f.screenings, key=lambda s: s.start)
-        items.append(f"{_a(first.url, esc(f.title))} · {esc(first.cinema)} · {_fmt_day(evening_day(first))}")
+        title = re.split(r" [–—-] |: ", f.title)[0]
+        title = title if len(title) <= 28 else title[:27] + "…"
+        items.append(f"{_a(first.url, esc(title))} ({esc(first.cinema)})")
+    if not items:
+        return ""
     extra = len(items) - limit
-    txt = " ; ".join(items[:limit]) + (f" ; +{extra}" if extra > 0 else "")
-    return "🆕 <b>Pas encore notés</b> : " + txt
+    txt = " · ".join(items[:limit]) + (f" · +{extra}" if extra > 0 else "")
+    return "🆕 <i>Pas encore notés</i> : " + txt
