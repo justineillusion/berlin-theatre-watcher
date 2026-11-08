@@ -263,7 +263,35 @@ export async function filmPlan(env: Env, body: any): Promise<Response> {
       messages.push({ chat_id: t.chat_id, item_id: id, kind, dates, header: h, text: v.text, reply_markup: v.reply_markup });
     }
   }
+  // Dimanche (Berlin), envoi demandé en file : les fiches partent avec le récap de 9:00
+  // (daily.ts), juste après son en-tête. Sinon (autre jour, tests) : renvoyées pour envoi direct.
+  // Après midi, le récap est parti sans les films : envoi direct, comme avant.
+  const now = body.now ? new Date(body.now) : new Date();            // `now` : tests
+  const queue = body.queue && berlinNow(now).day === sundayOf(now) && berlinNow(now).hm < "12:00" &&
+    (await setting(env, "immediate_cards")) !== "1";
+  if (queue) {
+    const stmts = (messages as any[]).map((m) => env.DB.prepare(
+      `INSERT INTO film_queue (chat_id, item_id, kind, header, dates, text, markup) VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(chat_id, item_id) DO UPDATE SET kind = excluded.kind, header = excluded.header, dates = excluded.dates,
+         text = excluded.text, markup = excluded.markup, queued_at = datetime('now'), sent_at = NULL`,
+    ).bind(m.chat_id, m.item_id, m.kind, m.header, JSON.stringify(m.dates), m.text, JSON.stringify(m.reply_markup)));
+    for (const t of targets as any[]) {
+      if (typeof t.header === "string" && (messages as any[]).some((m) => m.chat_id === t.chat_id)) {
+        stmts.push(env.DB.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)")
+          .bind(`film_header:${t.chat_id}`, t.header));
+      }
+    }
+    for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
+    await setSetting(env, "film_plan_day", berlinNow(now).day);
+    return Response.json({ messages: [], queued: messages.length });
+  }
   return Response.json({ messages });
+}
+
+/** « 2026-11-08 » si aujourd'hui (Berlin) est un dimanche, sinon « ». */
+export function sundayOf(now: Date): string {
+  const day = berlinNow(now).day;
+  return new Date(day + "T12:00:00Z").getUTCDay() === 0 ? day : "";
 }
 
 /** Le récap ciné de la semaine `week` est parti (voir cinemaRecipients). */
@@ -389,7 +417,10 @@ export async function render(env: Env, body: any): Promise<Response> {
   if (mode === "digest") {
     const users = await env.DB.prepare("SELECT chat_id, lang FROM users WHERE active = 1").all<{ chat_id: number; lang: string }>();
     const messages: unknown[] = [];
-    for (const u of users.results) {
+    // Le récap par personne est désormais celui du dimanche 9:00 (daily.ts) ; l'ancien ne part
+    // plus qu'en mode « immediate_cards » (tests). Le groupe garde son récap hebdo.
+    const legacy = (await setting(env, "immediate_cards")) === "1";
+    for (const u of legacy ? users.results : []) {
       const lang = asLang(u.lang);
       for (const text of await digestFor(env, u.chat_id, ids, tr(lang).sundayDigest, lang)) {
         messages.push({ chat_id: u.chat_id, kind: "digest", text });

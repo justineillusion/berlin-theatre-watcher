@@ -402,13 +402,20 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
         from ..translate import GUARD_FAILS
         print("🈯 Pitchs refusés (pas dans la langue de la fiche) : "
               + (", ".join(f"{lg} {n}" for lg, n in sorted(GUARD_FAILS.items())) or "aucun"))
+        # Le dimanche matin, le Worker garde les fiches pour le récap de 9:00 (Berlin) : un en-tête
+        # (mes 🎟, expos, nouveautés, ce titre ciné) puis les fiches. Il répond alors « queued »
+        # et rien n'est envoyé d'ici ; sinon (autre jour, après midi) : envoi direct comme avant.
         resp = api.post("/api/film-plan", json={
             "films": [_film_item(f, by_id) for f in films.values()],
+            "queue": True,
             "targets": [{"chat_id": rcp["chat_id"], "ids": [f.item_id() for f in res["kept"]],
+                         "header": res["header"],
                          "cards": {f.item_id(): _own_card(f, films) for f in res["kept"]}}
                         for rcp, _, res in plan],
         })
         resp.raise_for_status()
+        if resp.json().get("queued") is not None:
+            print(f"🗓 {resp.json()['queued']} fiche(s) film en file pour le récap du dimanche 9:00 (Worker).")
         per_chat: Dict[int, List[dict]] = {}
         for m in resp.json()["messages"]:
             per_chat.setdefault(m["chat_id"], []).append(m)

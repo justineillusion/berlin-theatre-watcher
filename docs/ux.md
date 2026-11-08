@@ -80,6 +80,18 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
   maintenant) ; et le jour d'ouverture des ventes d'un lieu (de l'heure d'ouverture à minuit), toutes ses
   nouvelles dates : « 🗓 Aussi de nouvelles dates (vente ouverte) ». Une pièce nouvelle va quand même au lot.
 
+## Récap du dimanche (9:00 Berlin, Worker)
+
+- Un message d'en-tête par personne, puis les fiches films de la semaine (une par film, ⭐ ✅ 🙅).
+  Sections (vides = omises ; tout vide et pas de film = rien) :
+  « 🎟 Tes 🎟 cette semaine » (mes réservations d'aujourd'hui à dimanche prochain, date + lieu),
+  « 🖼 Expos qui ouvrent cette semaine » (lieux suivis, ni vues ni 🙅), le lot du jour (🆕 / 🗓 / ⏳, avec
+  ses boutons), puis le titre du ciné de la semaine (« 🎬 Ciné de la semaine — … »).
+- Le job ciné (GitHub, dimanche matin) met les fiches en file (`film_queue`) au lieu de les envoyer ;
+  le récap attend les films jusqu'à midi, puis part sans. Films arrivés après midi : envoi direct, comme avant.
+- Le dimanche remplace le lot du matin (un seul envoi) ; après 15:00, plus rien jusqu'à lundi.
+- L'ancien « Récap du dimanche » par personne (GitHub, 14:23) ne part plus ; le récap hebdo du groupe reste.
+
 ## Ouvertures de vente (Schaubühne, Berliner Ensemble, Volksbühne)
 
 - Calendrier recalculé à chaque scan (src/sales.py : règle du théâtre, ou annonce publiée sur sa page).

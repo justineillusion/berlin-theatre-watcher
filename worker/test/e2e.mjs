@@ -872,6 +872,43 @@ try {
     await api("/api/daily-tick", { now: "2030-01-18T08:05:00Z" });
     assert.match(sends(take(), OWNER)[0].text, /^🆕 <b>Nouveau dans tes lieux<\/b> \(1\)\n.*Woyzeck II/);
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [baal, ubu], sales: sale("2030-01-01") });
+    // ---- récap du dimanche 9:00 : un en-tête (mes 🎟, expos qui ouvrent, nouveautés, ciné) puis les fiches films
+    take();
+    await click(OWNER, "bd:baal00000001:203001221930", 4343);                         // 🎟 mar. 22 janv.
+    const expoSoon = { id: "expo00000009", venue_id: "kw", kind: "expo", title: "Hito Steyerl", url: "https://kw/h",
+      dates: [], start_date: "2030-01-23", end_date: "2030-03-01", starred: false };
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [baal, ubu, expoSoon] });
+    await api("/api/daily-tick", { now: "2030-01-19T08:05:00Z" });                    // lot du samedi (l'expo y passe ; dimanche, rappel « ouvre cette semaine »)
+    const fl = { id: "film00000009", venue_id: "cinema-intimes", title: "Stalker", url: "https://intimes/s",
+      dates: ["2030-01-24 20:00"], text: "🎬 <b>Stalker</b>", line: "• Stalker", text_en: "🎬 <b>Stalker</b> [EN]", line_en: "• Stalker [EN]" };
+    const fp = await api("/api/film-plan", { films: [fl], queue: true, now: "2030-01-20T06:30:00Z",
+      targets: [{ chat_id: OWNER, ids: [fl.id], header: "🎬 <b>Ciné de la semaine</b> — 20–26 janv." }] });
+    assert.deepEqual(fp.messages, []);
+    assert.equal(fp.queued, 1);
+    take();
+    assert.equal((await api("/api/daily-tick", { now: "2030-01-20T07:30:00Z" })).sent, 0);   // 08:30 Berlin
+    await api("/api/daily-tick", { now: "2030-01-20T08:05:00Z" });                            // 09:05 Berlin
+    c = take();
+    const so = sends(c, OWNER);
+    assert.equal(so[0].text, [
+      "🎟 <b>Tes 🎟 cette semaine</b>\n🎭 <a href=\"https://x/baal00000001\">Baal</a> — mar. 22 janv. 19:30 <i>(Berliner Ensemble)</i>",
+      "🖼 <b>Expos qui ouvrent cette semaine</b>\n• <a href=\"https://kw/h\">Hito Steyerl</a>\n   🗓 jusqu'au 01/03",
+      "🎬 <b>Ciné de la semaine</b> — 20–26 janv.",
+    ].join("\n\n"));
+    assert.match(so[1].text, /^🎬 <b>Stalker<\/b>/);                                   // puis la fiche film
+    assert.equal(so.length, 2);
+    assert.equal((await api("/api/daily-tick", { now: "2030-01-20T10:00:00Z" })).sent, 0);   // une fois
+    // la fiche film envoyée devient « ma notif » : ⭐ la met à jour sur place
+    c = await click(OWNER, "i:film00000009", 4344);
+    assert.ok(edits(c, OWNER).some((x) => x.message_id === so[1]._id));
+    // dimanche suivant : l'expo qui ouvre cette semaine-là (hors lot) a sa section ; pas de ciné → n'attend que midi
+    const expo2 = { ...expoSoon, id: "expo00000010", title: "Pipilotti Rist", start_date: "2030-01-30" };
+    sql("INSERT OR REPLACE INTO deliveries (chat_id, item_id, dates, message_id) VALUES (111, 'expo00000010', '[]', NULL)");
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [baal, ubu, expoSoon, expo2] });
+    take();
+    assert.equal((await api("/api/daily-tick", { now: "2030-01-27T09:05:00Z" })).sent, 0);   // 10:05 : attend le ciné
+    await api("/api/daily-tick", { now: "2030-01-27T11:05:00Z" });                            // 12:05 : sans films
+    assert.match(sends(take(), OWNER)[0].text, /^🖼 <b>Expos qui ouvrent cette semaine<\/b>\n.*Pipilotti Rist/);
     sql("INSERT OR REPLACE INTO settings (key, value) VALUES ('immediate_cards', '1')");
   });
 
