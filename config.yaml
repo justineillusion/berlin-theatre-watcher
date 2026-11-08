@@ -62,7 +62,7 @@ critics_rating: true
 # n'affiche que ces dates-là). Au-delà : gardé en base sans bruit, annoncé une
 # fois en entrant dans la fenêtre. (Films : la semaine, voir cinema.yaml.)
 horizon_expo_days: 7
-horizon_theatre_days: 14
+horizon_theatre_days: 42
 # Garde-fous de durée (secondes, temps réel) : une étape trop lente est coupée,
 # ce qui n'a pas fini part sans (note presse / résumé / lieu sauté).
 # Nachtkritik : les jobs lisent state/critics_cache.json SANS réseau ; seul le

@@ -150,9 +150,9 @@ acceptée si le générique de la critique nomme la maison berlinoise.
 
 ## Horizon : maintenant ou la semaine prochaine
 
-`horizon_expo_days: 7` et `horizon_theatre_days: 14` (config.yaml) : partout
+`horizon_expo_days: 7` et `horizon_theatre_days: 42` (config.yaml) : partout
 (notifs, /programme, /interets, groupe, récaps), une expo n'apparaît que si elle
-est ouverte ou ouvre sous 7 jours, une pièce que si elle se joue sous 14 jours
+est ouverte ou ouvre sous 7 jours, une pièce que si elle se joue sous 42 jours (6 semaines)
 (et seules ces dates sont affichées). Le reste est gardé en base sans bruit et
 annoncé une fois en entrant dans la fenêtre.
 
