@@ -12,12 +12,18 @@ import { handleUpdate } from "./bot";
 import { Env, tg } from "./lib";
 import { setChatMenu, setGlobalMenus } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
+import { salesTick } from "./sales";
 
 function authorized(req: Request, env: Env): boolean {
   return !!env.API_TOKEN && req.headers.get("authorization") === `Bearer ${env.API_TOKEN}`;
 }
 
 export default {
+  // Cron du Worker (wrangler.toml) : ouvertures de vente, à l'heure de Berlin.
+  async scheduled(_event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
+    ctx.waitUntil(salesTick(env).then(() => undefined).catch((e) => console.log("sales tick failed", e)));
+  },
+
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
     if (req.method !== "POST") return new Response("🎭", { status: 200 });
@@ -47,6 +53,8 @@ export default {
       case "/api/cinema-recipients": return cinemaRecipients(env, body);
       case "/api/cinema-done": return cinemaDone(env, body);
       case "/api/film-plan": return filmPlan(env, body);
+      // Une passe du cron des ventes à une heure donnée (tests / rattrapage manuel).
+      case "/api/sales-tick": return Response.json({ sent: await salesTick(env, body.now ? new Date(body.now) : new Date()) });
       case "/api/setup": {
         const hook = await tg(env, "setWebhook", {
           url: `${url.origin}/tg`,

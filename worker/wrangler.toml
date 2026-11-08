@@ -2,6 +2,10 @@ name = "theatre-bot"
 main = "src/index.ts"
 compatibility_date = "2026-10-01"
 
+# Cron (UTC) : ouvertures de vente — la veille 19:00 et à l'heure d'ouverture (Berlin).
+[triggers]
+crons = ["*/15 * * * *"]
+
 [vars]
 # À remplir : ton chat_id (= TELEGRAM_CHAT_ID actuel) et le @ du bot, sans @.
 OWNER_CHAT_ID = "2128088613"

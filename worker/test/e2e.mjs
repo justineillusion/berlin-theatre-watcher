@@ -736,6 +736,33 @@ try {
     assert.deepEqual(Object.keys(v).sort(), ["berliner-ensemble", "schaubuhne"]);
   });
 
+  await step("ventes : la veille 19:00 « Demain 10h … Tes ⭐ là-bas » (une fois), puis « C'est ouvert » à l'heure", async () => {
+    const be = { venue_id: "berliner-ensemble", day: "2030-03-05", at: "2030-03-05T10:00:00+01:00", month: "2030-04", hour_known: true, source: "rule" };
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear], sales: { "berliner-ensemble": be } });
+    take();
+    let r = await api("/api/sales-tick", { now: "2030-03-04T17:55:00Z" });   // 18:55 Berlin : trop tôt
+    assert.equal(r.sent, 0);
+    r = await api("/api/sales-tick", { now: "2030-03-04T18:05:00Z" });       // 19:05 Berlin
+    await settle();
+    let c = take();
+    const mine = sends(c, OWNER)[0];
+    assert.match(mine.text, /^🎟 Demain 10h : ouverture des ventes Berliner Ensemble pour avril\.\nTes ⭐ là-bas :\n• <a href="https:\/\/x\/lear00000001">King Lear<\/a>/);
+    const lea = sends(c, LEA)[0];
+    if (lea) assert.match(lea.text, /^🎟 Tomorrow 10:00: Berliner Ensemble opens sales for April\.$/);   // pas de ⭐ là-bas : une ligne
+    r = await api("/api/sales-tick", { now: "2030-03-04T19:20:00Z" });
+    assert.equal(r.sent, 0);                                                  // une seule fois
+    r = await api("/api/sales-tick", { now: "2030-03-05T09:05:00Z" });       // 10:05 Berlin
+    c = take();
+    assert.match(sends(c, OWNER)[0].text, /^🎟 C'est ouvert : ventes Berliner Ensemble pour avril\.\n• <a[^>]*>King Lear/);
+    assert.equal(sends(c, LEA).length, 0);                                   // rien à réserver pour elle là-bas
+    // heure non publiée : « dans la journée », jamais une heure inventée
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear],
+      sales: { "berliner-ensemble": { ...be, day: "2030-05-02", at: null, hour_known: false } } });
+    take();
+    await api("/api/sales-tick", { now: "2030-05-01T17:30:00Z" });
+    assert.match(sends(take(), OWNER)[0].text, /^🎟 Demain dans la journée : ouverture des ventes Berliner Ensemble/);
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);
