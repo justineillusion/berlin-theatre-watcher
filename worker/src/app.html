@@ -64,6 +64,7 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .v .sc{color:var(--ink);font-weight:700;white-space:nowrap}
 .sc.link{text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px;cursor:pointer}
 .venue{margin:14px 16px 2px;padding-top:10px;border-top:2px solid var(--ink);font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.dismissed-toggle{margin:18px 0 4px 12px!important;color:var(--muted)!important}.dismissed .item:not(.open) .row{opacity:.45}
 .more{display:block;margin:0 0 4px 76px;border:0;background:none;padding:6px 0;font:700 13.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 .v .k{color:var(--gold)}
 .badge{font-size:15px;padding-top:2px}
@@ -140,7 +141,7 @@ const L = {
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
-        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} ⭐/🎟 plus tard`,
+        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅, en bas)`, notForMeN:(n) => `Pas pour moi · ${n}`, whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} ⭐/🎟 plus tard`,
         whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont grisées.", soldShort:"complet", hideSold:"Sans complets", whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
@@ -151,7 +152,7 @@ const L = {
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
-        reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} ⭐/🎟 later on`,
+        reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅, at the bottom)`, notForMeN:(n) => `Not for me · ${n}`, whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} ⭐/🎟 later on`,
         whyRule:"Theatre: only dates with English surtitles. Sold-out shows are greyed out.", soldShort:"sold out", hideSold:"Hide sold out", whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
@@ -177,7 +178,7 @@ function next(x) {
   const free = (x.dates || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
   if (st.hideSold) return free;
   const sold = (x.sold || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
-  return !free ? sold : !sold ? free : (sold < free ? sold : free);
+  return free || sold;   // une séance libre passe avant une complète
 }
 /** Cette séance est complète (et ce n'est pas la mienne). */
 const isSold = (x, d) => !!d && (x.sold || []).includes(d) && !(x.me && x.me.booked === d);
@@ -261,6 +262,7 @@ function reviewBlock(x, full) {
 function whenCell(x) {
   if (x.kind === "expo") return ICON.expo;
   const n = next(x);
+  if (st.tab === "prog" && st.dateCell && n) return `${+n.slice(8, 10)} ${esc(T.smons[+n.slice(5, 7) - 1])}<small>${n.slice(11)}</small>`;
   if (st.tab === "prog") return `${n ? n.slice(11) : "—"}<small>${isSold(x, n) ? esc(T.soldShort) : ICON[x.kind]}</small>`;
   const d = (x.me && x.me.booked) || n || (x.dates || []).slice().sort().pop();
   if (!d) return ICON[x.kind];
@@ -408,7 +410,10 @@ function render() {
   let h = "";
   if (st.tab === "prog") {
     // Ce que j'ai vu ou écarté n'est plus reproposé (sauf la fiche ouverte, le temps de voir l'effet du clic).
-    xs = xs.filter((x) => (!["seen", "ignored"].includes(state(x)) || x.id === st.open) && next(x) && next(x).slice(0, 10) < LIMIT[st.when]);
+    // 🙅 de la période : repliés tout en bas, grisés, avec « ↩︎ Finalement si ».
+    const dismissed = xs.filter((x) => state(x) === "ignored" && next(x) && next(x).slice(0, 10) < LIMIT[st.when])
+      .sort((a, b) => next(a).localeCompare(next(b)));
+    xs = xs.filter((x) => (!["seen", "ignored"].includes(state(x)) || (x.id === st.open && state(x) === "seen")) && next(x) && next(x).slice(0, 10) < LIMIT[st.when]);
     const focused = st.focus && xs.find((x) => x.id === st.focus) || (st.focus && st.kind === "all" && S.items.find((x) => x.id === st.focus));
     if (focused) { h += dayHead(T.shared) + item(focused); xs = xs.filter((x) => x.id !== st.focus); }
     const shows = xs.filter((x) => x.kind !== "expo").sort((a, b) => next(a).localeCompare(next(b)));
@@ -416,6 +421,10 @@ function render() {
     let cur = "";
     for (const x of shows) { const d = dayLabel(next(x)); if (d !== cur) { h += dayHead(d); cur = d; } h += item(x); }
     if (expos.length) h += dayHead(T.expos, T.exposNote) + exposByVenue(expos);
+    if (dismissed.length) {
+      h += `<button class="more dismissed-toggle" data-dismissed="1">🙅 ${esc(T.notForMeN(dismissed.length))} ${st.showDismissed ? "▴" : "▾"}</button>`;
+      if (st.showDismissed) { st.dateCell = true; h += `<div class="dismissed">${dismissed.map(item).join("")}</div>`; st.dateCell = false; }
+    }
     list.innerHTML = (h || `<div class="empty">${esc(T.empty)}</div>`) + whyNote();
   } else {
     for (const [k, l] of [["booked", T.booked], ["star", T.wish], ["seen", T.done]]) {
@@ -451,6 +460,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.askremove) { st.confirmRemove = +t.dataset.askremove; }
   else if (t.dataset.friend) { st.confirmRemove = null; return void friendAct(t.dataset.friend, +t.dataset.id); }
   else if (t.dataset.invite) { return void shareInvite(); }
+  else if (t.dataset.dismissed) st.showDismissed = !st.showDismissed;
   else if (t.dataset.venue) { const v = t.dataset.venue; st.venuesOpen.has(v) ? st.venuesOpen.delete(v) : st.venuesOpen.add(v); }
   else if (t.dataset.open) { st.open = st.open === t.dataset.open ? null : t.dataset.open; st.picking = null; st.sharing = null; st.sent = null; }
   else return;
