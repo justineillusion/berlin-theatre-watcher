@@ -41,5 +41,7 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
 - Calendrier recalculé à chaque scan (src/sales.py : règle du théâtre, ou annonce publiée sur sa page).
 - La veille à 19:00 (Berlin) : « 🎟 Demain 11h : ouverture des ventes Schaubühne pour janvier. » + mes ⭐
   là-bas (liens 🎟). Heure non publiée (Volksbühne) : « dans la journée ».
-- À l'heure d'ouverture (09:00 si inconnue) : « 🎟 C'est ouvert » + mes ⭐ — seulement si j'en ai là-bas.
+- À l'heure d'ouverture : « 🎟 C'est ouvert » + mes ⭐ — seulement si j'en ai là-bas. Heure non publiée
+  (Volksbühne) : à 09:00, « 🎟 Ventes Volksbühne pour janvier : ouverture aujourd'hui (heure non publiée) » +
+  mes ⭐ — jamais « C'est ouvert », qui ne serait peut-être pas encore vrai.
 - Abonné·es au lieu uniquement ; une seule fois par lieu et par ouverture (cron Worker toutes les 15 min).

@@ -761,6 +761,12 @@ try {
     take();
     await api("/api/sales-tick", { now: "2030-05-01T17:30:00Z" });
     assert.match(sends(take(), OWNER)[0].text, /^🎟 Demain dans la journée : ouverture des ventes Berliner Ensemble/);
+    // jour J à 09:00 : jamais « C'est ouvert » (peut-être pas encore vrai)
+    await api("/api/sales-tick", { now: "2030-05-02T07:05:00Z" });           // 09:05 Berlin
+    c = take();
+    const today = sends(c, OWNER)[0].text;
+    assert.match(today, /^🎟 Ventes Berliner Ensemble pour avril : ouverture aujourd'hui \(heure non publiée\)\n• <a[^>]*>King Lear/);
+    assert.ok(!/ouvert :/.test(today));
   });
 
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {

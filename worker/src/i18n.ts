@@ -146,7 +146,7 @@ Ici, ⭐ « Moi aussi » sous une annonce = tu es partant·e. Les notifs perso, 
   saleTomorrow: (when: string, venue: string, month: string) => `🎟 Demain ${when} : ouverture des ventes ${venue} pour ${month}.`,
   saleYourStars: "Tes ⭐ là-bas :",
   saleOpen: (venue: string, month: string) => `🎟 C'est ouvert : ventes ${venue} pour ${month}.`,
-  saleToday: (venue: string, month: string) => `🎟 Aujourd'hui : ouverture des ventes ${venue} pour ${month} (heure non annoncée).`,
+  saleToday: (venue: string, month: string) => `🎟 Ventes ${venue} pour ${month} : ouverture aujourd'hui (heure non publiée)`,
   toastNotForMe: "🙅 Retiré de tes sorties",
   setVenues: "📍 Lieux", setLang: "🌐 Langue", setIgnored: "🙅 Pas pour moi", setGroup: "👥 Groupe",
   groupInfo: (on: boolean): string => on ? "👥 Le groupe de la bande est relié : les ⭐, 🎟 et avis y sont annoncés."
@@ -321,7 +321,7 @@ Here, ⭐ “Me too” under an announcement = you're in. Personal alerts, “se
   saleTomorrow: (when: string, venue: string, month: string) => `🎟 Tomorrow ${when}: ${venue} opens sales for ${month}.`,
   saleYourStars: "Your ⭐ there:",
   saleOpen: (venue: string, month: string) => `🎟 It's open: ${venue} sales for ${month}.`,
-  saleToday: (venue: string, month: string) => `🎟 Today: ${venue} opens sales for ${month} (time not announced).`,
+  saleToday: (venue: string, month: string) => `🎟 ${venue} sales for ${month}: opening today (time not published)`,
   toastNotForMe: "🙅 Removed from your outings",
   setVenues: "📍 Venues", setLang: "🌐 Language", setIgnored: "🙅 Not for me", setGroup: "👥 Group",
   groupInfo: (on: boolean) => on ? "👥 The gang's group is linked: ⭐, 🎟 and reviews are announced there."
