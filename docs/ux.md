@@ -47,6 +47,7 @@ Composant unique (worker/src/list.ts) pour /programme, /sorties, le lot du matin
   d'une ⭐ / ouverture des ventes, « X a réservé » (groupe), « Alors, c'était comment ? ».
 - Récap du dimanche : les films sont des items de la liste (section titrée par l'en-tête ciné) ; dépliés,
   ils montrent la fiche propre à SES cinémas.
+- Ciné : jusqu'à 15 films par semaine (cinema.yaml `max_films`), puisqu'ils tiennent dans une seule liste.
 
 ## Boutons d'une fiche : la prochaine étape seulement
 

@@ -66,7 +66,7 @@ evening_from: "18:00"      # séances qui commencent à partir de… (les séanc
 latest_start:
   time: "22:00"
   days: [0, 1, 2, 3, 4]    # lundi → vendredi
-max_films: 10
+max_films: 15             # liste dépliable : plus de films ≠ plus de messages (15 depuis 11/2026)
 # Garde-fous de durée (secondes, temps réel) : rien ne doit bloquer le job.
 cinema_timeout_s: 90       # programme d'UN cinéma ; au-delà il est sauté (et signalé dans le rapport)
 ratings_budget_s: 300      # toutes les recherches SensCritique + Letterboxd ; film sans note à temps = écarté
