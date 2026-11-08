@@ -1208,14 +1208,9 @@ def format_buzz(b: dict, lang: str = "fr", with_example: bool = True) -> str:
             line += (f" · ex. « {ex['text']} » ({ex['outlet']})" if fr
                      else f" · e.g. “{ex['text']}” ({ex['outlet']})")
         return line
-    if b["status"] == "covered":
-        return (f"📰 Buzz : couvert ({b['basis_fr']}), pas encore d'avis tranché" if fr
-                else f"📰 Buzz: covered ({b['basis']}), no clear verdict yet")
-    if b["status"] == "not_open":
-        d = date.fromisoformat(b["opens"])
-        return (f"📰 Pas encore ouvert — critiques à partir du {d.day} {_MONTHS_FR[d.month - 1]}" if fr
-                else f"📰 Not open yet — reviews from {d.day} {_MONTHS_EN[d.month - 1]}")
-    return "📰 Pas encore de critiques" if fr else "📰 No reviews yet"
+    # « couvert sans avis », « pas encore ouvert », « pas de critiques » : rien
+    # d'utile pour la lectrice -> pas de ligne du tout (règle : zéro remplissage).
+    return ""
 
 
 # ---------------------------------------------------------------------------

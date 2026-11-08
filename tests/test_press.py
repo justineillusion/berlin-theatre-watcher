@@ -100,13 +100,13 @@ def test_covered_none_and_not_open():
     cov = press.press_for("expo", "Berlinische Galerie", "Josef Kaiser — Building for the GDR",
                           cache_path=path, use_nachtkritik=False)
     assert cov["status"] == "covered"
-    assert press.format_buzz(cov, "en") == "📰 Buzz: covered (1 source), no clear verdict yet"
+    assert press.format_buzz(cov, "en") == ""   # zéro remplissage
     none = press.press_for("expo", "KW Institute", "Nobody — Nothing", cache_path=path, use_nachtkritik=False)
-    assert press.format_buzz(none, "en") == "📰 No reviews yet"
+    assert press.format_buzz(none, "en") == ""
     soon = press.press_for("expo", "Neue Nationalgalerie", "Ulay, Ulay & Abramović", opens="2026-11-28",
                            cache_path=path, use_nachtkritik=False, today=date(2026, 11, 8))
-    assert press.format_buzz(soon, "en") == "📰 Not open yet — reviews from 28 Nov"
-    assert press.format_buzz(soon, "fr") == "📰 Pas encore ouvert — critiques à partir du 28 nov."
+    assert soon["status"] == "not_open"
+    assert press.format_buzz(soon, "fr") == ""
 
 
 def test_search_query():
