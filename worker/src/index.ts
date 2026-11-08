@@ -10,7 +10,7 @@
 //   POST /api/setup     enregistre le webhook + le menu des commandes (Bearer API_TOKEN)
 import { handleUpdate } from "./bot";
 import { Env, tg } from "./lib";
-import { COMMANDS, COMMANDS_EN, setChatMenu } from "./i18n";
+import { setChatMenu, setGlobalMenus } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
 
 function authorized(req: Request, env: Env): boolean {
@@ -56,18 +56,7 @@ export default {
         });
         // Mêmes portées que celles posées à la main : défaut + chats privés (fr),
         // chats privés en anglais, groupes (2 commandes), et bouton « menu ».
-        const priv = { type: "all_private_chats" };
-        const cmds = await tg(env, "setMyCommands", { commands: COMMANDS });
-        await tg(env, "setMyCommands", { commands: COMMANDS, scope: priv });
-        await tg(env, "setMyCommands", { commands: COMMANDS_EN, scope: priv, language_code: "en" });
-        await tg(env, "setMyCommands", { commands: COMMANDS_EN, language_code: "en" });
-        await tg(env, "setMyCommands", {
-          commands: [
-            { command: "interets", description: "Ce qui tente la bande ⭐" },
-            { command: "programme", description: "À l'affiche dans nos lieux" },
-          ],
-          scope: { type: "all_group_chats" },
-        });
+        const cmds = await setGlobalMenus(env);
         await tg(env, "setChatMenuButton", { menu_button: { type: "commands" } });
         // Telegram choisit le menu selon la langue de l'APPLI : on pose donc, par
         // chat, le menu dans la langue choisie par la personne (users.lang).

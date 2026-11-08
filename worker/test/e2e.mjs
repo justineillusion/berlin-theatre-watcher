@@ -14,12 +14,14 @@ const API = "test-api-token", HOOK = "test-hook";
 
 // ---------------------------------------------------------------- faux Telegram
 let calls = [], nextId = 1000;
+const allCalls = [];
 const tgServer = http.createServer((req, res) => {
   let body = "";
   req.on("data", (c) => (body += c));
   req.on("end", () => {
     const method = req.url.split("/").pop();
     calls.push({ method, ...JSON.parse(body || "{}"), _id: nextId });
+    allCalls.push(calls[calls.length - 1]);
     res.setHeader("content-type", "application/json");
     res.end(JSON.stringify({ ok: true, result: { message_id: nextId++ } }));
   });
@@ -399,6 +401,7 @@ try {
     const menu = c.find((x) => x.method === "setMyCommands" && x.scope?.type === "chat" && x.scope.chat_id === LEA);
     assert.ok(menu && menu.commands.length === 3 && /What's on/.test(menu.commands[0].description), "menu par chat en anglais");
     assert.deepEqual(menu.commands.map((m) => m.command), ["programme", "sorties", "reglages"]);
+    assert.ok(allCalls.some((x) => x.method === "setMyCommands" && x.scope?.type === "all_group_chats"), "menus globaux reposés");
     assert.match(edits(c, LEA)[0].text, /English/);
     assert.match(sends(await say(LEA, "/aide"), LEA)[0].text, /How it works[\s\S]*\/reglages — venues, language/);
     assert.match(sends(await say(LEA, "/suivre"), LEA)[0].text, /What do you want to follow/);

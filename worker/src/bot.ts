@@ -4,7 +4,7 @@ import {
   send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql,
 } from "./lib";
 import { digestFor } from "./scan";
-import { Lang, MENU_VERSION, asLang, guessLang, langKeyboard, setChatMenu, tr } from "./i18n";
+import { Lang, MENU_VERSION, asLang, guessLang, langKeyboard, setChatMenu, setGlobalMenus, tr } from "./i18n";
 import {
   announceInterest, announceReview, card, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
 } from "./group";
@@ -35,6 +35,11 @@ export async function inviteCode(env: Env): Promise<string> {
 
 // ---------------------------------------------------------------------------
 export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext): Promise<void> {
+  // Nouvelle version du menu : défaut fr/en + groupe reposés une fois (1er update après déploiement).
+  if ((await setting(env, "menu_v_global")) !== MENU_VERSION) {
+    await setSetting(env, "menu_v_global", MENU_VERSION);
+    ctx.waitUntil(setGlobalMenus(env));
+  }
   if (update.callback_query) return onCallback(env, update.callback_query, ctx);
   const msg = update.message;
   if (!msg?.from || !msg.text) return;

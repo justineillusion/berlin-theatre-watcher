@@ -387,6 +387,28 @@ export const COMMANDS_EN = [
  *  de chaque personne est reposé à sa prochaine interaction (bot.ts). */
 export const MENU_VERSION = "3cmd";
 
+/** Menus par défaut (privé fr / en) et du groupe — posés par /api/setup, et
+ *  automatiquement au 1er update après un changement de MENU_VERSION. */
+export async function setGlobalMenus(env: { BOT_TOKEN: string; TG_API?: string }): Promise<unknown> {
+  const base = env.TG_API || "https://api.telegram.org";
+  const call = (body: unknown) => fetch(`${base}/bot${env.BOT_TOKEN}/setMyCommands`, {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+  }).then((r) => r.json()).catch(() => undefined);
+  const priv = { type: "all_private_chats" };
+  const res = await call({ commands: COMMANDS });
+  await call({ commands: COMMANDS, scope: priv });
+  await call({ commands: COMMANDS_EN, scope: priv, language_code: "en" });
+  await call({ commands: COMMANDS_EN, language_code: "en" });
+  await call({
+    commands: [
+      { command: "interets", description: "Ce qui tente la bande ⭐" },
+      { command: "programme", description: "À l'affiche dans nos lieux" },
+    ],
+    scope: { type: "all_group_chats" },
+  });
+  return res;
+}
+
 /** Menu « / » de CE chat dans la langue choisie (inscription, /langue, /api/setup). */
 export async function setChatMenu(env: { BOT_TOKEN: string; TG_API?: string }, chat: number, lang: string | null | undefined) {
   const base = env.TG_API || "https://api.telegram.org";
