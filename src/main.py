@@ -13,7 +13,7 @@ import yaml
 
 from .matching import select
 from .models import Show
-from .notify import digest_line, expo_period, format_digest, format_item, send_telegram
+from .notify import _aliases, digest_line, expo_period, format_digest, format_item, send_telegram
 from .parsers import SOURCES
 from .state import load_seen, save_seen
 from .language import detect as detect_language
@@ -115,7 +115,7 @@ _VENUE_TIMEOUT_S = 90       # un lieu qui ne répond pas en 90 s est sauté (con
 
 
 # v2 (8/11/2026) : corps de page avant meta, 2–3 phrases (500 car.), slogans de musée refusés.
-_SUMMARY_VERSION = 2
+_SUMMARY_VERSION = 3   # v3 : titres protégés de la traduction
 _SUMMARY_CACHE = Path(__file__).resolve().parent.parent / "state" / "summary_cache.json"
 _SUMMARY_TTL_DAYS = 30
 
@@ -164,10 +164,10 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
         # Traduction ratée (= texte d'origine renvoyé) : pas mise en cache, on
         # retentera ; l'affichage se rabat sur le texte d'origine.
         if "fr" in langs:
-            fr = to_french(summary)
+            fr = to_french(summary, keep=[show.title, *_aliases(show)])
             out["fr"] = "" if not summary else (fr if fr and (fr != summary or looks_french(summary)) else None)
         if "en" in langs:
-            en = to_english(summary)
+            en = to_english(summary, keep=[show.title, *_aliases(show)])
             out["en"] = "" if not summary else (en if en and (en != summary or looks_english(summary)) else None)
         if show.kind != "expo":
             out["spoken"], out["surtitles"] = detect_language(show.languages, page_text, show.has_english_surtitles)

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import re
 import time
-from typing import Optional
+from typing import Dict, List, Optional, Sequence
 
 _ERROR_RE = re.compile(r"^\s*(error|erreur)?\s*\d{3}\b", re.I)  # "505", "Error 500 (…)"
 
@@ -84,8 +84,46 @@ def _gtx(text: str, target: str) -> Optional[str]:
         return None
 
 
-def to_french(text: Optional[str], retries: int = 3) -> Optional[str]:
-    return translate(text, "fr", retries)
+def to_french(text: Optional[str], retries: int = 3, keep: Sequence[str] = ()) -> Optional[str]:
+    return translate_keeping(text, "fr", keep, retries)
+
+
+def _title_variants(keep: Sequence[str]) -> List[str]:
+    """« CURSED – a preinvented world. » -> [« CURSED – a preinvented world. », « CURSED – a preinvented world », « CURSED »]."""
+    out: List[str] = []
+    for t in keep:
+        t = (t or "").strip()
+        for v in (t, t.rstrip(". "), re.split(r"\s+[–—-]\s+|:\s|\s\(", t)[0].strip()):
+            if len(v) >= 3 and v not in out:
+                out.append(v)
+    return sorted(out, key=len, reverse=True)   # le plus long d'abord
+
+
+def translate_keeping(text: Optional[str], target: str, keep: Sequence[str] = (), retries: int = 3) -> Optional[str]:
+    """Traduit sans toucher aux titres : « CURSED » ne doit pas devenir « MAUDIT ».
+    Chaque titre est remplacé par un jeton opaque (nom propre inventé) avant la
+    traduction, puis remis. Si un jeton s'est perdu en route, on retraduit sans
+    protection plutôt que de livrer un texte troué."""
+    if not text or not keep:
+        return translate(text, target, retries)
+    tokens: Dict[str, str] = {}
+    masked = text
+    for i, v in enumerate(_title_variants(keep)):
+        tok = f"Zqx{chr(65 + i)}"
+        new = re.sub(re.escape(v), tok, masked, flags=re.I)
+        if new != masked:
+            tokens[tok] = v
+            masked = new
+    if not tokens:
+        return translate(text, target, retries)
+    out = translate(masked, target, retries)
+    if out is None or out == masked:
+        return text                      # échec de traduction : l'original (comme translate)
+    if not all(t in out for t in tokens):
+        return translate(text, target, retries)
+    for tok, v in tokens.items():
+        out = out.replace(tok, v)
+    return out
 
 
 # Mots-outils propres à l'anglais (pas « in », « an », « die »… communs avec l'allemand).
@@ -104,11 +142,11 @@ def looks_english(text: Optional[str]) -> bool:
     return en >= 2 and en > 2 * other
 
 
-def to_english(text: Optional[str], retries: int = 3) -> Optional[str]:
-    """Anglais : tel quel s'il l'est déjà, sinon traduit."""
+def to_english(text: Optional[str], retries: int = 3, keep: Sequence[str] = ()) -> Optional[str]:
+    """Anglais : tel quel s'il l'est déjà, sinon traduit (titres protégés)."""
     if not text or looks_english(text):
         return text
-    return translate(text, "en", retries)
+    return translate_keeping(text, "en", keep, retries)
 
 
 _FR_WORDS = {"le", "la", "les", "et", "est", "des", "une", "du", "dans", "pour", "qui", "sur", "avec", "pas", "au"}

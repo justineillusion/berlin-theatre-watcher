@@ -77,6 +77,23 @@ def test_no_duplicate_language_line():
     assert "🎬" not in card and card.count("🗣") == 1, card
 
 
+def test_title_is_not_translated():
+    from src import translate as tr
+    seen = {}
+
+    def fake(text, target="fr", retries=3):          # traducteur factice : met tout en minuscules
+        seen["masked"] = text
+        return "TRAD " + text.replace("is determined", "est déterminé")
+    old, tr.translate = tr.translate, fake
+    try:
+        out = tr.to_french("CURSED – a preinvented world. is determined to blow up the stage.",
+                           keep=["CURSED – a preinvented world."])
+    finally:
+        tr.translate = old
+    assert "CURSED" not in seen["masked"], seen
+    assert out.startswith("TRAD CURSED – a preinvented world. est déterminé"), out
+
+
 def test_film_card():
     for lang in ("fr", "en"):
         _check(cm.film_card(_film(), lang), lang, "fiche film")
