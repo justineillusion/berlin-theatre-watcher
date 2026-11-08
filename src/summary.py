@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 from .fetch import fetch_html
 
-_MAX = 240
+_MAX = 500          # 2–3 phrases (demande : un vrai synopsis, pas une ligne)
 
 
 def _clean(text: str) -> str:
@@ -25,9 +25,11 @@ def _trim(text: str, max_chars: int = _MAX) -> str:
     if len(text) <= max_chars:
         return text
     cut = text[:max_chars]
-    end = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
-    if end > 80:
-        return cut[: end + 1]
+    # Fins de phrase réelles : pas « (b. 1940 », « ca. », « St. », « Dr. »…
+    ends = [m.end() for m in re.finditer(r"[.!?…][\"”»)]?(?=\s+[A-ZÄÖÜÀ-Ý\"“„»(])", cut)
+            if not re.search(r"(?:^|[\s(])(?:\w{1,2}|ca|St|Dr|Nr|bzw|usw|etc|vs)\.$", cut[: m.end()])]
+    if ends and ends[-1] > 80:
+        return cut[: ends[-1]]
     return cut.rsplit(" ", 1)[0].rstrip(" ,;:") + "…"
 
 
@@ -44,11 +46,21 @@ _LEAD_RE = re.compile(rf"^\s*(?:{_CREDIT_WORDS})\b", re.I)
 _SENT_RE = re.compile(r"[a-zäöüßàâçéèêëîïôûù]{2,}[.!?…»“”\"]?\s+[A-ZÄÖÜÀ-Ý»„“\"]|[a-zäöüßàâçéèêëîïôûù]{2,}[.!?…]\s*$")
 
 
+# Textes de site (meta description identique sur toutes les pages d'un musée).
+_BOILERPLATE = (
+    "museum für moderne und zeitgenössische kunst",
+    "engages with the central questions of our time",
+    "please note that starting times vary",
+)
+
+
 def is_synopsis(text: Optional[str], min_chars: int = 150) -> bool:
     """Un vrai résumé (de quoi parle la pièce), pas un générique ni une liste de noms."""
     if not text:
         return False
     t = _clean(text)
+    if any(b in t.lower() for b in _BOILERPLATE):
+        return False
     if len(t) < min_chars:
         return False
     t = t[:400]                                 # ce qui sera affiché (2–3 phrases)
@@ -66,13 +78,18 @@ def is_synopsis(text: Optional[str], min_chars: int = 150) -> bool:
 
 def _first_synopsis(soup: BeautifulSoup) -> Optional[str]:
     """Repli générique : 1er paragraphe « feuille » qui ressemble à un résumé."""
+    out: list = []
     for p in soup.find_all("p"):
-        if p.find(["p", "div"]) or p.find_parent(["footer", "nav", "header"]):
+        if p.find(["p", "div"]) or p.find_parent(["footer", "nav", "header", "blockquote", "figcaption", "aside"]):
             continue
         txt = _clean(p.get_text(" ", strip=True))
-        if is_synopsis(txt):
-            return txt
-    return None
+        if is_synopsis(txt) or (out and len(txt) > 80 and _SENT_RE.search(txt) and not _LABEL_RE.search(txt)):
+            out.append(txt)
+            if len(" ".join(out)) >= 300:      # 2–3 phrases : le 1er paragraphe peut n'en avoir qu'une
+                break
+        elif out:
+            break
+    return " ".join(out) or None
 
 
 def _berliner_ensemble(soup: BeautifulSoup) -> Optional[str]:
@@ -99,6 +116,8 @@ def _schaubuehne(soup: BeautifulSoup) -> Optional[str]:
         promo = re.match(r"^.{0,40}?discount\s+", tail, re.I)
         if promo:
             tail = tail[promo.end():]
+        # bandeau « P L ATZ FREI! Eine Aktion der Theaterpädagogik »
+        tail = re.sub(r"^P\s*L\s*A\s*T\s*Z\s+F\s*R\s*E\s*I\s*!?\s*(?:Eine Aktion der Theaterpädagogik)?\s*", "", tail)
         if len(tail) > 60:
             return tail
     return text
@@ -157,10 +176,17 @@ def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Opti
         return None, None
     extractor = _EXTRACTORS.get(theater)
     text = None
-    for cand in ((extractor(soup) if extractor else None), _generic(soup), _first_synopsis(soup)):
+    # Ordre : extracteur du lieu, puis le CORPS de la page (texte de l'expo/pièce,
+    # 2–3 phrases), et seulement en dernier la meta description (souvent une
+    # ligne, ou le slogan du musée répété sur toutes les pages).
+    meta = _generic(soup)
+    for cand in ((extractor(soup) if extractor else None), _first_synopsis(soup), meta):
         if is_synopsis(cand):
             text = cand
             break
+    # Corps trop court mais meta plus riche : on garde la plus longue des deux.
+    if text and len(_clean(text)) < 200 and is_synopsis(meta) and len(_clean(meta)) > len(_clean(text)):
+        text = meta
     # Rien de valable (générique seul…) : pas de 📝 plutôt qu'un générique.
     return (_trim(text) if text else None), soup.get_text(" ", strip=True)
 

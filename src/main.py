@@ -110,6 +110,8 @@ _ITEM_TIMEOUT_S = 10       # par item (page détail + traductions) : au-delà, s
 _VENUE_TIMEOUT_S = 90       # un lieu qui ne répond pas en 90 s est sauté (config venue_timeout_s)
 
 
+# v2 (8/11/2026) : corps de page avant meta, 2–3 phrases (500 car.), slogans de musée refusés.
+_SUMMARY_VERSION = 2
 _SUMMARY_CACHE = Path(__file__).resolve().parent.parent / "state" / "summary_cache.json"
 _SUMMARY_TTL_DAYS = 30
 
@@ -148,6 +150,8 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
         c = cache.get(show.item_id())
         if c and c.get("src") and not is_synopsis(c["src"]):
             c = None                       # résumé en cache = un générique : on relit la page
+        if c and c.get("v") != _SUMMARY_VERSION:
+            c = None                       # extracteur amélioré depuis : on relit la page
         if c and c.get("at", "") >= fresh_after and all(c.get(lg) is not None for lg in langs):
             return c
         summary, page_text = fetch_details(show.theater, show.url)
@@ -164,6 +168,7 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
         if show.kind != "expo":
             out["spoken"], out["surtitles"] = detect_language(show.languages, page_text, show.has_english_surtitles)
         out["at"] = datetime.now(timezone.utc).isoformat()
+        out["v"] = _SUMMARY_VERSION
         time.sleep(1.0)                    # la traduction gratuite rate-limite les rafales
         return out
 
