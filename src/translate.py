@@ -95,3 +95,66 @@ def looks_french(text: Optional[str]) -> bool:
     words = re.findall(r"[a-zàâçéèêëîïôûùüÿœ]+", (text or "").lower())
     fr = sum(w in _FR_WORDS for w in words)
     return fr >= 2 and fr > 2 * sum(w in _EN_WORDS for w in words)
+
+
+# ---------------------------------------------------------------------------
+# Garde-fou de langue : une fiche n'affiche une description QUE dans sa langue.
+# Détecteur sans réseau par mots-outils (fr / en / de / es / it).
+# ---------------------------------------------------------------------------
+_STOP = {
+    "fr": {"le", "la", "les", "et", "est", "des", "une", "du", "dans", "pour", "qui", "sur", "avec", "pas",
+           "au", "aux", "ce", "cette", "son", "sa", "ses", "elle", "il", "ils", "mais", "où", "par", "que"},
+    "en": {"the", "and", "of", "is", "are", "was", "with", "to", "his", "her", "who", "for", "their", "about",
+           "this", "that", "from", "by", "it", "after", "when", "into", "an", "be", "has", "have", "its", "which"},
+    "de": {"der", "die", "das", "und", "ist", "mit", "ein", "eine", "von", "zu", "sich", "nicht", "auf", "den",
+           "dem", "des", "im", "auch", "wird", "sie", "er", "nach", "über", "einer", "eines", "zwischen", "wie"},
+    "es": {"el", "los", "las", "y", "es", "una", "del", "en", "con", "para", "que", "por", "su", "sus", "como",
+           "pero", "más", "al", "lo", "se", "este", "esta", "entre", "sobre", "hasta", "muy"},
+    "it": {"il", "lo", "gli", "e", "è", "di", "una", "del", "della", "con", "per", "che", "nel", "nella", "sono",
+           "si", "come", "ma", "più", "suo", "sua", "anche", "tra", "questo", "degli", "alla"},
+}
+
+
+def detect_lang(text: Optional[str]) -> Optional[str]:
+    """'fr' / 'en' / 'de' / 'es' / 'it', ou None si trop court / indécis."""
+    words = re.findall(r"[a-zàâçéèêëîïôûùüÿœäöüßñáíóúì]+", (text or "").lower())
+    if len(words) < 5:
+        return None
+    scores = {lg: sum(w in stop for w in words) for lg, stop in _STOP.items()}
+    best = max(scores, key=scores.get)
+    second = max(v for lg, v in scores.items() if lg != best)
+    if scores[best] < 2 or scores[best] < 1.5 * second:
+        return None
+    return best
+
+
+GUARD_FAILS: dict = {}     # {langue de la fiche: nb de descriptions refusées} (logs)
+
+
+def in_lang(text: Optional[str], lang: str, count: bool = True) -> Optional[str]:
+    """Le texte s'il est (détecté) dans `lang`, sinon None — jamais une 3e langue.
+    Indécis (texte très court) : accepté seulement s'il fait moins de 6 mots."""
+    if not text or not text.strip():
+        return None
+    got = detect_lang(text)
+    if got == lang or (got is None and len(text.split()) < 6):
+        return text
+    if count:
+        GUARD_FAILS[lang] = GUARD_FAILS.get(lang, 0) + 1
+    return None
+
+
+def pick_in_lang(lang: str, *candidates: Optional[str]) -> Optional[str]:
+    """Premier candidat dans la bonne langue ; sinon on tente de traduire le
+    premier non vide ; sinon None (la fiche part sans 📝). Un refus compté."""
+    for c in candidates:
+        if in_lang(c, lang, count=False):
+            return c
+    for src in dict.fromkeys(c for c in candidates if c and c.strip()):
+        out = translate(src, lang)
+        ok = in_lang(out, lang, count=False) if out and out != src else None
+        if ok:
+            return ok
+    if any(c and c.strip() for c in candidates):
+        GUARD_FAILS[lang] = GUARD_FAILS.get(lang, 0) + 1
+    return None

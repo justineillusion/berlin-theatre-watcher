@@ -20,7 +20,7 @@ from .language import detect as detect_language
 from .mute import filter_muted, load_muted, mute_keyboard, sync as sync_muted
 from .critics import fetch_rating
 from .summary import fetch_details
-from .translate import looks_english, looks_french, to_english, to_french
+from .translate import GUARD_FAILS, in_lang, looks_english, looks_french, to_english, to_french
 from .budget import call_with_timeout, map_with_budget
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
@@ -171,11 +171,17 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
             continue
         show = shows[i]
         cache[show.item_id()] = out
-        show.summary = out.get("fr") or out.get("src") or None
-        show.summary_en = out.get("en") or (out.get("src") if out.get("en") is None and looks_english(out.get("src")) else None)
+        # Garde-fou de langue : jamais une 3e langue sur une fiche (traduction
+        # ratée -> pas de 📝, plutôt que de l'allemand ou de l'espagnol).
+        show.summary = in_lang(out.get("fr"), "fr", count=False) or in_lang(out.get("src"), "fr")
+        if "en" in langs:
+            show.summary_en = in_lang(out.get("en"), "en", count=False) or in_lang(out.get("src"), "en")
         if show.kind != "expo":
             show.spoken_language, show.surtitles = out.get("spoken"), out.get("surtitles")
     _save_summary_cache(cache)
+    if GUARD_FAILS:
+        print("   🈯 Descriptions refusées (pas dans la langue de la fiche) : "
+              + ", ".join(f"{lg} {n}" for lg, n in sorted(GUARD_FAILS.items())))
     if late:
         print(f"   ⏭  {len(late)} item(s) sans résumé ce coup-ci "
               f"(> {_ITEM_TIMEOUT_S:.0f} s chacun ou budget épuisé ; le cache avancera au prochain scan) : "

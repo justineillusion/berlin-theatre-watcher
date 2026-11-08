@@ -4,7 +4,7 @@ Chaque **dimanche matin**, un message Telegram avec les films à voir **le soir
 de la semaine qui vient (lundi → dimanche)** — dès 18h, et pas après 22h en
 semaine — plus une section « **Ce soir** » (le dimanche même) si un film passe
 les filtres, à l'**Intimes** (Friedrichshain), au
-**Lichtblick-Kino** (Kastanienallee) et au **Babylon** (Mitte) — uniquement des
+**Lichtblick-Kino** (Kastanienallee), au **B-ware! Ladenkino** (Gärtnerstraße 19, Friedrichshain) et au **Babylon** (Mitte) — uniquement des
 films **bien notés**, **en VO** (OmU / OmeU / OV), et **pas grand public**.
 
 ```bash
@@ -22,9 +22,12 @@ retenue — pratique pour régler les seuils.
 - **Intimes** — API GraphQL kinoheld (`next-live.kinoheld.de/graphql`,
   cinéma 2423). Le site n'affiche les horaires que dans un iframe kinoheld ;
   l'API donne titre original, réalisateur, année et flags de langue.
-- **Lichtblick** — HTML de `lichtblick-kino.org` (calendrier `kal_tag`) + page
-  de chaque film : version entre parenthèses (OmU, OmeU, OV), crédits
-  « USA 2006, 123 min, Regie: … ».
+- **Lichtblick** — HTML de `lichtblick-kino.org` (calendrier `kal_tag`) + pages film.
+- **B-ware! Ladenkino** — API kinoheld (cinéma 108, `b-ware-ladenkino`) : le site
+  `ladenkino.de` n'affiche les séances que dans un eframe kinoheld.
+
+Chaque ami ne reçoit que les films des cinémas qu'il suit (/suivre), et sur la
+fiche d'un film seulement les séances de ces cinémas-là.
 - **Babylon** — HTML de `babylonberlin.eu/programm` (une vignette par séance)
   + page du film : rubrique (FILM, ORCHESTER, LITERATUR…), tags
   (english-ov, stummfilm-live…).
@@ -117,8 +120,8 @@ qu'il suit** — rien s'il n'en suit aucun :
    Le scan théâtre ne désactive jamais un cinéma, et inversement.
 2. Lecture des programmes, notes et filtres : **une seule fois**.
 3. La sélection (plafond `max_films`, places « récents ») est **refaite par
-   combinaison de cinémas** : qui ne suit que le Lichtblick reçoit le top 10
-   du Lichtblick, pas les 2 films du Lichtblick qui ont survécu au top 10
+   combinaison de cinémas** : qui ne suit que le B-ware! reçoit le top 10
+   du B-ware!, pas les 2 films du B-ware! qui ont survécu au top 10
    global. Les pitchs (traductions) sont calculés une fois par film.
 4. Envoi depuis GitHub Actions (429 respectés, petite pause entre messages) ;
    un ami qui a bloqué le bot (403) est désactivé via `POST /api/sent`.
@@ -131,8 +134,8 @@ français) — pas de pitch plutôt qu'un pitch dans une autre langue.
 Sans ces secrets : un seul récap, tous cinémas, sur `TELEGRAM_CHAT_ID`.
 
 ```bash
-./.venv/bin/python -m src.cinema --dry-run --only Lichtblick,Babylon   # le récap d'un ami qui ne suit que ces deux-là
+./.venv/bin/python -m src.cinema --dry-run --only "B-ware! Ladenkino,Babylon"   # le récap d'un ami qui ne suit que ces deux-là
 ./.venv/bin/python -m src.cinema --dry-run --lang en                    # version anglaise
 ```
 
-Le Lichtblick et le Babylon publient plusieurs semaines à l'avance.
+Le Babylon publie plusieurs semaines à l'avance.

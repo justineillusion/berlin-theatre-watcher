@@ -36,7 +36,10 @@ async function computePending(
   if (!ids.length) return [];
   const json = JSON.stringify(ids);
   const [items, subs, reactions, deliveries] = await Promise.all([
-    env.DB.prepare("SELECT * FROM items WHERE id IN (SELECT value FROM json_each(?))").bind(json).all<Item>(),
+    // Un lieu inactif (retiré de la config) ne produit JAMAIS de message.
+    env.DB.prepare(
+      `SELECT i.* FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+       WHERE i.id IN (SELECT value FROM json_each(?))`).bind(json).all<Item>(),
     env.DB.prepare(
       `SELECT s.chat_id, s.venue_id, s.primed FROM subscriptions s
        JOIN users u ON u.chat_id = s.chat_id WHERE u.active = 1`,
@@ -186,7 +189,9 @@ async function upsertFilms(env: Env, list: any[]): Promise<void> {
 export async function filmPlan(env: Env, body: any): Promise<Response> {
   const list: any[] = (body.films ?? []).filter((f: any) => f && typeof f.id === "string" && f.title);
   await upsertFilms(env, list);
-  const targets: { chat_id: number; ids: string[] }[] = body.targets ?? [];
+  // `cards` : fiche + dates propres à chaque ami (séances des seuls cinémas qu'il suit).
+  const targets: { chat_id: number; ids: string[]; cards?: Record<string, Partial<Item> & { dates?: string[] }> }[] =
+    body.targets ?? [];
   const ids = [...new Set(targets.flatMap((t) => t.ids))];
   if (!ids.length) return Response.json({ messages: [] });
   const json = JSON.stringify(ids);
@@ -208,8 +213,14 @@ export async function filmPlan(env: Env, body: any): Promise<Response> {
     const lang = langOf.get(t.chat_id);
     if (!lang) continue;                                   // inactif / inconnu
     for (const id of t.ids) {
-      const item = byId.get(id);
-      if (!item) continue;
+      const base = byId.get(id);
+      if (!base) continue;
+      const own = t.cards?.[id];
+      const item: Item = own
+        ? { ...base, text: own.text ?? base.text, line: own.line ?? base.line,
+            text_en: own.text_en ?? base.text_en, line_en: own.line_en ?? base.line_en,
+            dates: own.dates ? JSON.stringify(own.dates) : base.dates }
+        : base;
       const key = `${t.chat_id}|${id}`;
       const r = react.get(key) ?? null;
       if (r?.status === "seen" || r?.status === "ignored") continue;

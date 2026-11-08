@@ -100,7 +100,13 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
       await env.DB.prepare("UPDATE users SET active = 0 WHERE chat_id = ?").bind(chat).run();
       return void (await send(env, chat, T.stopped));
     case "/passer": case "/skip":
-      await env.DB.prepare("UPDATE users SET pending_item = NULL WHERE chat_id = ?").bind(chat).run();
+      // Ferme l'invitation la plus récente (les autres restent ouvertes).
+      await env.DB.batch([
+        env.DB.prepare(
+          `UPDATE review_prompts SET closed = 1 WHERE rowid = (SELECT rowid FROM review_prompts
+             WHERE chat_id = ? AND closed = 0 ORDER BY created_at DESC, message_id DESC LIMIT 1)`).bind(chat),
+        env.DB.prepare("UPDATE users SET pending_item = NULL WHERE chat_id = ?").bind(chat),
+      ]);
       return void (await send(env, chat, "👌"));
     case "/aide": case "/help":
       return void (await send(env, chat, help(env, chat, lang)));
@@ -119,7 +125,20 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
     }
   }
 
-  if (!cmd && user.pending_item) return onComment(env, chat, user.first_name, user.pending_item, text, ctx, lang);
+  if (!cmd) {
+    // Avis : la réponse à une invitation va à SON item ; un texte libre va à
+    // l'invitation ouverte la plus récente (plusieurs peuvent être ouvertes).
+    const replyTo = msg.reply_to_message?.message_id;
+    const prompt = replyTo
+      ? await env.DB.prepare("SELECT item_id FROM review_prompts WHERE chat_id = ? AND message_id = ?")
+        .bind(chat, replyTo).first<{ item_id: string }>()
+      : null;
+    const latest = prompt ?? await env.DB.prepare(
+      `SELECT item_id FROM review_prompts WHERE chat_id = ? AND closed = 0
+       ORDER BY created_at DESC, message_id DESC LIMIT 1`).bind(chat).first<{ item_id: string }>();
+    const itemId = latest?.item_id ?? user.pending_item;
+    if (itemId) return onComment(env, chat, user.first_name, itemId, text, ctx, lang);
+  }
   await send(env, chat, T.notUnderstood);
 }
 
@@ -488,14 +507,17 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     case "r": {
       const n = Math.max(1, Math.min(5, Number(arg) || 0));
       r = await setReaction(env, chat, item.id, { status: "seen", rating: n });
-      await env.DB.prepare("UPDATE users SET pending_item = ? WHERE chat_id = ?").bind(item.id, chat).run();
       toast = T.toastRated(stars(n));
       ctx.waitUntil((async () => {
-        await send(env, chat, T.askComment(stars(n), esc(item.title)));
+        await askReview(env, chat, item, lang, T.askComment(stars(n), esc(item.title)));
         if (prev?.rating !== n) await announceReview(env, item, venue?.name, chat, from.first_name, n, prev?.comment ?? null);
       })());
       break;
     }
+    case "w":
+      // « ✍️ Écrire / modifier mon avis » : rouvre une invitation pour cet item.
+      await askReview(env, chat, item, lang, T.askReview(esc(item.title)));
+      return void (await answer());
     case "x":
       r = await setReaction(env, chat, item.id, { status: "ignored" });
       toast = T.toastIgnored;
@@ -540,15 +562,32 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
 }
 
 // ---------------------------------------------------------------------------
+/** Invitation à laisser un avis : force_reply (Telegram ouvre la réponse à CE
+ *  message, avec « Ton avis sur X… » dans le champ) ; message_id -> item. */
+async function askReview(env: Env, chat: number, item: Item, lang: Lang, text: string): Promise<void> {
+  const res = await tg(env, "sendMessage", {
+    chat_id: chat, text, parse_mode: "HTML", disable_web_page_preview: true,
+    reply_markup: { force_reply: true, input_field_placeholder: tr(lang).reviewPlaceholder(item.title).slice(0, 64) },
+  });
+  const id = res?.result?.message_id;
+  if (id) {
+    await env.DB.prepare("INSERT OR REPLACE INTO review_prompts (chat_id, message_id, item_id) VALUES (?, ?, ?)")
+      .bind(chat, id, item.id).run();
+  }
+}
+
 async function onComment(
   env: Env, chat: number, name: string, itemId: string, text: string, ctx: ExecutionContext, lang: Lang,
 ): Promise<void> {
   const item = await getItem(env, itemId);
-  await env.DB.prepare("UPDATE users SET pending_item = NULL WHERE chat_id = ?").bind(chat).run();
+  await env.DB.batch([
+    env.DB.prepare("UPDATE users SET pending_item = NULL WHERE chat_id = ?").bind(chat),
+    env.DB.prepare("UPDATE review_prompts SET closed = 1 WHERE chat_id = ? AND item_id = ?").bind(chat, itemId),
+  ]);
   if (!item) return;
   const comment = text.slice(0, 500);
-  const r = await setReaction(env, chat, item.id, { comment });
-  await send(env, chat, tr(lang).thanksComment);
+  const r = await setReaction(env, chat, item.id, { status: "seen", comment });
+  await send(env, chat, tr(lang).commentSaved(esc(item.title)));
   const venue = await env.DB.prepare("SELECT name FROM venues WHERE id = ?").bind(item.venue_id).first<{ name: string }>();
   ctx.waitUntil((async () => {
     await announceReview(env, item, venue?.name, chat, name, r.rating, comment);

@@ -231,7 +231,10 @@ export function keyboard(item: Item, r: Reaction | null, lang: Lang = "fr"): unk
       text: r.rating === n ? `· ${n}★ ·` : `${n}★`,
       callback_data: `r:${id}:${n}`,
     }));
-    return { inline_keyboard: [row, [{ text: T.btnNotSeen, callback_data: `u:${id}` }]] };
+    return { inline_keyboard: [row, [
+      { text: T.btnReview, callback_data: `w:${id}` },
+      { text: T.btnNotSeen, callback_data: `u:${id}` },
+    ]] };
   }
   return {
     inline_keyboard: [[

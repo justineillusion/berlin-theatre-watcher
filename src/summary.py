@@ -71,6 +71,18 @@ def _volksbuehne(soup: BeautifulSoup) -> Optional[str]:
     return None
 
 
+def _co_berlin(soup: BeautifulSoup) -> Optional[str]:
+    """C/O Berlin (Drupal) : pas de meta description ; le texte est dans
+    les blocs « field--name-field-text » — le 1er vrai paragraphe = le chapeau."""
+    for p in soup.select(".field--name-field-text p"):
+        if p.find_parent("footer"):
+            continue
+        txt = _clean(p.get_text(" ", strip=True))
+        if len(txt) > 120:
+            return txt
+    return None
+
+
 def _generic(soup: BeautifulSoup) -> Optional[str]:
     for attrs in ({"property": "og:description"}, {"name": "description"}):
         meta = soup.find("meta", attrs=attrs)
@@ -83,6 +95,7 @@ _EXTRACTORS = {
     "Berliner Ensemble": _berliner_ensemble,
     "Schaubühne": _schaubuehne,
     "Volksbühne": _volksbuehne,
+    "C/O Berlin": _co_berlin,
 }
 
 

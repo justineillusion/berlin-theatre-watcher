@@ -19,7 +19,7 @@ const tgServer = http.createServer((req, res) => {
   req.on("data", (c) => (body += c));
   req.on("end", () => {
     const method = req.url.split("/").pop();
-    calls.push({ method, ...JSON.parse(body || "{}") });
+    calls.push({ method, ...JSON.parse(body || "{}"), _id: nextId });
     res.setHeader("content-type", "application/json");
     res.end(JSON.stringify({ ok: true, result: { message_id: nextId++ } }));
   });
@@ -55,7 +55,8 @@ async function tgUpdate(update) {
   return take();
 }
 const user = (id) => ({ id, first_name: { [OWNER]: "Justine", [LEA]: "Léa", [MAX]: "Max" }[id], username: undefined });
-const say = (id, text) => tgUpdate({ message: { message_id: upd, from: user(id), chat: { id, type: "private" }, text } });
+const say = (id, text, replyTo) => tgUpdate({ message: { message_id: upd, from: user(id), chat: { id, type: "private" }, text,
+  ...(replyTo ? { reply_to_message: { message_id: replyTo } } : {}) } });
 const sayGroup = (id, text) => tgUpdate({ message: { message_id: upd, from: user(id), chat: { id: GROUP, type: "group" }, text } });
 const click = (id, data, message_id, chatId = id, type = "private", text = "🎭 x") =>
   tgUpdate({ callback_query: { id: String(upd), from: user(id), data, message: { message_id, chat: { id: chatId, type }, text } } });
@@ -200,6 +201,42 @@ try {
     assert.equal(sends(c, GROUP).length, 0);
     assert.match(edits(c, GROUP)[0].text, /★★★★☆ 4\/5\n💬 “Bouleversant, Lars Eidinger incroyable”/);
     assert.match(edits(c, OWNER)[0].text, /✅ Léa ★★★★☆ — « Bouleversant/);
+  });
+
+  await step("deux notes coup sur coup, réponses dans l'ordre inverse : chaque avis va au bon item", async () => {
+    // Deux pièces notées à la suite : deux invitations force_reply ouvertes.
+    const A = play("rvA000000001", "Hedda Gabler", ["2026-12-20 19:30"]);
+    const B = play("rvB000000001", "Die Möwe", ["2026-12-21 19:30"]);
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear, A, B] });
+    let c = await click(LEA, "v:rvA000000001", 7001);
+    c = await click(LEA, "r:rvA000000001:5", 7001);
+    const p1 = sends(c, LEA).find((m) => m.reply_markup?.force_reply);
+    assert.equal(p1.reply_markup.input_field_placeholder, "Ton avis sur Hedda Gabler…");
+    c = await click(LEA, "v:rvB000000001", 7002);
+    c = await click(LEA, "r:rvB000000001:3", 7002);
+    const p2 = sends(c, LEA).find((m) => m.reply_markup?.force_reply);
+    assert.match(p2.text, /Die Möwe/);
+    // réponse à la 1re invitation d'abord (ordre inverse) → Hedda
+    c = await say(LEA, "Gabler : magistral", p1._id);
+    assert.match(sends(c, LEA)[0].text, /Avis enregistré pour <b>Hedda Gabler<\/b>/);
+    // puis texte libre sans « répondre » → l'invitation ouverte restante (Wildente)
+    c = await say(LEA, "Möwe : un peu long");
+    assert.match(sends(c, LEA)[0].text, /Avis enregistré pour <b>Die Möwe<\/b>/);
+    const vus = sends(await say(LEA, "/vus"), LEA)[0].text;
+    assert.match(vus, /Hedda Gabler[\s\S]*magistral/);
+    assert.match(vus, /Möwe[\s\S]*un peu long/);
+    // ✍️ sur une fiche vue : rouvre une invitation pour CET item ; /passer la ferme
+    c = await click(LEA, "w:rvA000000001", 7001);
+    const p3 = sends(c, LEA).find((m) => m.reply_markup?.force_reply);
+    assert.match(p3.text, /Hedda Gabler/);
+    await say(LEA, "/passer");
+    c = await say(LEA, "texte perdu ?");
+    assert.doesNotMatch(sends(c, LEA)[0].text, /Avis enregistré/);
+    // la carte d'un item noté a le bouton ✍️
+    const kb = edits(await click(LEA, "r:rvA000000001:5", 7001), LEA)[0].reply_markup.inline_keyboard;
+    assert.ok(kb.flat().some((b) => b.callback_data === "w:rvA000000001"));
+    await say(LEA, "/passer");
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear] });
   });
 
   await step("Justine 🔕 Ignorer Hedda", async () => {

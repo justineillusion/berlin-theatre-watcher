@@ -144,38 +144,27 @@ def merge_by_rating(films: List[Film]) -> List[Film]:
     return list(out.values())
 
 
-def make_pitch(film: Film) -> None:
-    if film.senscritique and film.senscritique.synopsis:
-        film.pitch = first_sentence(film.senscritique.synopsis)
-        return
+def _cinema_desc(film: Film) -> Optional[str]:
     desc = next((s.description for s in film.screenings if s.description), None)
-    if not desc:
-        return
-    short = first_sentence(desc, limit=220)
-    try:
-        from ..translate import to_french
-        short = to_french(short) or short
-    except Exception:  # noqa: BLE001 — pas de traduction : on garde l'original
-        pass
-    film.pitch = first_sentence(short)
+    return first_sentence(desc, limit=220) if desc else None
+
+
+def make_pitch(film: Film) -> None:
+    """Pitch français : synopsis SensCritique (fr), sinon la description du
+    cinéma traduite. Garde-fou : jamais une autre langue (sinon pas de 📝)."""
+    from ..translate import pick_in_lang
+    sc = film.senscritique.synopsis if film.senscritique and film.senscritique.synopsis else None
+    out = pick_in_lang("fr", first_sentence(sc) if sc else None, _cinema_desc(film))
+    film.pitch = first_sentence(out) if out else None
 
 
 def make_pitch_en(film: Film) -> None:
-    """Pitch anglais : la description du cinéma (souvent en allemand) traduite.
-    Le synopsis SensCritique est en français : pas de traduction FR->EN en
-    cascade. Rien de fiable -> pas de pitch (plutôt qu'une autre langue)."""
-    desc = next((s.description for s in film.screenings if s.description), None)
-    if not desc:
-        return
-    short = first_sentence(desc, limit=220)
-    try:
-        from ..translate import looks_english, translate
-        if not looks_english(short):
-            out = translate(short, "en")
-            short = out if out and out != short else None
-    except Exception:  # noqa: BLE001
-        short = None
-    film.pitch_en = first_sentence(short) if short else None
+    """Pitch anglais : description du cinéma si elle est en anglais, sinon
+    traduite (description du cinéma, à défaut synopsis SensCritique fr->en)."""
+    from ..translate import pick_in_lang
+    sc = film.senscritique.synopsis if film.senscritique and film.senscritique.synopsis else None
+    out = pick_in_lang("en", _cinema_desc(film), first_sentence(sc) if sc else None)
+    film.pitch_en = first_sentence(out) if out else None
 
 
 def select(passed: List[Film], cfg: dict, this_year: int) -> tuple[List[Film], List[Film]]:
@@ -340,6 +329,20 @@ def _film_item(f: Film, by_id: Dict[str, str]) -> dict:
     }
 
 
+def _own_card(f: Film, films: Dict[str, Film]) -> dict:
+    """Fiche d'un film limitée aux séances des cinémas que CET ami suit
+    (`f` vient de compose() pour son sous-ensemble de cinémas) : texte et dates
+    propres, pour que ni l'affichage ni « nouvelles séances » ne parlent d'un
+    cinéma qu'il ne suit pas."""
+    full = films.get(f.item_id(), f)
+    f.pitch, f.pitch_en = full.pitch, full.pitch_en
+    return {
+        "text": film_card(f, "fr"), "line": film_line(f, "fr"),
+        "text_en": film_card(f, "en"), "line_en": film_line(f, "en"),
+        "dates": sorted({s.start.astimezone(_TZ).strftime("%Y-%m-%d %H:%M") for s in f.screenings}),
+    }
+
+
 def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
     """Bot multi-utilisateurs : un récap par ami, limité aux cinémas qu'il suit
     (/suivre). Personne ne suit de cinéma = aucun envoi. Idempotent par semaine
@@ -391,9 +394,13 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
                 if (f.key, lang) not in analysis["pitched"]:
                     (make_pitch_en if lang == "en" else make_pitch)(f)
                     analysis["pitched"].add((f.key, lang))
+        from ..translate import GUARD_FAILS
+        print("🈯 Pitchs refusés (pas dans la langue de la fiche) : "
+              + (", ".join(f"{lg} {n}" for lg, n in sorted(GUARD_FAILS.items())) or "aucun"))
         resp = api.post("/api/film-plan", json={
             "films": [_film_item(f, by_id) for f in films.values()],
-            "targets": [{"chat_id": rcp["chat_id"], "ids": [f.item_id() for f in res["kept"]]}
+            "targets": [{"chat_id": rcp["chat_id"], "ids": [f.item_id() for f in res["kept"]],
+                         "cards": {f.item_id(): _own_card(f, films) for f in res["kept"]}}
                         for rcp, _, res in plan],
         })
         resp.raise_for_status()
@@ -465,7 +472,7 @@ def report(result: dict) -> str:
 
 
 def main(argv: List[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Récap ciné hebdo (Intimes, Lichtblick, Babylon…)")
+    ap = argparse.ArgumentParser(description="Récap ciné hebdo (Intimes, Lichtblick, B-ware! Ladenkino, Babylon…)")
     ap.add_argument("--dry-run", action="store_true", help="affiche sans envoyer (aucun token requis)")
     ap.add_argument("--start", help="premier jour (YYYY-MM-DD), défaut : aujourd'hui à Berlin")
     ap.add_argument("--config", default=str(CONFIG_PATH))
@@ -492,6 +499,9 @@ def main(argv: List[str] | None = None) -> int:
         for f in result["kept"]:
             print("-----")
             print(film_card(f, args.lang))
+        from ..translate import GUARD_FAILS
+        print("\n🈯 Pitchs refusés (pas dans la langue de la fiche) : "
+              + (", ".join(f"{lg} {n}" for lg, n in sorted(GUARD_FAILS.items())) or "aucun"))
         print(report(result))
         return 0
 
