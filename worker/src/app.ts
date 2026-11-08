@@ -2,15 +2,17 @@
 //
 //   GET  /app              la page (app.html)
 //   POST /app/api/state    { initData }                 -> programme + mes sorties + réglages
-//   POST /app/api/act      { initData, op, id, arg? }   -> ⭐ 🎟 ✅ ★ 🔕 (mêmes effets que les boutons)
+//   POST /app/api/act      { initData, op, id, arg?, with? } -> ⭐ 🎟 ✅ ★ 🙅 suivre (mêmes effets que les boutons) ;
+//                          with = places 🎟 prises aussi pour ces amis
+//   POST /app/api/share    { initData, id, to }         -> 💌 « ça te dit ? » en privé à ces amis
 //
 // Qui parle ? Telegram passe à la page `initData`, signé avec le token du bot :
 // on le vérifie (HMAC), on n'a donc ni login ni mot de passe.
 // Les actions passent par le même code que les boutons du chat (handleUpdate) :
 // annonces au groupe, fiches mises à jour, tout reste cohérent.
 import { handleUpdate } from "./bot";
-import { Env, Item, itemText } from "./lib";
-import { asLang } from "./i18n";
+import { Env, Item, esc, getItem, getReaction, itemText, keyboard, send, whenLabel } from "./lib";
+import { Lang, asLang } from "./i18n";
 import PAGE from "./app.html";
 
 const enc = new TextEncoder();
@@ -35,7 +37,9 @@ export async function verifyInitData(initData: string, botToken: string, now = D
 }
 
 // Ce que la page a le droit de déclencher (préfixes des boutons du chat).
-const OPS = new Set(["i", "ui", "v", "r", "x", "u", "bd", "bx"]);
+// « w » (✍️ critique) envoie l'invitation dans le chat : la critique s'écrit en réponse au bot.
+// « s » (suivre / ne plus suivre un lieu) : id = le lieu.
+const OPS = new Set(["i", "ui", "v", "r", "w", "x", "u", "bd", "bx", "s"]);
 
 export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(req.url);
@@ -63,7 +67,19 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
         message: { chat: { id: me.chat_id, type: "private" } },
       },
     }, ctx);
+    // 🎟 « pour moi + Joss » : les autres places apparaissent réservées chez eux aussi.
+    if (op === "bd" && Array.isArray(body.with) && body.with.length) {
+      await bookFor(env, me, id, arg, body.with.map(Number).filter(Number.isFinite).slice(0, 8));
+    }
     return Response.json(await state(env, me.chat_id, asLang(me.lang)));
+  }
+  if (url.pathname === "/app/api/share") {
+    // 💌 « Regarde ça, ça me tente : t'en penses quoi ? », en privé, à une ou plusieurs personnes du bot.
+    const id = String(body.id ?? "");
+    const to = Array.isArray(body.to) ? body.to.map(Number).filter(Number.isFinite).slice(0, 8) : [];
+    if (!/^[\w-]{1,40}$/.test(id) || !to.length) return Response.json({ error: "bad_request" }, { status: 400 });
+    const sent = await share(env, me, id, to);
+    return Response.json({ sent, ...(await state(env, me.chat_id, asLang(me.lang))) });
   }
   return new Response("not found", { status: 404 });
 }
@@ -91,15 +107,18 @@ async function state(env: Env, chat: number, lang: "fr" | "en") {
   for (const r of reacts) {
     if (r.chat_id === chat) mine.set(r.item_id, r);
     else (friends.get(r.item_id) ?? friends.set(r.item_id, []).get(r.item_id)!)
-      .push({ name: r.first_name, star: r.interested && r.status !== "seen" ? 1 : 0, booked: r.booked_at, seen: r.status === "seen" ? 1 : 0, rating: r.rating });
+      .push({ id: r.chat_id, name: r.first_name, star: r.interested && r.status !== "seen" ? 1 : 0, booked: r.booked_at, seen: r.status === "seen" ? 1 : 0, rating: r.rating, comment: r.comment });
   }
   const { results: venues } = await env.DB.prepare(
     `SELECT v.id, v.name, v.kind, EXISTS (SELECT 1 FROM subscriptions s WHERE s.chat_id = ? AND s.venue_id = v.id) AS followed
      FROM venues v WHERE v.active = 1 ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
   ).bind(chat).all<any>();
+  const { results: people } = await env.DB.prepare(
+    "SELECT chat_id AS id, first_name AS name FROM users WHERE active = 1 AND chat_id != ? ORDER BY first_name").bind(chat).all<any>();
   return {
     lang,
     venues,
+    people,
     items: items.map((i) => {
       const r = mine.get(i.id);
       return {
@@ -111,4 +130,54 @@ async function state(env: Env, chat: number, lang: "fr" | "en") {
       };
     }),
   };
+}
+
+type Me = { chat_id: number; first_name: string };
+const MSG = {
+  fr: {
+    share: (who: string) => `💌 <b>${who}</b> a envie d'y aller : ça te dit ?`,
+    booked: (who: string, title: string, when: string) => `🎟 <b>${who}</b> a pris une place pour toi : <b>${title}</b>, ${when}.`,
+  },
+  en: {
+    share: (who: string) => `💌 <b>${who}</b> wants to go: are you in?`,
+    booked: (who: string, title: string, when: string) => `🎟 <b>${who}</b> got you a ticket: <b>${title}</b>, ${when}.`,
+  },
+};
+/** Personnes actives du bot parmi `ids` (jamais soi-même), avec leur langue. */
+async function recipients(env: Env, me: Me, ids: number[]) {
+  const { results } = await env.DB.prepare(
+    "SELECT chat_id, first_name, lang FROM users WHERE active = 1 AND chat_id != ? AND chat_id IN (SELECT value FROM json_each(?))",
+  ).bind(me.chat_id, JSON.stringify(ids)).all<{ chat_id: number; first_name: string; lang: string | null }>();
+  return results;
+}
+
+async function share(env: Env, me: Me, id: string, to: number[]): Promise<string[]> {
+  const item = await getItem(env, id);
+  if (!item) return [];
+  const out: string[] = [];
+  for (const u of await recipients(env, me, to)) {
+    const lang: Lang = asLang(u.lang);
+    const r = await getReaction(env, u.chat_id, id);
+    const res = await send(env, u.chat_id, `${MSG[lang].share(esc(me.first_name))}\n\n${itemText(item, lang) ?? esc(item.title)}`, keyboard(item, r, lang));
+    if (res?.ok) out.push(u.first_name);
+  }
+  return out;
+}
+
+async function bookFor(env: Env, me: Me, id: string, when: string, ids: number[]): Promise<void> {
+  const item = await getItem(env, id);
+  if (!item || !/^\d{8}(\d{4})?$/.test(when)) return;
+  const iso = `${when.slice(0, 4)}-${when.slice(4, 6)}-${when.slice(6, 8)}` + (when.length >= 12 ? ` ${when.slice(8, 10)}:${when.slice(10, 12)}` : "");
+  const now = new Date().toISOString().slice(0, 19).replace("T", " ");
+  for (const u of await recipients(env, me, ids)) {
+    await env.DB.prepare(
+      `INSERT INTO reactions (chat_id, item_id, interested, booked_at, booked_on, followup_sent, updated_at)
+       VALUES (?, ?, 1, ?, ?, 0, datetime('now'))
+       ON CONFLICT(chat_id, item_id) DO UPDATE SET interested = 1, status = NULL, booked_at = excluded.booked_at,
+         booked_on = excluded.booked_on, followup_sent = 0, updated_at = excluded.updated_at`,
+    ).bind(u.chat_id, id, iso, now).run();
+    const lang: Lang = asLang(u.lang);
+    const r = await getReaction(env, u.chat_id, id);
+    await send(env, u.chat_id, MSG[lang].booked(esc(me.first_name), esc(item.title), whenLabel(iso, lang)), keyboard(item, r, lang));
+  }
 }

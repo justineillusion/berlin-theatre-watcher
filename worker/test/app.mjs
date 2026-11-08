@@ -108,6 +108,29 @@ await step("✅ vu puis ★★★★", async () => {
   assert.equal(item(await act("v", "p2"), "p2").me.status, "seen");
   assert.equal(item(await act("r", "p2", "4"), "p2").me.rating, 4);
 });
+await step("💌 envoyer à Joss : message privé, dans sa langue", async () => {
+  calls = [];
+  const r = await post("/app/api/share", { initData: me, id: "p2", to: [555, ME, 999] });
+  assert.equal(r.status, 200); assert.deepEqual(r.json.sent, ["Joss"]);
+  const dm = calls.filter((c) => c.method === "sendMessage" && c.chat_id == 555);
+  assert.equal(dm.length, 1); assert.match(dm[0].text, /Justine.*wants to go/);
+  assert.ok(r.json.people.some((p) => p.name === "Joss"));
+});
+await step("🎟 pour moi + Joss : réservé chez lui aussi", async () => {
+  calls = [];
+  const r = await post("/app/api/act", { initData: me, op: "bd", id: "p2", arg: day(3).replace(/\D/g, "") + "1900", with: [555] });
+  assert.equal(r.status, 200);
+  const f = item(r.json, "p2").friends.find((x) => x.name === "Joss");
+  assert.equal(f.booked, `${day(3)} 19:00`);
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id == 555 && /got you a ticket/.test(c.text)));
+});
+await step("Réglages : ne plus suivre puis resuivre un lieu", async () => {
+  let s = await act("s", "kw");
+  assert.equal(s.venues.find((v) => v.id === "kw").followed, 0);
+  assert.ok(!s.items.some((x) => x.id === "e1"));
+  s = await act("s", "kw");
+  assert.equal(s.venues.find((v) => v.id === "kw").followed, 1);
+});
 await step("action inconnue / id bizarre : 400", async () => {
   assert.equal((await post("/app/api/act", { initData: me, op: "stop", id: "p1" })).status, 400);
   assert.equal((await post("/app/api/act", { initData: me, op: "i", id: "p1:x" })).status, 400);
