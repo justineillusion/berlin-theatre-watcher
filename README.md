@@ -136,10 +136,25 @@ capricieuse, ne sert plus que de repli (Festspiele, créations à l'étranger).
 Tout est mis en cache dans `state/critics_cache.json` (rubriques : 6 h pour la
 1re page, 30 j pour les suivantes ; recherches : 3 j ; notes : 12 h tant que la
 critique a moins d'un mois — la Rundschau s'étoffe après la première — puis
-60 j). Un échec réseau n'est jamais mis en cache. Les ouvertures de vente
-(`--no-critics`) n'interrogent pas Nachtkritik mais reprennent les notes déjà
-en cache. ⚠️ Pour que le cache serve d'un run à l'autre, les workflows doivent
-committer `state/critics_cache.json` avec `state/seen.json`.
+60 j). Un échec réseau n'est jamais mis en cache.
+
+**Seul le job de nuit `critics.yml` (04:30 UTC) va sur Nachtkritik**
+(`python -m src.critics_refresh`) : rubriques des maisons (BE, Schaubühne,
+Volksbühne, Festspiele), lecture des critiques (≤ 10 s par pièce), recherche du
+site seulement pour les pièces absentes des rubriques (≤ 45 s par pièce), 5 min
+en tout ; il logue la durée de chaque pièce (listing / search / missed) et le
+taux de notes, puis committe le cache. Tous les autres jobs (scan, ventes,
+récap) lisent le cache **sans réseau** : instantané. Une pièce « missed » est
+retentée la nuit suivante. Coproduction critiquée sous un festival partenaire :
+acceptée si le générique de la critique nomme la maison berlinoise.
+
+## Horizon : maintenant ou la semaine prochaine
+
+`horizon_expo_days: 7` et `horizon_theatre_days: 14` (config.yaml) : partout
+(notifs, /programme, /interets, groupe, récaps), une expo n'apparaît que si elle
+est ouverte ou ouvre sous 7 jours, une pièce que si elle se joue sous 14 jours
+(et seules ces dates sont affichées). Le reste est gardé en base sans bruit et
+annoncé une fois en entrant dans la fenêtre.
 
 Une pièce pas encore créée n'a pas de critique : la note apparaît dans les
 alertes suivantes (nouvelles dates) et dans le récap du dimanche.
