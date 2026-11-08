@@ -53,6 +53,9 @@ def test_page_announcement_overrides_rule():
     # annonce passée : ignorée, la règle reprend
     s = next_sale("schaubuhne", _at(2027, 8, 20), [txt])
     assert s.source == "rule" and s.day == date(2027, 9, 1)
+    # lu en décembre : « 2. Januar » = l'an prochain
+    s = next_sale("schaubuhne", _at(2026, 12, 20), ["Vorverkaufsbeginn für Februar: Der Vorverkauf beginnt am 2. Januar um 11 Uhr."])
+    assert s.day == date(2027, 1, 2) and s.source == "page"
 
 
 def test_unknown_venue():
