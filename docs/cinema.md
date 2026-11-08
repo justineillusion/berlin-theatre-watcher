@@ -4,7 +4,7 @@ Chaque **dimanche matin**, un message Telegram avec les films à voir **le soir
 de la semaine qui vient (lundi → dimanche)** — dès 18h, et pas après 22h en
 semaine — plus une section « **Ce soir** » (le dimanche même) si un film passe
 les filtres, à l'**Intimes** (Friedrichshain), au
-**Lichtblick-Kino** (Kastanienallee), au **B-ware! Ladenkino** (Gärtnerstraße 19, Friedrichshain) et au **Babylon** (Mitte) — uniquement des
+**Lichtblick-Kino** (Kastanienallee), au **B-ware! Ladenkino** (Gärtnerstraße 19, Friedrichshain), au **Kino International** (Karl-Marx-Allee) et au **Babylon** (Mitte) — uniquement des
 films **bien notés**, **en VO** (OmU / OmeU / OV), et **pas grand public**.
 
 ```bash
@@ -25,6 +25,8 @@ retenue — pratique pour régler les seuils.
 - **Lichtblick** — HTML de `lichtblick-kino.org` (calendrier `kal_tag`) + pages film.
 - **B-ware! Ladenkino** — API kinoheld (cinéma 108, `b-ware-ladenkino`) : le site
   `ladenkino.de` n'affiche les séances que dans un eframe kinoheld.
+- **Kino International** — API kinoheld (cinéma 713, `kino-international`). Pas de
+  flag de langue sur les séances : non marqué = version non précisée (acceptée).
 
 Chaque ami ne reçoit que les films des cinémas qu'il suit (/suivre), et sur la
 fiche d'un film seulement les séances de ces cinémas-là.

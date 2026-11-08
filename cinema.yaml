@@ -29,6 +29,15 @@ cinemas:
     film_url: https://ladenkino.de/programm/gesamtprogramm/
     unmarked_version: DF
 
+  - name: Kino International
+    source: kinoheld                 # Karl-Marx-Allee 33 (Yorck) ; séances via kinoheld
+    kinoheld_cinema_id: 713
+    kinoheld_slug: kino-international
+    film_url: https://www.yorck.de/de/kinos/kino-international
+    # kinoheld ne met aucun flag de langue ici (« La Bola Negra » non marqué) :
+    # non marqué = version non précisée (acceptée), pour ne pas écarter les VO.
+    unmarked_version: null
+
   - name: Babylon
     source: babylon                  # page /programm du site (une vignette par séance)
     url: https://babylonberlin.eu/programm
