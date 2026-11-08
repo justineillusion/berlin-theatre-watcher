@@ -30,20 +30,21 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .brand b i{font-style:normal;color:var(--velvet)}
 .mast time{font:500 13px var(--sans);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 .top{position:sticky;top:0;z-index:3;background:var(--bg);padding:4px 12px 8px;border-bottom:1px solid var(--line)}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--card);border-radius:12px;padding:3px}
-.tab{border:0;background:none;padding:9px 4px;font:600 15px var(--sans);color:var(--muted);border-radius:9px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--ink)}
+.tab{border:0;border-right:2px solid var(--ink);background:var(--bg);padding:10px 4px;font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);border-radius:0}
+.tab:last-child{border-right:0}
 .tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
 .filters{display:flex;gap:6px;overflow-x:auto;padding:8px 0 0;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
-.chip{flex:none;border:1px solid var(--line);background:var(--card);font:500 14px var(--sans);padding:6px 13px;border-radius:999px}
+.chip{flex:none;border:1.5px solid var(--ink);background:var(--bg);font:700 12.5px var(--sans);letter-spacing:.04em;text-transform:uppercase;padding:6px 11px;border-radius:0}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 
 /* Liste : un jour = un intertitre en italique, une ligne = heure | titre. */
 .day{display:flex;align-items:baseline;gap:8px;padding:20px 16px 6px;font:800 17px var(--sans);letter-spacing:-.01em;color:var(--ink)}
 .day span{font:500 14px var(--sans);color:var(--muted)}
 .day em{font:600 11px var(--sans);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
-.item{margin:0 10px;border-radius:14px}
-.item.open{background:var(--card);box-shadow:0 1px 0 var(--line),0 10px 24px -18px rgba(60,20,30,.35);margin-block:6px}
+.item{margin:0 10px;border-radius:0}
+.item.open{background:var(--bg);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);margin:8px 14px 12px 10px}
 .row{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 8px;border:0;background:none;width:100%;text-align:left}
 .when{font:700 15.5px var(--sans);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px;line-height:1.1}
 .when small{display:block;font:500 12px var(--sans);color:var(--muted);margin-top:3px}
@@ -70,12 +71,12 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .detail .m{color:var(--muted);font-size:14px}
 .detail .syn{font:400 15px/1.5 var(--sans)}
 .sect{font:600 11.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:4px}
-.mine{background:var(--gold-soft);border-radius:10px;padding:10px 12px;display:grid;gap:4px}
+.mine{background:var(--gold-soft);border-left:3px solid var(--gold);border-radius:0;padding:10px 12px;display:grid;gap:4px}
 .friend{display:grid;gap:1px;padding-left:10px;border-left:2px solid var(--line)}
 .friend b{font:600 14px var(--sans)}
 .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
-.act{border:1px solid var(--line);background:var(--bg);font:500 14px var(--sans);padding:8px 13px;border-radius:999px;text-decoration:none;color:var(--ink)}
-.act.on{background:var(--velvet);border-color:var(--velvet);color:var(--velvet-ink)}
+.act{border:1.5px solid var(--ink);background:var(--bg);font:700 13px var(--sans);letter-spacing:.02em;padding:8px 12px;border-radius:0;text-decoration:none;color:var(--ink)}
+.act.on{background:var(--velvet);border-color:var(--velvet);color:var(--velvet-ink);box-shadow:3px 3px 0 var(--ink)}
 .act.rate{padding:7px 9px;color:var(--gold);letter-spacing:.06em}
 .act.rate.on{background:var(--gold);border-color:var(--gold);color:var(--card)}
 .gone{opacity:.3;filter:grayscale(1);transition:opacity .35s}
@@ -117,7 +118,7 @@ const L = {
         booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ⭐ ce qui te tente.",
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
-        myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
+        myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
@@ -127,7 +128,7 @@ const L = {
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: ⭐ what tempts you.",
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
-        myReview:"My review", shared:"From the group", send:"💌 Send to…", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
+        myReview:"My review", shared:"From the group", send:"💌 Send to…", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
         reviewInChat:"The bot is waiting in the chat: reply with your review.", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
@@ -193,7 +194,7 @@ async function act(op, id, arg, extra = {}) {
     await new Promise((r) => setTimeout(r, 400));
     st.open = null;
   }
-  try { tgApp?.HapticFeedback?.selectionChanged(); S = await api(extra.path || "act", { op, id, arg, ...extra.body }); if (S.sent) st.sent = { id, names: S.sent }; }
+  try { tgApp?.HapticFeedback?.selectionChanged(); S = await api(extra.path || "act", { op, id, arg, ...extra.body }); if (S.sent) st.sent = { id, names: S.sent }; T = L[S.lang] || L.fr; document.documentElement.lang = S.lang; }
   catch { tgApp?.showAlert?.(T.error); }
   st.busy = false; st.picking = null; st.sharing = null; st.sel.clear(); st.withs.clear(); render();
   // ✍️ : la critique s'écrit dans le chat, en réponse à l'invitation que le bot vient d'envoyer.
@@ -290,7 +291,9 @@ function render() {
   if (st.tab === "set") {
     list.innerHTML = `<div class="set">${dayHead(T.venues)}${S.venues.map((v) =>
       `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}">${ICON[v.kind === "cinema" ? "film" : v.kind] || "🎭"} ${esc(v.name)}<span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("")}
-      <p class="hint">${esc(T.tapToggle)}</p></div>`;
+      <p class="hint">${esc(T.tapToggle)}</p>
+      ${dayHead(T.language)}<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
+        `<button class="act ${S.lang === c ? "on" : ""}" data-act="l" data-id="${c}">${l}</button>`).join("")}</div></div>`;
     return;
   }
   chips(K, [["all", T.all], ["theatre", "🎭 " + T.theatre], ["film", "🎬 " + T.film], ["expo", "🏛 " + T.expo]], "kind");

@@ -140,6 +140,10 @@ await step("Réglages : ne plus suivre puis resuivre un lieu", async () => {
   s = await act("s", "kw");
   assert.equal(s.venues.find((v) => v.id === "kw").followed, 1);
 });
+await step("Réglages : langue → anglais puis français", async () => {
+  assert.equal((await act("l", "en")).lang, "en");
+  assert.equal((await act("l", "fr")).lang, "fr");
+});
 await step("action inconnue / id bizarre : 400", async () => {
   assert.equal((await post("/app/api/act", { initData: me, op: "stop", id: "p1" })).status, 400);
   assert.equal((await post("/app/api/act", { initData: me, op: "i", id: "p1:x" })).status, 400);

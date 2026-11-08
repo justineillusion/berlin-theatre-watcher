@@ -38,8 +38,8 @@ export async function verifyInitData(initData: string, botToken: string, now = D
 
 // Ce que la page a le droit de déclencher (préfixes des boutons du chat).
 // « w » (✍️ critique) envoie l'invitation dans le chat : la critique s'écrit en réponse au bot.
-// « s » (suivre / ne plus suivre un lieu) : id = le lieu.
-const OPS = new Set(["i", "ui", "v", "r", "w", "x", "u", "bd", "bx", "s"]);
+// « s » (suivre / ne plus suivre un lieu) : id = le lieu ; « l » (langue) : id = fr | en.
+const OPS = new Set(["i", "ui", "v", "r", "w", "x", "u", "bd", "bx", "s", "l"]);
 
 export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(req.url);
@@ -72,7 +72,9 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     if (op === "bd" && Array.isArray(body.with) && body.with.length) {
       await bookFor(env, me, id, arg, body.with.map(Number).filter(Number.isFinite).slice(0, 8));
     }
-    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+    // La langue a pu changer (« l ») : on la relit.
+    const lang = op === "l" ? asLang(id) : asLang(me.lang);
+    return Response.json(await state(env, me.chat_id, lang, focus));
   }
   if (url.pathname === "/app/api/share") {
     // 💌 « Regarde ça, ça me tente : t'en penses quoi ? », en privé, à une ou plusieurs personnes du bot.
