@@ -4,7 +4,7 @@
 //   POST /app/api/state    { initData }                 -> programme + mes sorties + réglages
 //   POST /app/api/act      { initData, op, id, arg?, with? } -> ⭐ 🎟 ✅ ★ 🙅 suivre (mêmes effets que les boutons) ;
 //                          with = places 🎟 prises aussi pour ces amis
-//   POST /app/api/share    { initData, id, to }         -> 💌 « ça te dit ? » en privé à ces amis
+//   POST /app/api/share    { initData, id, to, note? }  -> 💌 « ça te dit ? » (+ un mot) en privé à ces amis
 //
 // Qui parle ? Telegram passe à la page `initData`, signé avec le token du bot :
 // on le vérifie (HMAC), on n'a donc ni login ni mot de passe.
@@ -81,7 +81,8 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
     const id = String(body.id ?? "");
     const to = Array.isArray(body.to) ? body.to.map(Number).filter(Number.isFinite).slice(0, 8) : [];
     if (!/^[\w-]{1,40}$/.test(id) || !to.length) return Response.json({ error: "bad_request" }, { status: 400 });
-    const sent = await share(env, me, id, to);
+    const note = String(body.note ?? "").replace(/\s+/g, " ").trim().slice(0, 200);
+    const sent = await share(env, me, id, to, note);
     return Response.json({ sent, ...(await state(env, me.chat_id, asLang(me.lang), focus)) });
   }
   return new Response("not found", { status: 404 });
@@ -155,14 +156,15 @@ async function recipients(env: Env, me: Me, ids: number[]) {
   return results;
 }
 
-async function share(env: Env, me: Me, id: string, to: number[]): Promise<string[]> {
+async function share(env: Env, me: Me, id: string, to: number[], note = ""): Promise<string[]> {
   const item = await getItem(env, id);
   if (!item) return [];
   const out: string[] = [];
   for (const u of await recipients(env, me, to)) {
     const lang: Lang = asLang(u.lang);
     const r = await getReaction(env, u.chat_id, id);
-    const res = await send(env, u.chat_id, `${MSG[lang].share(esc(me.first_name))}\n\n${itemText(item, lang) ?? esc(item.title)}`, keyboard(item, r, lang));
+    const head = MSG[lang].share(esc(me.first_name)) + (note ? `\n💬 « ${esc(note)} »` : "");
+    const res = await send(env, u.chat_id, `${head}\n\n${itemText(item, lang) ?? esc(item.title)}`, keyboard(item, r, lang));
     if (res?.ok) out.push(u.first_name);
   }
   return out;

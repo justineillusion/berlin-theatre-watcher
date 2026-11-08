@@ -119,10 +119,10 @@ await step("✅ vu puis ★★★★", async () => {
 });
 await step("💌 envoyer à Joss : message privé, dans sa langue", async () => {
   calls = [];
-  const r = await post("/app/api/share", { initData: me, id: "p2", to: [555, ME, 999] });
+  const r = await post("/app/api/share", { initData: me, id: "p2", to: [555, ME, 999], note: "  Tuesday?  <b>" });
   assert.equal(r.status, 200); assert.deepEqual(r.json.sent, ["Joss"]);
   const dm = calls.filter((c) => c.method === "sendMessage" && c.chat_id == 555);
-  assert.equal(dm.length, 1); assert.match(dm[0].text, /Justine.*wants to go/);
+  assert.equal(dm.length, 1); assert.match(dm[0].text, /Justine.*wants to go/); assert.match(dm[0].text, /💬 « Tuesday\? &lt;b&gt; »/);
   assert.ok(r.json.people.some((p) => p.name === "Joss"));
 });
 await step("🎟 pour moi + Joss : réservé chez lui aussi", async () => {
