@@ -726,6 +726,16 @@ try {
     assert.match(sends(await click(OWNER, "st:g", m._id), OWNER)[0].text, /groupe de la bande est relié/);
   });
 
+  await step("calendrier des ventes : /api/plan le range dans settings.sales (fusion par lieu)", async () => {
+    const sale = { venue_id: "schaubuhne", day: soon(1), at: `${soon(1)}T11:00:00+01:00`, month: "2027-01", hour_known: true, source: "rule" };
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear], sales: { schaubuhne: sale } });
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear],
+      sales: { "berliner-ensemble": { ...sale, venue_id: "berliner-ensemble" } } });
+    const out = execSync(`npx wrangler d1 execute theatre-bot --local --json --command "SELECT value FROM settings WHERE key='sales'"`).toString();
+    const v = JSON.parse(JSON.parse(out)[0].results[0].value);
+    assert.deepEqual(Object.keys(v).sort(), ["berliner-ensemble", "schaubuhne"]);
+  });
+
   await step("sécurité : webhook sans secret et API sans token refusés", async () => {
     assert.equal((await fetch(`${W}/tg`, { method: "POST", body: "{}" })).status, 403);
     assert.equal((await fetch(`${W}/api/plan`, { method: "POST", body: "{}" })).status, 401);

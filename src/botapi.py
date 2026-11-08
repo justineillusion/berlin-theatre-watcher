@@ -104,6 +104,23 @@ def write_press_items(shows: List[Show]) -> None:
         print(f"   ⚠️  {path.name} non écrit : {exc}")
 
 
+def _sales(config: dict) -> dict:
+    """Prochaines ouvertures de vente des théâtres suivis (src/sales.py) -> settings D1 « sales »."""
+    try:
+        from .budget import call_with_timeout
+        from .main import venue_slug
+        from .sales import fetch_sales
+        ids = [venue_slug(t["name"]) for t in config.get("theaters", []) if t.get("kind", "theatre") == "theatre"]
+        ok, out = call_with_timeout(lambda: fetch_sales(ids), 40)
+        if ok and out:
+            print("🎟 Ventes : " + ", ".join(f"{v} {s['day']}{' ' + s['at'][11:16] if s['at'] else ''} "
+                                            f"({s['month']}, {s['source']})" for v, s in out.items()))
+        return out if ok else {}
+    except Exception as exc:  # noqa: BLE001 — bonus, jamais bloquant
+        print(f"   ⚠️  calendrier des ventes : {exc}")
+        return {}
+
+
 def _texts(show: Show, langs: tuple) -> dict:
     show = _windowed(show)
     out = {"id": show.item_id(), "text": format_item(show), "line": digest_line(show)}
@@ -138,6 +155,7 @@ def run_multi(
                 "expo_last_weeks_days": config.get("expo_last_weeks_days", 14),
                 "horizon_expo_days": config.get("horizon_expo_days", 7),
                 "horizon_theatre_days": config.get("horizon_theatre_days", 14),
+                "sales": _sales(config),
             },
         )
         plan.raise_for_status()

@@ -339,6 +339,11 @@ export async function plan(env: Env, body: any): Promise<Response> {
   await setSetting(env, "expo_last_weeks_days", String(Number(body.expo_last_weeks_days ?? 14)));
   if (body.horizon_expo_days != null) await setSetting(env, "horizon_expo_days", String(Number(body.horizon_expo_days)));
   if (body.horizon_theatre_days != null) await setSetting(env, "horizon_theatre_days", String(Number(body.horizon_theatre_days)));
+  // Calendrier des ventes (src/sales.py) : fusionné par lieu, lu par les crons du Worker.
+  if (body.sales && typeof body.sales === "object" && Object.keys(body.sales).length) {
+    const cur = JSON.parse((await setting(env, "sales")) ?? "{}");
+    await setSetting(env, "sales", JSON.stringify({ ...cur, ...body.sales }));
+  }
 
   const users = await env.DB.prepare("SELECT COUNT(*) AS n FROM users WHERE active = 1").first<{ n: number }>();
   // Langues à rédiger : le scraper ne produit la variante anglaise que si quelqu'un la lit.
