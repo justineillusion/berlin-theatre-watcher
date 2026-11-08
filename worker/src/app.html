@@ -37,7 +37,10 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
 .filters{display:flex;gap:6px;overflow-x:auto;padding:8px 12px 0;margin:0 -12px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
-.chip{flex:none;border:1.5px solid var(--ink);background:var(--bg);font:700 12.5px var(--sans);letter-spacing:.04em;text-transform:uppercase;padding:6px 11px;border-radius:0}
+.chip{flex:none;border:1.5px solid var(--ink);background:var(--bg);font:700 12px var(--sans);letter-spacing:.03em;text-transform:uppercase;padding:6px 8px;border-radius:0;white-space:nowrap}
+/* Types : 4 cases égales sur toute la largeur, tout tient sur un téléphone. */
+#kinds{gap:6px;overflow:visible}
+#kinds .chip{flex:1 1 auto;text-align:center}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 /* Temporel : du texte, pas des boîtes ; le choix actif est souligné. */
 #whens{gap:18px;padding-top:10px}
@@ -130,7 +133,7 @@ const L = {
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
-  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibitions",
+  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"⭐ Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking",
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: ⭐ what tempts you.",
@@ -154,6 +157,8 @@ const LIMIT = { week: plus(7), month: plus(31), all: "9999" };
 
 function next(x) {
   if (x.kind === "expo") return x.start && x.start > TODAY ? x.start : TODAY;
+  // Réservé : la séance réservée, pas la prochaine date de la pièce.
+  if (x.me && x.me.booked && x.me.booked.slice(0, 10) >= TODAY) return x.me.booked;
   return (x.dates || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
 }
 const dt = (d) => new Date(d.slice(0, 10) + "T12:00:00Z");
@@ -326,7 +331,7 @@ function render() {
         `<button class="act ${S.lang === c ? "on" : ""}" data-act="l" data-id="${c}">${l}</button>`).join("")}</div></div>`;
     return;
   }
-  chips(K, [["all", T.all], ["theatre", "🎭 " + T.theatre], ["film", "🎬 " + T.film], ["expo", "🏛 " + T.expo]], "kind");
+  chips(K, [["all", T.all], ["theatre", T.theatre], ["film", T.film], ["expo", T.expo]], "kind");
   chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
   let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
   let h = "";
