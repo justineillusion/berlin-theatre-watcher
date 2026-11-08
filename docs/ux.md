@@ -9,3 +9,14 @@
    pas « mis en scène par X »), puis 📰 si elle existe.
 4. **Langue :** uniquement celle de l'utilisateur (fr/en). Langue jouée seulement si ce n'est pas l'allemand.
 5. **Crédits courts** (auteur / mise en scène), sans bruit de site (« World Premiere », « Stage A », promos).
+
+## 🎟 Réservé !
+
+- Sur chaque fiche privée (pièce, expo, film) : **🎟 Réservé !** → les ~6 prochaines dates connues
+  (expos : Aujourd'hui / Demain / Ce week-end) + **📅 Autre date** (réponse « 14/12 20:00 »).
+- Réserver = ⭐ intéressé·e. La fiche affiche « 🎟 Réservé · sam. 9 janv. 19:30 » et le bouton
+  « Annuler / changer la date ».
+- Groupe : « 🎟 X a réservé Y — quand · lieu » + **🙋 J'y vais aussi** (⭐ + lien de réservation en privé).
+- /interets et « Nos envies » : les réservations d'abord.
+- Le lendemain de la date : « Alors, c'était comment ? » 1–5★ (une seule fois) ; la note marque « vu ».
+- Un item réservé n'est jamais reproposé.
