@@ -62,7 +62,10 @@ export default {
         await tg(env, "setMyCommands", { commands: COMMANDS_EN, scope: priv, language_code: "en" });
         await tg(env, "setMyCommands", { commands: COMMANDS_EN, language_code: "en" });
         await tg(env, "setMyCommands", {
-          commands: COMMANDS.filter((c) => c.command === "interets" || c.command === "programme"),
+          commands: [
+            { command: "interets", description: "Ce qui tente la bande ⭐" },
+            { command: "programme", description: "À l'affiche dans nos lieux" },
+          ],
           scope: { type: "all_group_chats" },
         });
         await tg(env, "setChatMenuButton", { menu_button: { type: "commands" } });

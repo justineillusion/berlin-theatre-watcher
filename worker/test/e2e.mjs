@@ -146,7 +146,7 @@ try {
     msgs = Object.fromEntries(s.sent.map((m) => [m.chat_id, m.message_id]));
     assert.deepEqual(s.messages.map((m) => m.chat_id).sort(), [OWNER, LEA].sort());
     const kb = s.messages[0].reply_markup.inline_keyboard[0].map((b) => b.text);
-    assert.deepEqual(kb, ["⭐ Intéressé·e", "✅ Vu", "🔕 Ignorer"]);
+    assert.deepEqual(kb, ["⭐ Intéressé·e", "✅ Vu", "🙅 Pas pour moi"]);
   });
 
   await step("Léa ⭐ : sa notif + celle de Justine affichent « Intéressé·es : Léa », annonce au groupe", async () => {
@@ -245,7 +245,7 @@ try {
 
   await step("Justine 🔕 Ignorer Hedda", async () => {
     const c = await click(OWNER, "x:hedda0000001", 4242);
-    assert.match(edits(c, OWNER)[0].text, /Ignoré/);
+    assert.match(edits(c, OWNER)[0].text, /🙅 <i>Pas pour moi<\/i>/);
   });
 
   await step("nouvelles dates : seulement à qui n'a ni vu, ni ignoré, ni déjà ⭐", async () => {
@@ -297,7 +297,7 @@ try {
     c = await click(OWNER, "u:hedda0000001", 8888, OWNER, "private", m.text.replace(/<[^>]+>/g, ""));
     assert.ok(c.some((x) => x.method === "editMessageReplyMarkup"));
     c = await say(OWNER, "/ignores");
-    assert.match(sends(c, OWNER)[0].text, /n'ignores rien/);
+    assert.match(sends(c, OWNER)[0].text, /Rien en « Pas pour moi »/);
   });
 
   await step("expo : notif à l'annonce, puis rappel « dernières semaines » si ⭐", async () => {
@@ -373,7 +373,7 @@ try {
     const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/start=(\w+)/)[1];
     await say(MAX, `/start ${link}`);
     assert.deepEqual(byChat(await cine())[MAX], ALL_CINE);
-    assert.match(sends(await say(MAX, "/aide"), MAX)[0].text, /ciné de la semaine/);
+    assert.match(sends(await say(MAX, "/aide"), MAX)[0].text, /films de la semaine/);
     await click(MAX, "sn", 7780);                      // « Rien » : plus de digest ciné
     assert.equal(byChat(await cine())[MAX], undefined);
   });
@@ -397,9 +397,10 @@ try {
     c = await click(LEA, "l:en", 9001);
     // menu « / » de CE chat en anglais (Telegram suit sinon la langue de l'appli)
     const menu = c.find((x) => x.method === "setMyCommands" && x.scope?.type === "chat" && x.scope.chat_id === LEA);
-    assert.ok(menu && menu.commands.some((m) => m.command === "language"), "menu par chat en anglais");
+    assert.ok(menu && menu.commands.length === 3 && /What's on/.test(menu.commands[0].description), "menu par chat en anglais");
+    assert.deepEqual(menu.commands.map((m) => m.command), ["programme", "sorties", "reglages"]);
     assert.match(edits(c, LEA)[0].text, /English/);
-    assert.match(sends(await say(LEA, "/aide"), LEA)[0].text, /How it works[\s\S]*\/language/);
+    assert.match(sends(await say(LEA, "/aide"), LEA)[0].text, /How it works[\s\S]*\/reglages — venues, language/);
     assert.match(sends(await say(LEA, "/suivre"), LEA)[0].text, /What do you want to follow/);
     assert.match(sends(await say(OWNER, "/aide"), OWNER)[0].text, /Comment ça marche/);   // Justine reste en français
   });
@@ -410,7 +411,7 @@ try {
     assert.ok(s.langs.includes("en"));
     const lea = s.messages.find((m) => m.chat_id === LEA), jus = s.messages.find((m) => m.chat_id === OWNER);
     assert.match(lea.text, /Peer Gynt<\/b> \[EN\]/);
-    assert.deepEqual(lea.reply_markup.inline_keyboard[0].map((b) => b.text), ["⭐ Interested", "✅ Seen", "🔕 Ignore"]);
+    assert.deepEqual(lea.reply_markup.inline_keyboard[0].map((b) => b.text), ["⭐ Interested", "✅ Seen", "🙅 Not for me"]);
     assert.doesNotMatch(jus.text, /\[EN\]/);
     assert.equal(jus.reply_markup.inline_keyboard[0][0].text, "⭐ Intéressé·e");
     // Léa ⭐ : toast et sa notif en anglais, l'annonce du groupe dans la langue du groupe (fr)
@@ -552,7 +553,7 @@ try {
     };
     let r = await run(film);
     const j = r.messages.find((m) => m.chat_id === OWNER), l = r.messages.find((m) => m.chat_id === LEA);
-    assert.deepEqual(j.reply_markup.inline_keyboard[0].map((b) => b.text), ["⭐ Intéressé·e", "✅ Vu", "🔕 Ignorer"]);
+    assert.deepEqual(j.reply_markup.inline_keyboard[0].map((b) => b.text), ["⭐ Intéressé·e", "✅ Vu", "🙅 Pas pour moi"]);
     assert.match(l.text, /\[EN\]/);
     assert.equal((await run(film)).messages.length, 0);                    // déjà reçu
     r = await run({ ...film, dates: [d1, d2] });                           // nouvelle séance
@@ -681,7 +682,7 @@ try {
     assert.ok(ed);
     assert.doesNotMatch(ed.text, /Mutter Courage/);          // plus dans MES sorties
     assert.ok(!(ed.reply_markup?.inline_keyboard ?? []).some((r) => r[0].callback_data === "b:book00000001"));
-    assert.ok(c.some((x) => x.method === "answerCallbackQuery" && x.text === "✓"));
+    assert.ok(c.some((x) => x.method === "answerCallbackQuery" && /Retiré de tes sorties/.test(x.text)));
     assert.doesNotMatch(sends(await say(OWNER, "/ignores"), OWNER)[0].text, /Mutter Courage/);
     c = await click(OWNER, "r:book00000002:4", 8103);
     assert.match(sends(c, OWNER).find((x) => x.reply_markup?.force_reply).text, /Woyzeck/);
@@ -718,7 +719,7 @@ try {
     assert.deepEqual(m.reply_markup.inline_keyboard.flat().map((b) => b.callback_data), ["st:v", "st:l", "st:i", "st:g"]);
     assert.match(sends(await click(OWNER, "st:v", m._id), OWNER)[0].text, /Que veux-tu suivre/);
     assert.ok(sends(await click(OWNER, "st:l", m._id), OWNER)[0].reply_markup.inline_keyboard.flat().some((b) => b.callback_data.startsWith("l:")));
-    assert.match(sends(await click(OWNER, "st:i", m._id), OWNER)[0].text, /Ignor|Rien|rien/);
+    assert.match(sends(await click(OWNER, "st:i", m._id), OWNER)[0].text, /Pas pour moi/);
     assert.match(sends(await click(OWNER, "st:g", m._id), OWNER)[0].text, /groupe de la bande est relié/);
   });
 

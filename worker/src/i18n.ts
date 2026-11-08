@@ -18,19 +18,15 @@ const fr = {
   youBold: "<b>toi</b>",
   help: `🎭 <b>Comment ça marche</b>
 
-Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis, et chaque dimanche 🎬 le <b>ciné de la semaine</b> (films du soir en VO, bien notés) dans les cinémas que tu suis. Sous chaque notif :
-⭐ <b>Intéressé·e</b> : la bande voit que ça te tente (et toi, qui d'autre est partant)
-✅ <b>Vu</b> : plus de notif, et tu peux noter ★ + laisser un petit mot
-🔕 <b>Ignorer</b> : plus jamais de notif sur cette pièce/expo, même quand elle revient
+Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux que tu suis, et chaque dimanche 🎬 les films de la semaine (VO, bien notés). Sous chaque fiche :
+⭐ <b>Intéressé·e</b> : la bande voit que ça te tente
+🎟 <b>Réservé !</b> : ta date, annoncée à la bande
+✅ <b>Vu</b> : une note ★ et un petit mot
+🙅 <b>Pas pour moi</b> : plus jamais proposé
 
-/suivre — choisir ses théâtres, lieux d'expo et cinémas 🎬
-/programme — tout ce qui est à l'affiche dans tes lieux
-/interets — ce qui tente la bande
-/vus — ce que tu as vu et tes notes
-/ignores — réactiver une pièce/expo ignorée
-/expos, /theatre — parcourir un lieu, avec ⭐ ✅ 🔕 sous chaque fiche
-/langue — 🇫🇷 Français / 🇬🇧 English
-/stop — ne plus rien recevoir`,
+/programme — ce qui est à l'affiche
+/sorties — réservé, envies ⭐, vu
+/reglages — lieux, langue, pas pour moi, groupe`,
   ownerHelp: `\n\n👑 <b>Admin</b>
 /invite — lien d'invitation à partager
 /nouveaulien — invalider l'ancien lien
@@ -65,8 +61,8 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
   interestsTitle: "⭐ <b>Ce qui tente la bande</b>",
   noneSeen: "Rien de marqué ✅ Vu pour l'instant.",
   seenTitle: "✅ <b>Tes sorties</b>",
-  noneIgnored: "Tu n'ignores rien pour l'instant.",
-  ignoredTitle: "🔕 <b>Ignorés</b> — touche pour réactiver les notifs :",
+  noneIgnored: "Rien en « Pas pour moi » pour l'instant.",
+  ignoredTitle: "🙅 <b>Pas pour moi</b> — touche pour le reproposer :",
   openFirst: (bot: string) => `Ouvre d'abord le bot en privé (@${bot}) avec le lien d'invitation 🙂`,
   gone: "Cette pièce n'est plus au programme.",
   toastStar: "⭐ Noté, la bande est au courant",
@@ -74,7 +70,7 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
   toastSeen: "✅ Plus de notif sur celle-ci. Une note ?",
   toastRated: (s: string) => `${s} — merci !`,
   askComment: (s: string, title: string) => `${s} pour <b>${title}</b>.\n\nUn petit mot pour la bande ? Réponds à ce message (ou /passer).`,
-  toastIgnored: "🔕 Ignoré, même si ça revient",
+  toastIgnored: "🙅 Pas pour moi : plus jamais proposé",
   toastUndo: "↩️ C'est annulé",
   thanksComment: "💬 Merci, c'est partagé avec la bande !",
   commentSaved: (title: string) => `💬 Avis enregistré pour <b>${title}</b> — partagé avec la bande !`,
@@ -92,13 +88,13 @@ Je t'envoie les nouvelles pièces (surtitrées en anglais) et expos des lieux qu
   avg: (s: string, avg: string, n: number) => `✅ Note moyenne : ${s} ${avg}/5 (${n} avis)`,
   avgCompact: (s: string, n: number) => `✅ ${s} (${n} avis)`,
   seenBy: (names: string) => `✅ vu par ${names}`,
-  btnUnignore: "↩️ Ne plus ignorer",
+  btnUnignore: "↩️ Finalement si",
   btnNotSeen: "↩️ Pas vu finalement",
   btnInterested: "⭐ Intéressé·e",
   btnInterestedOn: "⭐ Intéressé·e ✓",
   btnSeen: (expo: boolean): string => (expo ? "✅ Vue" : "✅ Vu"),
-  btnIgnore: "🔕 Ignorer",
-  stIgnored: (_expo: boolean) => `\n🔕 <i>Ignoré</i>`,
+  btnIgnore: "🙅 Pas pour moi",
+  stIgnored: (_expo: boolean) => `\n🙅 <i>Pas pour moi</i>`,
   stRated: (s: string, c: string) => `\n✅ <i>Vu · ${s}${c ? ` · « ${c} »` : ""}</i>`,
   stSeen: (expo: boolean) => `\n✅ <i>${expo ? "Vue" : "Vu"}</i>`,
   // scan.ts
@@ -144,6 +140,7 @@ Ici, ⭐ « Moi aussi » sous une annonce = tu es partant·e. Les notifs perso, 
   btnBookList: (t: string, booked: boolean) => `🎟 ${t}${booked ? " · changer la date" : ""}`,
   outingsTitle: "🗂 <b>Mes sorties</b>",
   settingsTitle: "⚙️ <b>Réglages</b>",
+  toastNotForMe: "🙅 Retiré de tes sorties",
   setVenues: "📍 Lieux", setLang: "🌐 Langue", setIgnored: "🙅 Pas pour moi", setGroup: "👥 Groupe",
   groupInfo: (on: boolean): string => on ? "👥 Le groupe de la bande est relié : les ⭐, 🎟 et avis y sont annoncés."
     : "👥 Pas de groupe relié pour l'instant.",
@@ -194,19 +191,15 @@ const en: typeof fr = {
   youBold: "<b>you</b>",
   help: `🎭 <b>How it works</b>
 
-I send you new plays (with English surtitles) and exhibitions from the venues you follow, and every Sunday 🎬 the <b>week's films</b> (evening screenings in original version, well rated) at the cinemas you follow. Under each alert:
-⭐ <b>Interested</b>: the gang sees you're keen (and you see who else is)
-✅ <b>Seen</b>: no more alerts, and you can rate it ★ + leave a short note
-🔕 <b>Ignore</b>: never hear about this play/exhibition again, even if it comes back
+I send you new plays (with English surtitles) and exhibitions from the venues you follow, and every Sunday 🎬 the week's films (original version, well rated). Under each card:
+⭐ <b>Interested</b>: the gang sees you're keen
+🎟 <b>Booked!</b>: your date, announced to the gang
+✅ <b>Seen</b>: a ★ rating and a short note
+🙅 <b>Not for me</b>: never suggested again
 
-/suivre — choose your theatres, exhibition venues and cinemas 🎬
-/programme — everything on in your venues
-/interets — what the gang fancies
-/vus — what you've seen and your ratings
-/ignores — un-ignore a play/exhibition
-/expos, /theatre — browse a venue, with ⭐ ✅ 🔕 under each card
-/language — 🇫🇷 Français / 🇬🇧 English
-/stop — stop all messages`,
+/programme — what's on
+/sorties — booked, ⭐ wishlist, seen
+/reglages — venues, language, not for me, group`,
   ownerHelp: `\n\n👑 <b>Admin</b>
 /invite — invitation link to share
 /nouveaulien — revoke the old link
@@ -241,8 +234,8 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
   interestsTitle: "⭐ <b>What the gang fancies</b>",
   noneSeen: "Nothing marked ✅ Seen yet.",
   seenTitle: "✅ <b>Your outings</b>",
-  noneIgnored: "You're not ignoring anything right now.",
-  ignoredTitle: "🔕 <b>Ignored</b> — tap to get alerts again:",
+  noneIgnored: "Nothing in “Not for me” right now.",
+  ignoredTitle: "🙅 <b>Not for me</b> — tap to see it again:",
   openFirst: (bot: string) => `First open the bot privately (@${bot}) with the invitation link 🙂`,
   gone: "This play is no longer on.",
   toastStar: "⭐ Noted, the gang knows",
@@ -250,7 +243,7 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
   toastSeen: "✅ No more alerts for this one. A rating?",
   toastRated: (s: string) => `${s} — thanks!`,
   askComment: (s: string, title: string) => `${s} for <b>${title}</b>.\n\nA short note for the gang? Reply to this message (or /skip).`,
-  toastIgnored: "🔕 Ignored, even if it comes back",
+  toastIgnored: "🙅 Not for me: never suggested again",
   toastUndo: "↩️ Undone",
   thanksComment: "💬 Thanks, shared with the gang!",
   commentSaved: (title: string) => `💬 Review saved for <b>${title}</b> — shared with the gang!`,
@@ -267,13 +260,13 @@ I send you new plays (with English surtitles) and exhibitions from the venues yo
   avg: (s: string, avg: string, n: number) => `✅ Average rating: ${s} ${avg}/5 (${n} review${n > 1 ? "s" : ""})`,
   avgCompact: (s: string, n: number) => `✅ ${s} (${n} review${n > 1 ? "s" : ""})`,
   seenBy: (names: string) => `✅ seen by ${names}`,
-  btnUnignore: "↩️ Stop ignoring",
+  btnUnignore: "↩️ Actually, yes",
   btnNotSeen: "↩️ Not seen after all",
   btnInterested: "⭐ Interested",
   btnInterestedOn: "⭐ Interested ✓",
   btnSeen: () => "✅ Seen",
-  btnIgnore: "🔕 Ignore",
-  stIgnored: (_expo: boolean) => `\n🔕 <i>Ignored</i>`,
+  btnIgnore: "🙅 Not for me",
+  stIgnored: (_expo: boolean) => `\n🙅 <i>Not for me</i>`,
   stRated: (s: string, c: string) => `\n✅ <i>Seen · ${s}${c ? ` · “${c}”` : ""}</i>`,
   stSeen: () => `\n✅ <i>Seen</i>`,
   newDates: (d: string) => `🆕 <b>New dates</b>: ${d}`,
@@ -316,6 +309,7 @@ Here, ⭐ “Me too” under an announcement = you're in. Personal alerts, “se
   btnBookList: (t: string, booked: boolean) => `🎟 ${t}${booked ? " · change date" : ""}`,
   outingsTitle: "🗂 <b>My outings</b>",
   settingsTitle: "⚙️ <b>Settings</b>",
+  toastNotForMe: "🙅 Removed from your outings",
   setVenues: "📍 Venues", setLang: "🌐 Language", setIgnored: "🙅 Not for me", setGroup: "👥 Group",
   groupInfo: (on: boolean) => on ? "👥 The gang's group is linked: ⭐, 🎟 and reviews are announced there."
     : "👥 No group linked yet.",
@@ -379,23 +373,19 @@ export const langKeyboard = (onboarding = false) => ({
 // pose en plus un menu PAR CHAT dans la langue choisie (setChatMenu).
 // ---------------------------------------------------------------------------
 export const COMMANDS = [
-  { command: "programme", description: "Tout ce qui est à l'affiche dans mes lieux" },
-  { command: "suivre", description: "Choisir ses théâtres, lieux d'expo et cinémas" },
-  { command: "interets", description: "Ce qui tente la bande ⭐" },
-  { command: "vus", description: "Mes sorties et mes notes" },
-  { command: "ignores", description: "Réactiver une pièce/expo ignorée" },
-  { command: "langue", description: "🇫🇷 Français / 🇬🇧 English" },
-  { command: "aide", description: "Comment ça marche" },
+  { command: "programme", description: "Ce qui est à l'affiche dans mes lieux" },
+  { command: "sorties", description: "Mes sorties : réservé, envies ⭐, vu" },
+  { command: "reglages", description: "Lieux, langue, pas pour moi, groupe" },
 ];
 export const COMMANDS_EN = [
-  { command: "programme", description: "Everything on in my venues" },
-  { command: "suivre", description: "Choose theatres, exhibition venues and cinemas" },
-  { command: "interets", description: "What the gang fancies ⭐" },
-  { command: "vus", description: "My outings and ratings" },
-  { command: "ignores", description: "Un-ignore a play/exhibition" },
-  { command: "language", description: "🇫🇷 Français / 🇬🇧 English" },
-  { command: "aide", description: "How it works" },
+  { command: "programme", description: "What's on in my venues" },
+  { command: "sorties", description: "My outings: booked, ⭐ wishlist, seen" },
+  { command: "reglages", description: "Venues, language, not for me, group" },
 ];
+
+/** Version du menu : à chaque changement de COMMANDS, on l'incrémente et le menu
+ *  de chaque personne est reposé à sa prochaine interaction (bot.ts). */
+export const MENU_VERSION = "3cmd";
 
 /** Menu « / » de CE chat dans la langue choisie (inscription, /langue, /api/setup). */
 export async function setChatMenu(env: { BOT_TOKEN: string; TG_API?: string }, chat: number, lang: string | null | undefined) {

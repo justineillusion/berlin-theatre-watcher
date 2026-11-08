@@ -4,7 +4,7 @@ import {
   send, setSetting, setting, socialBlock, stars, tg, whenLabel, windowSql,
 } from "./lib";
 import { digestFor } from "./scan";
-import { Lang, asLang, guessLang, langKeyboard, setChatMenu, tr } from "./i18n";
+import { Lang, MENU_VERSION, asLang, guessLang, langKeyboard, setChatMenu, tr } from "./i18n";
 import {
   announceInterest, announceReview, card, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
 } from "./group";
@@ -79,6 +79,11 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
   }
   const lang = asLang(user.lang);
   const T = tr(lang);
+  // Menu « / » d'une ancienne version : reposé une fois (3 commandes depuis « 3cmd »).
+  if ((await setting(env, `menu_v:${chat}`)) !== MENU_VERSION) {
+    await setChatMenu(env, chat, lang);
+    await setSetting(env, `menu_v:${chat}`, MENU_VERSION);
+  }
 
   switch (cmd) {
     case "/reglages": case "/settings":
@@ -461,6 +466,10 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   }
   let lang = asLang(user.lang);
   let T = tr(lang);
+  if (cq.message?.chat?.type === "private" && (await setting(env, `menu_v:${chat}`)) !== MENU_VERSION) {
+    await setChatMenu(env, chat, lang);
+    await setSetting(env, `menu_v:${chat}`, MENU_VERSION);
+  }
 
   // --- /langue -------------------------------------------------------------
   if (data.startsWith("l:")) {
@@ -574,7 +583,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     }
     await refreshMine(env, chat, item, r2, lang);
     ctx.waitUntil(refreshAll(env, item, chat));
-    return void (await answer("✓"));
+    return void (await answer(T.toastNotForMe));
   }
   if (op === "j") {
     // « 🙋 J'y vais aussi » sous une annonce de réservation du groupe.
@@ -646,7 +655,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
     }
   } else if (cq.message?.message_id) {
     const clicked = cq.message.message_id;
-    const fromList = /^🔕 (Ignorés|Ignored)/.test(cq.message.text ?? "");
+    const fromList = /^(🔕 (Ignorés|Ignored)|🙅 (Pas pour moi|Not for me))/.test(cq.message.text ?? "");
     const fromInterests = /^(🗂 (Mes sorties|My outings)|(⭐|🎟) (Ce qui tente|What the gang|Réservations|Bookings))/.test(cq.message.text ?? "");
     if (fromInterests) {
       // ✅ depuis /interets : la ligne disparaît de la liste, la note se donne à part.
