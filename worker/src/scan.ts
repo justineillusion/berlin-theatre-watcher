@@ -7,6 +7,7 @@
 //   POST /api/cinema-done        semaine        -> récap envoyé (idempotence des 2 crons)
 import { Lang, asLang, tr } from "./i18n";
 import { groupInterests } from "./group";
+import { berlinNow } from "./sales";
 import {
   Env, Horizon, Item, Reaction, esc, frDate, friendsByItem, horizon, inWindow, itemLine, renderFor, setSetting, setting,
   socialBlock, windowEnd, windowSql,
@@ -20,7 +21,7 @@ interface MetaIn {
 interface Pending {
   chat_id: number;
   item_id: string;
-  kind: "new" | "new_dates" | "last_weeks";
+  kind: "new" | "new_dates" | "last_weeks" | "star_dates";
   dates: string[];        // toutes les dates actuelles (à mémoriser)
   fresh: string[];        // dates inédites pour cette personne
 }
@@ -98,13 +99,13 @@ async function computePending(
         continue;
       }
       if (item.kind === "theatre") {
-        if (wanted) continue;
+        // ⭐ qui reçoit des dates = réserver maintenant : « star_dates », envoyé tout de suite.
         const known = new Set<string>(JSON.parse(d.dates || "[]"));
         // Dates vraiment nouvelles ET dans la fenêtre ; celles d'après attendront
         // (non mémorisées, elles seront annoncées en y entrant).
         const fresh = win.filter((x) => !known.has(x));
         if (fresh.length) {
-          out.push({ chat_id: sub.chat_id, item_id: item.id, kind: "new_dates", dates: [...known, ...fresh], fresh });
+          out.push({ chat_id: sub.chat_id, item_id: item.id, kind: wanted ? "star_dates" : "new_dates", dates: [...known, ...fresh], fresh });
         }
       } else if (
         r?.interested && !d.reminded && item.end_date &&
@@ -406,7 +407,7 @@ export async function render(env: Env, body: any): Promise<Response> {
   }
 
   const days = Number(await setting(env, "expo_last_weeks_days") ?? 14);
-  const pending = await computePending(env, ids, days, false);
+  let pending = await computePending(env, ids, days, false);
   const itemIds = [...new Set(pending.map((p) => p.item_id))];
   const { results: items } = await env.DB.prepare(
     "SELECT * FROM items WHERE id IN (SELECT value FROM json_each(?))").bind(JSON.stringify(itemIds)).all<Item>();
@@ -424,6 +425,11 @@ export async function render(env: Env, body: any): Promise<Response> {
     return (B.starred - A.starred) || String(A.start_date ?? a.dates[0] ?? "").localeCompare(String(B.start_date ?? b.dates[0] ?? ""));
   });
 
+  // Urgent, hors lot : nouvelles dates d'une ⭐ (toujours), et toutes les nouvelles dates d'un lieu
+  // le jour de son ouverture des ventes (de l'heure d'ouverture à minuit). Un message compact par
+  // personne, une ligne par pièce avec son lien 🎟 ; livraison notée ici (dates connues).
+  const urgent = await urgentDates(env, pending, byId, langOf);
+  pending = pending.filter((p) => !urgent.taken.has(p));
   // Lot du matin (daily.ts) : les fiches attendent ~9:00 (Berlin), un message par jour et par
   // personne. On note la livraison tout de suite (dates connues, rappel fait) pour ne pas
   // remettre en file au scan suivant ; message_id reste NULL jusqu'à l'ouverture de la fiche.
@@ -453,14 +459,14 @@ export async function render(env: Env, body: any): Promise<Response> {
     });
     for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
   }
-  const messages = (immediate ? pending : []).map((p) => {
+  const messages = [...urgent.messages, ...(immediate ? pending : []).map((p) => {
     const item = byId.get(p.item_id)!;
     const lang = langOf.get(p.chat_id) ?? "fr";
     const h = header(p, item, lang);
     const { text, reply_markup } = renderFor(item, p.chat_id, react.get(`${p.chat_id}|${p.item_id}`) ?? null,
       friends.get(p.item_id) ?? [], h, lang);
     return { chat_id: p.chat_id, item_id: p.item_id, kind: p.kind, dates: p.dates, header: h, text, reply_markup } as any;
-  });
+  })];
   // 🎟 Le lendemain d'une réservation : « Alors, c'était comment ? » (1–5★ puis avis).
   const { results: due } = await env.DB.prepare(
     `SELECT r.chat_id, r.item_id, i.title, u.lang FROM reactions r
@@ -476,6 +482,52 @@ export async function render(env: Env, body: any): Promise<Response> {
     });
   }
   return Response.json({ messages });
+}
+
+async function urgentDates(
+  env: Env, pending: Pending[], byId: Map<string, Item>, langOf: Map<number, Lang>,
+): Promise<{ taken: Set<Pending>; messages: any[] }> {
+  const sales: Record<string, { day: string; at: string | null }> = JSON.parse((await setting(env, "sales")) ?? "{}");
+  const b = berlinNow(new Date());
+  const saleOpen = (venue: string) => {
+    const s = sales[venue];
+    return !!s && s.day === b.day && (!s.at || b.hm >= berlinNow(new Date(s.at)).hm);
+  };
+  const taken = new Set(pending.filter((p) =>
+    p.kind === "star_dates" || (p.kind === "new_dates" && saleOpen(byId.get(p.item_id)!.venue_id))));
+  if (!taken.size) return { taken, messages: [] };
+  const { results: vrows } = await env.DB.prepare("SELECT id, name FROM venues").all<{ id: string; name: string }>();
+  const vname = new Map(vrows.map((v) => [v.id, v.name]));
+  const stmts: D1PreparedStatement[] = [];
+  const byChat = new Map<number, Pending[]>();
+  for (const p of taken) {
+    if (!byChat.has(p.chat_id)) byChat.set(p.chat_id, []);
+    byChat.get(p.chat_id)!.push(p);
+    stmts.push(env.DB.prepare(
+      `INSERT INTO deliveries (chat_id, item_id, dates, message_id) VALUES (?1, ?2, ?3, NULL)
+       ON CONFLICT(chat_id, item_id) DO UPDATE SET dates = (SELECT json_group_array(value) FROM (
+         SELECT value FROM json_each(deliveries.dates) UNION SELECT value FROM json_each(?3)))`,
+    ).bind(p.chat_id, p.item_id, JSON.stringify(p.dates)));
+  }
+  for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
+  const line = (p: Pending) => {
+    const it = byId.get(p.item_id)!;
+    const link = (it.text ?? "").match(/🎟 <a href="([^"]+)"/u)?.[1] ?? it.url;
+    const title = link ? `<a href="${esc(link)}">${esc(it.title)}</a>` : `<b>${esc(it.title)}</b>`;
+    const when = [...p.fresh].sort().slice(0, 8).map((d) => `${frDate(d)} ${d.slice(11, 16)}`.trim()).join(", ");
+    return `🎟 ${title} <i>(${esc(vname.get(it.venue_id) ?? "")})</i> : ${when}${p.fresh.length > 8 ? ` (+${p.fresh.length - 8})` : ""}`;
+  };
+  const messages: any[] = [];
+  for (const [chat, ps] of byChat) {
+    const T = tr(langOf.get(chat) ?? "fr");
+    const stars = ps.filter((p) => p.kind === "star_dates"), others = ps.filter((p) => p.kind !== "star_dates");
+    const parts = [
+      stars.length ? `${T.urgentStars}\n${stars.map(line).join("\n")}` : "",
+      others.length ? `${T.urgentSale}\n${others.map(line).join("\n")}` : "",
+    ].filter(Boolean);
+    messages.push({ chat_id: chat, kind: "urgent", text: parts.join("\n\n") });
+  }
+  return { taken, messages };
 }
 
 // ---------------------------------------------------------------------------

@@ -285,11 +285,15 @@ try {
       ente,
       { ...lear, dates: [...lear.dates, "2026-12-15 19:30"] },
     ]);
-    // Hedda : Justine ignore → Léa seule. Lear : Léa a vu, Justine l'a déjà ⭐
-    // (dans /interets) → personne : on ne repropose pas ce qui est déjà noté.
-    const got = s.messages.map((m) => `${m.chat_id}:${m.item_id}`).sort();
+    // Hedda : Justine ignore → Léa seule (fiche). Lear : Léa a vu → rien ; Justine l'a ⭐ → des dates
+    // pour une ⭐ = réserver maintenant : message compact immédiat, avec le lien 🎟.
+    const got = s.messages.filter((m) => m.item_id).map((m) => `${m.chat_id}:${m.item_id}`).sort();
     assert.deepEqual(got, [`${LEA}:hedda0000001`]);
-    assert.match(s.messages[0].text, /🆕 <b>Nouvelles dates<\/b> : 10\/12/);
+    assert.match(s.messages.find((m) => m.item_id).text, /🆕 <b>Nouvelles dates<\/b> : 10\/12/);
+    const urgent = s.messages.filter((m) => m.kind === "urgent");
+    assert.deepEqual(urgent.map((m) => m.chat_id), [OWNER]);
+    assert.equal(urgent[0].text,
+      `🎟 <b>Nouvelles dates pour tes ⭐</b>\n🎟 <a href="https://x/lear00000001">King Lear</a> <i>(Berliner Ensemble)</i> : 15/12 19:30`);
   });
 
   await step("le même scan rejoué : rien (idempotent)", async () => {
@@ -854,6 +858,20 @@ try {
     assert.deepEqual(card.reply_markup.inline_keyboard[0].map((b) => b.callback_data), ["i:baal00000001", "x:baal00000001", "v:baal00000001"]);
     c = await click(OWNER, "i:baal00000001", 4343);
     assert.ok(edits(c, OWNER).some((x) => x.message_id === card._id));
+    // jour d'ouverture des ventes au BE : nouvelles dates poussées tout de suite (⭐ d'abord, puis les
+    // autres pièces du lieu) ; une pièce NOUVELLE va quand même au lot.
+    const berlinToday = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin" }).format(new Date());
+    const ubu = play("ubu000000001", "Ubu Roi", [`${soon(21)} 20:00`]);
+    const sale = (day) => ({ "berliner-ensemble": { venue_id: "berliner-ensemble", day, at: null, month: "2030-02", hour_known: false, source: "rule" } });
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [baal, ubu], sales: sale(berlinToday) });
+    s = await scan([{ ...baal, dates: [...baal.dates, `${soon(30)} 19:30`] }, { ...ubu, dates: [...ubu.dates, `${soon(31)} 20:00`] },
+      play("woz000000001", "Woyzeck II", [`${soon(25)} 19:00`])]);
+    const u = s.messages.find((m) => m.chat_id === OWNER && m.kind === "urgent");
+    assert.match(u.text, /^🎟 <b>Nouvelles dates pour tes ⭐<\/b>\n🎟 <a[^>]*>Baal<\/a> <i>\(Berliner Ensemble\)<\/i> : \d\d\/\d\d 19:30\n\n🗓 <b>Aussi de nouvelles dates<\/b> \(vente ouverte\)\n🎟 <a[^>]*>Ubu Roi<\/a>/);
+    assert.ok(!s.messages.some((m) => m.item_id === "woz000000001"));                // nouveauté : au lot
+    await api("/api/daily-tick", { now: "2030-01-18T08:05:00Z" });
+    assert.match(sends(take(), OWNER)[0].text, /^🆕 <b>Nouveau dans tes lieux<\/b> \(1\)\n.*Woyzeck II/);
+    await api("/api/plan", { mode: "scan", venues: VENUES, items: [baal, ubu], sales: sale("2030-01-01") });
     sql("INSERT OR REPLACE INTO settings (key, value) VALUES ('immediate_cards', '1')");
   });
 

@@ -74,6 +74,11 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
   « ma notif » (mises à jour sur place, ⭐, 🎟…).
 - Arrivé après le lot du jour : attend le lendemain. Rien en file : rien.
 - Restent immédiats : ouvertures de vente, « X a réservé » (groupe), « Alors, c'était comment ? ».
+- **Nouvelles dates urgentes, hors lot** (un message compact par personne, une ligne par pièce
+  « 🎟 Titre (Lieu) : 12/12 19:30, … » avec le lien de réservation) :
+  « 🎟 Nouvelles dates pour tes ⭐ » — toujours, n'importe quel jour (une ⭐ qui reçoit des dates = réserver
+  maintenant) ; et le jour d'ouverture des ventes d'un lieu (de l'heure d'ouverture à minuit), toutes ses
+  nouvelles dates : « 🗓 Aussi de nouvelles dates (vente ouverte) ». Une pièce nouvelle va quand même au lot.
 
 ## Ouvertures de vente (Schaubühne, Berliner Ensemble, Volksbühne)
 
