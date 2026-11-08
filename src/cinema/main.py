@@ -362,9 +362,11 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
             "venues": [{"id": i, "name": n} for i, n in by_id.items()], "week": week, "force": force})
         resp.raise_for_status()
         data = resp.json()
-        if data.get("already_sent"):
-            print(f"✅ Récap de la semaine du {week} déjà envoyé : rien à faire (--force pour renvoyer).")
-            return
+        # Récap déjà parti : on n'envoie rien, mais on RE-REND les fiches des films
+        # (pitch traduit entre-temps, note…) pour /programme et /sorties.
+        rerender_only = bool(data.get("already_sent"))
+        if rerender_only:
+            print(f"✅ Récap de la semaine du {week} déjà envoyé : fiches re-rendues seulement (--force pour renvoyer).")
         recipients = data["recipients"]
         print(f"👥 {len(recipients)} ami·e(s) suivent au moins un cinéma.")
         analysis = analyse(cfg, start)
@@ -380,6 +382,9 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
             if key not in cache:
                 cache[key] = compose(analysis, cfg, start, list(subset), lang)
             plan.append((rcp, lang, cache[key]))
+        if rerender_only:                      # les deux langues, tous les cinémas demandés
+            for lang in ("fr", "en"):
+                cache[(tuple(names), lang)] = compose(analysis, cfg, start, list(names), lang)
 
         # Un message par film, comme une pièce : le Worker enregistre les films
         # (items kind 'film'), écarte ce que chacun a déjà reçu (sauf nouvelles
@@ -390,7 +395,7 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
             for f in res["kept"]:
                 films.setdefault(f.item_id(), by_key.get(f.key, f))
         for f in films.values():           # pitch des deux langues sur la fiche complète
-            for lang in {lg for _, lg, _ in plan}:
+            for lang in ({lg for _, lg, _ in plan} | ({"fr", "en"} if rerender_only else set())):
                 if (f.key, lang) not in analysis["pitched"]:
                     (make_pitch_en if lang == "en" else make_pitch)(f)
                     analysis["pitched"].add((f.key, lang))
@@ -437,7 +442,7 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
             api.post("/api/sent", json={"sent": sent}).raise_for_status()
         if failed:
             api.post("/api/sent", json={"sent": failed}).raise_for_status()
-        if ok or not total:                    # tout a échoué : le 2e créneau retentera
+        if not rerender_only and (ok or not total):   # tout a échoué : le 2e créneau retentera
             api.post("/api/cinema-done", json={"week": week}).raise_for_status()
     print(f"🎬 {len(films)} film(s) retenu(s), un message par film (⭐ ✅ 🔕).")
     print(f"✅ {ok}/{total} message(s) envoyé(s) à {len(recipients)} ami·e(s) "
