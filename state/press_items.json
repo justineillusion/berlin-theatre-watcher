@@ -2,14 +2,6 @@
  {
   "kind": "theatre",
   "venue": "Volksbühne",
-  "title": "Guided Tour of Volksbühne",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/theaterfuehrung/20261108-1500/",
-  "opens": "2026-11-08",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
   "title": "Kolonialismus erinnern. Vom Konzept zum Ort",
   "url": "https://www.volksbuehne-berlin.de/en/productions/kolonialismus-erinnern/20261113-1900/",
   "opens": "2026-11-13",
@@ -48,6 +40,14 @@
   "title": "Berlin Review x Volksbühne: Fire From All Sides",
   "url": "https://www.volksbuehne-berlin.de/en/series-and-projects/berlin-review-x-volksbuehne-fire-from-all-sides/berlin-review-x-volksbuehne-fire-from-all-sides-3/",
   "opens": "2026-12-01",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Schaubühne",
+  "title": "Stereophonic",
+  "url": "https://www.schaubuehne.de/en/produktionen/stereophonic.html?ID_Vorstellung=7317&m=398",
+  "opens": "2026-12-04",
   "aliases": []
  },
  {
@@ -97,6 +97,14 @@
   "title": "Hamlet",
   "url": "https://www.berliner-ensemble.de/en/production/hamlet",
   "opens": "2026-12-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Guided Tour of Volksbühne",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/theaterfuehrung/20261228-1630/",
+  "opens": "2026-12-28",
   "aliases": []
  },
  {
@@ -360,8 +368,8 @@
   "kind": "theatre",
   "venue": "Schaubühne",
   "title": "Antigone. Der Abschied",
-  "url": "https://www.schaubuehne.de/en/produktionen/antigone-der-abschied.html?ID_Vorstellung=7303&m=398",
-  "opens": "2026-12-30",
+  "url": "https://www.schaubuehne.de/en/produktionen/antigone-der-abschied.html?ID_Vorstellung=7302&m=398",
+  "opens": "2026-12-29",
   "aliases": []
  },
  {
