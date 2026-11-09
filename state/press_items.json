@@ -315,6 +315,17 @@
  },
  {
   "kind": "theatre",
+  "venue": "Berliner Ensemble",
+  "title": "Die Dreigroschenoper (The Threepenny Opera)",
+  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
+  "opens": "2026-12-01",
+  "aliases": [
+   "Die Dreigroschenoper",
+   "The Threepenny Opera"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "SAVE A HORSE RIDE A COWGIRL",
   "url": "https://www.volksbuehne-berlin.de/en/productions/save-a-horse-ride-a-cowgirl/20261204-1900/",
@@ -324,8 +335,8 @@
  {
   "kind": "expo",
   "venue": "KW Institute for Contemporary Art",
-  "title": "BPA// Exhibition 2026",
-  "url": "https://www.kw-berlin.de/en/exhibitions/bpa-exhibition-2026",
+  "title": "BPA// Exhibition 2026 — Undercurrents",
+  "url": "https://www.kw-berlin.de/en/exhibitions/bpa-exhibition-2026-undercurrents",
   "opens": "2026-12-05",
   "aliases": []
  },
@@ -344,17 +355,6 @@
   "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
   "opens": "2026-12-26",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
-  "opens": "2026-12-27",
-  "aliases": [
-   "Die Dreigroschenoper",
-   "The Threepenny Opera"
-  ]
  },
  {
   "kind": "theatre",
@@ -442,7 +442,7 @@
  {
   "kind": "expo",
   "venue": "C/O Berlin",
-  "title": "Amin Yousefi — Defensive Readiness: Revised Version",
+  "title": "Amin Yousefi — Defensive Readiness: Revised Edition",
   "url": "https://co-berlin.org/en/program/exhibitions/amin-yousefi",
   "opens": "2027-02-13",
   "aliases": []
