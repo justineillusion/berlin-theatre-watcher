@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1794146944.17813,
+    "at": 1794229734.43088,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1794146985.54691,
+    "at": 1794229747.125833,
     "items": [
      {
       "date": "29. August 2026.",
@@ -993,7 +993,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1794146922.72106,
+    "at": 1794229727.5936902,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -1795,7 +1795,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1794146965.428875,
+    "at": 1794229741.4158444,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -2627,7 +2627,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/hamlet-berliner-ensemble": {
-   "at": 1794146996.070155,
+   "at": 1794229751.7128122,
    "published": 1793957711.0,
    "scores": [
     0.0,
@@ -2637,6 +2637,7 @@
     -0.5833,
     -0.7368,
     -0.7778,
+    -0.5,
     0.3333
    ],
    "theater_ok": true
@@ -2667,7 +2668,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/antigone-der-abschied-alexander-zeldins-familiendrama-um-abschied-trauer-und-verdraengung": {
-   "at": 1794147000.8630688,
+   "at": 1794229751.7501693,
    "published": 1793025056.0,
    "scores": [
     -0.8462,
@@ -2698,6 +2699,23 @@
    "scores": [],
    "theater_ok": true
   },
+  "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/stereophonic-schaubuehne-berlin-thomas-ostermeier-inszeniert-den-broadway-hit-von-david-adjmi-mit-musik-von-arcade-fire-frontmann-will-butler": {
+   "at": 1794229751.4638908,
+   "published": 1791442354.0,
+   "scores": [
+    -0.3756,
+    -0.5,
+    0.8276,
+    -0.2598,
+    -0.0256,
+    -0.4286,
+    0.7619,
+    0.4545,
+    0.8182,
+    -0.3333
+   ],
+   "theater_ok": true
+  },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/mononoke-volksbuehne-berlin-satoko-ichihara-macht-manga-theater-mit-starbesetzung": {
    "at": 1794146998.4973052,
    "published": 1791079754.0,
@@ -2723,11 +2741,39 @@
     -0.5
    ],
    "theater_ok": true
+  },
+  "https://nachtkritik.de/nachtkritiken/frankreich/avignon/festival-d-avignon/die-wildente-festival-davignon-thomas-ostermeiers-ibsen-inszenierung-hat-in-frankreich-premiere-bevor-sie-im-herbst-nach-berlin-an-die-schaubuehne-kommt": {
+   "at": 1794229786.9472225,
+   "published": 1751799160.0,
+   "scores": [
+    -0.6667,
+    -0.1667,
+    0.3333,
+    0.0,
+    0.0,
+    0.0,
+    0.6667
+   ],
+   "theater_ok": true
+  },
+  "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/wiener-festwochen/die-seherin-wiener-festwochen-milo-raus-abend-ueber-den-umgang-mit-gewalt-auf-der-buehne": {
+   "at": 1794229838.4993503,
+   "published": 1749462979.0,
+   "scores": [
+    0.7364,
+    0.0,
+    0.5833
+   ],
+   "theater_ok": false
   }
  },
  "searches": {
   "Berlin Review x Volksbühne": {
    "at": 1794147096.270071,
+   "results": []
+  },
+  "Berlin Review x Volksbühne Volksbühne": {
+   "at": 1794229828.8210297,
    "results": []
   },
   "CURSED": {
@@ -2737,6 +2783,66 @@
   "CURSED Volksbühne": {
    "at": 1794147056.519181,
    "results": []
+  },
+  "Die Blechtrommel": {
+   "at": 1794229878.367946,
+   "results": [
+    [
+     "Spieler – Schauspielhaus Bochum – Johan Simons inszeniert Dostojewskis Roulettenburg-Roman",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bochum/schauspielhaus-bochum/spieler-schauspielhaus-bochum-johan-simons-inszeniert-dostojewskis-roulettenburg-roman",
+     "2025-09-28T08:15:31+02:00"
+    ],
+    [
+     "Alles ist erleuchtet – Burgtheater Wien – Mina Salehpour zeigt den surrealen Holocaust-Roman von Jonathan Safran Foer im Akademietheater",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/akademietheater-wien/alles-ist-erleuchtet-burgtheater-wien-mina-salehpour-zeigt-den-surrealen-holocaust-roman-von-jonathan-safran-foer-im-akademietheater",
+     "2025-03-21T09:07:00+01:00"
+    ],
+    [
+     "Die Blechtrommel – Theater Osnabrück – Christian Schlüter zeigt Günter Grass' Jahrhundertroman im Look der 1950er, aber mit Anklängen an heute",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/osnabrueck/theater-osnabrueck/die-blechtrommel-theater-osnabrueck-christian-schlueter-zeigt-guenter-grass-jahrhundertroman-im-look-der-1950er-aber-mit-anklaengen-an-heute",
+     "2024-10-13T06:05:56+02:00"
+    ],
+    [
+     "Die Rättin – Schauspiel Leipzig – Claudia Bauer inszeniert Günter Grass als apokalyptisches Gemälde voll heiligem Ernst und der Lust an skurrilen Ideen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/leipzig1/schauspiel-leipzig/die-raettin-schauspiel-leipzig-claudia-bauer-inszeniert-guenter-grass-als-apokalyptisches-gemaelde-voll-heiligem-ernst-und-der-lust-an-skurrilen-ideen",
+     "2021-10-08T23:31:50+02:00"
+    ],
+    [
+     "Stimmen einer Stadt – Anselm Weber inszeniert in Frankfurt drei Monodramen von Wilhelm Genazino, Olga Grjasnowa und Teresa Präauer",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/stimmen-einer-stadt-anselm-weber-inszeniert-in-frankfurt-drei-monodramen-von-wilhelm-genazino-olga-grjasnowa-und-teresa-praeauer",
+     "2018-05-06T08:58:13+02:00"
+    ],
+    [
+     "Extrem laut und unglaublich nah – Mina Salehpour bringt Jonathan Safran Foers Roman am Schauspiel Hannover auf die Bühnen-Welt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/hannover/schauspiel-hannover/extrem-laut-und-unglaublich-nah-mina-salehpour-bringt-jonathan-safran-foers-roman-auf-die-buehnen-welt",
+     "2018-01-20T22:59:55+01:00"
+    ],
+    [
+     "Die Blechtrommel – Luk Perceval dramatisiert Günter Grass' Roman am Hamburger Thalia Theater",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/die-blechtrommel-luk-perceval-dramatisiert-guenter-grass-roman-am-hamburger-thalia-theater",
+     "2015-03-28T07:22:40+01:00"
+    ],
+    [
+     "Was ihr wollt – Stefan Pucher amüsiert sich mit Shakespeare am Deutschen Theater Berlin wie Bolle",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/2015-03-02-08-02-11",
+     "2015-02-27T23:39:45+01:00"
+    ],
+    [
+     "Die Blechtrommel – Oliver Reese inszeniert und Nico Holonics spielt in Frankfurt Günter Grass' Roman als One-Man-Show",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/2015-01-12-07-14-05",
+     "2015-01-11T07:59:24+01:00"
+    ],
+    [
+     "Die Blechtrommel – Jan Bosse sucht nach dem widerständigen Prinzip Oskar Matzeraths in der Uraufführung von Armin Petras' Roman-Bearbeitung",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrtriennale/die-blechtrommel-jan-bosse-sucht-nach-dem-widerstaendigem-prinzip-oskar-matzerath-in-der-urauffuehrung-von-armin-petras-roman-bearbeitung",
+     "2010-09-08T08:13:26+02:00"
+    ],
+    [
+     "Die Geburtstagsfeier – Jürgen Kruse inszeniert Harold Pinter",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/koeln/schauspiel-koeln/die-geburtstagsfeier-juergen-kruse-inszeniert-harold-pinter",
+     "2009-06-06T02:00:03+02:00"
+    ]
+   ]
   },
   "Die Seherin": {
    "at": 1794147026.23646,
@@ -2983,6 +3089,148 @@
     ]
    ]
   },
+  "Die Seherin Schaubühne": {
+   "at": 1794229785.4060946,
+   "results": []
+  },
+  "Die Wildente": {
+   "at": 1794229783.8651907,
+   "results": [
+    [
+     "Die Wildente – Schauspiel Essen – Selen Kara begibt sich mit einem glänzenden Ensemble auf die Spur der Lebenslügen im Ibsen-Klassiker",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/essen/schauspiel-essen/die-wildente-schauspiel-essen-selen-kara-begibt-sich-mit-einem-glaenzenden-ensemble-auf-die-spur-der-lebensluegen-im-ibsen-klassiker",
+     "2026-09-20T09:38:45+02:00"
+    ],
+    [
+     "Die Wildente – Staatstheater Meiningen – Andreas Kriegenburg erzählt Ibsens Drama vom zerstörerischen Furor eines Aufklärungs-Fanatikers mit beunruhigender Dichte",
+     "https://nachtkritik.de/nachtkritiken/deutschland/thueringen/meiningen/staatstheater-meiningen/die-wildente-andreas-kriegenburg-erzaehlt-ibsens-drama-vom-zerstoererischen-wahrheitsfuror-mit-beunruhigender-dichte",
+     "2026-05-16T10:00:51+02:00"
+    ],
+    [
+     "Das Ferienhaus – Burgtheater Wien – Simon Stone fächert mit Ibsen-Motiven die Seelennöte einer Familie auf",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/das-ferienhaus-burgtheater-wien-simon-stone-faechert-mit-ibsen-motiven-die-seelennoete-einer-familie-auf",
+     "2025-12-19T09:11:01+01:00"
+    ],
+    [
+     "Die Wildente – Festival d'Avignon – Thomas Ostermeiers Ibsen-Inszenierung hat in Frankreich Premiere, bevor sie im Herbst nach Berlin an die Schaubühne kommt",
+     "https://nachtkritik.de/nachtkritiken/frankreich/avignon/festival-d-avignon/die-wildente-festival-davignon-thomas-ostermeiers-ibsen-inszenierung-hat-in-frankreich-premiere-bevor-sie-im-herbst-nach-berlin-an-die-schaubuehne-kommt",
+     "2025-07-06T11:07:18+02:00"
+    ],
+    [
+     "Die Wildente – Residenztheater München – Der norwegische Regiestar Johannes Holmen Dahl inszeniert Ibsen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/residenztheater/die-wildente-residenztheater-muenchen-der-norwegische-regiestar-johannes-holmen-dahl-inszeniert-ibsen",
+     "2024-10-18T08:46:51+02:00"
+    ],
+    [
+     "Die Wildente oder Der Kampf um die Wahrheit – Thalia Theater Hamburg – Thorleifur Örn Arnarssons Ibsen-Abend für fanatische Wahrheitssucher",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/die-wildente-oder-der-kampf-um-die-wahrheit-thalia-theater-hamburg-thorleifur-oern-arnarssons-ibsen-abend-fuer-fanatische-wahrheitssucher",
+     "2021-11-10T06:35:30+01:00"
+    ],
+    [
+     "Die Wildente – Deutsches Theater Berlin – Stephan Kimmig inszeniert Ibsens Drama als große Textschlacht",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/die-wildente-deutsches-theater-berlin-stephan-kimmig-inszeniert-ibsens-drama-als-grosse-textschlacht",
+     "2021-06-13T23:30:00+02:00"
+    ],
+    [
+     "Totentanz – Liliane Brakema dreht in Freiburg an August Strindbergs Paar-Zerfleischungswolf",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/freiburg/theater-freiburg/totentanz",
+     "2017-12-16T21:00:00+01:00"
+    ],
+    [
+     "Ibsen Huis – Simon Stone und die Toneelgroep Amsterdam beim Festival d'Avignon",
+     "https://nachtkritik.de/nachtkritiken/frankreich/avignon/festival-d-avignon/ibsen-huis-simon-stone-festival-d-avignon",
+     "2017-07-15T23:00:00+02:00"
+    ],
+    [
+     "Die Wildente – Am Schauspielhaus Zürich präsentiert Alize Zandwijk eine weibliche Sicht auf die Lebenslügen der Männer",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/schauspielhaus-zuerich/die-wildente-am-schauspielhaus-zuerich-praesentiert-alize-zandwijk-eine-weibliche-sicht-auf-die-lebensluegen-der-maenner",
+     "2017-03-09T23:23:25+01:00"
+    ],
+    [
+     "Believe Busters – Dorothea Schroeders Uraufführung von Konstantin Küsperts Stück um Religionskritik und Kritik an Religionskritik am Landestheater Tübingen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/tuebingen/landestheater-tuebingen/believe-busters-dorothea-schroeders-urauffuehrung-von-konstantin-kuesperts-stueck-um-religionskritik-und-kritik-an-religionskritik-am-landestheater-tuebingen",
+     "2017-02-25T23:21:00+01:00"
+    ],
+    [
+     "Rocco und seine Brüder – Simon Stone füttert das ausgehungerte Publikum der Münchner Kammerspiele mit Figurenkonflikten und Emotionen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/muenchner-kammerspiele/rocco-und-seine-brueder-simon-stone-fuettert-das-ausgehungerte-publikum-der-muenchner-kammerspiele-mit-figurenkonflikten-und-emotionen",
+     "2015-10-14T07:33:15+02:00"
+    ],
+    [
+     "John Gabriel Borkman – Simon Stones Starensemble sucht Ibsen bei den Wiener Festwochen am absoluten Gefrierpunkt",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/john-gabriel-borkman-simon-stones-starensemble-sucht-ibsen-bei-den-wiener-festwochen-am-absoluten-gefrierpunkt",
+     "2015-05-28T08:13:51+02:00"
+    ],
+    [
+     "Ein Teil der Gans im Haus der Lüge – Am Zürcher Neumarkt leistet Simone Blattner Wiedergutmachung an der Martin Heckmanns-Komödie",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/theater-neumarkt-zuerich/2014-09-27-06-26-18",
+     "2014-09-27T00:41:59+02:00"
+    ],
+    [
+     "Die Wildente – Stephan Rottkamp lässt die Ibsen-Maschine in Braunschweig in neuem Glanz erstrahlen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/braunschweig/staatstheater-braunschweig/die-wildente-stephan-rottkamp-laesst-die-ibsen-maschine-in-braunschweig-in-neuem-glanz-erstrahlen",
+     "2014-04-12T09:15:46+02:00"
+    ],
+    [
+     "Die Wildente – Elmar Goerden aktualisiert am Nationaltheater Mannheim Henrik Ibsens Frage nach dem Wert von Lüge und Wahrheit",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/mannheim/nationaltheater-mannheim/die-wildente-elmar-goerden-aktualisiert-am-nationaltheater-mannheim-henrik-ibsens-frage-nach-dem-wert-von-luege-und-wahrheit",
+     "2014-03-22T23:45:31+01:00"
+    ],
+    [
+     "The Wild Duck / Die Wildente – Die Ibsen-Bearbeitung des australischen Regisseurs Simon Stone bei den Wiener Festwochen",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/wiener-festwochen/the-wild-duck-die-ibsen-bearbeitung-des-australischen-regisseur-simon-stone-bei-den-wiener-festwochen",
+     "2013-05-18T07:57:47+02:00"
+    ],
+    [
+     "Die Wildente – Am Schauspiel Frankfurt  inszeniert Karin Henkel Ibsen im Stummfilm-Look",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/die-wildente-am-schauspiel-inszeniert-karin-henkel-ibsen-im-stummfilm-look",
+     "2011-10-06T07:09:19+02:00"
+    ],
+    [
+     "Pride – Maik Priebes deutschsprachige Erstaufführung von Alexi Kaye Campbells Erfolgsstück",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/nuernberg/staatstheater-nuernberg/pride-nmaik-priebes-deutschsprachige-erstauffuehrung-von-alexi-kaye-campbells-erfolgsstueck-in-nuernberg",
+     "2011-02-26T07:50:32+01:00"
+    ],
+    [
+     "Das weite Land – Tobias Wellemeyer pflanzt Arthur Schnitzlers weite Seelen ins winzige Gartenbeet",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/brandenburg/potsdam/hans-otto-theater-potsdam/das-weite-land-tobias-wellemeyer-pflanzt-arthur-schnitzlers-weite-seelen-ins-winzige-gartenbeet",
+     "2010-01-23T01:00:04+01:00"
+    ],
+    [
+     "Der Architekt – Isabel Osthues bringt David Greig ans Reißbrett",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/brandenburg/potsdam/hans-otto-theater-potsdam/der-architekt-isabel-osthues-bringt-david-greig-ans-reissbrett",
+     "2009-10-08T02:00:07+02:00"
+    ],
+    [
+     "Sorbas – der Kazantzakis-Klassiker als  Musical mit Gojko Mitic",
+     "https://nachtkritik.de/nachtkritiken/deutschland/mecklenburg-vorpommern/schwerin/schweriner-schlossfestspiele/sorbas-der-kazantzakis-klassiker-als-musical-mit-gojko-mitic",
+     "2009-08-10T02:00:00+02:00"
+    ],
+    [
+     "Die Wildente – Sigrid Herzog inszeniert Ibsen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/augsburg/theater-augsburg/die-wildente-sigrid-herzog-inszeniert-ibsen",
+     "2009-05-10T02:00:00+02:00"
+    ],
+    [
+     "Die Wildente – Peter Dehler holt in Ibsens Drama die Mutter in den Mittelpunkt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/mecklenburg-vorpommern/schwerin/mecklenburgisches-staatstheater-schwerin/die-wildente-peter-dehler-holt-in-ibsens-drama-die-mutter-in-den-mittelpunkt",
+     "2008-05-30T01:23:12+02:00"
+    ],
+    [
+     "Die Wildente – Michael Thalheimers Ibsen-Verschnitt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/die-wildente-michael-thalheimers-ibsen-verschnitt",
+     "2008-02-02T10:00:00+01:00"
+    ]
+   ]
+  },
+  "Disrupt the Default": {
+   "at": 1794229791.5276942,
+   "results": []
+  },
+  "Disrupt the Default Volksbühne": {
+   "at": 1794229851.6021304,
+   "results": []
+  },
   "Guided Tour of Volksbühne": {
    "at": 1794147022.588376,
    "results": []
@@ -2993,6 +3241,26 @@
   },
   "It's Britney, Bitch!": {
    "at": 1794147146.317515,
+   "results": [
+    [
+     "Pick me Girls – Berliner Ensemble – Sophie Passmann performt ihren Bestseller",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/pick-me-girls-berliner-ensemble-sophie-passmann-performt-ihren-bestseller",
+     "2024-10-18T09:01:15+02:00"
+    ],
+    [
+     "Spielerfrauen – Berliner Ensemble – Sina Martens und Lena Brasch begeben sich in die sexistische Welt des Fußball",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/spielerfrauen-berliner-ensemble-sina-martens-und-lena-brasch-begeben-sich-in-die-sexistische-welt-des-fussball",
+     "2024-05-10T07:45:31+02:00"
+    ],
+    [
+     "#Motherfuckinghood – Berliner Ensemble – Claude De Demo und Jorinde Dröse mit einem Abend über Mutterschaft",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/motherfuckinghood-berliner-ensemble-claude-de-demo-und-jorinde-droese-mit-einem-abend-ueber-mutterschaft",
+     "2024-02-02T09:51:39+01:00"
+    ]
+   ]
+  },
+  "It's Britney, Bitch! Berliner Ensemble": {
+   "at": 1794229868.5054185,
    "results": [
     [
      "Pick me Girls – Berliner Ensemble – Sophie Passmann performt ihren Bestseller",
@@ -3277,6 +3545,26 @@
      "Mario und der Zauberer – Regisseur Tilmann Köhler und Solo-Virtuose Paul Schröder manipulieren das Stuttgarter Publikum nach Thomas Mann'schem Strich und Faden",
      "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/stuttgart/schauspiel-stuttgart/mario-und-der-zauberer-regisseur-tilmann-koehler-und-solo-virtuose-paul-schroeder-manipulieren-das-stuttgarter-publikum-nach-thomas-mannschem-strich-und-faden",
      "2014-05-22T07:31:40+02:00"
+    ]
+   ]
+  },
+  "The Seer Schaubühne": {
+   "at": 1794229835.055846,
+   "results": [
+    [
+     "The Bolaño Project – Das Duo Notfoundyet dilettiert für Euro-Scene und Schauspiel Leipzig mit einer hanebüchen-unterhaltsamen Meta-Als-Ob-Performance zu Bolaños \"2666\"",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/leipzig1/schauspiel-leipzig/the-bolano-project-die-gruppe-notfoundyet-versucht-sich-fuer-fuer-euro-scene-schauspiel-leipzig-an-roberto-bolano",
+     "2015-11-04T08:00:39+01:00"
+    ],
+    [
+     "Die Dreigroschenoper – Berts Show must go on!, meint Friederike Heller in Dresden",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/dresden/staatsschauspiel-dresden/die-dreigroschenoper-berts-show-must-go-on-meint-friederike-heller-in-dresden",
+     "2012-09-15T00:50:42+02:00"
+    ],
+    [
+     "Herz der Finsternis – Andreas Kriegenburg illustriert Joseph Conrads Kongo-Roman",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/herz-der-finsternis-andreas-kriegenburg-illustriert-joseph-conrads-kongo-roman-",
+     "2009-09-17T02:00:10+02:00"
     ]
    ]
   }
