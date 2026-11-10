@@ -25,6 +25,7 @@ import { Lang, asLang } from "./i18n";
 import PAGE from "./app.html";
 import { webAsset } from "./web/assets";
 import { DISTRICT } from "./districts";
+import { LOGOS } from "./web/logos";
 
 const enc = new TextEncoder();
 const hmac = async (key: ArrayBuffer | Uint8Array, msg: string) =>
@@ -379,7 +380,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     email: myEmail,
     name: meRow?.first_name ?? "",
     sales,
-    venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null })),
+    venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null, logo: LOGOS[v.id] ? `/app/logo/${v.id}.png` : null })),
     people,
     circle,
     invite: invite.split("\n").pop(),

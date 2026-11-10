@@ -1,6 +1,7 @@
 // App web installable (PWA) : manifeste, icônes, service worker.
 // Sur iPhone : Safari → Partager → « Sur l'écran d'accueil ». Plus tard : même page dans Capacitor.
 import { ICON180, ICON512, MASKABLE512 } from "./icons";
+import { LOGOS } from "./logos";
 
 const png = (b64: string) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
 const ICONS: Record<string, string> = { "icon-180.png": ICON180, "icon-512.png": ICON512, "icon-maskable-512.png": MASKABLE512 };
@@ -37,6 +38,8 @@ export function webAsset(path: string): Response | null {
   const name = path.replace(/^\/app\//, "");
   if (name === "manifest.webmanifest") return new Response(JSON.stringify(MANIFEST), { headers: { "content-type": "application/manifest+json", "cache-control": "max-age=3600" } });
   if (name === "sw.js") return new Response(SW, { headers: { "content-type": "text/javascript", "cache-control": "no-cache", "service-worker-allowed": "/app" } });
+  const logo = name.match(/^logo\/([\w-]+)\.png$/);
+  if (logo && LOGOS[logo[1]]) return new Response(png(LOGOS[logo[1]]), { headers: { "content-type": "image/png", "cache-control": "max-age=604800" } });
   if (ICONS[name]) return new Response(png(ICONS[name]), { headers: { "content-type": "image/png", "cache-control": "max-age=604800" } });
   return null;
 }
