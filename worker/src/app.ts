@@ -158,6 +158,7 @@ async function sendLoginMail(env: Env, to: string, name: string, lang: Lang, cod
 
 async function newSession(env: Env, chat: number): Promise<string> {
   const token = randomHex(32);
+  await track(env, null, chat, "login");
   await env.DB.prepare("INSERT INTO web_sessions (token_hash, chat_id) VALUES (?, ?)").bind(await sha256(token), chat).run();
   return token;
 }
@@ -200,6 +201,7 @@ async function finishSignup(env: Env, chat: number): Promise<void> {
     await loadCircles(env);
   }
   if (!u.pending) return;
+  await track(env, null, chat, "signup");
   await env.DB.batch([
     env.DB.prepare("UPDATE users SET active = 1, pending = 0 WHERE chat_id = ?").bind(chat),
     env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 1 FROM venues WHERE active = 1 AND optional = 0").bind(chat),
@@ -208,6 +210,15 @@ async function finishSignup(env: Env, chat: number): Promise<void> {
     const owner = await env.DB.prepare("SELECT lang FROM users WHERE chat_id = ?").bind(Number(env.OWNER_CHAT_ID)).first<{ lang: string | null }>();
     await send(env, env.OWNER_CHAT_ID, tr(owner?.lang).joined(`${esc(u.first_name)} (web)`));
   }
+}
+
+/** Tracking (docs/tracking.md) : un événement = qui, quoi, sur quel item, vers quoi. Jamais bloquant. */
+const OP_EVENT: Record<string, string> = { i: "want", ui: "unwant", v: "seen", r: "rate", w: "review_open", x: "not_for_me", u: "undo", bd: "book", bx: "book_cancel", s: "venue_toggle", l: "lang" };
+const TRACKABLE = new Set(["link_out", "calendar_add", "invite_share", "invite_copy", "filter"]);
+function track(env: Env, ctx: ExecutionContext | null, chat: number | null, name: string, item: string | null = null, target: string | null = null) {
+  const p = env.DB.prepare("INSERT INTO events (chat_id, name, item_id, target) VALUES (?, ?, ?, ?)")
+    .bind(chat, name, item, target ? target.slice(0, 120) : null).run().then(() => {}, () => {});
+  if (ctx) ctx.waitUntil(p); return p;
 }
 
 /** Anti-robots : compte les coups par clé (IP, global) sur une fenêtre glissante ; au-delà de max → bloqué (et noté pour l'admin). */
@@ -410,7 +421,17 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
 
   ctx.waitUntil(env.DB.prepare("UPDATE users SET app_seen_at = datetime('now') WHERE chat_id = ?").bind(me.chat_id).run().then(() => {}, () => {}));
   const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
-  if (url.pathname === "/app/api/state") return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  if (url.pathname === "/app/api/state") {
+    const recent = await env.DB.prepare("SELECT 1 FROM events WHERE chat_id = ? AND name = 'open' AND at > datetime('now', '-30 minutes')").bind(me.chat_id).first();
+    if (!recent) track(env, ctx, me.chat_id, "open", null, tgUser ? "telegram" : "web");
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  }
+  if (url.pathname === "/app/api/track") {
+    const name = String(body.name ?? ""), item = String(body.item ?? ""), target = String(body.target ?? "");
+    if (!TRACKABLE.has(name)) return Response.json({ error: "bad_request" }, { status: 400 });
+    track(env, ctx, me.chat_id, name, /^[\w-]{1,40}$/.test(item) ? item : null, target.replace(/[^\w.:/-]/g, "") || null);
+    return Response.json({ ok: true });
+  }
   if (url.pathname === "/app/api/admin") {
     if (!isAdmin(env, me.chat_id)) return Response.json({ error: "forbidden" }, { status: 403 });
     return Response.json(await adminStats(env));
@@ -419,6 +440,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     const op = String(body.op ?? ""), id = String(body.id ?? ""), arg = body.arg == null ? "" : String(body.arg);
     // Réglages : suivre / ne plus suivre tous les lieux d'un type (théâtres, expos, cinémas).
     if (op === "sk") {
+      track(env, ctx, me.chat_id, "venue_kind_toggle", null, `${id}:${arg}`);
       if (!(KINDS.has(id) || id === "optional") || !["on", "off"].includes(arg)) return Response.json({ error: "bad_request" }, { status: 400 });
       // « Opéra & concerts » (à la carte) est une catégorie à part ; les autres excluent ces lieux.
       const which = id === "optional" ? "optional = 1 AND ?2 = ?2" : "kind = ?2 AND optional = 0";
@@ -446,6 +468,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     if (op === "bd" && Array.isArray(body.with) && body.with.length) {
       await bookFor(env, me, id, arg, body.with.map(Number).filter(Number.isFinite).slice(0, 8));
     }
+    track(env, ctx, me.chat_id, OP_EVENT[op] ?? op, op === "s" || op === "l" ? null : id, op === "s" ? id : op === "bd" ? `with:${Array.isArray(body.with) ? body.with.length : 0}` : arg || null);
     // La langue a pu changer (« l ») : on la relit.
     const lang = op === "l" ? asLang(id) : asLang(me.lang);
     return Response.json(await state(env, me.chat_id, lang, focus));
@@ -473,6 +496,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   if (url.pathname === "/app/api/feedback") {
+    track(env, ctx, me.chat_id, "feedback", null);
     // « Proposer un lieu » / « Un retour » : enregistré, et la propriétaire est prévenue.
     const kind = body.kind === "venue" ? "venue" : "feedback";
     const text = String(body.text ?? "").replace(/[\u0000-\u0008\u000b-\u001f]/g, "").trim().slice(0, 1500);
@@ -485,6 +509,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     return Response.json({ ok: true });
   }
   if (url.pathname === "/app/api/photo") {
+    track(env, ctx, me.chat_id, "photo", null);
     // Ma photo (data URL JPEG/PNG/WebP déjà réduite par la page ; null = retirer). Vue par mes connexions.
     const photo = body.photo == null || body.photo === "" ? null : String(body.photo);
     if (photo && (!/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(photo) || photo.length > 60000))
@@ -502,6 +527,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   if (url.pathname === "/app/api/review") {
+    track(env, ctx, me.chat_id, "review", String(body.id ?? "") || null);
     // ✍️ Critique écrite dans l'app : enregistrée, rien n'est envoyé à personne.
     const id = String(body.id ?? "");
     if (!/^[\w-]{1,40}$/.test(id) || typeof body.text !== "string") return Response.json({ error: "bad_request" }, { status: 400 });
@@ -529,6 +555,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     const op = String(body.op ?? ""), other = Number(body.id);
     if (!Number.isFinite(other) || other === me.chat_id) return Response.json({ error: "bad_request" }, { status: 400 });
     let result: string = "ok";
+    track(env, ctx, me.chat_id, "friend_" + op, null, null);
     if (op === "add") result = await requestFriend(env, me.chat_id, other);
     else if (op === "accept") result = (await acceptFriend(env, me.chat_id, other)) ? "connected" : "gone";
     else if (op === "ignore") await ignoreFriend(env, me.chat_id, other);
@@ -544,6 +571,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     if (!/^[\w-]{1,40}$/.test(id) || !to.length) return Response.json({ error: "bad_request" }, { status: 400 });
     const note = String(body.note ?? "").replace(/\s+/g, " ").trim().slice(0, 200);
     const sent = await share(env, me, id, to, note);
+    track(env, ctx, me.chat_id, "share", id, `to:${to.length}${note ? ":note" : ""}`);
     return Response.json({ sent, ...(await state(env, me.chat_id, asLang(me.lang), focus)) });
   }
   return new Response("not found", { status: 404 });
@@ -787,5 +815,11 @@ async function adminUsage(env: Env) {
     env.DB.prepare(`SELECT COALESCE(SUM(interested = 1), 0) AS wants, COALESCE(SUM(booked_at IS NOT NULL), 0) AS booked, COALESCE(SUM(status = 'seen'), 0) AS seen, COALESCE(SUM(status = 'ignored'), 0) AS ignored
       FROM reactions WHERE ${act} AND updated_at > datetime('now', '-7 days')`).first<any>(),
   ]);
-  return { usage: { ...reac, last7, subs }, venues: venues.results, top: top.results };
+  const [ev, links] = await Promise.all([
+    env.DB.prepare(`SELECT name, COUNT(*) AS n, COUNT(DISTINCT chat_id) AS u, SUM(at > datetime('now', '-7 days')) AS n7
+      FROM events WHERE at > datetime('now', '-30 days') AND (chat_id IS NULL OR chat_id != ?) GROUP BY name ORDER BY n DESC`).bind(Number(env.OWNER_CHAT_ID || 0)).all<any>(),
+    env.DB.prepare(`SELECT target, COUNT(*) AS n FROM events WHERE name = 'link_out' AND at > datetime('now', '-30 days') AND (chat_id IS NULL OR chat_id != ?)
+      GROUP BY target ORDER BY n DESC LIMIT 10`).bind(Number(env.OWNER_CHAT_ID || 0)).all<any>(),
+  ]);
+  return { usage: { ...reac, last7, subs }, venues: venues.results, top: top.results, events: ev.results, links: links.results };
 }

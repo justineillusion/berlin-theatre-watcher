@@ -752,6 +752,16 @@ function adminTab() {
           + `<div class="vbars">${A.venues.map((v) => `<div><span>${esc(v.name)}</span><i style="width:${Math.round(v.n / vmax * 100)}%"></i><b>${v.n}</b></div>`).join("")}</div>`
           + dayHead("Ce qui plaît") + A.top.map((x) => `<div class="au"><div><b>${esc(x.title)}</b><br><small>${esc(x.venue)}</small></div><div class="aun"><small>🙋 ${x.wants} · 🎟 ${x.booked} · ✅ ${x.seen} · ✖ ${x.ignored}</small></div></div>`).join("");
       })() : "")
+    + (A.events ? (() => {
+        const EV = { open: "ouvertures de l'app", want: "🙋 intéressé", unwant: "🙋 retiré", book: "🎟 réservé", book_cancel: "🎟 annulé", seen: "✅ vu", rate: "★ noté",
+          review: "✍️ critique écrite", review_open: "✍️ critique ouverte", not_for_me: "✖ pas pour moi", undo: "↩️ annulé", share: "💌 envoyé à un ami",
+          link_out: "↗ lien externe", calendar_add: "📅 ajouté à l'agenda", invite_share: "lien d'invitation partagé", invite_copy: "lien d'invitation copié",
+          friend_add: "demande d'ami", friend_accept: "ami accepté", friend_remove: "ami retiré", friend_ignore: "demande ignorée", signup: "inscription", login: "connexion",
+          venue_toggle: "lieu suivi / retiré", venue_kind_toggle: "catégorie suivie / retirée", lang: "langue changée", feedback: "retour envoyé", photo: "photo changée" };
+        return dayHead("Événements · 30 j", "hors toi · 7 j · personnes")
+          + (A.events.length ? `<div class="vbars">${A.events.map((e) => `<div style="grid-template-columns:1fr 40px 40px 40px"><span>${esc(EV[e.name] || e.name)}</span><b>${e.n}</b><b style="color:var(--muted)">${e.n7 || 0}</b><b style="color:var(--muted)">${e.u}</b></div>`).join("")}</div>` : `<p class="adm">rien encore (le suivi démarre maintenant)</p>`)
+          + (A.links.length ? dayHead("Liens externes cliqués · 30 j") + `<div class="vbars">${A.links.map((l) => `<div style="grid-template-columns:1fr 40px"><span>${esc(l.target || "?")}</span><b>${l.n}</b></div>`).join("")}</div>` : "");
+      })() : "")
     + dayHead("Inscrits", String(A.users.length)) + `<div class="ausers">${A.users.map((u) => `<div class="au${u.active ? "" : " off"}">
         <div><b>${esc(u.first_name)}</b>${u.handle ? ` <span>@${esc(u.handle)}</span>` : ""}${u.pending ? ` <em>pas confirmé</em>` : !u.active ? ` <em>inactif</em>` : ""}<br><small>${esc(u.email || (u.web ? "" : "Telegram"))}</small></div>
         <div class="aun"><small>inscrit ${d(u.joined_at)} · vu ${d(u.seen_at)}</small><small>👥 ${u.friends} · 🙋 ${u.wants} · 🎟 ${u.booked} · ✅ ${u.seen} · lieux ${u.venues} · ${esc(u.lang)}</small></div></div>`).join("")}</div>`
@@ -966,7 +976,23 @@ function render() {
     markRead();
   }
 }
+/** Tracking (docs/tracking.md) : clics sortants, ajout agenda, partage du lien d'invitation. Silencieux, jamais bloquant. */
+function trackEv(name, item = "", target = "") {
+  if (!S) return;
+  const headers = { "content-type": "application/json" }; if (WEB && TOKEN) headers.authorization = "Bearer " + TOKEN;
+  fetch(API_BASE + "/app/api/track", { method: "POST", keepalive: true, headers, body: JSON.stringify({ ...(INIT ? { initData: INIT } : {}), name, item, target }) }).catch(() => {});
+}
 document.addEventListener("click", (e) => {
+  const out = e.target.closest('a[href^="http"], a[href*="/app/cal/"], [data-href]');
+  if (out) {
+    const href = out.getAttribute("href") || out.dataset.href || "";
+    const item = out.closest("[data-item]")?.dataset.item || st.open || "";
+    const cal = /\/app\/cal\/|calendar\.google/.test(href);
+    let host = ""; try { host = cal ? (/google/.test(href) ? "google" : "ics") : new URL(href, location.href).hostname.replace(/^www\./, ""); } catch {}
+    trackEv(cal ? "calendar_add" : "link_out", item, host);
+  }
+  if (e.target.closest("[data-invite]")) trackEv("invite_share");
+  if (e.target.closest("[data-copyinvite]")) trackEv("invite_copy");
   const a = e.target.closest("a[data-link]");
   if (a) { if (tgApp?.openLink) { e.preventDefault(); tgApp.openLink(a.href); } return; }
   const fc = e.target.closest("[data-face]");
