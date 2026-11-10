@@ -366,6 +366,25 @@ await step("page d'un ami : ses ⭐ et 🎟 ; refusé hors connexion", async () 
   assert.equal((await post("/app/api/friendview", { initData: me, id: 444 })).status, 403);
   assert.equal((await post("/app/api/friendview", { initData: lyna, id: 555 })).status, 403);   // Lyna et Joss : retirés
 });
+await step("photo : envoyée, vue par mes connexions à la place du prénom ; retirée", async () => {
+  const pic = "data:image/jpeg;base64," + "A".repeat(400);
+  assert.equal((await post("/app/api/photo", { initData: me, photo: "javascript:alert(1)" })).status, 400);
+  assert.equal((await post("/app/api/photo", { initData: me, photo: "data:image/jpeg;base64," + "A".repeat(70000) })).status, 400);
+  const s1 = (await post("/app/api/photo", { initData: me, photo: pic })).json;
+  assert.equal(s1.photo, pic);
+  const ids = Object.keys(s1.photos); assert.equal(ids.length, 1);
+  const theirs = (await post("/app/api/photo", { initData: me })).json;   // pas de photo → retirée
+  assert.equal(theirs.photo, null); assert.deepEqual(theirs.photos, {});
+  await post("/app/api/photo", { initData: me, photo: pic });
+  const friendState = (await post("/app/api/state", { initData: joss })).json;
+  assert.equal(Object.values(friendState.photos).filter((x) => x === pic).length, 1);   // Joss (connecté) la voit
+});
+await step("ajouter au calendrier : .ics en heure de Berlin, rappel 2 h avant", async () => {
+  const r = await fetch(`${W}/app/cal/p1.ics?at=202612041930`); const t = await r.text();
+  assert.equal(r.status, 200); assert.match(r.headers.get("content-type"), /text\/calendar/);
+  assert.match(t, /DTSTART;TZID=Europe\/Berlin:20261204T193000/); assert.match(t, /TRIGGER:-PT2H/);
+  assert.equal((await fetch(`${W}/app/cal/p1.ics?at=nope`)).status, 404);
+});
 
 console.log(`\n${ok} étapes OK`);
 dev.kill(); tgServer.close(); rmSync(STATE, { recursive: true, force: true }); rmSync(`${STATE}-seed.sql`, { force: true });

@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS users (
   bot_seen_at TEXT,                          -- dernier message / clic dans le bot
   app_seen_at TEXT,                          -- dernière ouverture de la mini-app
   email       TEXT,                          -- connexion de l'app web (migrations/010)
-  handle      TEXT                           -- pseudo, pour s'ajouter entre amis (migrations/011)
+  handle      TEXT,                          -- pseudo, pour s'ajouter entre amis (migrations/011)
+  photo       TEXT                           -- data URL JPEG 128 px (migrations/012)
 );
 CREATE UNIQUE INDEX IF NOT EXISTS users_handle ON users (handle) WHERE handle IS NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS users_email ON users (email) WHERE email IS NOT NULL;

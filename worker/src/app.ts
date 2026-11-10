@@ -357,6 +357,14 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     await env.DB.prepare("UPDATE users SET first_name = ? WHERE chat_id = ?").bind(name, me.chat_id).run();
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
+  if (url.pathname === "/app/api/photo") {
+    // Ma photo (data URL JPEG/PNG/WebP déjà réduite par la page ; null = retirer). Vue par mes connexions.
+    const photo = body.photo == null || body.photo === "" ? null : String(body.photo);
+    if (photo && (!/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(photo) || photo.length > 60000))
+      return Response.json({ error: "bad_photo" }, { status: 400 });
+    await env.DB.prepare("UPDATE users SET photo = ? WHERE chat_id = ?").bind(photo, me.chat_id).run();
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  }
   if (url.pathname === "/app/api/email") {
     // Mon adresse pour la connexion web (vide = retirer). Une adresse = un compte.
     const email = normEmail(body.email);
@@ -452,13 +460,19 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
       .sort((a, b) => a.day.localeCompare(b.day));
   } catch { /* calendrier illisible : on n'affiche rien */ }
   const handle = await ensureHandle(env, chat);
-  const meRow = await env.DB.prepare("SELECT email, first_name FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null; first_name: string }>();
+  const meRow = await env.DB.prepare("SELECT email, first_name, photo FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null; first_name: string; photo: string | null }>();
+  // Photos de mes connexions (et la mienne) : la page les met à la place des prénoms.
+  const { results: pics } = await env.DB.prepare(
+    "SELECT chat_id, photo FROM users WHERE photo IS NOT NULL AND active = 1 AND chat_id IN (SELECT value FROM json_each(?))",
+  ).bind(JSON.stringify([chat, ...circle.friends.map((f: any) => f.id)])).all<{ chat_id: number; photo: string }>();
   const myEmail = meRow?.email ?? null;
   return {
     lang,
     email: myEmail,
     name: meRow?.first_name ?? "",
     handle,
+    photo: meRow?.photo ?? null,
+    photos: Object.fromEntries(pics.map((p) => [p.chat_id, p.photo])),
     sales,
     venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null, logo: LOGOS[v.id] ? `/app/logo/${v.id}.png` : null })),
     people,

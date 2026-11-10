@@ -72,7 +72,12 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .subtabs .chip[aria-pressed="true"]{background:none;color:var(--ink);border-bottom-color:var(--velvet)}
 .subtabs .chip i{font-style:normal;background:var(--velvet);color:#fff;border-radius:9px;padding:0 6px;margin-left:6px;font-size:11px}
 .cal{color:var(--velvet);font-weight:600;text-decoration:none;white-space:nowrap}
-.fname{border:0;background:none;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.av{width:22px;height:22px;border-radius:50%;object-fit:cover;vertical-align:-6px;margin:0 1px;box-shadow:0 0 0 1px var(--line)}
+.avbig,.avmid{width:52px;height:52px;border-radius:50%;object-fit:cover;flex:none;display:inline-flex;align-items:center;justify-content:center;background:var(--line);color:var(--muted);font:700 20px var(--sans)}
+.avmid{width:30px;height:30px;font-size:13px;margin-right:10px}
+.fline.photo>div:nth-child(2){flex:1}
+.fline .avbig.none,.fline .avmid.none{display:inline-flex;align-items:center;justify-content:center;margin:0;font:700 20px var(--sans);color:var(--muted)}
+.fname{display:flex;align-items:center;border:0;background:none;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
 .fname b{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
 .fhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:6px 0 4px}
 .fhead h2{font:800 22px var(--sans);letter-spacing:-.02em;margin:0}
@@ -193,10 +198,10 @@ const L = {
         loginHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Connecte-toi une fois avec Telegram : ton compte est celui du bot.", loginBtn:"Se connecter avec Telegram ↗", loginWait:"Dans Telegram, touche « ✅ Oui, c'est moi », puis reviens ici.", loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
         loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
-        badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Ajoute-la d'abord dans Réglages → Compte, depuis l'app dans Telegram.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
+        badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
         setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien dans Telegram et appuie sur « Démarrer » : vous êtes connectés.",
-        nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
-        emailT:"Email de connexion", emailHint:"Pour ouvrir l'app hors de Telegram (navigateur, écran d'accueil) : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
+        photoT:"Ma photo", photoHint:"Remplace ton prénom chez tes amis.", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
+        emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"⭐ Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to calendar",
@@ -211,10 +216,10 @@ const L = {
         loginHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Sign in once with Telegram: your account is the bot's.", loginBtn:"Sign in with Telegram ↗", loginWait:"In Telegram, tap “✅ Yes, it's me”, then come back here.", loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
         loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
-        badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Add it first in Settings → Account, from the app inside Telegram.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
+        badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
         setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link in Telegram and taps “Start”: you're connected.",
-        nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
-        emailT:"Sign-in email", emailHint:"To open the app outside Telegram (browser, home screen): we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
+        photoT:"My photo", photoHint:"Shown instead of your name to friends.", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
+        emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
 let T = (navigator.language || "fr").toLowerCase().startsWith("fr") ? L.fr : L.en, S = null;
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
@@ -400,14 +405,17 @@ async function act(op, id, arg, extra = {}) {
 function chips(el, items, key) {
   el.innerHTML = items.map(([v, l]) => `<button class="chip" data-${key}="${v}" aria-pressed="${st[key] === v}">${l}</button>`).join("");
 }
+/** Un ami dans les lignes ⭐/🎟/✅ : sa photo s'il en a mis une, sinon son prénom. */
+const who = (p) => S.photos && S.photos[p.id] ? `<img class="av" src="${S.photos[p.id]}" alt="${esc(p.name)}" title="${esc(p.name)}">` : esc(p.name);
+const avatar = (src, name, cls = "avbig") => src ? `<img class="${cls}" src="${src}" alt="">` : `<span class="${cls} none">${esc((name || "?").trim().charAt(0).toUpperCase())}</span>`;
 function socialLine(x) {
   const f = x.friends || []; const parts = [];
   const mine = x.me && x.me.booked;
-  const together = mine ? f.filter((p) => p.booked === mine).map((p) => esc(p.name)) : [];
+  const together = mine ? f.filter((p) => p.booked === mine).map(who) : [];
   if (together.length) parts.push(`🎟 ${esc(T.withF)} ${together.join(", ")}`);
-  const want = f.filter((p) => (p.star || p.booked) && !p.seen && !(mine && p.booked === mine)).map((p) => esc(p.name) + (p.booked ? " 🎟" : ""));
+  const want = f.filter((p) => (p.star || p.booked) && !p.seen && !(mine && p.booked === mine)).map((p) => who(p) + (p.booked ? " 🎟" : ""));
   if (want.length) parts.push("⭐ " + want.join(", "));
-  const seen = f.filter((p) => p.seen).map((p) => esc(p.name) + (p.rating ? ` <span class="stars">${"★".repeat(p.rating)}</span>` : ""));
+  const seen = f.filter((p) => p.seen).map((p) => who(p) + (p.rating ? ` <span class="stars">${"★".repeat(p.rating)}</span>` : ""));
   if (seen.length) parts.push("✅ " + seen.join(", "));
   return parts.length ? `<div class="social">${parts.join(" · ")}</div>` : "";
 }
@@ -504,7 +512,10 @@ function noteIdeas(x) {
 /** Réglages → Compte : email de connexion (lié depuis Telegram ou le web), déconnexion. */
 function accountSection() {
   const e = S.email;
-  let h = st.editHandle
+  let h = `<div class="fline photo">${avatar(S.photo, S.handle)}<div><b>${esc(T.photoT)}</b><span>${esc(T.photoHint)}</span></div>
+    <div class="who"><label class="act${S.photo ? "" : " on"}">${esc(S.photo ? T.photoChange : T.photoAdd)}<input id="photoin" type="file" accept="image/*" hidden></label>
+    ${S.photo ? `<button class="act" data-photodel="1">${esc(T.photoDel)}</button>` : ""}</div></div>`;
+  h += st.editHandle
     ? `<input id="sethandle" class="note" autocapitalize="none" autocomplete="off" spellcheck="false" maxlength="21" value="@${esc(S.handle || "")}">
        <div class="acts"><button class="act on" data-savehandle="1">${esc(T.save)}</button><button class="act" data-edithandle="">${esc(T.cancel)}</button></div>`
     : `<div class="fline"><div><b>${esc(T.handleT)}</b><span>@${esc(S.handle || "")} · ${esc(T.handleHint)}</span></div>
@@ -553,7 +564,7 @@ function friendsSection() {
     <p class="hint">${esc(T.addHow)} ${S.handle ? esc(T.myHandle(S.handle)) : ""}</p>`;
   if (c.incoming.length) h += dayHead(T.requestsT) + c.incoming.map((p) => line(p.name, "", btn("accept", p.id, T.accept, true) + btn("ignore", p.id, T.ignoreR))).join("");
   h += dayHead(T.friendsT) + (c.friends.length ? c.friends.map((p) =>
-      `<div class="fline"><button class="fname" data-friendview="${p.id}"><b>${esc(p.name)}</b><span>${esc(T.seeWhat)} ›</span></button><div class="who">${
+      `<div class="fline"><button class="fname" data-friendview="${p.id}">${S.photos && S.photos[p.id] ? avatar(S.photos[p.id], p.name, "avmid") : ""}<b>${esc(p.name)}</b><span>${esc(T.seeWhat)} ›</span></button><div class="who">${
         st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true) : `<button class="act" data-askremove="${p.id}">${esc(T.removeF)}</button>`}</div></div>`).join("")
     : `<p class="hint">${esc(T.noFriends)}</p>`);
   const sugg = [...c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))),
@@ -723,6 +734,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.loginback) { login.step = "email"; login.err = ""; return void showLogin(); }
   else if (t.dataset.addhandle) { return void addByHandle($("addhandle")?.value || ""); }
   else if (t.dataset.edithandle !== undefined) { st.editHandle = !!t.dataset.edithandle; render(); if (st.editHandle) setTimeout(() => $("sethandle")?.focus(), 0); return; }
+  else if (t.dataset.photodel) { return void savePhoto(null); }
   else if (t.dataset.savehandle) { return void saveHandle($("sethandle")?.value || ""); }
   else if (t.dataset.editname !== undefined) { st.editName = !!t.dataset.editname; render(); if (st.editName) setTimeout(() => $("setname")?.select(), 0); return; }
   else if (t.dataset.savename) { return void saveName($("setname")?.value || ""); }
@@ -747,6 +759,22 @@ async function saveHandle(handle) {
   if (st.busy) return; st.busy = true;
   try { S = await api("handle", { handle }); st.editHandle = false; }
   catch (e) { notify(e.info?.error === "handle_taken" ? T.handleTaken : e.info?.error === "bad_handle" ? T.badHandle : T.error); }
+  st.busy = false; render();
+}
+/** Photo : recadrée au carré et réduite à 128 px dans la page (JPEG ~8 Ko), puis envoyée. */
+async function savePhoto(file) {
+  if (st.busy) return;
+  let data = null;
+  if (file) {
+    try {
+      const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = URL.createObjectURL(file); });
+      const side = Math.min(img.naturalWidth, img.naturalHeight), c = document.createElement("canvas"); c.width = c.height = 128;
+      c.getContext("2d").drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, 128, 128);
+      data = c.toDataURL("image/jpeg", 0.82); URL.revokeObjectURL(img.src);
+    } catch { return notify(T.badPhoto); }
+  }
+  st.busy = true;
+  try { S = await api("photo", { photo: data }); } catch { notify(T.error); }
   st.busy = false; render();
 }
 async function saveName(name) {
@@ -774,7 +802,8 @@ function shareInvite() {
   else navigator.clipboard?.writeText(link).then(() => notify(T.copied), () => {});
 }
 document.addEventListener("input", (e) => { if (e.target.id === "note") st.note = e.target.value; });
-document.addEventListener("change", (e) => { if (e.target.id === "areasel") { st.setArea = e.target.value; render(); } });
+document.addEventListener("change", (e) => {
+  if (e.target.id === "photoin" && e.target.files && e.target.files[0]) return void savePhoto(e.target.files[0]); if (e.target.id === "areasel") { st.setArea = e.target.value; render(); } });
 render(); load();
 </script>
 </body>
