@@ -276,6 +276,9 @@ await step("Réglages : ne plus suivre aucune expo, puis toutes", async () => {
   s = (await bearer("/app/api/act", session, { op: "sk", id: "expo", arg: "on" })).json;
   assert.ok(s.venues.find((v) => v.kind === "expo").followed);
   assert.equal((await bearer("/app/api/act", session, { op: "sk", id: "opera", arg: "on" })).status, 400);
+  // Réglages filtrés sur un quartier : « Ne rien suivre » ne touche qu'à ses lieux (ici aucun).
+  s = (await bearer("/app/api/act", session, { op: "sk", id: "expo", arg: "off", area: "Spandau" })).json;
+  assert.ok(s.venues.find((v) => v.kind === "expo").followed);
 });
 await step("quartiers : chaque lieu connu a son quartier dans l'état", async () => {
   const s = (await post("/app/api/state", { initData: me })).json;

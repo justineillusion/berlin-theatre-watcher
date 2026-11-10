@@ -251,10 +251,14 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     // Réglages : suivre / ne plus suivre tous les lieux d'un type (théâtres, expos, cinémas).
     if (op === "sk") {
       if (!KINDS.has(id) || !["on", "off"].includes(arg)) return Response.json({ error: "bad_request" }, { status: 400 });
-      await (arg === "on"
-        ? env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 0 FROM venues WHERE active = 1 AND kind = ?")
-        : env.DB.prepare("DELETE FROM subscriptions WHERE chat_id = ? AND venue_id IN (SELECT id FROM venues WHERE kind = ?)"))
-        .bind(me.chat_id, id).run();
+      // Avec un quartier (Réglages filtrés) : seulement les lieux de ce type dans ce quartier.
+      const area = String(body.area ?? "");
+      const only = area ? JSON.stringify(Object.keys(DISTRICT).filter((v) => DISTRICT[v] === area)) : null;
+      const inArea = only ? " AND id IN (SELECT value FROM json_each(?3))" : "";
+      const q = arg === "on"
+        ? env.DB.prepare(`INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?1, id, 0 FROM venues WHERE active = 1 AND kind = ?2${inArea}`)
+        : env.DB.prepare(`DELETE FROM subscriptions WHERE chat_id = ?1 AND venue_id IN (SELECT id FROM venues WHERE kind = ?2${inArea})`);
+      await (only ? q.bind(me.chat_id, id, only) : q.bind(me.chat_id, id)).run();
       return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
     }
     if (!OPS.has(op) || !/^[\w-]{1,40}$/.test(id) || !/^[\w-]{0,20}$/.test(arg)) {

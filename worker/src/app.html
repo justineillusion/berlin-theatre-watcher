@@ -65,10 +65,10 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .item.soldout:not(.open) .row{opacity:.42}.item.soldout .when small{color:var(--velvet);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);text-transform:uppercase;letter-spacing:.04em}.detail s{color:var(--muted)}
 #whens .soldtoggle{margin-left:auto}
-/* Quartiers : petites cases, plusieurs à la fois ; défile si besoin. */
-#areas{gap:6px;padding-top:6px}
-#areas .chip{border-width:1px;font-weight:600;font-size:11.5px;padding:5px 8px;color:var(--muted);border-color:var(--line)}
-#areas .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+/* Réglages → Mes lieux : quartiers (un à la fois), filtrent la liste des lieux. */
+.areas{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
+.areas .chip{border-width:1px;font-weight:600;font-size:11.5px;padding:5px 8px;color:var(--muted);border-color:var(--line)}
+.areas .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .row{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 8px;border:0;background:none;width:100%;text-align:left}
 .when{font:700 15.5px var(--sans);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px;line-height:1.1}
 .when small{display:block;font:500 12px var(--sans);color:var(--muted);margin-top:3px}
@@ -140,7 +140,6 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
     <button class="tab" data-tab="set" aria-selected="false"></button>
   </div>
   <div class="filters" id="kinds"></div>
-  <div class="filters" id="areas"></div>
   <div class="filters" id="whens"></div>
 </div>
 <main id="list"><div class="msg">…</div></main>
@@ -201,8 +200,8 @@ const L = {
 let T = (navigator.language || "fr").toLowerCase().startsWith("fr") ? L.fr : L.en, S = null;
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
-st.areas = new Set();
-try { st.areas = new Set(JSON.parse(localStorage.getItem("areas") || "[]")); } catch {}
+st.setArea = "";
+try { localStorage.removeItem("areas"); } catch {}
 try { st.hideSold = localStorage.getItem("hideSold") === "1"; st.hideDismissed = localStorage.getItem("hideDismissed") === "1"; } catch {}
 const ICON = { theatre:"🎭", expo:"🏛", film:"🎬" };
 const $ = (id) => document.getElementById(id);
@@ -523,15 +522,9 @@ function exposByVenue(expos) {
 const dayHead = (label, note = "") => { const [a, b] = String(label).split(" · "); return `<div class="day">${esc(a)}${b ? ` <span>${esc(b)}</span>` : ""}${note ? ` <span>${esc(note)}</span>` : ""}</div>`; };
 /** Sous le programme : ce qui n'y est pas et pourquoi (écarté, vu, réservé plus tard), la règle
  *  (surtitres EN, pas complet) et les prochaines ouvertures de billetterie. */
-/** Filtre quartiers : aucun choisi = partout. */
-function inArea(x) {
-  if (!st.areas.size) return true;
-  const v = (S.venues || []).find((v) => v.id === x.venue_id);
-  return !!v && st.areas.has(v.district);
-}
 function whyNote() {
   if (st.kind === "expo") return "";
-  const shows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind) && inArea(x));
+  const shows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind));
   const inWin = (x) => (x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when]);
   const n = (k) => shows.filter((x) => inWin(x) && state(x) === k).length;
   const soldHidden = st.hideSold ? shows.filter((x) => !["seen", "ignored"].includes(state(x)) && !(x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])
@@ -551,15 +544,20 @@ function render() {
   document.querySelectorAll(".tab").forEach((b, i) => { b.textContent = T.tabs[i]; b.setAttribute("aria-selected", b.dataset.tab === st.tab); });
   const K = $("kinds"), W = $("whens"), list = $("list");
   if (!S) return;
-  const A = $("areas");
-  K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog"; A.hidden = st.tab === "set";
+  K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog";
   if (st.tab === "set") {
     // Lieux par type : un bouton suit / ne suit plus tous les théâtres (expos, cinémas) d'un coup.
-    const cats = ["theatre", "expo", "cinema"].map((k) => [k, S.venues.filter((v) => v.kind === k)]).filter(([, vs]) => vs.length);
-    list.innerHTML = `<div class="set">${friendsSection()}${dayHead(T.venues)}<p class="hint">${esc(T.tapToggle)}</p>${cats.map(([k, vs]) => {
+    // Quartier choisi : la liste n'en montre que les lieux, et « Tout suivre » ne vaut que pour eux.
+    const areas = [...new Set(S.venues.map((v) => v.district).filter(Boolean))].sort();
+    if (st.setArea && !areas.includes(st.setArea)) st.setArea = "";
+    const inSet = (v) => !st.setArea || v.district === st.setArea;
+    const areaChips = areas.length < 2 ? "" : `<div class="areas"><button class="chip" data-area="" aria-pressed="${!st.setArea}">${esc(T.everywhere)}</button>` +
+      areas.map((a) => `<button class="chip" data-area="${esc(a)}" aria-pressed="${st.setArea === a}">${esc(a)}</button>`).join("") + "</div>";
+    const cats = ["theatre", "expo", "cinema"].map((k) => [k, S.venues.filter((v) => v.kind === k && inSet(v))]).filter(([, vs]) => vs.length);
+    list.innerHTML = `<div class="set">${friendsSection()}${dayHead(T.venues)}<p class="hint">${esc(T.tapToggle)}</p>${areaChips}${cats.map(([k, vs]) => {
       const any = vs.some((v) => v.followed);
       return `<div class="cat"><b>${ICON[k === "cinema" ? "film" : k]} ${esc(T.cats[k])} · ${vs.filter((v) => v.followed).length}/${vs.length}</b>
-        <button class="act${any ? "" : " on"}" data-act="sk" data-id="${k}" data-arg="${any ? "off" : "on"}">${esc(any ? T.catOff : T.catOn)}</button></div>` +
+        <button class="act${any ? "" : " on"}" data-sk="${k}" data-arg="${any ? "off" : "on"}">${esc(any ? T.catOff : T.catOn)}</button></div>` +
         vs.map((v) => `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}"><div>${esc(v.name)}${v.district ? `<small class="dist">${esc(v.district)}</small>` : ""}</div><span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("");
     }).join("")}
       ${dayHead(T.language)}<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
@@ -573,17 +571,8 @@ function render() {
   if (st.kind !== "all" && !followedKinds.has(st.kind)) st.kind = "all";
   K.hidden = kindChips.length < 2;
   chips(K, kindChips.length < 2 ? [] : [["all", T.all], ...kindChips], "kind");
-  // Quartiers des lieux suivis (dans le type choisi) ; plusieurs à la fois, mémorisés.
-  const vKind = (v) => v.kind === "cinema" ? "film" : v.kind;
-  const areas = [...new Set(S.venues.filter((v) => v.followed && v.district && (st.kind === "all" || vKind(v) === st.kind)).map((v) => v.district))].sort();
-  for (const a of [...st.areas]) if (!areas.includes(a)) st.areas.delete(a);
-  A.hidden = A.hidden || areas.length < 2;
-  A.innerHTML = areas.length < 2 ? "" : `<button class="chip" data-area="" aria-pressed="${!st.areas.size}">${esc(T.everywhere)}</button>` +
-    areas.map((a) => `<button class="chip" data-area="${esc(a)}" aria-pressed="${st.areas.has(a)}">${esc(a)}</button>`).join("");
-
-  chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
   if (st.kind !== "expo") W.insertAdjacentHTML("beforeend", `<button class="chip soldtoggle" data-hidesold="1" aria-pressed="${!!st.hideSold}">${esc(T.hideSold)}</button>`);
-  let xs = S.items.filter((x) => (st.kind === "all" || x.kind === st.kind) && inArea(x));
+  let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
   let h = "";
   if (st.tab === "prog") {
     // Ce que j'ai vu ou écarté n'est plus reproposé (sauf la fiche ouverte, le temps de voir l'effet du clic).
@@ -622,13 +611,11 @@ document.addEventListener("click", (e) => {
   const sc = e.target.closest("[data-href]");
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
-  if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold || t.dataset.area !== undefined) st.focus = null;
+  if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
   if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
-  else if (t.dataset.area !== undefined) {
-    const a = t.dataset.area; if (!a) st.areas.clear(); else st.areas.has(a) ? st.areas.delete(a) : st.areas.add(a);
-    try { localStorage.setItem("areas", JSON.stringify([...st.areas])); } catch {}
-  }
+  else if (t.dataset.area !== undefined) st.setArea = t.dataset.area;
+  else if (t.dataset.sk) return void act("sk", t.dataset.sk, t.dataset.arg, { body: { area: st.setArea } });
   else if (t.dataset.hidesold) { st.hideSold = !st.hideSold; try { localStorage.setItem("hideSold", st.hideSold ? "1" : ""); } catch {} }
   else if (t.dataset.when) st.when = t.dataset.when;
   else if (t.dataset.pick) { st.picking = st.picking === t.dataset.pick ? null : t.dataset.pick; st.sharing = null; st.withs.clear(); }
