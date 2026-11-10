@@ -110,15 +110,19 @@ def header(win: dict, cinemas: List[str], cfg: dict, lang: str = "fr") -> str:
     if win.get("tonight"):
         span += text(lang, "tonight_span")
     rc = cfg.get("ratings", {})
-    seuil = (f"SC ≥ {_num(rc.get('senscritique_min', 7.0), 1, lang)} {text(lang, 'or')} "
-             f"Letterboxd ≥ {_num(rc.get('letterboxd_min', 3.6), 1, lang)}")
+    sc_min = f"SC ≥ {_num(rc.get('senscritique_min', 7.0), 1, lang)}"
+    lb_min = f"Letterboxd ≥ {_num(rc.get('letterboxd_min', 3.6), 1, lang)}"
+    seuil = f"{lb_min} {text(lang, 'or')} {sc_min}" if lang == "en" else f"{sc_min} {text(lang, 'or')} {lb_min}"
     return (f"🎬 <b>{text(lang, 'title')}</b> — {span}\n"
             f"<i>{esc(' · '.join(cinemas))} — {esc(hours_label(cfg, lang))}, {text(lang, 'ov')}, {esc(seuil)}</i>")
 
 
 def _short_rating(film: Film, link: bool, lang: str = "fr") -> str:
     sc, lb = film.senscritique, film.letterboxd
-    if sc and sc.value and (not lb or film.best_score == sc.value):
+    # En anglais : Letterboxd (plus parlant hors de France), SensCritique en repli.
+    if lang == "en" and lb and lb.value:
+        txt, url = f"★ {_num(lb.value, 1, lang)} LB", lb.url
+    elif sc and sc.value and (not lb or film.best_score == sc.value):
         txt, url = f"★ {_num(sc.value, 1, lang)} SC", sc.url
     elif lb:
         txt, url = f"★ {_num(lb.value, 1, lang)} LB", lb.url
