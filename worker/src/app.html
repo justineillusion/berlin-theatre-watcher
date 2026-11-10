@@ -154,41 +154,35 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .login{max-width:420px;margin:0 auto;padding:40px 24px;display:grid;gap:14px;text-align:left}
 .login p{margin:0;color:var(--muted)}.login .act{text-align:center;padding:12px 14px;font-size:15px}
 .landing .mast{display:none}
-html:has(body.landing),body.landing{background:#0e0f11;color:#fff}
-.landing .login p{color:#a6abb2}
-.landing .lform{background:#1b1c20;border-top-color:var(--velvet)}
-.landing .lform .note{background:#0e0f11;color:#fff;border-color:#3a3d43}
-.landing .lform .note::placeholder{color:#7d828a}
-.landing .lform .act:not(.on){background:transparent;color:#fff;border-color:#fff}
-.landing .lform .ftitle,.landing .inviter{color:#fff}
-.landing .what li{color:#e8e8ea}
-.landing .hint{color:#8a8f96}
-.landing .sign{color:#5d6168}
-.landing .bill{border-top-color:#3a3d43;filter:blur(1.2px);opacity:.6;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);pointer-events:none;user-select:none;margin-top:4px}
-.hero{background:#0e0f11;color:#fff;padding:18px 20px 4px;position:relative;overflow:hidden}
+.landing .bill{filter:blur(.4px);opacity:.75;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent);pointer-events:none;user-select:none;margin-top:6px}
+.hero{color:var(--ink);padding:18px 24px 0;position:relative}
 .hero .lpick{position:absolute;top:14px;right:16px;display:flex;gap:2px;z-index:1}
-.lpick button{border:0;background:none;font:700 12px var(--sans);letter-spacing:.08em;color:#8a8f96;padding:4px 6px;cursor:pointer}
-.lpick button.on{color:#fff;box-shadow:inset 0 -2px 0 var(--velvet)}
+.lpick button{border:0;background:none;font:700 12px var(--sans);letter-spacing:.08em;color:var(--muted);padding:4px 6px;cursor:pointer}
+.lpick button.on{color:var(--ink);box-shadow:inset 0 -2px 0 var(--velvet)}
 .wm{margin-top:34px;line-height:.86}
-.wm small{display:block;font:800 15px var(--sans);letter-spacing:.42em;text-transform:uppercase;color:#fff;margin-bottom:10px}
+.wm small{display:block;font:800 15px var(--sans);letter-spacing:.42em;text-transform:uppercase;color:var(--ink);margin-bottom:10px}
 .wm b{display:block;font:800 clamp(62px,19vw,92px)/.86 var(--sans);letter-spacing:-.055em}
 .wm b i{font-style:normal;color:var(--velvet)}
-.hero .tag{font:600 19px/1.3 var(--sans);color:#e8e8ea;margin:18px 0 0;max-width:22ch;position:relative;z-index:1}
-.bill{border-top:2px solid #fff;position:relative;z-index:1}
+.hero .tag{font:500 19px/1.35 var(--sans);color:var(--muted);margin:18px 0 0;max-width:24ch}
+.bill{border-top:1px solid var(--line)}
 .billt{display:block;font:800 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--velvet);padding:10px 0 4px}
-.billrow{display:grid;grid-template-columns:96px 1fr;column-gap:12px;padding:8px 0;border-bottom:1px solid #2a2c30}
-.billrow .bw{grid-row:span 2;font:700 12.5px/1.5 var(--sans);color:#a6abb2;text-transform:uppercase;letter-spacing:.03em}
-.billrow .bt{font:700 16px/1.25 var(--sans);color:#fff}
-.billrow .bv{font:500 13px var(--sans);color:#a6abb2}
+.billrow{display:grid;grid-template-columns:96px 1fr;column-gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.billrow .bw{grid-row:span 2;font:700 12px/1.6 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.billrow .bt{font:700 16px/1.25 var(--sans);color:var(--ink)}
+.billrow .bv{font:500 13px var(--sans);color:var(--muted)}
 .login{padding:22px 20px 40px;gap:22px}
-.lform{display:grid;gap:12px;padding:20px;background:var(--card);border-top:4px solid var(--velvet)}
-.lform .note{background:var(--bg)}
+.lform{display:grid;gap:18px;padding:22px 0 6px;border-top:2px solid var(--ink)}
+.lform .note{background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 0;font:500 18px var(--sans);color:var(--ink);box-shadow:none;outline:none}
+.lform .note:focus{border-bottom-color:var(--velvet)}
+.lform .note::placeholder{color:#a0a5ab}
+.lform .act{box-shadow:none!important;border-radius:0;font:800 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:15px 14px}
+.lform .act:not(.on){border:0;background:none;padding:4px;color:var(--muted);letter-spacing:.06em}
 .lform .hint{margin:0}
 .what{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .what li{display:flex;gap:12px;align-items:baseline;font:500 15px/1.35 var(--sans);color:var(--ink)}
 .what li span{width:22px;flex:none;text-align:center}
 .sign{text-align:center;font:700 11.5px var(--sans)!important;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.ftitle{font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.ftitle{font:800 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--velvet)}
 .inviter{display:flex;align-items:center;gap:0;font:700 16px var(--sans)}
 .inviter .avmid{width:40px;height:40px;margin-right:12px}
 .inviter .avmid.none{display:inline-flex;align-items:center;justify-content:center;font:800 16px var(--sans)}
@@ -244,7 +238,7 @@ const L = {
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
-        tagline:"Sortir ensemble à Berlin, même sans parler allemand.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "Théâtre et opéra surtitrés en anglais"], ["🎬", "Cinéma en version originale"], ["🖼", "Les expos du moment"], ["👯", "Ce qui tente tes amis, pour y aller ensemble"]],
+        tagline:"Les scènes, écrans et expos de Berlin, pour les amis dont l'allemand s'arrête à « Entschuldigung ».", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "Théâtre et opéra surtitrés en anglais"], ["🎬", "Cinéma en version originale"], ["🖼", "Les expos du moment"], ["👯", "Ce qui tente tes amis, pour y aller ensemble"]],
         invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Rejoindre", joinGo:"Valider", signupHint:"On t'envoie un code par email pour confirmer. Pas de mot de passe.",
         haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
@@ -265,7 +259,7 @@ const L = {
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
-        tagline:"Go out together in Berlin, no German needed.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "Theatre and opera with English surtitles"], ["🎬", "Films in original version"], ["🖼", "Current exhibitions"], ["👯", "What your friends fancy, so you can go together"]],
+        tagline:"Berlin's stages, screens and galleries, for friends whose German stops at “Entschuldigung”.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "Theatre and opera with English surtitles"], ["🎬", "Films in original version"], ["🖼", "Current exhibitions"], ["👯", "What your friends fancy, so you can go together"]],
         invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Join", joinGo:"Confirm", signupHint:"We'll email you a code to confirm. No password.",
         haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
