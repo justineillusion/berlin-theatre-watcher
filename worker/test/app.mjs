@@ -334,5 +334,38 @@ await step("Compte : changer mon prénom (vu par les amis), nettoyé, jamais vid
   await post("/app/api/name", { initData: me, name: "Justine" });
 });
 
+await step("pseudo : créé tout seul, modifiable (unique), ajout par pseudo → demande à accepter", async () => {
+  let s = (await post("/app/api/state", { initData: me })).json;
+  const s0 = s;
+  assert.match(s.handle, /^justine/);
+  assert.equal((await post("/app/api/handle", { initData: lyna, handle: "@" + s.handle })).status, 409);
+  assert.equal((await post("/app/api/handle", { initData: lyna, handle: "x" })).status, 400);
+  s = (await post("/app/api/handle", { initData: lyna, handle: "@Lyna.B" })).json;
+  assert.equal(s.handle, "lyna.b");
+  // Un inscrit qui n'est l'ami de personne (777) ajoute Lyna par pseudo : demande, pas connexion.
+  await new Promise((r) => setTimeout(r, 50));
+  const zed = initData({ id: 777, first_name: "Zed" });
+  await fetch(W + "/tg", { method: "POST", headers: { "x-telegram-bot-api-secret-token": "h", "content-type": "application/json" },
+    body: JSON.stringify({ message: { from: { id: 777, first_name: "Zed" }, chat: { id: 777, type: "private" }, text: `/start ${s0.invite.split("start=")[1]}` } }) });
+  const zstate = (await post("/app/api/state", { initData: zed })).json;
+  assert.ok(!zstate.error, "Zed inscrit par le lien d'invitation de Justine");
+  assert.ok(zstate.circle.friends.some((p) => p.id === ME));      // … et connecté à elle
+  calls = [];
+  let r = await post("/app/api/friend", { initData: zed, op: "addhandle", handle: "lyna.b" });
+  assert.equal(r.json.result, "sent");
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id === 666));
+  assert.equal((await post("/app/api/friend", { initData: zed, op: "addhandle", handle: "personne" })).status, 404);
+  const ly = (await post("/app/api/state", { initData: lyna })).json;
+  assert.ok(ly.circle.incoming.some((p) => p.id === 777));
+});
+await step("page d'un ami : ses ⭐ et 🎟 ; refusé hors connexion", async () => {
+  const fv = (await post("/app/api/friendview", { initData: me, id: 555 })).json;
+  assert.equal(fv.name, "Joss");
+  assert.ok(fv.items.some((x) => x.friends[0].booked));     // « pour moi + Joss » plus haut
+  assert.ok(fv.items.some((x) => x.friends[0].star));
+  assert.equal((await post("/app/api/friendview", { initData: me, id: 444 })).status, 403);
+  assert.equal((await post("/app/api/friendview", { initData: lyna, id: 555 })).status, 403);   // Lyna et Joss : retirés
+});
+
 console.log(`\n${ok} étapes OK`);
 dev.kill(); tgServer.close(); rmSync(STATE, { recursive: true, force: true }); rmSync(`${STATE}-seed.sql`, { force: true });

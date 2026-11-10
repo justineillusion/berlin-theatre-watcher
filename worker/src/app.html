@@ -69,6 +69,10 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .subtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 8px}
 .subtabs .chip{text-align:center;position:relative}
 .subtabs .chip i{font-style:normal;background:var(--velvet);color:#fff;border-radius:9px;padding:0 6px;margin-left:6px;font-size:11px}
+.fname{border:0;background:none;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.fname b{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.fhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:6px 0 4px}
+.fhead h2{font:800 22px var(--sans);letter-spacing:-.02em;margin:0}
 .invlink{display:block;font:500 13.5px var(--sans);background:var(--card);padding:10px 12px;margin:8px 0;word-break:break-all;user-select:all}
 .areas{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
 .areas .chip{border-width:1px;font-weight:600;font-size:11.5px;padding:5px 8px;color:var(--muted);border-color:var(--line)}
@@ -185,7 +189,7 @@ const L = {
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"📍 Partout",
         loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Ajoute-la d'abord dans Réglages → Compte, depuis l'app dans Telegram.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
-        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien dans Telegram et appuie sur « Démarrer » : vous êtes connectés.",
+        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien dans Telegram et appuie sur « Démarrer » : vous êtes connectés.",
         nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour ouvrir l'app hors de Telegram (navigateur, écran d'accueil) : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
@@ -203,7 +207,7 @@ const L = {
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"📍 Anywhere",
         loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Add it first in Settings → Account, from the app inside Telegram.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
-        setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", shareShort:"Share ↗", inviteHow:"Your friend opens the link in Telegram and taps “Start”: you're connected.",
+        setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link in Telegram and taps “Start”: you're connected.",
         nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To open the app outside Telegram (browser, home screen): we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
@@ -331,6 +335,8 @@ function signedIn(token) { setToken(token); login.step = "email"; login.err = ""
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Enter") return;
   if (e.target.id === "setname") return void saveName(e.target.value);
+  if (e.target.id === "addhandle") return void addByHandle(e.target.value);
+  if (e.target.id === "sethandle") return void saveHandle(e.target.value);
   if (e.target.id === "lemail") loginEmail(); else if (e.target.id === "lcode") loginCode();
 });
 document.addEventListener("input", (e) => { if (e.target.id === "lcode" && e.target.value.replace(/\D/g, "").length === 6) loginCode(); });
@@ -380,6 +386,7 @@ async function act(op, id, arg, extra = {}) {
   }
   try { tgApp?.HapticFeedback?.selectionChanged(); S = await api(extra.path || "act", { op, id, arg, ...extra.body }); if (S.sent) st.sent = { id, names: S.sent }; T = L[S.lang] || L.fr; document.documentElement.lang = S.lang; }
   catch { notify(T.error); }
+  if (st.tab === "set" && st.friend?.items) { try { st.friend = await api("friendview", { id: st.friend.id }); } catch {} }
   st.busy = false; st.picking = null; st.sharing = null; st.sel.clear(); st.withs.clear(); render();
   // ✍️ : la critique s'écrit dans le chat, en réponse à l'invitation que le bot vient d'envoyer.
   if (op === "w" && tgApp) tgApp.showAlert(T.reviewInChat, () => tgApp.close());
@@ -496,6 +503,11 @@ function accountSection() {
        <div class="acts"><button class="act on" data-savename="1">${esc(T.save)}</button><button class="act" data-editname="">${esc(T.cancel)}</button></div>`
     : `<div class="fline"><div><b>${esc(T.nameT)}</b><span>${esc(S.name || "")} · ${esc(T.nameHint)}</span></div>
        <button class="act" data-editname="1">${esc(T.editName)}</button></div>`;
+  h += st.editHandle
+    ? `<input id="sethandle" class="note" autocapitalize="none" autocomplete="off" spellcheck="false" maxlength="21" value="@${esc(S.handle || "")}">
+       <div class="acts"><button class="act on" data-savehandle="1">${esc(T.save)}</button><button class="act" data-edithandle="">${esc(T.cancel)}</button></div>`
+    : `<div class="fline"><div><b>${esc(T.handleT)}</b><span>@${esc(S.handle || "")} · ${esc(T.handleHint)}</span></div>
+       <button class="act" data-edithandle="1">${esc(T.editName)}</button></div>`;
   h += `<p class="hint">${esc(T.emailHint)}</p>`;
   if (st.editEmail) {
     h += `<input id="setemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(e || "")}">
@@ -507,15 +519,41 @@ function accountSection() {
   }
   return h;
 }
+/** Page d'un ami : ses places à venir, ses envies, ce qu'il a vu (avec sa note). Fiches ouvrables. */
+function friendPage() {
+  const f = st.friend;
+  let h = `<div class="fhead"><h2>${esc(f.name)}</h2><button class="act" data-friendback="1">${esc(T.backFriends)}</button></div>`;
+  if (!f.items) return h + `<div class="msg">…</div>`;
+  const theirs = (x) => x.friends[0] || {};
+  const upcoming = (x) => x.kind === "expo" ? !x.end || x.end >= TODAY : (x.dates || []).some((d) => d.slice(0, 10) >= TODAY);
+  const booked = f.items.filter((x) => theirs(x).booked && theirs(x).booked.slice(0, 10) >= TODAY && !theirs(x).seen)
+    .sort((a, b) => theirs(a).booked.localeCompare(theirs(b).booked)).map((x) => ({ ...x, _at: theirs(x).booked }));
+  const ids = new Set(booked.map((x) => x.id));
+  const wish = f.items.filter((x) => theirs(x).star && !ids.has(x.id) && upcoming(x))
+    .sort((a, b) => (next(a) || "9").localeCompare(next(b) || "9"));
+  const seen = f.items.filter((x) => theirs(x).seen).slice(0, 30);
+  const sect = (label, xs) => xs.length ? dayHead(`${label} · ${xs.length}`) + xs.map(item).join("") : "";
+  const body = sect(T.fvBooked, booked) + sect(T.fvWish, wish) + sect(T.fvSeen, seen);
+  return h + (body || `<p class="hint">${esc(T.fvEmpty(f.name))}</p>`);
+}
+async function openFriend(id) {
+  const p = (S.circle?.friends || []).find((x) => x.id === id);
+  st.friend = { id, name: p ? p.name : "", items: null }; st.open = null; render(); window.scrollTo?.(0, 0);
+  try { st.friend = await api("friendview", { id }); } catch { st.friend = null; notify(T.error); }
+  render();
+}
 /** Réglages → Mes amis : demandes reçues, amis, suggestions (amis de mes amis), lien d'invitation. */
 function friendsSection() {
   const c = S.circle || { friends: [], incoming: [], outgoing: [], suggestions: [] };
   const line = (name, sub, btns) => `<div class="fline"><div><b>${esc(name)}</b>${sub ? `<span>${esc(sub)}</span>` : ""}</div><div class="who">${btns}</div></div>`;
   const btn = (op, id, label, on = false) => `<button class="act ${on ? "on" : ""}" data-friend="${op}" data-id="${id}">${esc(label)}</button>`;
-  let h = "";
+  let h = dayHead(T.addFriendT) + `<div class="acts" style="flex-wrap:nowrap"><input id="addhandle" class="note" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="${esc(T.handlePh)}">
+    <button class="act on" data-addhandle="1">${esc(T.addBtn)}</button></div>
+    <p class="hint">${esc(T.addHow)} ${S.handle ? esc(T.myHandle(S.handle)) : ""}</p>`;
   if (c.incoming.length) h += dayHead(T.requestsT) + c.incoming.map((p) => line(p.name, "", btn("accept", p.id, T.accept, true) + btn("ignore", p.id, T.ignoreR))).join("");
-  h += dayHead(T.friendsT) + (c.friends.length ? c.friends.map((p) => line(p.name, "",
-      st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true) : `<button class="act" data-askremove="${p.id}">${esc(T.removeF)}</button>`)).join("")
+  h += dayHead(T.friendsT) + (c.friends.length ? c.friends.map((p) =>
+      `<div class="fline"><button class="fname" data-friendview="${p.id}"><b>${esc(p.name)}</b><span>${esc(T.seeWhat)} ›</span></button><div class="who">${
+        st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true) : `<button class="act" data-askremove="${p.id}">${esc(T.removeF)}</button>`}</div></div>`).join("")
     : `<p class="hint">${esc(T.noFriends)}</p>`);
   const sugg = [...c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))),
                 ...c.suggestions.map((p) => line(p.name, `${T.via} ${p.via.join(", ")}`, btn("add", p.id, T.add, true)))];
@@ -591,7 +629,7 @@ function render() {
     const sub = ["venues", "friends", "account"].map((k) =>
       `<button class="chip" data-settab="${k}" aria-pressed="${st.setTab === k}">${esc(T.setTabs[k])}${k === "friends" && pending ? `<i>${pending}</i>` : ""}</button>`).join("");
     list.innerHTML = `<div class="set"><div class="subtabs">${sub}</div>${
-      st.setTab === "friends" ? friendsSection() : st.setTab === "account" ? accountTab : venuesTab}</div>`;
+      st.setTab === "friends" ? (st.friend ? friendPage() : friendsSection()) : st.setTab === "account" ? accountTab : venuesTab}</div>`;
     return;
   }
   // Types suivis seulement : ne plus suivre aucun cinéma retire « Ciné » du menu.
@@ -655,7 +693,7 @@ document.addEventListener("click", (e) => {
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
   if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
-  if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") st.setTab = null; window.scrollTo?.(0, 0); }
+  if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") { st.setTab = null; st.friend = null; } window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
   else if (t.dataset.area !== undefined) st.setArea = t.dataset.area;
   else if (t.dataset.sk) return void act("sk", t.dataset.sk, t.dataset.arg, { body: { area: st.setArea } });
@@ -675,11 +713,16 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.friend) { st.confirmRemove = null; return void friendAct(t.dataset.friend, +t.dataset.id); }
   else if (t.dataset.invite) { return void shareInvite(); }
   else if (t.dataset.copyinvite) { navigator.clipboard?.writeText(S.invite || "").then(() => notify(T.copied), () => {}); return; }
-  else if (t.dataset.settab) { st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
+  else if (t.dataset.friendview) { return void openFriend(+t.dataset.friendview); }
+  else if (t.dataset.friendback) { st.friend = null; st.open = null; }
+  else if (t.dataset.settab) { st.friend = null; st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
   else if (t.dataset.login) { return void showLogin(); }
   else if (t.dataset.loginemail) { return void loginEmail(); }
   else if (t.dataset.logincode) { return void loginCode(); }
   else if (t.dataset.loginback) { login.step = "email"; login.err = ""; return void showLogin(); }
+  else if (t.dataset.addhandle) { return void addByHandle($("addhandle")?.value || ""); }
+  else if (t.dataset.edithandle !== undefined) { st.editHandle = !!t.dataset.edithandle; render(); if (st.editHandle) setTimeout(() => $("sethandle")?.focus(), 0); return; }
+  else if (t.dataset.savehandle) { return void saveHandle($("sethandle")?.value || ""); }
   else if (t.dataset.editname !== undefined) { st.editName = !!t.dataset.editname; render(); if (st.editName) setTimeout(() => $("setname")?.select(), 0); return; }
   else if (t.dataset.savename) { return void saveName($("setname")?.value || ""); }
   else if (t.dataset.editemail !== undefined) { st.editEmail = !!t.dataset.editemail; render(); if (st.editEmail) setTimeout(() => $("setemail")?.focus(), 0); return; }
@@ -691,6 +734,20 @@ document.addEventListener("click", (e) => {
   else return;
   render();
 });
+async function addByHandle(handle) {
+  if (st.busy || !handle.trim()) return; st.busy = true;
+  try {
+    S = await api("friend", { op: "addhandle", handle });
+    notify({ sent: T.reqSentTo, already: T.alreadyF, connected: T.nowF }[S.result] || T.reqSentTo);
+  } catch (e) { notify(e.info?.error === "no_handle" ? T.noHandle : T.error); }
+  st.busy = false; render();
+}
+async function saveHandle(handle) {
+  if (st.busy) return; st.busy = true;
+  try { S = await api("handle", { handle }); st.editHandle = false; }
+  catch (e) { notify(e.info?.error === "handle_taken" ? T.handleTaken : e.info?.error === "bad_handle" ? T.badHandle : T.error); }
+  st.busy = false; render();
+}
 async function saveName(name) {
   if (st.busy || !name.trim()) return; st.busy = true;
   try { S = await api("name", { name }); st.editName = false; } catch { notify(T.error); }

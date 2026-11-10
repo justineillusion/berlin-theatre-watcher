@@ -15,8 +15,10 @@ CREATE TABLE IF NOT EXISTS users (
   joined_at    TEXT NOT NULL DEFAULT (datetime('now')),
   bot_seen_at TEXT,                          -- dernier message / clic dans le bot
   app_seen_at TEXT,                          -- dernière ouverture de la mini-app
-  email       TEXT                           -- connexion de l'app web (migrations/010)
+  email       TEXT,                          -- connexion de l'app web (migrations/010)
+  handle      TEXT                           -- pseudo, pour s'ajouter entre amis (migrations/011)
 );
+CREATE UNIQUE INDEX IF NOT EXISTS users_handle ON users (handle) WHERE handle IS NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS users_email ON users (email) WHERE email IS NOT NULL;
 
 -- Lieux : théâtres + expos (config.yaml, scan) et cinémas (cinema.yaml, job ciné).

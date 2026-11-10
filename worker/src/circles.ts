@@ -100,10 +100,15 @@ export async function circleState(env: Env, me: number) {
 }
 
 /** « Ajouter » : seulement un ami d'ami ; si l'autre m'avait déjà demandé, c'est accepté. */
-export async function requestFriend(env: Env, me: number, other: number): Promise<"sent" | "connected" | "not_allowed"> {
+/** Demande d'ami. `byHandle` : par pseudo (n'importe qui du bot, qui devra accepter) ;
+ *  sinon seulement un ami d'ami (suggestions). */
+export async function requestFriend(env: Env, me: number, other: number, byHandle = false): Promise<"sent" | "connected" | "already" | "not_allowed"> {
+  if (other === me) return "not_allowed";
   const st = await circleState(env, me);
+  if (st.friends.some((x) => x.id === other)) return "already";
+  if (st.outgoing.some((x) => x.id === other)) return "sent";
   if (st.incoming.some((x) => x.id === other)) { await acceptFriend(env, me, other); return "connected"; }
-  if (!st.suggestions.some((x) => x.id === other)) return "not_allowed";
+  if (!byHandle && !st.suggestions.some((x) => x.id === other)) return "not_allowed";
   const [a, b] = pair(me, other);
   await env.DB.prepare("INSERT OR IGNORE INTO connections (a, b, status, requested_by) VALUES (?, ?, 'pending', ?)").bind(a, b, me).run();
   const [u1, u2] = [await user(env, me), await user(env, other)];

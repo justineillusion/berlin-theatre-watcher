@@ -210,6 +210,28 @@ async function emailLogin(env: Env, path: string, body: any): Promise<Response |
 
 const KINDS = new Set(["theatre", "expo", "cinema"]);
 
+// --- Pseudo (« @justine ») -----------------------------------------------------
+const HANDLE_RE = /^[a-z0-9][a-z0-9_.]{2,19}$/;
+const normHandle = (s: unknown) => String(s ?? "").trim().replace(/^@/, "").toLowerCase();
+/** Mon pseudo ; s'il n'y en a pas encore : pseudo Telegram, sinon prénom (+ chiffres si pris). */
+async function ensureHandle(env: Env, chat: number): Promise<string> {
+  const u = await env.DB.prepare("SELECT handle, username, first_name FROM users WHERE chat_id = ?").bind(chat)
+    .first<{ handle: string | null; username: string | null; first_name: string }>();
+  if (!u) return "";
+  if (u.handle) return u.handle;
+  const flat = (x: string) => x.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9_.]+/g, "").replace(/^[_.]+/, "").slice(0, 16);
+  let base = flat(u.username || "") || flat(u.first_name || "");
+  if (base.length < 3) base = (base + "ami").slice(0, 16);
+  for (let i = 0; i < 20; i++) {
+    const h = i ? `${base}${Math.floor(10 + Math.random() * 990)}` : base;
+    try {
+      const r = await env.DB.prepare("UPDATE users SET handle = ? WHERE chat_id = ? AND handle IS NULL").bind(h, chat).run();
+      if (r.meta.changes) return h;
+    } catch { /* pris : on essaie avec des chiffres */ }
+  }
+  return "";
+}
+
 export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(req.url);
   if (req.method === "GET" && (url.pathname === "/app" || url.pathname === "/app/")) {
@@ -280,6 +302,17 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     const lang = op === "l" ? asLang(id) : asLang(me.lang);
     return Response.json(await state(env, me.chat_id, lang, focus));
   }
+  if (url.pathname === "/app/api/friendview") {
+    const fv = await friendView(env, me.chat_id, Number(body.id), asLang(me.lang));
+    return fv ? Response.json(fv) : Response.json({ error: "not_friend" }, { status: 403 });
+  }
+  if (url.pathname === "/app/api/handle") {
+    const h = normHandle(body.handle);
+    if (!HANDLE_RE.test(h)) return Response.json({ error: "bad_handle" }, { status: 400 });
+    try { await env.DB.prepare("UPDATE users SET handle = ? WHERE chat_id = ?").bind(h, me.chat_id).run(); }
+    catch { return Response.json({ error: "handle_taken" }, { status: 409 }); }
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  }
   if (url.pathname === "/app/api/name") {
     // Mon prénom tel que les amis le voient (⭐, 💌, groupe).
     const name = String(body.name ?? "").replace(/[\u0000-\u001f<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 40);
@@ -304,7 +337,15 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   if (url.pathname === "/app/api/friend") {
-    // 👋 Mes amis : add (ami d'ami) | accept | ignore | remove (sans prévenir).
+    // 👋 Mes amis : add (ami d'ami) | addhandle (par pseudo, à accepter) | accept | ignore | remove (sans prévenir).
+    if (body.op === "addhandle") {
+      const h = normHandle(body.handle);
+      const u = h ? await env.DB.prepare("SELECT chat_id FROM users WHERE handle = ? AND active = 1").bind(h).first<{ chat_id: number }>() : null;
+      if (!u) return Response.json({ error: "no_handle" }, { status: 404 });
+      const result = await requestFriend(env, me.chat_id, u.chat_id, true);
+      await loadCircles(env);
+      return Response.json({ result, ...(await state(env, me.chat_id, asLang(me.lang), focus)) });
+    }
     const op = String(body.op ?? ""), other = Number(body.id);
     if (!Number.isFinite(other) || other === me.chat_id) return Response.json({ error: "bad_request" }, { status: 400 });
     let result: string = "ok";
@@ -373,27 +414,56 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
       .map((x) => ({ venue: String(names.get(x.venue_id)), day: x.day, at: x.hour_known && x.at ? String(x.at).slice(11, 16) : null, month: x.month }))
       .sort((a, b) => a.day.localeCompare(b.day));
   } catch { /* calendrier illisible : on n'affiche rien */ }
+  const handle = await ensureHandle(env, chat);
   const meRow = await env.DB.prepare("SELECT email, first_name FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null; first_name: string }>();
   const myEmail = meRow?.email ?? null;
   return {
     lang,
     email: myEmail,
     name: meRow?.first_name ?? "",
+    handle,
     sales,
     venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null, logo: LOGOS[v.id] ? `/app/logo/${v.id}.png` : null })),
     people,
     circle,
     invite: (invite.match(/https:\/\/\S+/) || [""])[0],   // le lien seul (le message autour est pour le chat)
-    items: items.map((i) => {
-      const r = mine.get(i.id);
-      return {
-        id: i.id, kind: i.kind, title: i.title, url: i.url, venue: i.venue, venue_id: i.venue_id,
-        dates: JSON.parse(i.dates || "[]"), sold: JSON.parse((i as any).sold || "[]"), start: i.start_date, end: i.end_date, starred: i.starred,
-        text: itemText(i, lang),
-        me: r ? { star: r.interested, status: r.status, rating: r.rating, comment: r.comment, booked: r.booked_at, at: r.updated_at } : null,
-        friends: friends.get(i.id) ?? [],
-      };
-    }),
+    items: items.map((i) => shapeItem(i, mine.get(i.id), friends.get(i.id) ?? [], lang)),
+  };
+}
+
+/** Une fiche telle que la page l'affiche (programme, Mes sorties, page d'un ami). */
+function shapeItem(i: any, r: any, friends: any[], lang: Lang) {
+  return {
+    id: i.id, kind: i.kind, title: i.title, url: i.url, venue: i.venue, venue_id: i.venue_id,
+    dates: JSON.parse(i.dates || "[]"), sold: JSON.parse(i.sold || "[]"), start: i.start_date, end: i.end_date, starred: i.starred,
+    text: itemText(i, lang),
+    me: r ? { star: r.interested, status: r.status, rating: r.rating, comment: r.comment, booked: r.booked_at, at: r.updated_at } : null,
+    friends,
+  };
+}
+
+/** Page d'un ami (connexion seulement) : ses ⭐, ses places 🎟 à venir et ce qu'il a vu, avec mes réactions. */
+async function friendView(env: Env, me: number, other: number, lang: Lang) {
+  if (other === me || !inCircle(me, other)) return null;
+  const u = await env.DB.prepare("SELECT first_name FROM users WHERE chat_id = ? AND active = 1").bind(other).first<{ first_name: string }>();
+  if (!u) return null;
+  const { results } = await env.DB.prepare(
+    `SELECT i.*, v.name AS venue, r.interested, r.status, r.rating, r.comment, r.booked_at, r.updated_at
+     FROM reactions r JOIN items i ON i.id = r.item_id JOIN venues v ON v.id = i.venue_id
+     WHERE r.chat_id = ? AND (r.interested = 1 OR r.status = 'seen' OR r.booked_at IS NOT NULL)
+       AND (r.status IS NULL OR r.status != 'ignored')
+     ORDER BY r.updated_at DESC LIMIT 200`,
+  ).bind(other).all<any>();
+  const ids = JSON.stringify(results.map((x) => x.id));
+  const { results: minesRows } = await env.DB.prepare(
+    "SELECT * FROM reactions WHERE chat_id = ? AND item_id IN (SELECT value FROM json_each(?))").bind(me, ids).all<any>();
+  const mine = new Map(minesRows.map((r) => [r.item_id, r]));
+  return {
+    id: other, name: u.first_name,
+    items: results.map((x) => shapeItem(x, mine.get(x.id), [{
+      id: other, name: u.first_name, star: x.interested && x.status !== "seen" ? 1 : 0, booked: x.booked_at,
+      seen: x.status === "seen" ? 1 : 0, rating: x.rating, comment: x.comment, at: x.updated_at,
+    }], lang)),
   };
 }
 
