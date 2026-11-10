@@ -219,6 +219,7 @@ async function emailLogin(env: Env, path: string, body: any): Promise<Response |
     const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang));
     return sent instanceof Response ? sent : Response.json({ id: sent });
   }
+  if (path === "/app/api/teaser") return Response.json(await teaser(env));
   if (path === "/app/api/invite/info") {
     // Page d'accueil d'un lien d'invitation : qui invite (prénom, photo), sans rien révéler d'autre.
     const inviter = await inviterOf(env, body.invite);
@@ -493,6 +494,27 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     return Response.json({ sent, ...(await state(env, me.chat_id, asLang(me.lang), focus)) });
   }
   return new Response("not found", { status: 404 });
+}
+
+/** Page d'accueil (non connecté·e) : quelques séances des 7 prochains jours, données publiques du programme. */
+async function teaser(env: Env) {
+  const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
+  const { results } = await env.DB.prepare(
+    `SELECT i.kind, i.title, i.dates, i.sold, i.starred, v.name AS venue FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+     WHERE i.kind != 'expo' AND (i.kind = 'film' OR i.last_seen >= ?) LIMIT 400`,
+  ).bind(since).all<any>();
+  const now = new Date(Date.now() + 3600e3).toISOString().slice(0, 16).replace("T", " ");   // ≈ heure de Berlin
+  const week = new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10);
+  const rows = results.map((i) => {
+    const sold = new Set(JSON.parse(i.sold || "[]"));
+    const at = (JSON.parse(i.dates || "[]") as string[]).filter((d) => d >= now && d.slice(0, 10) <= week && !sold.has(d)).sort()[0];
+    return at ? { kind: i.kind === "film" ? "cinema" : i.kind, title: i.title, venue: i.venue, at, starred: i.starred } : null;
+  }).filter(Boolean) as any[];
+  // Un mélange : théâtre d'abord (le cœur), puis ciné ; les ⭐ du moment en tête ; un titre par lieu.
+  rows.sort((a, b) => (b.starred - a.starred) || (a.kind === "theatre" ? -1 : 0) - (b.kind === "theatre" ? -1 : 0) || a.at.localeCompare(b.at));
+  const seen = new Set<string>(), out: any[] = [];
+  for (const r of rows) { if (seen.has(r.venue)) continue; seen.add(r.venue); out.push(r); if (out.length === 5) break; }
+  return { items: out.sort((a, b) => a.at.localeCompare(b.at)).map(({ starred, ...r }) => r) };
 }
 
 /** Tout ce qu'affiche la page, en une fois (quelques centaines de lignes au plus). */
