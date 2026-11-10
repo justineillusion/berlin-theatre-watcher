@@ -405,6 +405,19 @@ await step("inscription sans lien : compte seul, sans ami", async () => {
   const st = (await bearer("/app/api/state", tok)).json;
   assert.equal(st.circle.friends.length, 0); assert.ok(st.handle.startsWith("solo"));
 });
+await step("🔔 notifications : 💌 envoyé → dans l'inbox de l'ami (même sans Telegram), lu ; retours enregistrés", async () => {
+  let r = await post("/app/api/share", { initData: me, id: "p1", to: [555], note: "On y va ?" });
+  assert.deepEqual(r.json.sent, ["Joss"]);
+  let js = (await post("/app/api/state", { initData: joss })).json;
+  const n = js.inbox.find((x) => x.kind === "share" && x.item_id === "p1");
+  assert.ok(n && n.from_name === "Justine" && n.note === "On y va ?" && !n.read_at);
+  js = (await post("/app/api/inbox/read", { initData: joss })).json;
+  assert.ok(js.inbox.every((x) => x.read_at));
+  calls = [];
+  assert.equal((await post("/app/api/feedback", { initData: joss, kind: "venue", text: "Radialsystem please" })).status, 200);
+  assert.ok(calls.some((c) => c.method === "sendMessage" && /Radialsystem/.test(c.text)));
+  assert.equal((await post("/app/api/feedback", { initData: joss, kind: "feedback", text: " " })).status, 400);
+});
 await step("photo : envoyée, vue par mes connexions à la place du prénom ; retirée", async () => {
   const pic = "data:image/jpeg;base64," + "A".repeat(400);
   assert.equal((await post("/app/api/photo", { initData: me, photo: "javascript:alert(1)" })).status, 400);

@@ -5,7 +5,7 @@
 // - « Mes amis » (mini-app) suggère les amis de mes amis ; « Ajouter » envoie une
 //   demande en privé (✓ Accepter / ✖ Ignorer). Rien n'est visible avant le oui.
 // - Retirer quelqu'un : la personne n'est pas prévenue.
-import { Env, esc, send, tg } from "./lib";
+import { Env, esc, inbox, send, tg } from "./lib";
 import { Lang, asLang } from "./i18n";
 
 const pair = (x: number, y: number) => (x < y ? [x, y] : [y, x]);
@@ -113,6 +113,7 @@ export async function requestFriend(env: Env, me: number, other: number, byHandl
   if (!byHandle && !st.suggestions.some((x) => x.id === other)) return "not_allowed";
   const [a, b] = pair(me, other);
   await env.DB.prepare("INSERT OR IGNORE INTO connections (a, b, status, requested_by) VALUES (?, ?, 'pending', ?)").bind(a, b, me).run();
+  await inbox(env, other, "friend_request", me);
   const [u1, u2] = [await user(env, me), await user(env, other)];
   if (u1 && u2) {
     const T = t(u2.lang);
@@ -129,6 +130,8 @@ export async function acceptFriend(env: Env, me: number, from: number): Promise<
     "UPDATE connections SET status = 'ok' WHERE a = ? AND b = ? AND status = 'pending' AND requested_by = ?").bind(a, b, from).run();
   if (!res.meta.changes) return false;
   const [u1, u2] = [await user(env, me), await user(env, from)];
+  await inbox(env, from, "friend_ok", me);
+  await env.DB.prepare("UPDATE notifications SET read_at = datetime('now') WHERE chat_id = ? AND kind = 'friend_request' AND from_id = ?").bind(me, from).run();
   if (u1 && u2) await send(env, from, t(u2.lang).acceptedThem(esc(u1.first_name)));
   return true;
 }
@@ -137,6 +140,7 @@ export async function ignoreFriend(env: Env, me: number, from: number): Promise<
   const [a, b] = pair(me, from);
   const res = await env.DB.prepare(
     "DELETE FROM connections WHERE a = ? AND b = ? AND status = 'pending' AND requested_by = ?").bind(a, b, from).run();
+  await env.DB.prepare("UPDATE notifications SET read_at = datetime('now') WHERE chat_id = ? AND kind = 'friend_request' AND from_id = ?").bind(me, from).run();
   return !!res.meta.changes;
 }
 

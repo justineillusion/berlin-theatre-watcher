@@ -19,7 +19,7 @@
 // Les actions passent par le même code que les boutons du chat (handleUpdate) :
 // annonces au groupe, fiches mises à jour, tout reste cohérent.
 import { handleUpdate, saveReviewFromApp } from "./bot";
-import { Env, Item, WEB_ID_BASE, esc, getItem, setting, getReaction, inCircle, loadCircles, itemText, keyboard, send, whenLabel } from "./lib";
+import { Env, Item, WEB_ID_BASE, esc, getItem, inbox, setting, getReaction, inCircle, loadCircles, itemText, keyboard, send, whenLabel } from "./lib";
 import { acceptFriend, codeOwner, connect, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
 import { Lang, asLang, tr } from "./i18n";
 import PAGE from "./app.html";
@@ -434,6 +434,22 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     await env.DB.prepare("UPDATE users SET first_name = ? WHERE chat_id = ?").bind(name, me.chat_id).run();
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
+  if (url.pathname === "/app/api/inbox/read") {
+    await env.DB.prepare("UPDATE notifications SET read_at = datetime('now') WHERE chat_id = ? AND read_at IS NULL").bind(me.chat_id).run();
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  }
+  if (url.pathname === "/app/api/feedback") {
+    // « Proposer un lieu » / « Un retour » : enregistré, et la propriétaire est prévenue.
+    const kind = body.kind === "venue" ? "venue" : "feedback";
+    const text = String(body.text ?? "").replace(/[\u0000-\u0008\u000b-\u001f]/g, "").trim().slice(0, 1500);
+    if (text.length < 2) return Response.json({ error: "empty" }, { status: 400 });
+    await env.DB.prepare("INSERT INTO feedback (chat_id, kind, text) VALUES (?, ?, ?)").bind(me.chat_id, kind, text).run();
+    if (env.OWNER_CHAT_ID) {
+      const who = await env.DB.prepare("SELECT first_name, handle FROM users WHERE chat_id = ?").bind(me.chat_id).first<{ first_name: string; handle: string | null }>();
+      await send(env, env.OWNER_CHAT_ID, `${kind === "venue" ? "🏛 Lieu proposé" : "💬 Retour"} · <b>${esc(who?.first_name ?? "?")}</b>${who?.handle ? ` @${esc(who.handle)}` : ""}\n${esc(text)}`);
+    }
+    return Response.json({ ok: true });
+  }
   if (url.pathname === "/app/api/photo") {
     // Ma photo (data URL JPEG/PNG/WebP déjà réduite par la page ; null = retirer). Vue par mes connexions.
     const photo = body.photo == null || body.photo === "" ? null : String(body.photo);
@@ -532,6 +548,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
             AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now')))
         OR i.id IN (SELECT item_id FROM reactions WHERE chat_id = ?1 AND (interested = 1 OR status = 'seen'))
         OR i.id = ?3   -- fiche ouverte depuis une annonce du groupe (même hors de mes lieux)
+        OR i.id IN (SELECT item_id FROM notifications WHERE chat_id = ?1 AND item_id IS NOT NULL AND created_at > datetime('now', '-30 days'))
      LIMIT 600`,
   ).bind(chat, since, focus).all<Item & { venue: string }>();
   const ids = JSON.stringify(items.map((i) => i.id));
@@ -572,8 +589,13 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     "SELECT chat_id, photo FROM users WHERE photo IS NOT NULL AND active = 1 AND chat_id IN (SELECT value FROM json_each(?))",
   ).bind(JSON.stringify([chat, ...circle.friends.map((f: any) => f.id)])).all<{ chat_id: number; photo: string }>();
   const myEmail = meRow?.email ?? null;
+  const { results: notes } = await env.DB.prepare(
+    `SELECT n.id, n.kind, n.from_id, u.first_name AS from_name, n.item_id, i.title, n.note, n.at, n.created_at, n.read_at
+     FROM notifications n LEFT JOIN users u ON u.chat_id = n.from_id LEFT JOIN items i ON i.id = n.item_id
+     WHERE n.chat_id = ? ORDER BY n.id DESC LIMIT 40`).bind(chat).all<any>();
   return {
     lang,
+    inbox: notes,
     email: myEmail,
     name: meRow?.first_name ?? "",
     handle,
@@ -651,8 +673,9 @@ async function share(env: Env, me: Me, id: string, to: number[], note = ""): Pro
     const lang: Lang = asLang(u.lang);
     const r = await getReaction(env, u.chat_id, id);
     const head = MSG[lang].share(esc(me.first_name)) + (note ? `\n💬 « ${esc(note)} »` : "");
-    const res = await send(env, u.chat_id, `${head}\n\n${itemText(item, lang) ?? esc(item.title)}`, keyboard(item, r, lang));
-    if (res?.ok) out.push(u.first_name);
+    await inbox(env, u.chat_id, "share", me.chat_id, id, note || null);
+    await send(env, u.chat_id, `${head}\n\n${itemText(item, lang) ?? esc(item.title)}`, keyboard(item, r, lang));
+    out.push(u.first_name);   // 🔔 dans l'app dans tous les cas (Telegram en plus si la personne l'a)
   }
   return out;
 }
@@ -671,6 +694,7 @@ async function bookFor(env: Env, me: Me, id: string, when: string, ids: number[]
     ).bind(u.chat_id, id, iso, now).run();
     const lang: Lang = asLang(u.lang);
     const r = await getReaction(env, u.chat_id, id);
+    await inbox(env, u.chat_id, "booked", me.chat_id, id, null, iso);
     await send(env, u.chat_id, MSG[lang].booked(esc(me.first_name), esc(item.title), whenLabel(iso, lang)), keyboard(item, r, lang));
   }
 }
