@@ -66,8 +66,10 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);text-transform:uppercase;letter-spacing:.04em}.detail s{color:var(--muted)}
 #whens .soldtoggle{margin-left:auto}
 /* Réglages → Mes lieux : quartiers (un à la fois), filtrent la liste des lieux. */
-.subtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 8px}
-.subtabs .chip{text-align:center;position:relative}
+/* Sous-onglets des Réglages : du texte, pas des cases ; l'actif souligné de rouge. */
+.subtabs{display:grid;grid-template-columns:repeat(3,1fr);margin:2px -18px 10px;border-bottom:1px solid var(--line)}
+.subtabs .chip{border:0;background:none;text-align:center;padding:12px 4px 10px;font:700 12.5px var(--sans);letter-spacing:.08em;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
+.subtabs .chip[aria-pressed="true"]{background:none;color:var(--ink);border-bottom-color:var(--velvet)}
 .subtabs .chip i{font-style:normal;background:var(--velvet);color:#fff;border-radius:9px;padding:0 6px;margin-left:6px;font-size:11px}
 .fname{border:0;background:none;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
 .fname b{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
