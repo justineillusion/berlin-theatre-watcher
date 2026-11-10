@@ -151,6 +151,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .au{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;padding:10px 16px;border-bottom:1px solid var(--line);font-size:14px}
 .au span,.au small{color:var(--muted)}.au em{color:var(--velvet);font-style:normal;font-size:12px}.au.off{opacity:.55}
 .aun{display:flex;flex-direction:column;text-align:right}
+.sugg{margin-top:26px}.sugg summary{cursor:pointer;color:var(--muted);font-size:13.5px;padding:8px 0;list-style:none}.sugg summary::-webkit-details-marker{display:none}.sugg summary::after{content:" ›"}
 .note-row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer}
 .note-row.unread{box-shadow:inset 3px 0 0 var(--velvet)}
 .note-row small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
@@ -796,12 +797,13 @@ function friendsSection() {
       `<div class="fline"><button class="fname" data-friendview="${p.id}">${avatar(S.photos && S.photos[p.id], p.handle || p.name, "avmid", p.id)}<div><b>${esc(p.name)}</b><span>${esc(T.seeWhat)} ›</span></div></button><div class="who">${
         st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true) : `<button class="act" data-askremove="${p.id}">${esc(T.removeF)}</button>`}</div></div>`).join("")
     : `<p class="hint">${esc(T.noFriends)}</p>`);
-  const sugg = [...c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))),
-                ...c.suggestions.map((p) => line(p.name, `${T.via} ${p.via.join(", ")}`, btn("add", p.id, T.add, true)))];
-  if (sugg.length) h += dayHead(T.suggestT) + sugg.join("");
+  h += c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))).join("");
   h += dayHead(T.inviteT) + `<p class="hint">${esc(T.inviteHow)}</p><code class="invlink">${esc(S.invite || "")}</code>
     <div class="acts"><button class="act on" data-invite="1">${esc(T.shareShort)}</button><button class="act" data-copyinvite="1">${esc(T.copyLink)}</button></div>
     <p class="hint">${esc(T.inviteHint)}</p>`;
+  // Amis d'amis : discret, replié tout en bas.
+  if (c.suggestions.length) h += `<details class="sugg"><summary>${esc(T.suggestT)} · ${c.suggestions.length}</summary>${
+    c.suggestions.map((p) => line(p.name, `${T.via} ${p.via.join(", ")}`, btn("add", p.id, T.add))).join("")}</details>`;
   return h;
 }
 function exposByVenue(expos) {
