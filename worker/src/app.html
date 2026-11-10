@@ -123,11 +123,9 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .stack .face:first-child{margin-left:0}
 .stack .av.none{width:22px;height:22px;font-size:10.5px}
 .fnames{color:var(--muted);font-size:13px;vertical-align:middle}
-.ostar.ok{background:#fff;box-shadow:inset 0 0 0 1px var(--ok)}
 .rv{color:#a37700;font-weight:800}
-.ostar.tk{background:#fff;box-shadow:inset 0 0 0 1px var(--velvet)}
 .av.none{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font:800 10px var(--sans);vertical-align:-5px}
-.ostar{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:11px;background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold);vertical-align:-5px;margin-right:4px}
+.ostar{font-size:14px;line-height:1}
 .badge.disc{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:15px;line-height:1;padding:0;margin-top:2px;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line)}
 .badge.disc.booked{background:#fff;box-shadow:inset 0 0 0 1.5px var(--velvet)}
 .badge.disc.seen{background:#fff;box-shadow:inset 0 0 0 1.5px var(--ok)}
@@ -803,7 +801,23 @@ function whyNote() {
   if (st.kind !== "film" && sales.length) lines.push(`🎟 ${esc(T.whySales)} ${sales.join(" · ")}`);
   return lines.length ? `<div class="why">${lines.map((l) => `<p>${l}</p>`).join("")}</div>` : "";
 }
+/** L'onglet dans l'adresse (#mine, #set/friends, #prog/film/week…) : un rechargement garde la vue. */
+function readHash() {
+  const [tab, a, b] = decodeURIComponent(location.hash.slice(1)).split("/");
+  if (!["prog", "mine", "set"].includes(tab)) return;
+  st.tab = tab;
+  if (tab === "set" && ["venues", "friends", "account"].includes(a)) st.setTab = a;
+  if (tab !== "set" && ["all", "theatre", "film", "expo"].includes(a)) st.kind = a;
+  if (tab === "prog" && ["week", "month", "all"].includes(b)) st.when = b;
+}
+function writeHash() {
+  if (!S) return;
+  const h = "#" + (st.tab === "set" ? `set/${st.setTab || "venues"}` : st.tab === "mine" ? `mine/${st.kind}` : `prog/${st.kind}/${st.when}`);
+  if (location.hash !== h) history.replaceState(null, "", location.pathname + location.search + h);
+}
+readHash();
 function render() {
+  writeHash();
   const now = dt(TODAY);
   $("today").textContent = `${T.dows[now.getUTCDay()].slice(0, 3)}. ${now.getUTCDate()} ${T.smons[now.getUTCMonth()]}`;
   // Pastilles rouges : « Mes sorties » = ce qu'on m'a envoyé (non lu) ; « Réglages » = demandes d'amis.
