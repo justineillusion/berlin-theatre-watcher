@@ -44,6 +44,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "20 Minuten",
+  "url": "https://www.volksbuehne-berlin.de/en/series-and-projects/20-minuten/20-minuten-2/",
+  "opens": "2026-12-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schaubühne",
   "title": "Stereophonic",
   "url": "https://www.schaubuehne.de/en/produktionen/stereophonic.html?ID_Vorstellung=7317&m=398",
@@ -65,8 +73,8 @@
   "kind": "theatre",
   "venue": "Volksbühne",
   "title": "CURSED – a preinvented world.",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261214-1900/",
-  "opens": "2026-12-14",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261211-1900/",
+  "opens": "2026-12-11",
   "aliases": []
  },
  {
