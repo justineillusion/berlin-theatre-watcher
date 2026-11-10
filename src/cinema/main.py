@@ -249,6 +249,14 @@ def analyse(cfg: dict, start: date) -> dict:
                 unrated.append(f)
         else:
             passed.append(f)
+    # Note Letterboxd aussi pour les films retenus par SensCritique : c'est elle qu'on affiche en anglais.
+    def add_lb(f: Film) -> None:
+        if f.letterboxd is None:
+            sc = f.senscritique
+            years = [x.year for x in f.screenings if x.year] or ([sc.year] if sc and sc.year else [])
+            titles = ([sc.original_title] if sc and sc.original_title else []) + taste._titles(f)
+            f.letterboxd = taste.R.letterboxd(titles, years[0] if years else None, f.directors)
+    map_with_budget(passed, add_lb, float(cfg.get("letterboxd_extra_budget_s", 90)), workers=2, item_timeout=cap)
     return {"passed": passed, "rejected": rejected, "unrated": unrated, "errors": errors,
             "n_screenings": len(screenings), "pitched": set(), "window": win,
             "known_until": known_until}

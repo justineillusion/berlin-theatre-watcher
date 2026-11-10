@@ -111,6 +111,19 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .set .line .logo{width:20px;height:20px;margin-right:8px;flex:none}.set .line > div{display:flex;align-items:center}
 .badge{font-size:15px;padding-top:2px}
 .social{font-size:14px;color:var(--ink);margin-top:4px}
+.ostar{font-size:12px;opacity:.7;margin-right:3px}
+.badge.mystar{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--gold-soft);box-shadow:inset 0 0 0 1.5px var(--gold);font-size:17px;line-height:1;padding:0;margin-top:2px}
+.more{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.cropbg{position:fixed;inset:0;background:rgba(14,15,17,.55);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
+.cropbox{background:var(--bg);padding:20px;display:grid;gap:16px;justify-items:center;width:100%;max-width:320px}
+.cropview{width:240px;height:240px;border-radius:50%;overflow:hidden;position:relative;touch-action:none;cursor:grab;background:var(--card);box-shadow:0 0 0 2px var(--ink)}
+.cropview img{position:absolute;left:50%;top:50%;max-width:none;user-select:none;-webkit-user-drag:none}
+.cropz{display:flex;align-items:center;gap:10px;width:100%;font:700 18px var(--sans);color:var(--muted)}
+.cropz input{flex:1;accent-color:var(--velvet)}
+.cropbox .acts{justify-content:center}
+.soldfoot{display:flex;justify-content:center;padding:22px 0 6px}
+.soldfoot .chip{border:0;background:none;text-transform:none;letter-spacing:0;font:600 14px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line)}
+.item .quote.fv{margin-top:6px;font-size:14px}
 
 /* Critique : visible tout de suite, en citation. */
 .review{margin-top:6px;display:flex;flex-direction:column;gap:2px}
@@ -227,13 +240,13 @@ if (tgApp) {
 const L = {
   fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos",
         week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
-        star:"⭐ Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter au calendrier",
-        booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ⭐ ce qui te tente.",
+        star:"🙋 Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter au calendrier",
+        booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : 🙋 ce qui te tente.",
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
-        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, notForMeN:(n) => `Pas pour moi · ${n}`, soldN:(n) => `Complets · ${n}`, hideD:"Masquer", showD:"Afficher", whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} ⭐/🎟 plus tard`,
-        whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont masquées.", soldShort:"complet", hideSold:"Voir les complets", whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
+        reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, notForMeN:(n) => `Pas pour moi · ${n}`, soldN:(n) => `Complets · ${n}`, hideD:"Masquer", showD:"Afficher", whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} 🙋/🎟 plus tard`,
+        whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont masquées.", soldShort:"complet", hideSold:"Voir les complets", hideSoldOff:"Masquer les complets", moreDates:(n) => `+${n} séance${n > 1 ? "s" : ""}`, whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
@@ -243,18 +256,18 @@ const L = {
         haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
-        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
-        photoT:"Ma photo", photoHint:"Remplace ton prénom chez tes amis.", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
+        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en 🙋.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
+        cropT:"Cadre ta photo", photoT:"Ma photo", photoHint:"Remplace ton prénom chez tes amis.", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
-        star:"⭐ Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to calendar",
-        booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: ⭐ what tempts you.",
+        star:"🙋 Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to calendar",
+        booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: 🙋 what tempts you.",
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
-        reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, notForMeN:(n) => `Not for me · ${n}`, soldN:(n) => `Sold out · ${n}`, hideD:"Hide", showD:"Show", whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} ⭐/🎟 later on`,
-        whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", soldShort:"sold out", hideSold:"Show sold out", whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
+        reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, notForMeN:(n) => `Not for me · ${n}`, soldN:(n) => `Sold out · ${n}`, hideD:"Hide", showD:"Show", whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} 🙋/🎟 later on`,
+        whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", soldShort:"sold out", hideSold:"Show sold out", hideSoldOff:"Hide sold out", moreDates:(n) => `+${n} more date${n > 1 ? "s" : ""}`, whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
@@ -265,7 +278,7 @@ const L = {
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
         setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
-        photoT:"My photo", photoHint:"Shown instead of your name to friends.", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
+        cropT:"Frame your photo", photoT:"My photo", photoHint:"Shown instead of your name to friends.", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
 let T = L.en, S = null;   // accueil en anglais par défaut ; une fois connecté·e : la langue du compte
@@ -306,7 +319,7 @@ function dayLabel(d) {
 }
 const shortDay = (d) => `${+d.slice(8, 10)} ${T.smons[+d.slice(5, 7) - 1]}`;
 const state = (x) => !x.me ? "" : x.me.status === "seen" ? "seen" : x.me.status === "ignored" ? "ignored" : x.me.booked ? "booked" : x.me.star ? "star" : "";
-const badge = (x) => state(x) === "ignored" && st.dateCell ? `<span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span>` : state(x) === "seen" && x.me.rating ? `<span class="badge rate">${x.me.rating}★</span>` : `<span class="badge">${{ star:"⭐", booked:"🎟", seen:"✅" }[state(x)] || ""}</span>`;
+const badge = (x) => state(x) === "ignored" && st.dateCell ? `<span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span>` : state(x) === "seen" && x.me.rating ? `<span class="badge rate">${x.me.rating}★</span>` : state(x) === "star" ? `<span class="badge mystar" title="${esc(T.star)}">🙋</span>` : `<span class="badge">${{ booked:"🎟", seen:"✅" }[state(x)] || ""}</span>`;
 const stars = (n) => n ? `<span class="stars">${"★".repeat(n)}<i>${"★".repeat(5 - n)}</i></span>` : "";
 
 /** Lignes utiles de la fiche du bot (HTML Telegram) : lieu/salle, auteur, langue, critiques presse, résumé. */
@@ -483,7 +496,7 @@ function socialLine(x) {
   const together = mine ? f.filter((p) => p.booked === mine).map(who) : [];
   if (together.length) parts.push(`🎟 ${esc(T.withF)} ${together.join(", ")}`);
   const want = f.filter((p) => (p.star || p.booked) && !p.seen && !(mine && p.booked === mine)).map((p) => who(p) + (p.booked ? " 🎟" : ""));
-  if (want.length) parts.push("⭐ " + want.join(", "));
+  if (want.length) parts.push(`<span class="ostar">🙋</span>` + want.join(", "));
   const seen = f.filter((p) => p.seen).map((p) => who(p) + (p.rating ? ` <span class="stars">${"★".repeat(p.rating)}</span>` : ""));
   if (seen.length) parts.push("✅ " + seen.join(", "));
   return parts.length ? `<div class="social">${parts.join(" · ")}</div>` : "";
@@ -510,12 +523,18 @@ function whenCell(x) {
 }
 /** « ★ 6,9 SC » : un clic ouvre la fiche SensCritique / Letterboxd. */
 const scTag = (f) => f.ratingUrl ? `<b class="sc link" data-href="${esc(f.ratingUrl)}">${esc(f.rating)} ↗</b>` : `<b class="sc">${esc(f.rating)}</b>`;
+/** « +5 dates » : un film / une pièce n'apparaît qu'à sa prochaine séance ; on dit qu'il y en a d'autres. */
+function moreDates(x) {
+  if (st.tab !== "prog" || x.kind === "expo" || x._at || st.dateCell) return "";
+  const n = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when] && !isSold(x, d)).length - 1;
+  return n > 0 ? ` · <span class="more">${esc(T.moreDates(n))}</span>` : "";
+}
 function item(x) {
   const open = st.open === x.id, s = state(x), me = x.me || {};
   const soldNow = st.tab === "prog" && isSold(x, next(x));
   let h = `<div class="item${open ? " open" : ""}${soldNow ? " soldout" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div>
-    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}</div>
+    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
     ${badge(x)}</button>`;
   if (!open) return h + "</div>";
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
@@ -612,7 +631,7 @@ function friendPage() {
   const ids = new Set(booked.map((x) => x.id));
   const wish = f.items.filter((x) => theirs(x).star && !ids.has(x.id) && upcoming(x))
     .sort((a, b) => (next(a) || "9").localeCompare(next(b) || "9"));
-  const seen = f.items.filter((x) => theirs(x).seen).slice(0, 30);
+  const seen = f.items.filter((x) => theirs(x).seen).slice(0, 30).map((x) => ({ ...x, _quote: theirs(x).comment }));
   const sect = (label, xs) => xs.length ? dayHead(`${label} · ${xs.length}`) + xs.map(item).join("") : "";
   const body = sect(T.fvBooked, booked) + sect(T.fvWish, wish) + sect(T.fvSeen, seen);
   return h + (body || `<p class="hint">${esc(T.fvEmpty(f.name))}</p>`);
@@ -720,7 +739,7 @@ function render() {
   K.hidden = kindChips.length < 2;
   chips(K, kindChips.length < 2 ? [] : [["all", T.all], ...kindChips], "kind");
   chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
-  if (st.kind !== "expo") W.insertAdjacentHTML("beforeend", `<button class="chip soldtoggle" data-hidesold="1" aria-pressed="${!st.hideSold}">${esc(T.hideSold)}</button>`);
+
   let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
   let h = "";
   if (st.tab === "prog") {
@@ -754,7 +773,8 @@ function render() {
       h += `<div class="day dim">${esc(T.notForMeN(dismissed.length))}<button class="fold" data-dismissed="1">${esc(st.hideDismissed ? T.showD : T.hideD)}</button></div>`;
       if (!st.hideDismissed) { st.dateCell = true; h += `<div class="dismissed">${dismissed.map(item).join("")}</div>`; st.dateCell = false; }
     }
-    list.innerHTML = (h || `<div class="empty">${esc(T.empty)}</div>`) + whyNote();
+    const soldBtn = st.kind !== "expo" ? `<div class="soldfoot"><button class="chip" data-hidesold="1" aria-pressed="${!st.hideSold}">${esc(st.hideSold ? T.hideSold : T.hideSoldOff)}</button></div>` : "";
+    list.innerHTML = (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + whyNote();
   } else {
     for (const [k, l] of [["booked", T.booked], ["star", T.wish], ["seen", T.done]]) {
       let g = xs.filter((x) => state(x) === k);
@@ -831,21 +851,49 @@ async function saveHandle(handle) {
   catch (e) { notify(e.info?.error === "handle_taken" ? T.handleTaken : e.info?.error === "bad_handle" ? T.badHandle : T.error); }
   st.busy = false; render();
 }
-/** Photo : recadrée au carré et réduite à 128 px dans la page (JPEG ~8 Ko), puis envoyée. */
+/** Photo : on choisit le cadrage (glisser pour centrer, curseur pour zoomer), puis 256 px JPEG envoyés. */
 async function savePhoto(file) {
   if (st.busy) return;
-  let data = null;
-  if (file) {
-    try {
-      const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = URL.createObjectURL(file); });
-      const side = Math.min(img.naturalWidth, img.naturalHeight), c = document.createElement("canvas"); c.width = c.height = 128;
-      c.getContext("2d").drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, 128, 128);
-      data = c.toDataURL("image/jpeg", 0.82); URL.revokeObjectURL(img.src);
-    } catch { return notify(T.badPhoto); }
-  }
-  st.busy = true;
-  try { S = await api("photo", { photo: data }); } catch { notify(T.error); }
-  st.busy = false; render();
+  if (!file) { st.busy = true; try { S = await api("photo", { photo: null }); } catch { notify(T.error); } st.busy = false; return void render(); }
+  let img;
+  try { img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = URL.createObjectURL(file); }); }
+  catch { return notify(T.badPhoto); }
+  cropper(img);
+}
+function cropper(img) {
+  const V = 240, W = img.naturalWidth, H = img.naturalHeight, base = V / Math.min(W, H);
+  const c = { zoom: 1, x: 0, y: 0 };
+  const wrap = document.createElement("div"); wrap.className = "cropbg";
+  wrap.innerHTML = `<div class="cropbox" role="dialog" aria-label="${esc(T.photoT)}">
+    <b class="ftitle">${esc(T.cropT)}</b>
+    <div class="cropview" id="cropview"><img id="cropimg" src="${img.src}" alt="" draggable="false"></div>
+    <label class="cropz"><span>−</span><input id="cropzoom" type="range" min="1" max="4" step="0.01" value="1"><span>+</span></label>
+    <div class="acts"><button class="act" data-cropcancel="1">${esc(T.cancel)}</button><button class="act on" data-cropsave="1">${esc(T.save)}</button></div></div>`;
+  document.body.appendChild(wrap);
+  const el = wrap.querySelector("#cropimg"), view = wrap.querySelector("#cropview");
+  const clamp = () => {
+    const s = base * c.zoom, mx = Math.max(0, (W * s - V) / 2), my = Math.max(0, (H * s - V) / 2);
+    c.x = Math.min(mx, Math.max(-mx, c.x)); c.y = Math.min(my, Math.max(-my, c.y));
+    el.style.width = `${W * s}px`; el.style.height = `${H * s}px`;
+    el.style.transform = `translate(calc(-50% + ${c.x}px), calc(-50% + ${c.y}px))`;
+  };
+  clamp();
+  let drag = null;
+  view.addEventListener("pointerdown", (e) => { drag = { px: e.clientX, py: e.clientY, x: c.x, y: c.y }; view.setPointerCapture(e.pointerId); });
+  view.addEventListener("pointermove", (e) => { if (!drag) return; c.x = drag.x + e.clientX - drag.px; c.y = drag.y + e.clientY - drag.py; clamp(); });
+  view.addEventListener("pointerup", () => { drag = null; });
+  view.addEventListener("wheel", (e) => { e.preventDefault(); c.zoom = Math.min(4, Math.max(1, c.zoom * (e.deltaY < 0 ? 1.06 : 0.94))); wrap.querySelector("#cropzoom").value = c.zoom; clamp(); }, { passive: false });
+  wrap.querySelector("#cropzoom").addEventListener("input", (e) => { c.zoom = +e.target.value; clamp(); });
+  const close = () => { wrap.remove(); URL.revokeObjectURL(img.src); };
+  wrap.addEventListener("click", async (e) => {
+    if (e.target.closest("[data-cropcancel]") || e.target === wrap) return close();
+    if (!e.target.closest("[data-cropsave]")) return;
+    const s = base * c.zoom, side = V / s, cx = W / 2 - c.x / s, cy = H / 2 - c.y / s;
+    const cv = document.createElement("canvas"); cv.width = cv.height = 256;
+    cv.getContext("2d").drawImage(img, cx - side / 2, cy - side / 2, side, side, 0, 0, 256, 256);
+    const data = cv.toDataURL("image/jpeg", 0.82); close();
+    st.busy = true; try { S = await api("photo", { photo: data }); } catch { notify(T.error); } st.busy = false; render();
+  });
 }
 async function saveName(name) {
   if (st.busy || !name.trim()) return; st.busy = true;
