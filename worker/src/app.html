@@ -66,6 +66,10 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);text-transform:uppercase;letter-spacing:.04em}.detail s{color:var(--muted)}
 #whens .soldtoggle{margin-left:auto}
 /* Réglages → Mes lieux : quartiers (un à la fois), filtrent la liste des lieux. */
+.subtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 8px}
+.subtabs .chip{text-align:center;position:relative}
+.subtabs .chip i{font-style:normal;background:var(--velvet);color:#fff;border-radius:9px;padding:0 6px;margin-left:6px;font-size:11px}
+.invlink{display:block;font:500 13.5px var(--sans);background:var(--card);padding:10px 12px;margin:8px 0;word-break:break-all;user-select:all}
 .areas{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
 .areas .chip{border-width:1px;font-weight:600;font-size:11.5px;padding:5px 8px;color:var(--muted);border-color:var(--line)}
 .areas .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
@@ -181,6 +185,7 @@ const L = {
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"📍 Partout",
         loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Ajoute-la d'abord dans Réglages → Compte, depuis l'app dans Telegram.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
+        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien dans Telegram et appuie sur « Démarrer » : vous êtes connectés.",
         nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour ouvrir l'app hors de Telegram (navigateur, écran d'accueil) : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
@@ -198,6 +203,7 @@ const L = {
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"📍 Anywhere",
         loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Add it first in Settings → Account, from the app inside Telegram.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
+        setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", shareShort:"Share ↗", inviteHow:"Your friend opens the link in Telegram and taps “Start”: you're connected.",
         nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To open the app outside Telegram (browser, home screen): we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
@@ -499,7 +505,6 @@ function accountSection() {
     h += `<div class="fline"><div><b>${esc(T.emailT)}</b><span>${esc(e || T.emailNone)}</span></div>
       <button class="act${e ? "" : " on"}" data-editemail="1">${esc(e ? T.editEmail : T.addEmail)}</button></div>`;
   }
-  if (WEB) h += `<div class="acts" style="margin-top:12px"><button class="act" data-logout="1">${esc(T.logout)}</button></div>`;
   return h;
 }
 /** Réglages → Mes amis : demandes reçues, amis, suggestions (amis de mes amis), lien d'invitation. */
@@ -515,7 +520,9 @@ function friendsSection() {
   const sugg = [...c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))),
                 ...c.suggestions.map((p) => line(p.name, `${T.via} ${p.via.join(", ")}`, btn("add", p.id, T.add, true)))];
   if (sugg.length) h += dayHead(T.suggestT) + sugg.join("");
-  h += dayHead(T.inviteT) + `<p class="hint">${esc(T.inviteHint)}</p><div class="acts"><button class="act on" data-invite="1">${esc(T.shareLink)} ↗</button></div>`;
+  h += dayHead(T.inviteT) + `<p class="hint">${esc(T.inviteHow)}</p><code class="invlink">${esc(S.invite || "")}</code>
+    <div class="acts"><button class="act on" data-invite="1">${esc(T.shareShort)}</button><button class="act" data-copyinvite="1">${esc(T.copyLink)}</button></div>
+    <p class="hint">${esc(T.inviteHint)}</p>`;
   return h;
 }
 function exposByVenue(expos) {
@@ -569,15 +576,22 @@ function render() {
     const areaChips = areas.length < 2 ? "" : `<div class="areas"><button class="chip" data-area="" aria-pressed="${!st.setArea}">${esc(T.everywhere)}</button>` +
       areas.map((a) => `<button class="chip" data-area="${esc(a)}" aria-pressed="${st.setArea === a}">${esc(a)}</button>`).join("") + "</div>";
     const cats = ["theatre", "expo", "cinema"].map((k) => [k, S.venues.filter((v) => v.kind === k && inSet(v))]).filter(([, vs]) => vs.length);
-    list.innerHTML = `<div class="set">${friendsSection()}${dayHead(T.venues)}<p class="hint">${esc(T.tapToggle)}</p>${areaChips}${cats.map(([k, vs]) => {
+    const venuesTab = `<p class="hint">${esc(T.tapToggle)}</p>${areaChips}${cats.map(([k, vs]) => {
       const any = vs.some((v) => v.followed);
       return `<div class="cat"><b>${ICON[k === "cinema" ? "film" : k]} ${esc(T.cats[k])} · ${vs.filter((v) => v.followed).length}/${vs.length}</b>
         <button class="act${any ? "" : " on"}" data-sk="${k}" data-arg="${any ? "off" : "on"}">${esc(any ? T.catOff : T.catOn)}</button></div>` +
         vs.map((v) => `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}"><div>${v.logo ? `<img class="logo" src="${API_BASE}${esc(v.logo)}" alt="">` : ""}<div>${esc(v.name)}${v.district ? `<small class="dist">${esc(v.district)}</small>` : ""}</div></div><span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("");
-    }).join("")}
-      ${dayHead(T.language)}<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
-        `<button class="act ${S.lang === c ? "on" : ""}" data-act="l" data-id="${c}">${l}</button>`).join("")}</div>
-      ${dayHead(T.account)}${accountSection()}</div>`;
+    }).join("")}`;
+    const accountTab = accountSection() + dayHead(T.language) + `<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
+        `<button class="act ${S.lang === c ? "on" : ""}" data-act="l" data-id="${c}">${l}</button>`).join("")}</div>` +
+      (WEB ? `<div class="acts" style="margin-top:28px"><button class="act" data-logout="1">${esc(T.logout)}</button></div>` : "");
+    // Sous-onglets : Lieux · Amis (pastille = demandes reçues) · Compte. Demandes en attente : on ouvre Amis.
+    const pending = (S.circle?.incoming || []).length;
+    if (!st.setTab) st.setTab = pending ? "friends" : "venues";
+    const sub = ["venues", "friends", "account"].map((k) =>
+      `<button class="chip" data-settab="${k}" aria-pressed="${st.setTab === k}">${esc(T.setTabs[k])}${k === "friends" && pending ? `<i>${pending}</i>` : ""}</button>`).join("");
+    list.innerHTML = `<div class="set"><div class="subtabs">${sub}</div>${
+      st.setTab === "friends" ? friendsSection() : st.setTab === "account" ? accountTab : venuesTab}</div>`;
     return;
   }
   // Types suivis seulement : ne plus suivre aucun cinéma retire « Ciné » du menu.
@@ -641,7 +655,7 @@ document.addEventListener("click", (e) => {
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
   if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
-  if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; window.scrollTo?.(0, 0); }
+  if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") st.setTab = null; window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
   else if (t.dataset.area !== undefined) st.setArea = t.dataset.area;
   else if (t.dataset.sk) return void act("sk", t.dataset.sk, t.dataset.arg, { body: { area: st.setArea } });
@@ -660,6 +674,8 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.askremove) { st.confirmRemove = +t.dataset.askremove; }
   else if (t.dataset.friend) { st.confirmRemove = null; return void friendAct(t.dataset.friend, +t.dataset.id); }
   else if (t.dataset.invite) { return void shareInvite(); }
+  else if (t.dataset.copyinvite) { navigator.clipboard?.writeText(S.invite || "").then(() => notify(T.copied), () => {}); return; }
+  else if (t.dataset.settab) { st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
   else if (t.dataset.login) { return void showLogin(); }
   else if (t.dataset.loginemail) { return void loginEmail(); }
   else if (t.dataset.logincode) { return void loginCode(); }

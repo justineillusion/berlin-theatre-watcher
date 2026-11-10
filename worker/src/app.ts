@@ -383,7 +383,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null, logo: LOGOS[v.id] ? `/app/logo/${v.id}.png` : null })),
     people,
     circle,
-    invite: invite.split("\n").pop(),
+    invite: (invite.match(/https:\/\/\S+/) || [""])[0],   // le lien seul (le message autour est pour le chat)
     items: items.map((i) => {
       const r = mine.get(i.id);
       return {

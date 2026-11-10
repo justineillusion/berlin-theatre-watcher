@@ -93,6 +93,7 @@ await step("programme : mes lieux, envies des amis", async () => {
   assert.deepEqual(item(s, "p1").friends.map((f) => f.name), ["Joss"]);
   assert.equal(item(s, "p1").me, null);
   assert.equal(s.venues.length, 3);
+  assert.match(s.invite, /^https:\/\/t\.me\/TestBot\?start=p[0-9a-z]+$/);   // le lien seul, partageable
 });
 const noMessages = () => assert.ok(!calls.some((c) => /^send/.test(c.method)), JSON.stringify(calls.map((c) => [c.method, c.chat_id])));
 await step("⭐ : envie enregistrée, aucun message (ni groupe ni privé)", async () => {
