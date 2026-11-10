@@ -34,6 +34,7 @@ export default {
     await loadCircles(env).catch((e) => console.log("circles", e));   // qui voit les ⭐ de qui (lib.ts)
     // Mini-app Telegram (page + ses deux routes, authentifiées par initData).
     if (url.pathname === "/app" || url.pathname.startsWith("/app/")) return handleApp(req, env, ctx);
+    if (req.method === "GET" && url.pathname === "/") return Response.redirect(`${url.origin}/app${url.search}`, 302);
     if (req.method !== "POST") return new Response("🎭", { status: 200 });
 
     if (url.pathname === "/tg") {

@@ -3,6 +3,11 @@ main = "src/index.ts"
 compatibility_date = "2026-10-01"
 
 # Cron (UTC) : ouvertures de vente — la veille 19:00 et à l'heure d'ouverture (Berlin).
+# L'app web : https://berlinencore.app (domaine sur ce compte Cloudflare) ; « / » mène à /app.
+routes = [{ pattern = "berlinencore.app", custom_domain = true }]
+# …et l'adresse workers.dev reste active : webhook Telegram + scraper GitHub (BOT_API_URL) l'utilisent.
+workers_dev = true
+
 [triggers]
 crons = ["*/15 * * * *"]
 
@@ -12,6 +17,10 @@ OWNER_CHAT_ID = "2128088613"
 BOT_USERNAME = "Justine_theatre_bot"
 # Nom court de la mini-app (BotFather /newapp) : t.me/<bot>/<nom>?startapp=<fiche>
 APP_SHORT_NAME = "Programme"
+# Adresse publique de l'app web (liens des emails de connexion).
+APP_URL = "https://berlinencore.app"
+# Expéditeur des emails de connexion (domaine vérifié chez Resend).
+MAIL_FROM = "Berlin Encore! <bonjour@berlinencore.app>"
 
 [[d1_databases]]
 binding = "DB"
