@@ -94,13 +94,10 @@ theaters:
     url: https://www.volksbuehne.berlin/en/
 
   # Next.js : on passe par le sitemap de chaque festival (voir parsers/festspiele.py)
-  - name: Berliner Festspiele — Performing Arts Season
+  # Un seul lieu pour tous les programmes théâtre des Festspiele (un sitemap par programme).
+  - name: Berliner Festspiele
     parser: festspiele
-    url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=performing-arts-season
-
-  - name: Berliner Festspiele — Theatertreffen
-    parser: festspiele
-    url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=theatertreffen
+    url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=performing-arts-season,theatertreffen
 
   # --- Opéras & concerts (à la carte) -----------------------------------------
   # optional: true = lieu proposé dans /suivre mais PAS d'abonnement d'office

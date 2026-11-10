@@ -325,8 +325,7 @@ _THEATERS = {
     "Berliner Ensemble": ("Berliner Ensemble", "berliner-ensemble", _BERLIN + "berliner-ensemble"),
     "Volksbühne": ("Volksbühne", "volksbuehne", _BERLIN + "volksbuehne-am-rosa-luxemburg-platz-berlin"),
     # Festspiele : invités de partout, pas de contrainte de maison, mais une rubrique.
-    "Berliner Festspiele — Performing Arts Season": ("Berliner Festspiele", None, _BERLIN + "berliner-festspiele"),
-    "Berliner Festspiele — Theatertreffen": ("Berliner Festspiele", None, _BERLIN + "berliner-festspiele"),
+    "Berliner Festspiele": ("Berliner Festspiele", None, _BERLIN + "berliner-festspiele"),
 }
 
 

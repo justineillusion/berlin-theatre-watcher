@@ -54,12 +54,46 @@ _BOILERPLATE = (
 )
 
 
+# Bandeaux cookies / consentement / suivi (EN, DE, FR). Les opéras et la
+# Philharmonie ont un bandeau de consentement en <p> dans la page : sans ce
+# garde-fou, le 1er « paragraphe » trouvé était « We use tracking technologies… »
+# (traduit : « Nous utilisons des technologies de suivi… »).
+_CONSENT_STRONG = re.compile(
+    r"\b(?:we|wir|nous)\s+(?:use|verwenden|nutzen|utilisons)\s+(?:\w+\s+){0,3}"
+    r"(?:cookies?|tracking|pixel|technologies de suivi|traceurs)"
+    r"|tracking[- ]?technolog|technologies? de (?:suivi|traçage)|traceurs?\b"
+    r"|accept(?:ez)? (?:all )?cookies|alle (?:cookies )?akzeptieren|tout accepter|accepter (?:tous )?les cookies"
+    r"|cookie[- ]?(?:settings|einstellungen|richtlinie|policy|banner)|param[eè]tres des cookies"
+    r"|notwendige cookies|technisch notwendige|strictement n[ée]cessaires|technically necessary"
+    r"|your consent|ihre einwilligung|votre consentement"
+    r"|personali[sz]ed advertising|personalisierte werbung|publicit[ée] personnalis[ée]e",
+    re.I,
+)
+_CONSENT_WEAK = re.compile(
+    r"cookies?|consent|einwilligung|zustimmung|consentement|tracking|datenschutz|data protection|"
+    r"privacy|protection des donn[ée]es|confidentialit[ée]|pixels?|analytics|web ?analy",
+    re.I,
+)
+
+
+def looks_like_consent(text: Optional[str]) -> bool:
+    """Texte de bandeau cookies / consentement / suivi : jamais un résumé."""
+    if not text:
+        return False
+    t = _clean(text)
+    if _CONSENT_STRONG.search(t):
+        return True
+    return len({m.group(0).lower() for m in _CONSENT_WEAK.finditer(t)}) >= 2
+
+
 def is_synopsis(text: Optional[str], min_chars: int = 150) -> bool:
     """Un vrai résumé (de quoi parle la pièce), pas un générique ni une liste de noms."""
     if not text:
         return False
     t = _clean(text)
     if any(b in t.lower() for b in _BOILERPLATE):
+        return False
+    if looks_like_consent(t):
         return False
     if len(t) < min_chars:
         return False
@@ -146,6 +180,85 @@ def _co_berlin(soup: BeautifulSoup) -> Optional[str]:
     return None
 
 
+# Conteneurs de bandeau de consentement, retirés de la page avant toute extraction.
+_CONSENT_BOX = re.compile(r"cookie|consent|gdpr|usercentrics|onetrust|borlabs|klaro|cmp-|privacy-?banner", re.I)
+
+
+def _strip_consent(soup: BeautifulSoup) -> None:
+    def marked(tag) -> bool:
+        attrs = tag.attrs or {}
+        return bool(_CONSENT_BOX.search(" ".join([*(attrs.get("class") or []), attrs.get("id") or ""])))
+
+    for tag in [*soup.find_all("dialog"), *soup.find_all(marked)]:
+        if not getattr(tag, "decomposed", False):
+            tag.decompose()
+
+
+def _paragraphs(els, max_chars: int = 320) -> Optional[str]:
+    """Paragraphes successifs (texte de présentation) jusqu'à ~2–3 phrases."""
+    out: list = []
+    for el in els:
+        txt = _clean(el.get_text(" ", strip=True))
+        if len(txt) < 60 or looks_like_consent(txt):
+            continue
+        out.append(txt)
+        if len(" ".join(out)) >= max_chars:
+            break
+    return " ".join(out) or None
+
+
+def _staatsoper(soup: BeautifulSoup) -> Optional[str]:
+    """Texte d'introduction (bloc dépliable « … more ») de la page production ;
+    pas le résumé acte par acte (accordéon plus bas)."""
+    box = soup.select_one(".sob-ausklappbarer-abschnitt")
+    if not box:
+        return None
+    teaser = box.select(".sob-ausklappbarer-abschnitt__teaser p") or box.select(".sob-ausklappbarer-abschnitt__teaser")
+    return _paragraphs([*teaser, *box.select(".sob-ausklappbarer-abschnitt__panel p")])
+
+
+def _deutsche_oper(soup: BeautifulSoup) -> Optional[str]:
+    """Le chapeau de la production est la meta description (identique au texte
+    de l'accordéon « About the production ») ; le corps contient d'abord la
+    fiche de l'œuvre (« Opera in three acts, Libretto by… ») puis des teasers
+    vidéo/blog, d'où la meta en premier."""
+    meta = _generic(soup)
+    if meta:
+        return meta
+    for el in soup.select(".accordion-body .max_content_width"):
+        if "backgroundtitle-container" in (el.get("class") or []):
+            continue
+        txt = _clean(el.get_text(" ", strip=True))
+        if len(txt) > 120:
+            return txt
+    return None
+
+
+def _komische_oper(soup: BeautifulSoup) -> Optional[str]:
+    """1er bloc « richtext » de l'onglet de la production = présentation ;
+    le suivant est le résumé acte par acte (« Act 1 … »), gardé en repli."""
+    texts = [_clean(el.get_text(" ", strip=True)) for el in soup.select(".tab__item .richtext__text")]
+    texts = [t for t in texts if len(t) > 80]
+    intro = [t for t in texts if not re.match(r"^(?:act|akt|scene|bild)\b", t, re.I)]
+    return (intro or texts or [None])[0]
+
+
+def _philharmonie(soup: BeautifulSoup) -> Optional[str]:
+    """Section « Concert information » : titre, « Tickets », puis « Info » suivi
+    du texte d'intro (jusqu'au label suivant, « Artists »)."""
+    sec = soup.select_one(".main__concert_introduction")
+    if not sec:
+        return None
+    body, in_info = [], False
+    for p in sec.find_all("p"):
+        classes = p.get("class") or []
+        if "text--small" in classes:              # labels : Tickets / Info / Artists…
+            in_info = _clean(p.get_text()).lower() in ("info", "information")
+        elif in_info:
+            body.append(p)
+    return _paragraphs(body or [p for p in sec.find_all("p") if not p.get("class")])
+
+
 def _generic(soup: BeautifulSoup) -> Optional[str]:
     for attrs in ({"property": "og:description"}, {"name": "description"}):
         meta = soup.find("meta", attrs=attrs)
@@ -159,21 +272,17 @@ _EXTRACTORS = {
     "Schaubühne": _schaubuehne,
     "Volksbühne": _volksbuehne,
     "C/O Berlin": _co_berlin,
+    "Staatsoper Unter den Linden": _staatsoper,
+    "Deutsche Oper Berlin": _deutsche_oper,
+    "Komische Oper Berlin": _komische_oper,
+    "Berliner Philharmoniker": _philharmonie,
 }
 
 
-def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Optional[str]]:
-    """Renvoie (résumé, texte brut de la page) en une seule requête.
-
-    Le texte brut sert à la détection de langue (voir `language.detect`), d'où
-    le fait de le remonter plutôt que de refetcher la page une deuxième fois.
-    """
-    if not url:
-        return None, None
-    try:
-        soup = BeautifulSoup(fetch_html(url), "html.parser")
-    except Exception:  # noqa: BLE001 — un résumé manquant n'est pas bloquant
-        return None, None
+def summary_from_html(theater: str, html: str) -> Optional[str]:
+    """Résumé (2–3 phrases) d'une page détail déjà téléchargée, ou None."""
+    soup = BeautifulSoup(html, "html.parser")
+    _strip_consent(soup)                     # bandeaux cookies : jamais un résumé
     extractor = _EXTRACTORS.get(theater)
     text = None
     # Ordre : extracteur du lieu, puis le CORPS de la page (texte de l'expo/pièce,
@@ -188,7 +297,23 @@ def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Opti
     if text and len(_clean(text)) < 200 and is_synopsis(meta) and len(_clean(meta)) > len(_clean(text)):
         text = meta
     # Rien de valable (générique seul…) : pas de 📝 plutôt qu'un générique.
-    return (_trim(text) if text else None), soup.get_text(" ", strip=True)
+    return _trim(text) if text else None
+
+
+def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Optional[str]]:
+    """Renvoie (résumé, texte brut de la page) en une seule requête.
+
+    Le texte brut sert à la détection de langue (voir `language.detect`), d'où
+    le fait de le remonter plutôt que de refetcher la page une deuxième fois.
+    """
+    if not url:
+        return None, None
+    try:
+        html = fetch_html(url)
+    except Exception:  # noqa: BLE001 — un résumé manquant n'est pas bloquant
+        return None, None
+    page_text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
+    return summary_from_html(theater, html), page_text
 
 
 def fetch_summary(theater: str, url: Optional[str]) -> Optional[str]:

@@ -135,6 +135,40 @@ def test_theatre_needs_venue_and_giveaways_are_not_reviews():
     assert rr["key"] == "positive", rr
 
 
+# --- Opéras : klassik-begeistert + maisons homonymes ------------------------
+def test_opera_reviews_match_the_berlin_house_only():
+    kb = press._tidy(press.KB, [
+        press._article(press.KB, "https://klassik-begeistert.de/puccini-tosca-bernheim-staatsoper-unter-den-linden/",
+                       "2026-10-30", "Giacomo Puccini, Tosca, Bernheim und Kurzak  Staatsoper Unter den Linden, 28. Oktober 2026",
+                       "Ein grandioser, hinreißender Abend mit einem fulminanten Cavaradossi."),
+        press._article(press.KB, "https://klassik-begeistert.de/monteverdi-lorfeo-wiener-staatsoper/",
+                       "2026-11-06", "Claudio Monteverdi, L’Orfeo, Rolando Villazón  Wiener Staatsoper, 3. November 2026",
+                       "Großartig."),
+        press._article(press.KB, "https://klassik-begeistert.de/die-dienstag-presse-10-november-2026/",
+                       "2026-11-10", "DIE DIENSTAG-PRESSE – 10. NOVEMBER 2026  klassik-begeistert.de, 10. November 2026",
+                       "Berlin/Deutsche Oper: Salome großartig."),
+        press._article(press.KB, "https://klassik-begeistert.de/wagner-hollaender-deutsche-oper/",
+                       "2026-11-02", "Richard Wagner, Der fliegende Holländer, Milo Rau  Deutsche Oper Berlin, 31. Oktober 2026",
+                       "Fotos © X. Auch Carmen hätte diese Aufführung nicht gerettet: enttäuschend."),
+        press._article(press.KB, "https://klassik-begeistert.de/tosca-aus-berlin-im-forumopera/",
+                       "2026-11-03", "klassik-begeistert-TOSCA aus Berlin im forumopera.com  klassik-begeistert.de", ""),
+    ])
+    assert len(kb) == 4                                        # revue de presse écartée
+    assert not any("begeistert" in a["headline"].lower() for a in kb)
+    path = _cache(kb)
+    tosca = press.press_for("theatre", "Staatsoper Unter den Linden", "Tosca", cache_path=path, use_nachtkritik=False)
+    assert tosca["key"] in ("positive", "enthusiastic"), tosca
+    orfeo = press.press_for("theatre", "Staatsoper Unter den Linden", "L’Orfeo", cache_path=path, use_nachtkritik=False)
+    assert orfeo["status"] == "none", orfeo                     # Wiener Staatsoper : autre maison
+    salome = press.press_for("theatre", "Deutsche Oper Berlin", "Salome", cache_path=path, use_nachtkritik=False)
+    assert salome["status"] == "none", salome                   # seulement dans une revue de presse
+    dutchman = press.press_for("theatre", "Deutsche Oper Berlin", "The Flying Dutchman",
+                               aliases=["Der fliegende Holländer"], cache_path=path, use_nachtkritik=False)
+    assert dutchman["status"] == "verdict", dutchman
+    carmen = press.press_for("theatre", "Deutsche Oper Berlin", "Carmen", cache_path=path, use_nachtkritik=False)
+    assert carmen["status"] == "none", carmen                   # « Carmen » cité dans le chapô seulement
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):

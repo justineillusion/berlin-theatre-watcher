@@ -58,6 +58,53 @@ def _clean(text: Optional[str]) -> str:
     return re.sub(r"\s+", " ", (text or "").replace("\xad", "")).strip()
 
 
+# Titres anglais des sites -> titre sous lequel la presse allemande en parle
+# (pour 📰 : « Der fliegende Holländer » plutôt que « The Flying Dutchman »).
+_PRESS_TITLES = {
+    "the flying dutchman": "Der fliegende Holländer",
+    "the magic flute": "Die Zauberflöte",
+    "queen of spades": "Pique Dame",
+    "the queen of spades": "Pique Dame",
+    "the abduction from the seraglio": "Die Entführung aus dem Serail",
+    "the marriage of figaro": "Le nozze di Figaro",
+    "the barber of seville": "Il barbiere di Siviglia",
+    "the tales of hoffmann": "Les contes d'Hoffmann",
+    "hansel and gretel": "Hänsel und Gretel",
+    "eugene onegin": "Eugen Onegin",
+    "orpheus in the underworld": "Orpheus in der Unterwelt",
+    "the golden cockerel": "Der goldene Hahn",
+    "king roger": "Król Roger",
+    "fiddler on the roof": "Anatevka",
+    "treading the boards": "Bretter, die die Welt bedeuten",
+    "around the world in 80 days": "In 80 Tagen um die Welt",
+    "st matthew passion": "Matthäus-Passion",
+    "the rake's progress": "The Rake's Progress",
+    "the bartered bride": "Die verkaufte Braut",
+    "the merry widow": "Die lustige Witwe",
+    "the bat": "Die Fledermaus",
+    "the ring of the nibelung": "Der Ring des Nibelungen",
+    "the twilight of the gods": "Götterdämmerung",
+    "the valkyrie": "Die Walküre",
+    "the rhinegold": "Das Rheingold",
+    "the mastersingers of nuremberg": "Die Meistersinger von Nürnberg",
+    "the woman without a shadow": "Die Frau ohne Schatten",
+    "the knight of the rose": "Der Rosenkavalier",
+}
+
+
+def press_aliases(title: str, *others: Optional[str]) -> List[str]:
+    """Autres titres de la production (titre original / allemand) pour la presse."""
+    out = [_PRESS_TITLES.get(re.sub(r"[’`]", "'", title.strip().lower()), ""), *others]
+    seen = {title.strip().lower()}
+    res: List[str] = []
+    for a in out:
+        a = _clean(a)
+        if a and a.lower() not in seen and len(a) <= 60:
+            seen.add(a.lower())
+            res.append(a)
+    return res
+
+
 def _has_english(language_line: Optional[str]) -> bool:
     """« … with German and English surtitles », « Englisch », « In English »…"""
     return bool(language_line and re.search(r"\bengl", language_line, re.I))
@@ -154,6 +201,7 @@ def parse_staatsoper(html: str, url: str) -> List[Show]:
                 has_english_surtitles=_has_english(lang),
                 sold_out=True if sold_out_el else (False if ticket else None),
                 booking_url=ticket.get("href") if ticket else None,
+                aliases=press_aliases(title),
             )
         )
     return shows
@@ -214,10 +262,15 @@ def parse_deutsche_oper(events: Iterable[dict], langs: Dict[str, Optional[str]],
         clock = _clean(e.get("DateTimeStart")) or None
         prod = deutsche_oper_production_url(e, root)
         lang = langs.get(prod)
+        title = _clean(_html.unescape(e.get("Title") or ""))
+        pic = _clean(_html.unescape(str(e.get("PictureTitle") or "")))
+        # La légende de la photo porte le titre original (« Pique Dame ») ; on
+        # ne la garde que si elle ressemble à un titre (pas « Szenenfoto … © »).
+        pic = pic if pic and pic != "None" and len(pic.split()) <= 6 and "©" not in pic else ""
         shows.append(
             Show(
                 theater="Deutsche Oper Berlin",
-                title=_clean(_html.unescape(e.get("Title") or "")),
+                title=title,
                 date=day,
                 time=clock,
                 venue=_clean(e.get("Location")) or None,
@@ -227,6 +280,7 @@ def parse_deutsche_oper(events: Iterable[dict], langs: Dict[str, Optional[str]],
                 has_english_surtitles=_has_english(lang),
                 sold_out=bool(e.get("IsSoldOut")),
                 booking_url=e.get("PriceUrl") or None,
+                aliases=press_aliases(title, pic),
             )
         )
     return [s for s in shows if s.title]
@@ -291,8 +345,9 @@ def parse_komische_oper(html: str, base: str) -> List[Show]:
         except ValueError:
             continue
         href = urljoin(base, link.get("href", ""))
-        # /en/what/schedule/eugene-onegin/1254/ (une date) -> /en/what/a-z/eugene-onegin/ (la production)
-        m = re.match(r"(https?://[^/]+/(?:en/what|spielplan)/)(?:schedule|kalender)/([^/]+)/\d+/?$", href)
+        # /en/what/schedule/eugene-onegin/1254/ (une date) -> /en/what/a-z/eugene-onegin/ (la production) ;
+        # pages mensuelles : /en/what/schedule/2027-01/madama-butterfly/1396/ (même production).
+        m = re.match(r"(https?://[^/]+/(?:en/what|spielplan)/)(?:schedule|kalender)/(?:\d{4}-\d{2}/)?([^/]+)/\d+/?$", href)
         prod_url = f"{m.group(1)}a-z/{m.group(2)}/" if m else href
         author = perf.select_one(".performance__author")
         venue = perf.select_one(".performance__location")
@@ -312,6 +367,7 @@ def parse_komische_oper(html: str, base: str) -> List[Show]:
                 has_english_surtitles=True,     # écrans de traduction (voir docstring du module)
                 sold_out=sold_out,
                 booking_url=urljoin(base, ticket["href"]) if ticket else None,
+                aliases=press_aliases(title),
             )
         )
     return shows

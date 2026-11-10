@@ -34,7 +34,7 @@ def _require_env(name: str) -> str:
 
 
 def venue_slug(name: str) -> str:
-    """'Berliner Festspiele — Theatertreffen' -> 'berliner-festspiele-theatertreffen'."""
+    """'Berliner Festspiele' -> 'berliner-festspiele' ; 'C/O Berlin' -> 'c-o-berlin'."""
     import re
     import unicodedata
 

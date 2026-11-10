@@ -13,7 +13,10 @@ navigateur et ne contiennent aucun lien exploitable. En revanche :
   ["independent"] = sans texte), utLanguages (surtitres) et un libellé
   prêt à l'emploi, languagesOverrideText (« In English and French »).
 
-L'URL à mettre dans config.yaml est donc le sitemap du festival.
+L'URL à mettre dans config.yaml est donc le sitemap du festival. Un seul lieu
+« Berliner Festspiele » couvre plusieurs programmes : nodePath accepte une liste
+séparée par des virgules (…&nodePath=performing-arts-season,theatertreffen),
+un sitemap est lu par programme.
 
 La billetterie (tickets.kbb.eu) est derrière une file d'attente queue-it : on
 ne s'y fie pas et on ne la contourne pas, la disponibilité vient du JSON-LD.
@@ -26,6 +29,7 @@ import re
 import time
 from datetime import date, datetime
 from typing import List, Optional
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from zoneinfo import ZoneInfo
 
 from ..fetch import fetch_html
@@ -46,22 +50,43 @@ _LANG_NAMES = {
     "ru": "Russian", "pl": "Polish", "nl": "Dutch", "el": "Greek",
 }
 
-# On ne garde que le théâtre : le champ « form » vaut Theatre, Dance, Performance,
-# Screening, Workshop… (« Theatre, Dance » pour les formes hybrides : gardé).
-_KEEP_FORMS = ("theatre", "theater")
+# On garde le théâtre et la performance : le champ « form » vaut Theatre, Dance,
+# Performance, Screening, Workshop, Talk, Award Ceremony… (« Theatre, Dance » pour
+# les formes hybrides : gardé). Danse seule, projections, ateliers, débats : écartés.
+_KEEP_FORMS = ("theatre", "theater", "performance")
 
 _AVAILABILITY = {"InStock": False, "LimitedAvailability": False, "SoldOut": True}
 
 
-def collect(url: str) -> List[Show]:
-    sitemap = fetch_html(url)
-    min_year = date.today().year - 1      # une saison déborde sur l'année suivante
+def sitemap_urls(url: str) -> List[str]:
+    """…&nodePath=a,b -> [sitemap de a, sitemap de b] (un seul si pas de liste)."""
+    parts = urlsplit(url)
+    query = parse_qsl(parts.query, keep_blank_values=True)
+    nodes = [n.strip() for k, v in query if k == "nodePath" for n in v.split(",") if n.strip()]
+    if len(nodes) <= 1:
+        return [url]
+    rest = [(k, v) for k, v in query if k != "nodePath"]
+    return [urlunsplit(parts._replace(query=urlencode(rest + [("nodePath", n)]))) for n in nodes]
+
+
+def event_pages(sitemap: str, min_year: int) -> List[str]:
     pages = []
     for loc in re.findall(r"<loc>(.*?)</loc>", sitemap):
         loc = html.unescape(loc.strip())
         m = _EVENT_URL.search(loc)
-        if m and int(m.group(1)) >= min_year and not loc.endswith(_NOT_EVENTS):
+        if m and int(m.group(1)) >= min_year and not loc.endswith(_NOT_EVENTS) and loc not in pages:
             pages.append(loc)
+    return pages
+
+
+def collect(url: str) -> List[Show]:
+    min_year = date.today().year - 1      # une saison déborde sur l'année suivante
+    pages: List[str] = []
+    for sm in sitemap_urls(url):
+        try:
+            pages.extend(p for p in event_pages(fetch_html(sm), min_year) if p not in pages)
+        except Exception as exc:  # noqa: BLE001 — un programme en panne n'arrête pas l'autre
+            print(f"   ⚠️  Festspiele — {sm} : {exc}")
 
     shows: List[Show] = []
     for i, page in enumerate(pages):
@@ -98,7 +123,7 @@ def _event_meta(raw: str) -> dict:
     """Bloc de l'événement dans __NEXT_DATA__ (langues, surtitres)."""
     m = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', raw, re.S)
     if not m:
-        return {}
+        return _flight_event_meta(raw)
     page = json.loads(m.group(1)).get("props", {}).get("pageProps", {}).get("currentPage", {})
     stack = [page]
     while stack:
@@ -109,6 +134,37 @@ def _event_meta(raw: str) -> dict:
             stack.extend(v for v in node.values() if isinstance(v, (list, dict)))
         elif isinstance(node, list):
             stack.extend(node)
+    return {}
+
+
+_FLIGHT_CHUNK = re.compile(r'self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)')
+
+
+def _flight_event_meta(raw: str) -> dict:
+    """Depuis l'automne 2026 le site est passé à l'App Router de Next.js : plus de
+    __NEXT_DATA__, les données de la page sont dans les morceaux
+    `self.__next_f.push([1, "…"])` (flux RSC). On recolle le flux et on prend le
+    1er objet JSON qui porte « audioLanguages » et « times » (l'événement)."""
+    try:
+        text = "".join(json.loads(c) for c in _FLIGHT_CHUNK.findall(raw))
+    except ValueError:
+        return {}
+    dec = json.JSONDecoder()
+    for m in re.finditer(r'"audioLanguages"\s*:', text):
+        pos = m.start()
+        j = pos
+        for _ in range(4000):              # remonte jusqu'à l'accolade de l'objet englobant
+            j = text.rfind("{", 0, j)
+            if j < 0:
+                break
+            try:
+                obj, end = dec.raw_decode(text, j)
+            except ValueError:
+                continue
+            if end > pos and isinstance(obj, dict) and "audioLanguages" in obj:
+                if "times" in obj:
+                    return obj
+                break
     return {}
 
 

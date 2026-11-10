@@ -77,6 +77,20 @@ articles.
   ou un titre (Tagesspiegel, Berliner Zeitung, taz, Monopol) → on lit une fois
   son titre + chapô (meta description), jamais le corps. 40 pages max par run.
 * **Nachtkritik** — `critics.py` (cache) : note estimée.
+* **Opéras — klassik-begeistert.de** (blog de critiques, robots.txt ouvert) :
+  3 pages de flux par nuit + recherche WordPress « titre + maison »
+  (« Tosca Staatsoper Linden »). On ne matche que le titre + l'URL (le titre
+  nomme l'œuvre ET la maison ; le chapô cite d'autres œuvres), sans les revues
+  de presse quotidiennes (« DIE DIENSTAG-PRESSE »). Les titres anglais des sites
+  (« The Flying Dutchman ») ont un alias allemand/original (`Show.aliases`).
+  Maisons homonymes écartées : Wiener / Hamburgische / Bayerische Staatsoper…,
+  Deutsche Oper am Rhein. Tagesspiegel, Welt, rbb24 couvrent aussi l'opéra
+  (« an der Staatsoper », « Deutsche Oper », « Komische Oper » sont des alias de lieu).
+  Non retenus : bachtrack (pas de flux), concerti.de (flux de 2 articles),
+  nmz.de (peu de Berlin), der-opernfreund.de (hors ligne).
+* **Philharmonie** : pas de buzz. Les titres de programme (« Rome with Kirill
+  Petrenko and Ottorino Respighi ») ne se relient pas sans risque à une critique
+  (même chef, autre soir), et aucune source ne publie une critique par programme.
 
 Recherche impossible pour un robot : Berliner Zeitung (`/suche` interdit par
 robots.txt → sitemaps), Tagesspiegel et Deutschlandfunk Kultur (résultats rendus

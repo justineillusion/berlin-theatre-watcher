@@ -24,6 +24,12 @@ Sources (vérifiées le 2026-11-08, voir docs/press.md) :
   recherche par item (si --items ou state/press_items.json) : flux de recherche
     WordPress (?s=…&feed=rss2) de Jüdische Allgemeine, Berlin Art Link et The
     Berliner, page de recherche Monopol. Résultats gardés 3 jours.
+  Opéras : klassik-begeistert.de (blog de critiques d'opéra/concert, WordPress,
+    robots.txt ouvert) : 3 pages de flux + recherche « titre + maison » ; titres
+    originaux via Show.aliases (« Der fliegende Holländer »). Les maisons
+    homonymes (Wiener Staatsoper, Deutsche Oper am Rhein…) sont écartées.
+    Concerts de la Philharmonie : pas couverts (titres de programme du type
+    « Petrenko conducts Respighi », impossibles à relier sans risque à une critique).
   Nachtkritik (pièces) : note estimée lue dans state/critics_cache.json via
     critics.fetch_rating(offline=True) — lecture seule, sans réseau.
   Inaccessibles aux robots / sans flux : Frieze (403), pages Zeit (403),
@@ -79,6 +85,7 @@ NACHTKRITIK = "Nachtkritik"
 MONOPOL = "Monopol"
 JA = "Jüdische Allgemeine"
 BAL = "Berlin Art Link"
+KB = "klassik-begeistert"
 
 # outlet -> [URL de flux RSS/Atom]
 _FEEDS: Dict[str, List[str]] = {
@@ -101,13 +108,28 @@ _FEEDS: Dict[str, List[str]] = {
          "https://www.juedische-allgemeine.de/feed/?paged=2"],
     BAL: ["https://www.berlinartlink.com/feed/"],
     "ArtReview": ["https://artreview.com/rss.xml"],
+    # Opéra / concerts : blog de critiques (WordPress, robots.txt ouvert), titres du type
+    # « Giacomo Puccini, Tosca, Bernheim  Staatsoper Unter den Linden, 28. Oktober 2026 ».
+    # 10 articles par page de flux, ~4 par jour (toute l'Europe) : 3 pages.
+    KB: ["https://klassik-begeistert.de/feed/", "https://klassik-begeistert.de/feed/?paged=2",
+         "https://klassik-begeistert.de/feed/?paged=3"],
 }
 # recherche par item : outlet -> gabarit d'URL ({q} = requête encodée)
 _WP_SEARCH = {
     JA: "https://www.juedische-allgemeine.de/?s={q}&feed=rss2",
     BAL: "https://www.berlinartlink.com/?s={q}&feed=rss2",
     BERLINER: "https://www.the-berliner.com/?s={q}&feed=rss2",
+    KB: "https://klassik-begeistert.de/?s={q}&feed=rss2",
 }
+# Recherche klassik-begeistert : titre + maison (« Tosca » seul = Sofia, Vienne…).
+_SEARCH_HOUSE = {
+    "Staatsoper Unter den Linden": "Staatsoper Linden",
+    "Deutsche Oper Berlin": "Deutsche Oper Berlin",
+    "Komische Oper Berlin": "Komische Oper",
+}
+# Revues de presse quotidiennes (« DIE DIENSTAG-PRESSE – 10. NOVEMBER 2026 ») :
+# vingt maisons et vingt œuvres dans un même chapô, pas une critique.
+_ROUNDUP_RE = re.compile(r"\b\w+TAG-PRESSE\b|\bPRESSE\s+[–—-]\s+\d", re.I)
 _MONOPOL_SEARCH = "https://www.monopol-magazin.de/suche?search_api_fulltext={q}"
 _TAZ_SEARCH = "https://taz.de/!s={q};rss/"           # flux RSS de la recherche taz
 
@@ -178,6 +200,12 @@ _VENUE_ALIASES: Dict[str, Tuple[str, ...]] = {
     "Berliner Ensemble": ("berliner ensemble",),
     "Volksbühne": ("volksbuehne", "volksbuhne"),
     "Berliner Festspiele": ("berliner festspiele", "haus der berliner festspiele", "theatertreffen"),
+    # Opéras : « an der Staatsoper », « Deutsche Oper », « Komische Oper » (au Schillertheater
+    # pendant les travaux). Les homonymes d'autres villes sont écartés par _VENUE_FOREIGN.
+    "Staatsoper Unter den Linden": ("staatsoper unter den linden", "staatsoper berlin", "lindenoper",
+                                    "staatsoper"),
+    "Deutsche Oper Berlin": ("deutsche oper berlin", "deutschen oper berlin", "deutsche oper", "deutschen oper"),
+    "Komische Oper Berlin": ("komische oper", "komischen oper", "schillertheater", "schiller theater"),
     # lieux fréquents ailleurs (pour écarter un homonyme : Schlingensief au Gropius Bau…)
     "Gropius Bau": ("gropius bau",),
     "HAU": ("hau1", "hau2", "hau3", "hebbel am ufer"),
@@ -191,6 +219,30 @@ _VENUE_ALIASES: Dict[str, Tuple[str, ...]] = {
     "Kunsthalle": ("kunsthalle",),
     "Museum Barberini": ("barberini",),
 }
+
+
+# Même nom, autre maison : « Wiener Staatsoper », « Deutsche Oper am Rhein »… Si l'un
+# d'eux est nommé sans la forme berlinoise explicite, l'article parle d'ailleurs.
+_VENUE_FOREIGN: Dict[str, Tuple[Tuple[str, ...], Tuple[str, ...]]] = {
+    "Staatsoper Unter den Linden": (
+        ("wiener staatsoper", "staatsoper wien", "hamburgische staatsoper", "hamburgischen staatsoper",
+         "staatsoper hamburg", "bayerische staatsoper", "bayerischen staatsoper", "staatsoper muenchen",
+         "staatsoper stuttgart", "staatsoper hannover", "staatsoper prag", "saechsische staatsoper",
+         "staatsoper dresden", "semperoper", "staatsoper budapest", "ungarische staatsoper"),
+        ("staatsoper unter den linden", "staatsoper berlin", "lindenoper"),
+    ),
+    "Deutsche Oper Berlin": (
+        ("deutsche oper am rhein", "deutschen oper am rhein"),
+        ("deutsche oper berlin", "deutschen oper berlin"),
+    ),
+}
+
+
+def _foreign_house(venue: str, unit_text: str) -> bool:
+    for name, (others, home) in _VENUE_FOREIGN.items():
+        if _key(venue) and (_key(name) == _key(venue) or _key(venue) in _key(name)):
+            return any(_contains(unit_text, o) for o in others) and not any(_contains(unit_text, h) for h in home)
+    return False
 
 
 def _venue_keys(venue: str) -> Tuple[str, ...]:
@@ -588,6 +640,24 @@ def _tip(f: _Fetcher, since: datetime) -> Optional[List[dict]]:
     return out
 
 
+_KB_NAME_RE = re.compile(r"\s*klassik-begeistert(?:\.de)?[-:,]?\s*", re.I)
+
+
+def _tidy(outlet: str, arts: List[dict]) -> List[dict]:
+    """klassik-begeistert : sans les revues de presse quotidiennes, et sans le nom du
+    blog dans le titre (« begeistert » ferait passer n'importe quoi pour un éloge)."""
+    if outlet != KB:
+        return arts
+    out = []
+    for a in arts:
+        if _ROUNDUP_RE.search(a["headline"]):
+            continue
+        a["headline"] = _KB_NAME_RE.sub(" ", a["headline"]).strip()
+        a["dek"] = _KB_NAME_RE.sub(" ", a["dek"]).strip()
+        out.append(a)
+    return out
+
+
 def _feeds(f: _Fetcher, outlet: str, urls: List[str]) -> Optional[List[dict]]:
     out, ok = [], False
     for u in urls:
@@ -595,7 +665,7 @@ def _feeds(f: _Fetcher, outlet: str, urls: List[str]) -> Optional[List[dict]]:
         if r is None:
             continue
         ok = True
-        out += parse_feed(r.text, outlet)
+        out += _tidy(outlet, parse_feed(r.text, outlet))
     return out if ok else None
 
 
@@ -710,7 +780,7 @@ def _search_wp(f: _Fetcher, outlet: str, query: str) -> Optional[List[dict]]:
     r = f.get(_WP_SEARCH[outlet].format(q=quote_plus(query)))
     if r is None:
         return None
-    return parse_feed(r.text, outlet, origin="search")[:10]
+    return _tidy(outlet, parse_feed(r.text, outlet, origin="search")[:10])
 
 
 def _searches(f: _Fetcher, items: List[dict], old: dict, now: datetime) -> Tuple[dict, List[dict]]:
@@ -722,11 +792,15 @@ def _searches(f: _Fetcher, items: List[dict], old: dict, now: datetime) -> Tuple
     searches = {k: v for k, v in old.get("searches", {}).items()
                 if now.timestamp() - v.get("at", 0) < _WINDOW_DAYS * 86400}
     queries = []
+    house_queries = []      # « Tosca Staatsoper Linden » : klassik-begeistert seulement
     for it in sorted(items, key=lambda i: i.get("kind") != "expo"):
+        house = _SEARCH_HOUSE.get(it.get("venue", ""))
         for t in [it.get("title", "")] + list(it.get("aliases") or []):
             q = search_query(t)
             if q and q not in queries:
                 queries.append(q)
+            if house and q and f"{q} {house}" not in house_queries:
+                house_queries.append(f"{q} {house}")
     engines: Dict[str, Callable[[str], Optional[List[dict]]]] = {
         o: (lambda q, o=o: _search_wp(f, o, q)) for o in _WP_SEARCH}
     engines[MONOPOL] = lambda q: _search_monopol(f, q)
@@ -735,7 +809,8 @@ def _searches(f: _Fetcher, items: List[dict], old: dict, now: datetime) -> Tuple
     lock = threading.Lock()
 
     def run(outlet: str) -> None:
-        todo = sorted(queries, key=lambda q: searches.get(f"{outlet}|{q}", {}).get("at", 0))
+        mine = (house_queries + queries) if outlet == KB else queries   # sort stable : maisons d'abord
+        todo = sorted(mine, key=lambda q: searches.get(f"{outlet}|{q}", {}).get("at", 0))
         for q in todo:
             k = f"{outlet}|{q}"
             if now.timestamp() - searches.get(k, {}).get("at", 0) < _SEARCH_TTL_DAYS * 86400:
@@ -1008,6 +1083,8 @@ def _match_unit(phrases: List[str], unit_text: str, unit_venues: List[str],
                 weak: Iterable[str] = ()) -> bool:
     venue_named = any(_contains(unit_text, a) for a in item_venue_keys) or any(
         set(_venue_keys(v)) == set(item_venue_keys) for v in unit_venues)
+    if venue_named and _foreign_house(item_venue, unit_text):
+        return False           # « Tosca » à la Wiener Staatsoper, pas Unter den Linden
     other_venue_only = bool(unit_venues) and not venue_named
     for ph in phrases:
         if not _contains(unit_text, ph):
@@ -1036,7 +1113,13 @@ def press_hits(kind: str, venue: str, title: str, url: str = "",
     for a in data["articles"]:
         if kind == "film" and a["outlet"] == TIP and a.get("section") != "film":
             continue
-        text = " ".join([_key(a.get("headline", "")), _key(a.get("dek", "")), a.get("match", "")]
+        if _ROUNDUP_RE.search(a.get("headline", "")):
+            continue
+        # klassik-begeistert : le titre nomme l'œuvre ET la maison (« Puccini, Tosca …
+        # Deutsche Oper Berlin, 29. September 2026 ») ; le chapô cite d'autres rôles
+        # et œuvres (« Carmen ») : on ne matche que titre + URL.
+        dek = "" if a["outlet"] == KB else _key(a.get("dek", ""))
+        text = " ".join([_key(a.get("headline", "")), dek, a.get("match", "")]
                         + [_key(s) for s in a.get("subjects", [])])
         need_venue = kind == "theatre" or not a.get("date")
         if not a.get("entries"):
