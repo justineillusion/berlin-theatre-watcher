@@ -5,6 +5,8 @@ export const DISTRICT: Record<string, string> = {
   "schaubuhne": "Wilmersdorf",                                 // Kurfürstendamm 153
   "berliner-ensemble": "Mitte",                                // Bertolt-Brecht-Platz 1
   "volksbuhne": "Mitte",                                       // Rosa-Luxemburg-Platz
+  "maxim-gorki-theater": "Mitte",                              // Am Festungsgraben 2
+  "hau-hebbel-am-ufer": "Kreuzberg",                           // Hallesches Ufer 32
   "berliner-festspiele-performing-arts-seas": "Wilmersdorf",   // Schaperstraße 24
   "berliner-festspiele-theatertreffen": "Wilmersdorf",
   // Expos
