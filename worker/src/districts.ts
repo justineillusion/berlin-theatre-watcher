@@ -21,4 +21,8 @@ export const DISTRICT: Record<string, string> = {
   "cinema-b-ware-ladenkino": "Friedrichshain",                 // Gärtnerstraße 19
   "cinema-babylon": "Mitte",                                   // Rosa-Luxemburg-Straße 30
   "cinema-kino-international": "Mitte",                        // Karl-Marx-Allee 33
+  "staatsoper-unter-den-linden": "Mitte",
+  "deutsche-oper-berlin": "Charlottenburg",
+  "komische-oper-berlin": "Charlottenburg",
+  "berliner-philharmoniker": "Tiergarten",
 };

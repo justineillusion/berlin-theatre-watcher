@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS venues (
   name     TEXT NOT NULL,
   kind     TEXT NOT NULL DEFAULT 'theatre',  -- theatre | expo | cinema
   position INTEGER NOT NULL DEFAULT 0,
-  active   INTEGER NOT NULL DEFAULT 1        -- 0 = retiré de config.yaml
+  active   INTEGER NOT NULL DEFAULT 1,       -- 0 = retiré de config.yaml
+  optional INTEGER NOT NULL DEFAULT 0        -- à la carte : jamais d'abonnement d'office (migrations/015)
 );
 
 -- Qui suit quel lieu. primed=0 : abonnement neuf, le prochain scan enregistre

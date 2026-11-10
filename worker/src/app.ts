@@ -201,7 +201,7 @@ async function finishSignup(env: Env, chat: number): Promise<void> {
   if (!u.pending) return;
   await env.DB.batch([
     env.DB.prepare("UPDATE users SET active = 1, pending = 0 WHERE chat_id = ?").bind(chat),
-    env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 1 FROM venues WHERE active = 1").bind(chat),
+    env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 1 FROM venues WHERE active = 1 AND optional = 0").bind(chat),
   ]);
   if (env.OWNER_CHAT_ID) {
     const owner = await env.DB.prepare("SELECT lang FROM users WHERE chat_id = ?").bind(Number(env.OWNER_CHAT_ID)).first<{ lang: string | null }>();
@@ -387,14 +387,16 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     const op = String(body.op ?? ""), id = String(body.id ?? ""), arg = body.arg == null ? "" : String(body.arg);
     // Réglages : suivre / ne plus suivre tous les lieux d'un type (théâtres, expos, cinémas).
     if (op === "sk") {
-      if (!KINDS.has(id) || !["on", "off"].includes(arg)) return Response.json({ error: "bad_request" }, { status: 400 });
+      if (!(KINDS.has(id) || id === "optional") || !["on", "off"].includes(arg)) return Response.json({ error: "bad_request" }, { status: 400 });
+      // « Opéra & concerts » (à la carte) est une catégorie à part ; les autres excluent ces lieux.
+      const which = id === "optional" ? "optional = 1 AND ?2 = ?2" : "kind = ?2 AND optional = 0";
       // Avec un quartier (Réglages filtrés) : seulement les lieux de ce type dans ce quartier.
       const area = String(body.area ?? "");
       const only = area ? JSON.stringify(Object.keys(DISTRICT).filter((v) => DISTRICT[v] === area)) : null;
       const inArea = only ? " AND id IN (SELECT value FROM json_each(?3))" : "";
       const q = arg === "on"
-        ? env.DB.prepare(`INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?1, id, 0 FROM venues WHERE active = 1 AND kind = ?2${inArea}`)
-        : env.DB.prepare(`DELETE FROM subscriptions WHERE chat_id = ?1 AND venue_id IN (SELECT id FROM venues WHERE kind = ?2${inArea})`);
+        ? env.DB.prepare(`INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?1, id, 0 FROM venues WHERE active = 1 AND ${which}${inArea}`)
+        : env.DB.prepare(`DELETE FROM subscriptions WHERE chat_id = ?1 AND venue_id IN (SELECT id FROM venues WHERE ${which}${inArea})`);
       await (only ? q.bind(me.chat_id, id, only) : q.bind(me.chat_id, id)).run();
       return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
     }
@@ -565,7 +567,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
       .push({ id: r.chat_id, name: r.first_name, star: r.interested && r.status !== "seen" ? 1 : 0, booked: r.booked_at, seen: r.status === "seen" ? 1 : 0, rating: r.rating, comment: r.comment });
   }
   const { results: venues } = await env.DB.prepare(
-    `SELECT v.id, v.name, v.kind, EXISTS (SELECT 1 FROM subscriptions s WHERE s.chat_id = ? AND s.venue_id = v.id) AS followed
+    `SELECT v.id, v.name, v.kind, v.optional, EXISTS (SELECT 1 FROM subscriptions s WHERE s.chat_id = ? AND s.venue_id = v.id) AS followed
      FROM venues v WHERE v.active = 1 ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
   ).bind(chat).all<any>();
   // « Envoyer à » / « + Joss » : mes connexions seulement.

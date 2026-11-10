@@ -212,7 +212,7 @@ async function onStart(env: Env, from: TgUser, user: any, code?: string): Promis
     env.DB.prepare("INSERT INTO users (chat_id, first_name, username) VALUES (?, ?, ?)")
       .bind(chat, from.first_name, from.username ?? null),
     // Par défaut : tout. Le premier scan enregistre le catalogue en silence.
-    env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 0 FROM venues WHERE active = 1")
+    env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 0 FROM venues WHERE active = 1 AND optional = 0")
       .bind(chat),
   ]);
   // Connecté·e à qui l'a invité·e (lien personnel), sinon à la propriétaire (ancien lien commun).
@@ -562,7 +562,7 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
   }
   if (data === "sa" || data === "sn" || data.startsWith("s:")) {
     if (data === "sa") {
-      await env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 0 FROM venues WHERE active = 1").bind(chat).run();
+      await env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 0 FROM venues WHERE active = 1 AND optional = 0").bind(chat).run();
     } else if (data === "sn") {
       await env.DB.prepare("DELETE FROM subscriptions WHERE chat_id = ?").bind(chat).run();
     } else {

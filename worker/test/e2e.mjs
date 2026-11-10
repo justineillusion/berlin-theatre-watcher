@@ -130,9 +130,9 @@ try {
   });
 
   let code;
-  await step("/invite donne un lien t.me, Léa rejoint avec", async () => {
+  await step("/invite donne un lien (web), Léa rejoint aussi via le bot", async () => {
     const c = await say(OWNER, "/invite");
-    code = sends(c, OWNER)[0].text.match(/start=(\w+)/)[1];
+    code = sends(c, OWNER)[0].text.match(/(?:start|invite)=(\w+)/)[1];
     const j = await say(LEA, `/start ${code}`);
     assert.match(sends(j, LEA)[0].text, /Bienvenue Léa/);
     assert.match(sends(j, OWNER)[0].text, /Léa a rejoint/);
@@ -405,7 +405,7 @@ try {
   });
 
   await step("ciné : un nouvel ami suit tous les cinémas par défaut ; /aide en parle", async () => {
-    const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/start=(\w+)/)[1];
+    const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/(?:start|invite)=(\w+)/)[1];
     await say(MAX, `/start ${link}`);
     assert.deepEqual(byChat(await cine())[MAX], ALL_CINE);
     assert.match(sends(await say(MAX, "/aide"), MAX)[0].text, /films en VO/);
@@ -468,7 +468,7 @@ try {
 
   await step("langue : à l'inscription, choix proposé ; 🇬🇧 redonne l'accueil en anglais", async () => {
     const ZOE = 444;
-    const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/start=(\w+)/)[1];
+    const link = sends(await say(OWNER, "/invite"), OWNER)[0].text.match(/(?:start|invite)=(\w+)/)[1];
     let c = await tgUpdate({ message: { message_id: upd, from: { id: ZOE, first_name: "Zoé" }, chat: { id: ZOE, type: "private" }, text: `/start ${link}` } });
     const last = sends(c, ZOE).at(-1);
     assert.deepEqual(last.reply_markup.inline_keyboard[0].map((b) => b.callback_data), ["l:fr:1", "l:en:1"]);

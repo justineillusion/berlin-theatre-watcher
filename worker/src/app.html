@@ -106,13 +106,18 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .venue{margin:14px 16px 2px;padding-top:10px;border-top:2px solid var(--ink);font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}
 .badge.rescue{border:1.5px solid var(--ink);padding:3px 8px;font-weight:800;color:var(--ink);opacity:1}.dismissed .item:not(.open) .row .rescue{opacity:1}
 .day.dim{color:var(--muted);border-top:1px solid var(--line);margin-top:18px}.day .fold{margin-left:auto;border:0;background:none;padding:0;font:600 13.5px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:3px}.dismissed .item:not(.open) .row > :not(.rescue){opacity:.42}
+.hurry{color:var(--velvet);font-weight:700;white-space:nowrap}
 .more{display:block;margin:0 0 4px 76px;border:0;background:none;padding:6px 0;font:700 13.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 .v .k{color:var(--gold)}
-.logo{width:28px;height:28px;object-fit:contain;vertical-align:middle;border-radius:50%;background:#fff;padding:5px;box-sizing:border-box;box-shadow:0 0 0 1px var(--line)}
-.set .line .logo{width:26px;height:26px;padding:4px;margin-right:10px;flex:none}.set .line > div{display:flex;align-items:center}
+.logo{width:24px;height:24px;object-fit:contain;vertical-align:middle;border-radius:3px}
+.set .line .logo{width:20px;height:20px;margin-right:8px;flex:none}.set .line > div{display:flex;align-items:center}
 .badge{font-size:15px;padding-top:2px}
 .social{font-size:14px;color:var(--ink);margin-top:4px}
 .ostar{font-size:12px;opacity:.7;margin-right:3px}
+.badge.disc{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:15px;line-height:1;padding:0;margin-top:2px;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line)}
+.badge.disc.booked{background:#fdeaec;box-shadow:inset 0 0 0 1.5px var(--velvet)}
+.badge.disc.seen{background:#e8f5ee;box-shadow:inset 0 0 0 1.5px var(--ok)}
+.badge.disc.rate{font:800 11.5px var(--sans);color:#8a6400;background:var(--gold-soft);box-shadow:inset 0 0 0 1.5px var(--gold);white-space:nowrap}
 .badge.mystar{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--gold-soft);box-shadow:inset 0 0 0 1.5px var(--gold);font-size:17px;line-height:1;padding:0;margin-top:2px}
 .more{color:var(--muted);font-size:12.5px;white-space:nowrap}
 .cropbg{position:fixed;inset:0;background:rgba(14,15,17,.55);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
@@ -259,11 +264,11 @@ const L = {
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, notForMeN:(n) => `Pas pour moi · ${n}`, soldN:(n) => `Complets · ${n}`, hideD:"Masquer", showD:"Afficher", whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} 🙋/🎟 plus tard`,
-        whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont masquées.", soldShort:"complet", hideSold:"Voir les complets", hideSoldOff:"Masquer les complets", moreDates:(n) => `+${n} séance${n > 1 ? "s" : ""}`, whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
+        whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont masquées.", soldShort:"complet", hideSold:"Voir les complets", lastDay:"dernier jour !", daysLeft:(d) => `plus que ${d} jour${d > 1 ? "s" : ""}`, hideSoldOff:"Masquer les complets", moreDates:(n) => `+${n} séance${n > 1 ? "s" : ""}`, whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
-        cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
+        cats:{ theatre:"Théâtres", optional:"Opéra & concerts", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
         tagline:"Les scènes, écrans et expos de Berlin, pour les amis dont l'allemand s'arrête à « Entschuldigung ».", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "Théâtre et opéra surtitrés en anglais"], ["🎬", "Cinéma en version originale"], ["🖼", "Les expos du moment"], ["👯", "Ce qui tente tes amis, pour y aller ensemble"]],
         invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Rejoindre", joinGo:"Valider", signupHint:"On t'envoie un code par email pour confirmer. Pas de mot de passe.",
         haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
@@ -283,11 +288,11 @@ const L = {
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
         reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, notForMeN:(n) => `Not for me · ${n}`, soldN:(n) => `Sold out · ${n}`, hideD:"Hide", showD:"Show", whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} 🙋/🎟 later on`,
-        whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", soldShort:"sold out", hideSold:"Show sold out", hideSoldOff:"Hide sold out", moreDates:(n) => `+${n} more date${n > 1 ? "s" : ""}`, whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
+        whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", soldShort:"sold out", hideSold:"Show sold out", lastDay:"last day!", daysLeft:(d) => `${d} day${d > 1 ? "s" : ""} left`, hideSoldOff:"Hide sold out", moreDates:(n) => `+${n} more date${n > 1 ? "s" : ""}`, whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
-        cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
+        cats:{ theatre:"Theatres", optional:"Opera & concerts", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
         tagline:"Berlin's stages, screens and galleries, for friends whose German stops at “Entschuldigung”.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "Theatre and opera with English surtitles"], ["🎬", "Films in original version"], ["🖼", "Current exhibitions"], ["👯", "What your friends fancy, so you can go together"]],
         invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Join", joinGo:"Confirm", signupHint:"We'll email you a code to confirm. No password.",
         haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
@@ -338,7 +343,8 @@ function dayLabel(d) {
 }
 const shortDay = (d) => `${+d.slice(8, 10)} ${T.smons[+d.slice(5, 7) - 1]}`;
 const state = (x) => !x.me ? "" : x.me.status === "seen" ? "seen" : x.me.status === "ignored" ? "ignored" : x.me.booked ? "booked" : x.me.star ? "star" : "";
-const badge = (x) => state(x) === "ignored" && st.dateCell ? `<span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span>` : state(x) === "seen" && x.me.rating ? `<span class="badge rate">${x.me.rating}★</span>` : state(x) === "star" ? `<span class="badge mystar" title="${esc(T.star)}">🙋</span>` : `<span class="badge">${{ booked:"🎟", seen:"✅" }[state(x)] || ""}</span>`;
+const badge = (x) => state(x) === "ignored" && st.dateCell ? `<span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span>` : state(x) === "seen" && x.me.rating ? `<span class="badge disc rate">${x.me.rating}★</span>` : state(x) === "star" ? `<span class="badge mystar" title="${esc(T.star)}">🙋</span>`
+  : ["booked", "seen"].includes(state(x)) ? `<span class="badge disc ${state(x)}">${state(x) === "booked" ? "🎟" : "✅"}</span>` : `<span class="badge"></span>`;
 const stars = (n) => n ? `<span class="stars">${"★".repeat(n)}<i>${"★".repeat(5 - n)}</i></span>` : "";
 
 /** Lignes utiles de la fiche du bot (HTML Telegram) : lieu/salle, auteur, langue, critiques presse, résumé. */
@@ -543,6 +549,12 @@ function whenCell(x) {
 /** « ★ 6,9 SC » : un clic ouvre la fiche SensCritique / Letterboxd. */
 const scTag = (f) => f.ratingUrl ? `<b class="sc link" data-href="${esc(f.ratingUrl)}">${esc(f.rating)} ↗</b>` : `<b class="sc">${esc(f.rating)}</b>`;
 /** « +5 dates » : un film / une pièce n'apparaît qu'à sa prochaine séance ; on dit qu'il y en a d'autres. */
+/** Expo qui ferme dans moins de 2 semaines : « ⏳ plus que 9 jours ». */
+function hurry(x) {
+  if (!x.end || x.end < TODAY) return "";
+  const d = Math.round((dt(x.end) - dt(TODAY)) / 864e5);
+  return d <= 14 ? ` <span class="hurry">⏳ ${esc(d === 0 ? T.lastDay : T.daysLeft(d))}</span>` : "";
+}
 function moreDates(x) {
   if (st.tab !== "prog" || x.kind === "expo" || x._at || st.dateCell) return "";
   const n = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when] && !isSold(x, d)).length - 1;
@@ -553,7 +565,7 @@ function item(x) {
   const soldNow = st.tab === "prog" && isSold(x, next(x));
   let h = `<div class="item${open ? " open" : ""}${soldNow ? " soldout" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div>
-    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
+    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}${hurry(x)}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
     ${badge(x)}</button>`;
   if (!open) return h + "</div>";
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
@@ -780,10 +792,10 @@ function render() {
     const inSet = (v) => !st.setArea || v.district === st.setArea;
     const areaChips = areas.length < 2 ? "" : `<label class="areasel">${esc(T.areaL)}<select id="areasel">` +
       [["", T.everywhere], ...areas.map((a) => [a, a])].map(([v, l]) => `<option value="${esc(v)}"${st.setArea === v ? " selected" : ""}>${esc(l)}</option>`).join("") + "</select></label>";
-    const cats = ["theatre", "expo", "cinema"].map((k) => [k, S.venues.filter((v) => v.kind === k && inSet(v))]).filter(([, vs]) => vs.length);
+    const cats = ["theatre", "optional", "expo", "cinema"].map((k) => [k, S.venues.filter((v) => (k === "optional" ? v.optional : v.kind === k && !v.optional) && inSet(v))]).filter(([, vs]) => vs.length);
     const venuesTab = `<p class="hint">${esc(T.tapToggle)}</p>${areaChips}${cats.map(([k, vs]) => {
       const any = vs.some((v) => v.followed);
-      return `<div class="cat"><b>${ICON[k === "cinema" ? "film" : k]} ${esc(T.cats[k])} · ${vs.filter((v) => v.followed).length}/${vs.length}</b>
+      return `<div class="cat"><b>${k === "optional" ? "🎼" : ICON[k === "cinema" ? "film" : k]} ${esc(T.cats[k])} · ${vs.filter((v) => v.followed).length}/${vs.length}</b>
         <button class="act${any ? "" : " on"}" data-sk="${k}" data-arg="${any ? "off" : "on"}">${esc(any ? T.catOff : T.catOn)}</button></div>` +
         vs.map((v) => `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}"><div>${v.logo ? `<img class="logo" src="${API_BASE}${esc(v.logo)}" alt="">` : ""}<div>${esc(v.name)}${v.district ? `<small class="dist">${esc(v.district)}</small>` : ""}</div></div><span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("");
     }).join("")}`;

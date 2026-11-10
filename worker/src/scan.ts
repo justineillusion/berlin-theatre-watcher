@@ -141,7 +141,7 @@ function header(p: Pending, item: Item, lang: Lang): string | null {
 // ---------------------------------------------------------------------------
 // Lieux
 // ---------------------------------------------------------------------------
-interface VenueIn { id: string; name: string; kind: string }
+interface VenueIn { id: string; name: string; kind: string; optional?: boolean }
 
 /** Enregistre les lieux d'un job. `scope` (SQL) = les lieux dont CE job est
  *  responsable : seuls ceux-là sont désactivés s'ils ont disparu de sa config
@@ -150,10 +150,10 @@ async function upsertVenues(env: Env, venues: VenueIn[], scope: string): Promise
   const stmts: D1PreparedStatement[] = [
     env.DB.prepare(`UPDATE venues SET active = 0 WHERE ${scope}`),
     ...venues.map((v, i) => env.DB.prepare(
-      `INSERT INTO venues (id, name, kind, position, active) VALUES (?, ?, ?, ?, 1)
+      `INSERT INTO venues (id, name, kind, position, active, optional) VALUES (?, ?, ?, ?, 1, ?)
        ON CONFLICT(id) DO UPDATE SET name = excluded.name, kind = excluded.kind,
-         position = excluded.position, active = 1`,
-    ).bind(v.id, v.name, v.kind, i)),
+         position = excluded.position, active = 1, optional = excluded.optional`,
+    ).bind(v.id, v.name, v.kind, i, v.optional ? 1 : 0)),
   ];
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
 
@@ -162,10 +162,10 @@ async function upsertVenues(env: Env, venues: VenueIn[], scope: string): Promise
   await env.DB.prepare(
     `INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed)
      SELECT u.chat_id, v.id, 0 FROM users u, venues v
-     WHERE u.active = 1 AND v.active = 1
+     WHERE u.active = 1 AND v.active = 1 AND v.optional = 0   -- à la carte : jamais d'office
        AND NOT EXISTS (SELECT 1 FROM settings WHERE key = 'known_venue:' || v.id)
-       AND (SELECT COUNT(*) FROM subscriptions s WHERE s.chat_id = u.chat_id)
-         >= (SELECT COUNT(*) FROM settings WHERE key LIKE 'known_venue:%')`,
+       AND (SELECT COUNT(*) FROM subscriptions s JOIN venues w ON w.id = s.venue_id AND w.optional = 0 WHERE s.chat_id = u.chat_id)
+         >= (SELECT COUNT(*) FROM settings k JOIN venues w ON k.key = 'known_venue:' || w.id AND w.optional = 0)`,
   ).run();
   if (venues.length) {
     await env.DB.batch(venues.map((v) => env.DB.prepare(
