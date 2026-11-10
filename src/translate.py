@@ -8,6 +8,7 @@ qu'une erreur.
 """
 from __future__ import annotations
 
+import html
 import re
 import time
 from typing import Dict, List, Optional, Sequence
@@ -64,8 +65,32 @@ def translate(text: Optional[str], target: str = "fr", retries: int = 3) -> Opti
                     return out
             except Exception:  # noqa: BLE001
                 pass
+        # 2) repli : MyMemory (gratuit, sans clé, autre fournisseur que Google : pas le même rate-limit)
+        out = _mymemory(text, target)
+        if _looks_valid(text, out):
+            return out
         time.sleep(1.0 + 1.5 * attempt)   # backoff pour laisser le rate-limit retomber
     return text  # repli : mieux vaut l'original qu'un "505"
+
+
+def _mymemory(text: str, target: str) -> Optional[str]:
+    """api.mymemory.translated.net (gratuit, ~500 caractères par requête, langue source requise)."""
+    src = detect_lang(text)
+    if not src or src == target or len(text) > 480:
+        return None
+    try:
+        import httpx
+        r = httpx.get("https://api.mymemory.translated.net/get",
+                      params={"q": text, "langpair": f"{src}|{target}"}, timeout=8.0)
+        if r.status_code != 200:
+            return None
+        j = r.json()
+        if int(j.get("responseStatus") or 0) != 200:
+            return None
+        out = (j.get("responseData") or {}).get("translatedText")
+        return html.unescape(out) if out else None
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def _gtx(text: str, target: str) -> Optional[str]:
