@@ -1,6 +1,22 @@
 [
  {
   "kind": "theatre",
+  "venue": "Maxim Gorki Theater",
+  "title": "Noise as a Strategy — English Workshop",
+  "url": "https://www.gorki.de/en/noise-as-a-strategy",
+  "opens": "2026-11-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "EXXY",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/dan-daw-creative-projects-exxy/",
+  "opens": "2026-11-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "Kolonialismus erinnern. Vom Konzept zum Ort",
   "url": "https://www.volksbuehne-berlin.de/en/productions/kolonialismus-erinnern/20261113-1900/",
@@ -9,10 +25,37 @@
  },
  {
   "kind": "theatre",
+  "venue": "Maxim Gorki Theater",
+  "title": "Çağla Ilk in conversation with Marco Fusinato (in English)",
+  "url": "https://www.gorki.de/en/in-the-corpse-of-the-present-prinz-friedrich-von-homburg-2",
+  "opens": "2026-11-14",
+  "aliases": [
+   "Çağla Ilk in conversation with Marco Fusinato",
+   "in English"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "A Friend in Berlin",
   "url": "https://www.volksbuehne-berlin.de/en/productions/a-friend-in-berlin/20261119-1800/",
   "opens": "2026-11-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "May Fall – Offener Tanzworkshop",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/may-fall-offener-tanzworkshop/",
+  "opens": "2026-11-20",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "Tool-Party #4: Synthetic Desire",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/anan-fries-tool-party-4-synthetic-desire/",
+  "opens": "2026-11-22",
   "aliases": []
  },
  {
@@ -79,6 +122,22 @@
  },
  {
   "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "KIDS",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/boris-nikitin-kids/",
+  "opens": "2026-12-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "Fiddler! One Night Only",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/ariel-efraim-ashbel-and-friends-fiddler-one-night-only/",
+  "opens": "2026-12-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "The Picture of Dorian Gray (Das Bildnis des Dorian Gray)",
   "url": "https://www.berliner-ensemble.de/en/production/picture-dorian-gray-das-bildnis-des-dorian-gray",
@@ -105,6 +164,14 @@
   "title": "Hamlet",
   "url": "https://www.berliner-ensemble.de/en/production/hamlet",
   "opens": "2026-12-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "Di/STRAUSS technique",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/ivo-dimchev-di-strauss-technique/",
+  "opens": "2026-12-22",
   "aliases": []
  },
  {
@@ -309,6 +376,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "Justices",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/clement-papachristou-justices/",
+  "opens": "2026-11-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Orfeo ed Euridice",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/orfeo-ed-euridice.27753/",
@@ -385,6 +460,14 @@
   "title": "The Flying Dutchman",
   "url": "https://deutscheoperberlin.de/en_EN/production/the-flying-dutchman.1385827",
   "opens": "2026-11-15",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "Monga",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/jessica-teixeira-monga/",
+  "opens": "2026-11-16",
   "aliases": []
  },
  {
@@ -519,6 +602,14 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Maxim Gorki Theater",
+  "title": "The Hearing Trumpet",
+  "url": "https://www.gorki.de/en/the-hearing-trumpet",
+  "opens": "2026-12-05",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "KW Institute for Contemporary Art",
   "title": "BPA// Exhibition 2026 — Undercurrents",
@@ -592,10 +683,26 @@
  },
  {
   "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "BODEN",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/sophie-yukiko-zoe-boden/",
+  "opens": "2026-12-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Maxime Pascal makes his debut with Berlioz’s “L’Enfance du Christ”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57079/",
   "opens": "2026-12-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "HAU Hebbel am Ufer",
+  "title": "Die große Klassenrevue",
+  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/christiane-roesinger-hau-die-grosse-klassenrevue/",
+  "opens": "2026-12-18",
   "aliases": []
  },
  {
