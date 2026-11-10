@@ -23,4 +23,5 @@ SOURCES: dict[str, Callable[[str], List[Show]]] = {
     "co_berlin": expos.co_berlin,
     "berlinische_galerie": expos.berlinische_galerie,
     "fotografiska": expos.fotografiska,
+    "gropius_bau": expos.gropius_bau,
 }

@@ -14,6 +14,7 @@ Sites gérés (HTML rendu côté serveur, pas d'API) :
     - co-berlin.org/en/program/exhibitions
     - berlinischegalerie.de/en/exhibitions/
     - berlin.fotografiska.com/en/exhibition (payload Next.js)
+    - Gropius Bau (berlinerfestspiele.de, JSON-LD ExhibitionEvent par expo)
 """
 from __future__ import annotations
 
@@ -349,3 +350,62 @@ def parse_fotografiska(html: str, base: str) -> List[Show]:
             start, end = "", None
         out[href] = _expo(title, href, start, end)
     return list(out.values())
+
+
+# ---------------------------------------------------------------------------
+# Gropius Bau (site des Berliner Festspiele, Next.js)
+# ---------------------------------------------------------------------------
+# La page « aktuell-und-vorschau » liste les expos (/programm/<année>/ausstellungen/<slug>) ;
+# chaque page d'expo porte un JSON-LD schema.org ExhibitionEvent (startDate / endDate, UTC).
+# Une expo annoncée sans dates (« Spring 2027 ») est laissée de côté jusqu'à ce qu'elle en ait.
+_GB_EXPO = re.compile(r"/en/gropius-bau/programm/\d{4}/ausstellungen/[^/#?\"]+$")
+
+
+def gropius_bau(url: str) -> List[Show]:
+    """`url` = https://www.berlinerfestspiele.de/en/gropius-bau/ausstellungen/aktuell-und-vorschau"""
+    shows: List[Show] = []
+    for page in gropius_bau_links(fetch_html(url), url):
+        show = parse_gropius_bau(fetch_html(page), page)
+        if show:
+            shows.append(show)
+    return shows
+
+
+def gropius_bau_links(html: str, base: str) -> List[str]:
+    soup = BeautifulSoup(html, "html.parser")
+    seen: List[str] = []
+    for a in soup.find_all("a", href=True):
+        href = urljoin(base, a["href"].split("#")[0].split("?")[0])
+        if _GB_EXPO.search(href) and href not in seen:
+            seen.append(href)
+    return seen
+
+
+def _berlin_day(iso: str) -> str:
+    """'2027-01-17T18:00:00.000Z' -> '2027-01-17' (jour à Berlin)."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    except ValueError:
+        return ""
+    return dt.astimezone(ZoneInfo("Europe/Berlin")).date().isoformat()
+
+
+def parse_gropius_bau(html: str, url: str) -> Optional[Show]:
+    import json
+    soup = BeautifulSoup(html, "html.parser")
+    for tag in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(tag.string or "")
+        except ValueError:
+            continue
+        for d in data if isinstance(data, list) else [data]:
+            if not isinstance(d, dict) or d.get("@type") != "ExhibitionEvent":
+                continue
+            start, end = _berlin_day(d.get("startDate", "")), _berlin_day(d.get("endDate", ""))
+            if not start and not end:
+                return None
+            from html import unescape
+            return _expo(unescape(d.get("name", "")), url, start, end or None)
+    return None

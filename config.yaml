@@ -133,6 +133,11 @@ theaters:
     kind: expo
     url: https://berlin.fotografiska.com/en/exhibition
 
+  - name: Gropius Bau
+    parser: gropius_bau
+    kind: expo
+    url: https://www.berlinerfestspiele.de/en/gropius-bau/ausstellungen/aktuell-und-vorschau
+
 # ---------------------------------------------------------------------------
 # BOT MULTI-UTILISATEURS (amis)
 # ---------------------------------------------------------------------------
