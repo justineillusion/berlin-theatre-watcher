@@ -76,7 +76,15 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .avbig,.avmid{width:52px;height:52px;border-radius:50%;object-fit:cover;flex:none;display:inline-flex;align-items:center;justify-content:center;background:var(--line);color:var(--muted);font:700 20px var(--sans)}
 .avmid{width:30px;height:30px;font-size:13px;margin-right:10px}
 .fline.photo>div:nth-child(2){flex:1}
-.fline .avbig.none,.fline .avmid.none{display:inline-flex;align-items:center;justify-content:center;margin:0;font:700 20px var(--sans);color:var(--muted)}
+.fline .avbig.none,.fline .avmid.none{display:inline-flex;align-items:center;justify-content:center;font:800 22px/1 var(--sans);letter-spacing:-.02em;text-transform:uppercase}
+.fline .avmid.none{font-size:14px;margin-right:10px}
+.none.c0{background:var(--velvet);color:#fff}
+.none.c1{background:var(--ink);color:var(--bg)}
+.none.c2{background:var(--bg);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.none.c3{background:var(--bg);color:var(--velvet);box-shadow:inset 0 0 0 2px var(--velvet)}
+.none.c4{background:#2b59c3;color:#fff}
+.none.c5{background:var(--gold);color:#111214}
+.none.c6{background:#1f8a5b;color:#fff}
 .fname{display:flex;align-items:center;border:0;background:none;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
 .fname b{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
 .fhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:6px 0 4px}
@@ -145,6 +153,21 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .hint{color:var(--muted);font-size:13px;margin-top:14px}
 .login{max-width:420px;margin:0 auto;padding:40px 24px;display:grid;gap:14px;text-align:left}
 .login p{margin:0;color:var(--muted)}.login .act{text-align:center;padding:12px 14px;font-size:15px}
+.login{padding-top:18px;gap:22px}
+.lpick{justify-self:end;display:flex;gap:2px}
+.lpick button{border:0;background:none;font:700 12px var(--sans);letter-spacing:.08em;color:var(--muted);padding:4px 6px;cursor:pointer}
+.lpick button.on{color:var(--ink);box-shadow:inset 0 -2px 0 var(--velvet)}
+.pitch .tag{font:800 30px/1.08 var(--sans);letter-spacing:-.02em;color:var(--ink);margin:0 0 18px}
+.pitch ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;border-top:2px solid var(--ink);padding-top:14px}
+.pitch li{display:flex;gap:12px;align-items:baseline;font:500 15.5px/1.35 var(--sans);color:var(--ink)}
+.pitch li span{width:22px;flex:none;text-align:center}
+.lform{display:grid;gap:12px;padding:18px;background:var(--card)}
+.lform .note{background:var(--bg)}
+.lform .hint{margin:0}
+.ftitle{font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.inviter{display:flex;align-items:center;gap:0;font:700 16px var(--sans)}
+.inviter .avmid{width:40px;height:40px;margin-right:12px}
+.inviter .avmid.none{display:inline-flex;align-items:center;justify-content:center;font:800 16px var(--sans)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;font:600 14px var(--sans);max-width:calc(100% - 32px);z-index:9}
 .cat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;padding:10px 0 4px;border-top:2px solid var(--ink)}
 .cat b{font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}.cat .act{padding:5px 10px;font-size:12px}
@@ -195,11 +218,14 @@ const L = {
         whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont masquées.", soldShort:"complet", hideSold:"Voir les complets", whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
-        loginHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Connecte-toi une fois avec Telegram : ton compte est celui du bot.", loginBtn:"Se connecter avec Telegram ↗", loginWait:"Dans Telegram, touche « ✅ Oui, c'est moi », puis reviens ici.", loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
+        loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
-        loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
+        tagline:"Sortir ensemble à Berlin, même sans parler allemand.", what:[["🎭", "Théâtre et opéra surtitrés en anglais"], ["🎬", "Cinéma en version originale"], ["🖼", "Les expos du moment"], ["👯", "Ce qui tente tes amis, pour y aller ensemble"]],
+        invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Rejoindre", joinGo:"Valider", signupHint:"On t'envoie un code par email pour confirmer. Pas de mot de passe.",
+        haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Entre ton email : on le crée.", newAccount:"Créer ton compte", newAccountHint:"Cette adresse est nouvelle ici. Ton prénom, et c'est parti.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
+        nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
-        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien dans Telegram et appuie sur « Démarrer » : vous êtes connectés.",
+        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
         photoT:"Ma photo", photoHint:"Remplace ton prénom chez tes amis.", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
@@ -213,15 +239,18 @@ const L = {
         whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", soldShort:"sold out", hideSold:"Show sold out", whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
-        loginHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Sign in once with Telegram: your account is the bot's.", loginBtn:"Sign in with Telegram ↗", loginWait:"In Telegram, tap “✅ Yes, it's me”, then come back here.", loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
+        loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
-        loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
+        tagline:"Go out together in Berlin, no German needed.", what:[["🎭", "Theatre and opera with English surtitles"], ["🎬", "Films in original version"], ["🖼", "Current exhibitions"], ["👯", "What your friends fancy, so you can go together"]],
+        invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Join", joinGo:"Confirm", signupHint:"We'll email you a code to confirm. No password.",
+        haveAccount:"Sign in", noAccount:"No account yet? Enter your email: we'll create one.", newAccount:"Create your account", newAccountHint:"This address is new here. Just your first name and you're in.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
+        nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
-        setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link in Telegram and taps “Start”: you're connected.",
+        setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
         photoT:"My photo", photoHint:"Shown instead of your name to friends.", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
-let T = (navigator.language || "fr").toLowerCase().startsWith("fr") ? L.fr : L.en, S = null;
+let T = L.en, S = null;   // accueil en anglais par défaut ; une fois connecté·e : la langue du compte
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
 st.setArea = "";
@@ -293,43 +322,55 @@ function notify(text, then) {
   document.body.appendChild(d); setTimeout(() => d.remove(), 3200); then?.();
 }
 
-// --- Connexion hors Telegram -------------------------------------------------
-// Par email (code à 6 chiffres ou lien) ; tant que l'envoi d'emails n'est pas activé côté
-// serveur, repli sur le bot Telegram (lien t.me/<bot>?start=web_<nonce> + « ✅ Oui »).
-let loginTimer = null, loginNonce = null, loginT0 = 0, loginCfg = null;
-const login = { step: "email", email: "", id: null, err: "" };
-async function showLogin(state = {}) {
-  S = null; clearTimeout(loginTimer); if (!state.link) loginNonce = null;
+// --- Connexion / inscription (web) -----------------------------------------------
+// Email + code à 6 chiffres (ou le lien de l'email). Un lien d'invitation (/app?invite=p…)
+// ouvre l'accueil « X t'invite » : prénom + email → code → compte créé et connecté à X.
+let loginCfg = null, inviter = undefined;
+const login = { step: "email", email: "", name: "", id: null, err: "" };
+const PARAMS = new URLSearchParams(location.search);
+let INVITE = PARAMS.get("invite") || "";
+const ERR = { bad_email: "badEmail", unknown_email: "unknownEmail", too_many: "tooMany", expired: "codeExpired", bad_invite: "badInvite", bad_name: "badName" };
+const errText = (e) => T[ERR[e.info?.error]] || T.error;
+async function showLogin() {
+  S = null;
   document.querySelector(".top").hidden = true;
   if (!loginCfg) { try { loginCfg = await api("login/config"); } catch { loginCfg = { email: false }; } }
+  if (INVITE && inviter === undefined) { try { inviter = await api("invite/info", { invite: INVITE }); } catch { inviter = null; } }
   const ios = /iphone|ipad/i.test(navigator.userAgent) && !navigator.standalone ? `<p class="hint">${esc(T.installHint)}</p>` : "";
-  let body;
-  if (loginCfg.email) {
-    body = login.step === "code"
-      ? `<p>${esc(T.codeSent(login.email))}</p>
-         <input id="lcode" class="note" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="${esc(T.codePh)}">
-         <button class="act on" data-logincode="1">${esc(T.signIn)}</button>
-         <button class="act" data-loginback="1">${esc(T.otherEmail)}</button>`
-      : `<p>${esc(T.loginEmailHint)}</p>
-         <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}">
-         <button class="act on" data-loginemail="1">${esc(T.sendCode)}</button>`;
-    body += login.err ? `<p class="noreview">${esc(login.err)}</p>` : "";
-  } else {
-    body = `<p>${esc(T.loginHint)}</p>` + (state.expired
-      ? `<p>${esc(T.loginExpired)}</p><button class="act on" data-login="1">${esc(T.retry)}</button>`
-      : state.link
-        ? `<a class="act on" href="${esc(state.link)}" target="_blank" rel="noopener">${esc(T.loginBtn)}</a><p>${esc(T.loginWait)}</p>`
-        : `<div class="msg">…</div>`);
-  }
-  $("list").innerHTML = `<div class="login">${body}${ios}</div>`;
-  setTimeout(() => ($("lcode") || $("lemail"))?.focus(), 0);
-  if (!loginCfg.email && !state.link && !state.expired) startLogin();
+  const lang = `<div class="lpick">${["fr", "en"].map((c) => `<button class="${T === L[c] ? "on" : ""}" data-loginlang="${c}">${c.toUpperCase()}</button>`).join("")}</div>`;
+  const pitch = `<div class="pitch"><p class="tag">${esc(T.tagline)}</p>
+    <ul>${T.what.map(([i, w]) => `<li><span>${i}</span>${esc(w)}</li>`).join("")}</ul></div>`;
+  const signup = (INVITE && inviter) || login.step === "new";
+  let form;
+  if (!loginCfg.email) form = `<p>${esc(T.error)}</p>`;
+  else if (login.step === "code") form = `<p>${esc(T.codeSent(login.email))}</p>
+       <input id="lcode" class="note" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="${esc(T.codePh)}">
+       <button class="act on" data-logincode="1">${esc(signup ? T.joinGo : T.signIn)}</button>
+       <button class="act" data-loginback="1">${esc(T.otherEmail)}</button>`;
+  else if (signup) form = (inviter ? `<div class="inviter">${avatar(inviter.photo, inviter.name, "avmid", "me")}<b>${esc(T.invitedBy(inviter.name))}</b></div>` : `<b class="ftitle">${esc(T.newAccount)}</b><p>${esc(T.newAccountHint)}</p>`) + `
+       <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">
+       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}">
+       <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>
+       <p class="hint">${esc(T.signupHint)}</p>` + (inviter ? "" : `<button class="act" data-loginback="1">${esc(T.haveAccount)}</button>`);
+  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.haveAccount)}</b>
+       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}">
+       <button class="act on" data-loginemail="1">${esc(T.sendCode)}</button>
+       <p class="hint">${esc(T.noAccount)}</p>`;
+  if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
+  $("list").innerHTML = `<div class="login">${lang}${pitch}<div class="lform">${form}</div>${ios}</div>`;
+  setTimeout(() => ($("lcode") || (signup ? $("lname") : null))?.focus(), 0);
 }
-const LOGIN_ERR = { bad_email: "badEmail", unknown_email: "unknownEmail", too_many: "tooMany", expired: "codeExpired" };
 async function loginEmail() {
   login.email = ($("lemail")?.value || "").trim(); login.err = "";
   try { const j = await api("login/email", { email: login.email }); login.id = j.id; login.step = "code"; }
-  catch (e) { login.err = T[LOGIN_ERR[e.info?.error]] || T.error; }
+  catch (e) { if (e.info?.error === "unknown_email") login.step = "new"; else login.err = errText(e); }
+  showLogin();
+}
+async function signup() {
+  login.name = ($("lname")?.value || "").trim(); login.email = ($("lemail")?.value || "").trim(); login.err = "";
+  if (!login.name) { login.err = T.badName; return void showLogin(); }
+  try { const j = await api("signup", { invite: inviter ? INVITE : "", name: login.name, email: login.email, lang: T === L.en ? "en" : "fr" }); login.id = j.id; login.step = "code"; }
+  catch (e) { login.err = errText(e); }
   showLogin();
 }
 async function loginCode() {
@@ -337,40 +378,27 @@ async function loginCode() {
   try { const j = await api("login/code", { id: login.id, code }); return void signedIn(j.token); }
   catch (e) {
     if (e.info?.error === "bad_code") login.err = T.badCode(e.info.left);
-    else { login.err = T[LOGIN_ERR[e.info?.error]] || T.error; if (e.status === 410) login.step = "email"; }
+    else { login.err = errText(e); if (e.status === 410) login.step = "email"; }
   }
   showLogin();
 }
-function signedIn(token) { setToken(token); login.step = "email"; login.err = ""; document.querySelector(".top").hidden = false; load(); }
+function signedIn(token) {
+  setToken(token); login.step = "email"; login.err = ""; INVITE = "";   // l'inscription a déjà fait la connexion
+  if (PARAMS.has("invite")) history.replaceState(null, "", location.pathname);
+  document.querySelector(".top").hidden = false; load();
+}
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Enter") return;
   if (e.target.id === "setname") return void saveName(e.target.value);
   if (e.target.id === "addhandle") return void addByHandle(e.target.value);
   if (e.target.id === "sethandle") return void saveHandle(e.target.value);
-  if (e.target.id === "lemail") loginEmail(); else if (e.target.id === "lcode") loginCode();
+  if (e.target.id === "lname") return void $("lemail")?.focus();
+  if (e.target.id === "lemail") ((INVITE && inviter) || login.step === "new" ? signup : loginEmail)(); else if (e.target.id === "lcode") loginCode();
 });
 document.addEventListener("input", (e) => { if (e.target.id === "lcode" && e.target.value.replace(/\D/g, "").length === 6) loginCode(); });
 // Lien de l'email : /app?login=<lien> → connecté·e, puis l'adresse redevient /app.
-const LOGIN_LINK = new URLSearchParams(location.search).get("login");
+const LOGIN_LINK = PARAMS.get("login");
 if (LOGIN_LINK) history.replaceState(null, "", location.pathname);
-
-async function startLogin() {
-  try { const j = await api("login/start"); showLogin({ link: j.link }); loginNonce = j.nonce; loginT0 = Date.now(); pollLogin(); }
-  catch { $("list").innerHTML = `<div class="msg">${esc(T.error)}</div>`; }
-}
-async function pollLogin() {
-  clearTimeout(loginTimer); loginTimer = null;
-  const nonce = loginNonce; if (!nonce) return;
-  try {
-    const j = await api("login/poll", { nonce });
-    if (nonce !== loginNonce) return;
-    if (j.token) { loginNonce = null; return void signedIn(j.token); }
-  } catch (e) { if (e.status === 410) { loginNonce = null; return void showLogin({ expired: true }); } }
-  if (Date.now() - loginT0 > 10 * 60e3) { loginNonce = null; return void showLogin({ expired: true }); }
-  loginTimer = setTimeout(pollLogin, document.hidden ? 5000 : 1500);
-}
-// Retour depuis Telegram : on vérifie tout de suite.
-document.addEventListener("visibilitychange", () => { if (!document.hidden && loginNonce) pollLogin(); });
 
 async function load() {
   if (WEB && LOGIN_LINK && !TOKEN) {
@@ -378,7 +406,14 @@ async function load() {
     catch { login.err = T.codeExpired; }
   }
   if (WEB && !TOKEN) return void showLogin();
-  try { S = await api("state"); T = L[S.lang] || L.fr; document.documentElement.lang = S.lang; render(); }
+  try {
+    S = await api("state"); T = L[S.lang] || L.fr; document.documentElement.lang = S.lang;
+    if (WEB && INVITE) {   // déjà inscrit·e, ouvre le lien de quelqu'un : connectés
+      const code = INVITE; INVITE = ""; history.replaceState(null, "", location.pathname);
+      try { const j = await api("friend", { op: "invite", code }); S = j; if (j.result === "connected") notify(T.nowFriends(j.inviter)); } catch {}
+    }
+    render();
+  }
   catch (e) {
     if (e.status === 401 && WEB) return;
     $("list").innerHTML = e.info?.error === "not_member"
@@ -407,7 +442,11 @@ function chips(el, items, key) {
 }
 /** Un ami dans les lignes ⭐/🎟/✅ : sa photo s'il en a mis une, sinon son prénom. */
 const who = (p) => S.photos && S.photos[p.id] ? `<img class="av" src="${S.photos[p.id]}" alt="${esc(p.name)}" title="${esc(p.name)}">` : esc(p.name);
-const avatar = (src, name, cls = "avbig") => src ? `<img class="${cls}" src="${src}" alt="">` : `<span class="${cls} none">${esc((name || "?").trim().charAt(0).toUpperCase())}</span>`;
+/** Pastille : la photo, sinon l'initiale du pseudo sur une couleur fixe (moi en rouge, puis noir, blanc… pour les amis). */
+const AV_COLORS = 7;
+const avColor = (id) => id === "me" ? 0 : 1 + Math.max(0, ((S.circle && S.circle.friends) || []).findIndex((f) => f.id === id)) % (AV_COLORS - 1);
+const avatar = (src, letter, cls = "avbig", id = "me") => src ? `<img class="${cls}" src="${src}" alt="">`
+  : `<span class="${cls} none c${avColor(id)}" aria-hidden="true">${esc((String(letter || "?").replace(/^@/, "").trim().charAt(0) || "?").toUpperCase())}</span>`;
 function socialLine(x) {
   const f = x.friends || []; const parts = [];
   const mine = x.me && x.me.booked;
@@ -564,7 +603,7 @@ function friendsSection() {
     <p class="hint">${esc(T.addHow)} ${S.handle ? esc(T.myHandle(S.handle)) : ""}</p>`;
   if (c.incoming.length) h += dayHead(T.requestsT) + c.incoming.map((p) => line(p.name, "", btn("accept", p.id, T.accept, true) + btn("ignore", p.id, T.ignoreR))).join("");
   h += dayHead(T.friendsT) + (c.friends.length ? c.friends.map((p) =>
-      `<div class="fline"><button class="fname" data-friendview="${p.id}">${S.photos && S.photos[p.id] ? avatar(S.photos[p.id], p.name, "avmid") : ""}<b>${esc(p.name)}</b><span>${esc(T.seeWhat)} ›</span></button><div class="who">${
+      `<div class="fline"><button class="fname" data-friendview="${p.id}">${avatar(S.photos && S.photos[p.id], p.handle || p.name, "avmid", p.id)}<div><b>${esc(p.name)}</b><span>${esc(T.seeWhat)} ›</span></div></button><div class="who">${
         st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true) : `<button class="act" data-askremove="${p.id}">${esc(T.removeF)}</button>`}</div></div>`).join("")
     : `<p class="hint">${esc(T.noFriends)}</p>`);
   const sugg = [...c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))),
@@ -728,7 +767,8 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.friendview) { return void openFriend(+t.dataset.friendview); }
   else if (t.dataset.friendback) { st.friend = null; st.open = null; }
   else if (t.dataset.settab) { st.friend = null; st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
-  else if (t.dataset.login) { return void showLogin(); }
+  else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; document.documentElement.lang = t.dataset.loginlang; return void showLogin(); }
+  else if (t.dataset.signup) { return void signup(); }
   else if (t.dataset.loginemail) { return void loginEmail(); }
   else if (t.dataset.logincode) { return void loginCode(); }
   else if (t.dataset.loginback) { login.step = "email"; login.err = ""; return void showLogin(); }

@@ -104,7 +104,12 @@ export interface Friend extends Reaction {
 // ---------------------------------------------------------------------------
 // Telegram
 // ---------------------------------------------------------------------------
+/** Inscrit·es sur le web (sans Telegram) : chat_id ≥ WEB_ID_BASE, le bot ne leur écrit jamais. */
+export const WEB_ID_BASE = 1e15;
+export const isWebUser = (chat: unknown) => typeof chat === "number" && chat >= WEB_ID_BASE;
+
 export async function tg(env: Env, method: string, body: unknown): Promise<any> {
+  if (isWebUser((body as any)?.chat_id)) return { ok: false, description: "web-only user" };
   const base = env.TG_API || "https://api.telegram.org";
   const resp = await fetch(`${base}/bot${env.BOT_TOKEN}/${method}`, {
     method: "POST",

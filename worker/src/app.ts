@@ -19,9 +19,9 @@
 // Les actions passent par le même code que les boutons du chat (handleUpdate) :
 // annonces au groupe, fiches mises à jour, tout reste cohérent.
 import { handleUpdate, saveReviewFromApp } from "./bot";
-import { Env, Item, esc, getItem, getReaction, inCircle, loadCircles, itemText, keyboard, send, whenLabel } from "./lib";
-import { acceptFriend, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
-import { Lang, asLang } from "./i18n";
+import { Env, Item, WEB_ID_BASE, esc, getItem, setting, getReaction, inCircle, loadCircles, itemText, keyboard, send, whenLabel } from "./lib";
+import { acceptFriend, codeOwner, connect, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
+import { Lang, asLang, tr } from "./i18n";
 import PAGE from "./app.html";
 import { webAsset } from "./web/assets";
 import { DISTRICT } from "./districts";
@@ -159,6 +159,53 @@ async function newSession(env: Env, chat: number): Promise<string> {
   return token;
 }
 
+/** Code à 6 chiffres + lien, envoyés par email (3 demandes / 15 min). Renvoie l'id de la demande. */
+async function mailCode(env: Env, chat: number, email: string, name: string, lang: Lang): Promise<string | Response> {
+  const recent = await env.DB.prepare("SELECT COUNT(*) n FROM email_logins WHERE chat_id = ? AND created_at > datetime('now', '-15 minutes')")
+    .bind(chat).first<{ n: number }>();
+  if ((recent?.n ?? 0) >= 3) return Response.json({ error: "too_many" }, { status: 429 });
+  const id = randomHex(12), link = randomHex(24);
+  const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM email_logins WHERE created_at < datetime('now', '-15 minutes')"),
+    env.DB.prepare("INSERT INTO email_logins (id, chat_id, code_hash, link_hash) VALUES (?, ?, ?, ?)")
+      .bind(id, chat, await sha256(id + code), await sha256(link)),
+  ]);
+  if (!(await sendLoginMail(env, email, name, lang, code, link))) return Response.json({ error: "mail_failed" }, { status: 502 });
+  return id;
+}
+
+/** Lien d'invitation : code personnel d'une personne active, ou l'ancien lien commun (→ la propriétaire). */
+async function inviterOf(env: Env, invite: unknown): Promise<{ chat_id: number; first_name: string; photo: string | null } | null> {
+  const code = String(invite ?? "");
+  let chat = await codeOwner(env, code);
+  if (!chat && code && code === await setting(env, "invite_code") && env.OWNER_CHAT_ID) chat = Number(env.OWNER_CHAT_ID);
+  if (!chat) return null;
+  return env.DB.prepare("SELECT chat_id, first_name, photo FROM users WHERE chat_id = ? AND active = 1").bind(chat)
+    .first<{ chat_id: number; first_name: string; photo: string | null }>();
+}
+
+/** Après le premier code valide : le compte devient actif, suit tous les lieux, est connecté à qui l'a invité·e. */
+async function finishSignup(env: Env, chat: number): Promise<void> {
+  const u = await env.DB.prepare("SELECT pending, invited_by, first_name FROM users WHERE chat_id = ?").bind(chat)
+    .first<{ pending: number; invited_by: number | null; first_name: string }>();
+  if (!u) return;
+  if (u.invited_by && u.invited_by !== chat) {   // une fois : retirer l'ami plus tard reste possible
+    await connect(env, chat, u.invited_by);
+    await env.DB.prepare("UPDATE users SET invited_by = NULL WHERE chat_id = ?").bind(chat).run();
+    await loadCircles(env);
+  }
+  if (!u.pending) return;
+  await env.DB.batch([
+    env.DB.prepare("UPDATE users SET active = 1, pending = 0 WHERE chat_id = ?").bind(chat),
+    env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 1 FROM venues WHERE active = 1").bind(chat),
+  ]);
+  if (env.OWNER_CHAT_ID) {
+    const owner = await env.DB.prepare("SELECT lang FROM users WHERE chat_id = ?").bind(Number(env.OWNER_CHAT_ID)).first<{ lang: string | null }>();
+    await send(env, env.OWNER_CHAT_ID, tr(owner?.lang).joined(`${esc(u.first_name)} (web)`));
+  }
+}
+
 async function emailLogin(env: Env, path: string, body: any): Promise<Response | null> {
   if (path === "/app/api/login/config") return Response.json({ email: !!env.RESEND_API_KEY, bot: env.BOT_USERNAME });
   if (path === "/app/api/login/email") {
@@ -169,18 +216,42 @@ async function emailLogin(env: Env, path: string, body: any): Promise<Response |
       .bind(email).first<{ chat_id: number; first_name: string; lang: string | null }>();
     // Bande d'amis : on dit franchement quand l'adresse n'est liée à aucun compte.
     if (!u) return Response.json({ error: "unknown_email" }, { status: 404 });
-    const recent = await env.DB.prepare("SELECT COUNT(*) n FROM email_logins WHERE chat_id = ? AND created_at > datetime('now', '-15 minutes')")
-      .bind(u.chat_id).first<{ n: number }>();
-    if ((recent?.n ?? 0) >= 3) return Response.json({ error: "too_many" }, { status: 429 });
-    const id = randomHex(12), link = randomHex(24);
-    const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
-    await env.DB.batch([
-      env.DB.prepare("DELETE FROM email_logins WHERE created_at < datetime('now', '-15 minutes')"),
-      env.DB.prepare("INSERT INTO email_logins (id, chat_id, code_hash, link_hash) VALUES (?, ?, ?, ?)")
-        .bind(id, u.chat_id, await sha256(id + code), await sha256(link)),
-    ]);
-    if (!(await sendLoginMail(env, email, u.first_name, asLang(u.lang), code, link))) return Response.json({ error: "mail_failed" }, { status: 502 });
-    return Response.json({ id });
+    const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang));
+    return sent instanceof Response ? sent : Response.json({ id: sent });
+  }
+  if (path === "/app/api/invite/info") {
+    // Page d'accueil d'un lien d'invitation : qui invite (prénom, photo), sans rien révéler d'autre.
+    const inviter = await inviterOf(env, body.invite);
+    if (!inviter) return Response.json({ error: "bad_invite" }, { status: 404 });
+    return Response.json({ name: inviter.first_name, photo: inviter.photo ?? null });
+  }
+  if (path === "/app/api/signup") {
+    // Inscription web : prénom + email ; le compte n'existe vraiment qu'après le code reçu par email.
+    if (!env.RESEND_API_KEY) return Response.json({ error: "mail_off" }, { status: 503 });
+    // Avec un lien d'invitation : connecté·e à qui invite. Sans : compte seul (amis à ajouter par pseudo).
+    const inviter = body.invite ? await inviterOf(env, body.invite) : null;
+    if (body.invite && !inviter) return Response.json({ error: "bad_invite" }, { status: 404 });
+    const email = normEmail(body.email);
+    const name = String(body.name ?? "").replace(/[\u0000-\u001f<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 40);
+    if (!EMAIL_RE.test(email)) return Response.json({ error: "bad_email" }, { status: 400 });
+    if (!name) return Response.json({ error: "bad_name" }, { status: 400 });
+    const lang = asLang(body.lang);
+    let u = await env.DB.prepare("SELECT chat_id, first_name, lang, active, pending FROM users WHERE email = ?")
+      .bind(email).first<{ chat_id: number; first_name: string; lang: string | null; active: number; pending: number }>();
+    if (u && !u.active && !u.pending) return Response.json({ error: "unknown_email" }, { status: 404 });   // compte fermé
+    if (u?.pending) {
+      await env.DB.prepare("UPDATE users SET first_name = ?, lang = ?, invited_by = ? WHERE chat_id = ?").bind(name, lang, inviter?.chat_id ?? null, u.chat_id).run();
+      u = { ...u, first_name: name, lang };
+    } else if (!u) {
+      const chat = WEB_ID_BASE + Number(crypto.getRandomValues(new Uint32Array(2)).reduce((a, x) => a * 4096 + (x % 4096), 0));
+      await env.DB.prepare("INSERT INTO users (chat_id, first_name, lang, email, active, pending, invited_by) VALUES (?, ?, ?, ?, 0, 1, ?)")
+        .bind(chat, name, lang, email, inviter?.chat_id ?? null).run();
+      u = { chat_id: chat, first_name: name, lang, active: 0, pending: 1 };
+    }
+    // Déjà inscrit·e : simple connexion (et connexion à qui invite, faite à la validation).
+    else await env.DB.prepare("UPDATE users SET invited_by = COALESCE(invited_by, ?) WHERE chat_id = ? AND chat_id != ?").bind(inviter?.chat_id ?? null, u.chat_id, inviter?.chat_id ?? null).run();
+    const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang));
+    return sent instanceof Response ? sent : Response.json({ id: sent });
   }
   if (path === "/app/api/login/code") {
     const id = String(body.id ?? ""), code = String(body.code ?? "").replace(/\D/g, "");
@@ -193,6 +264,7 @@ async function emailLogin(env: Env, path: string, body: any): Promise<Response |
       return Response.json({ error: "bad_code", left: 4 - row.attempts }, { status: 401 });
     }
     await env.DB.prepare("UPDATE email_logins SET attempts = 99 WHERE id = ?").bind(id).run();   // utilisé (compte encore pour la limite)
+    await finishSignup(env, row.chat_id);
     return Response.json({ token: await newSession(env, row.chat_id) });
   }
   if (path === "/app/api/login/link") {
@@ -203,6 +275,7 @@ async function emailLogin(env: Env, path: string, body: any): Promise<Response |
       .bind(h).first<{ id: string; chat_id: number }>();
     if (!row) return Response.json({ error: "expired" }, { status: 410 });
     await env.DB.prepare("UPDATE email_logins SET attempts = 99 WHERE id = ?").bind(row.id).run();
+    await finishSignup(env, row.chat_id);
     return Response.json({ token: await newSession(env, row.chat_id) });
   }
   return null;
@@ -383,6 +456,14 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
   }
   if (url.pathname === "/app/api/friend") {
     // 👋 Mes amis : add (ami d'ami) | addhandle (par pseudo, à accepter) | accept | ignore | remove (sans prévenir).
+    if (body.op === "invite") {
+      // Déjà connecté·e et on ouvre le lien d'invitation de quelqu'un : connectés directement.
+      const inviter = await inviterOf(env, body.code);
+      if (!inviter) return Response.json({ error: "bad_invite" }, { status: 404 });
+      const result = inviter.chat_id === me.chat_id ? "self" : "connected";
+      if (inviter.chat_id !== me.chat_id) { await connect(env, me.chat_id, inviter.chat_id); await loadCircles(env); }
+      return Response.json({ result, inviter: inviter.first_name, ...(await state(env, me.chat_id, asLang(me.lang), focus)) });
+    }
     if (body.op === "addhandle") {
       const h = normHandle(body.handle);
       const u = h ? await env.DB.prepare("SELECT chat_id FROM users WHERE handle = ? AND active = 1").bind(h).first<{ chat_id: number }>() : null;

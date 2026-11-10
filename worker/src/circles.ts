@@ -51,8 +51,10 @@ export async function resetCode(env: Env, chat: number): Promise<void> {
   await env.DB.prepare("UPDATE users SET invite_code = NULL WHERE chat_id = ?").bind(chat).run();
 }
 export async function inviteMessage(env: Env, chat: number, lang: string | null): Promise<string> {
-  return t(lang).invite(`https://t.me/${env.BOT_USERNAME}?start=${await personalCode(env, chat)}`);
+  return t(lang).invite(inviteLink(env, await personalCode(env, chat)));
 }
+/** Lien d'invitation : l'app web (inscription par email, sans Telegram). */
+export const inviteLink = (env: Env, code: string) => `${env.APP_URL || "https://berlinencore.app"}/app?invite=${code}`;
 /** À qui appartient ce code personnel (personne active), sinon null. */
 export async function codeOwner(env: Env, code: string | undefined): Promise<number | null> {
   if (!code || !/^p[0-9a-z]{4,20}$/.test(code)) return null;
@@ -82,10 +84,10 @@ export async function connectViaLink(env: Env, me: number, owner: number): Promi
 /** Amis, demandes reçues / envoyées, suggestions (amis de mes amis), pour la mini-app. */
 export async function circleState(env: Env, me: number) {
   const { results: rows } = await env.DB.prepare(
-    `SELECT c.a, c.b, c.status, c.requested_by, u.chat_id AS id, u.first_name AS name FROM connections c
+    `SELECT c.a, c.b, c.status, c.requested_by, u.chat_id AS id, u.first_name AS name, u.handle FROM connections c
      JOIN users u ON u.chat_id = CASE WHEN c.a = ?1 THEN c.b ELSE c.a END AND u.active = 1
      WHERE c.a = ?1 OR c.b = ?1 ORDER BY u.first_name`).bind(me).all<any>();
-  const friends = rows.filter((r) => r.status === "ok").map((r) => ({ id: r.id, name: r.name }));
+  const friends = rows.filter((r) => r.status === "ok").map((r) => ({ id: r.id, name: r.name, handle: r.handle ?? null }));
   const incoming = rows.filter((r) => r.status === "pending" && r.requested_by !== me).map((r) => ({ id: r.id, name: r.name }));
   const outgoing = rows.filter((r) => r.status === "pending" && r.requested_by === me).map((r) => ({ id: r.id, name: r.name }));
   const { results: sugg } = await env.DB.prepare(

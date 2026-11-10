@@ -17,7 +17,9 @@ CREATE TABLE IF NOT EXISTS users (
   app_seen_at TEXT,                          -- dernière ouverture de la mini-app
   email       TEXT,                          -- connexion de l'app web (migrations/010)
   handle      TEXT,                          -- pseudo, pour s'ajouter entre amis (migrations/011)
-  photo       TEXT                           -- data URL JPEG 128 px (migrations/012)
+  photo       TEXT,                          -- data URL JPEG 128 px (migrations/012)
+  pending     INTEGER NOT NULL DEFAULT 0,    -- inscription web pas encore confirmée (migrations/013)
+  invited_by  INTEGER                        -- qui a partagé le lien d'inscription web
 );
 CREATE UNIQUE INDEX IF NOT EXISTS users_handle ON users (handle) WHERE handle IS NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS users_email ON users (email) WHERE email IS NOT NULL;

@@ -93,7 +93,7 @@ await step("programme : mes lieux, envies des amis", async () => {
   assert.deepEqual(item(s, "p1").friends.map((f) => f.name), ["Joss"]);
   assert.equal(item(s, "p1").me, null);
   assert.equal(s.venues.length, 3);
-  assert.match(s.invite, /^https:\/\/t\.me\/TestBot\?start=p[0-9a-z]+$/);   // le lien seul, partageable
+  assert.match(s.invite, /^https:\/\/encore\.test\/app\?invite=p[0-9a-z]+$/);   // le lien seul, partageable
 });
 const noMessages = () => assert.ok(!calls.some((c) => /^send/.test(c.method)), JSON.stringify(calls.map((c) => [c.method, c.chat_id])));
 await step("⭐ : envie enregistrée, aucun message (ni groupe ni privé)", async () => {
@@ -164,7 +164,7 @@ await step("cercles : Lyna (amie de Justine seulement) ne voit pas les envies de
   assert.ok(item(s, "p1").friends.some((f) => f.name === "Justine"));
   assert.deepEqual(s.people.map((p) => p.name), ["Justine"]);
   assert.deepEqual(s.circle.suggestions.map((p) => [p.name, p.via]), [["Joss", ["Justine"]]]);
-  assert.match(s.invite, /t\.me\/TestBot\?start=p[0-9a-z]+/);
+  assert.match(s.invite, /\/app\?invite=p[0-9a-z]+/);
 });
 await step("cercles : 💌 / 🎟 + ami refusés hors connexions", async () => {
   calls = [];
@@ -346,7 +346,7 @@ await step("pseudo : créé tout seul, modifiable (unique), ajout par pseudo →
   await new Promise((r) => setTimeout(r, 50));
   const zed = initData({ id: 777, first_name: "Zed" });
   await fetch(W + "/tg", { method: "POST", headers: { "x-telegram-bot-api-secret-token": "h", "content-type": "application/json" },
-    body: JSON.stringify({ message: { from: { id: 777, first_name: "Zed" }, chat: { id: 777, type: "private" }, text: `/start ${s0.invite.split("start=")[1]}` } }) });
+    body: JSON.stringify({ message: { from: { id: 777, first_name: "Zed" }, chat: { id: 777, type: "private" }, text: `/start ${s0.invite.split("invite=")[1]}` } }) });
   const zstate = (await post("/app/api/state", { initData: zed })).json;
   assert.ok(!zstate.error, "Zed inscrit par le lien d'invitation de Justine");
   assert.ok(zstate.circle.friends.some((p) => p.id === ME));      // … et connecté à elle
@@ -365,6 +365,45 @@ await step("page d'un ami : ses ⭐ et 🎟 ; refusé hors connexion", async () 
   assert.ok(fv.items.some((x) => x.friends[0].star));
   assert.equal((await post("/app/api/friendview", { initData: me, id: 444 })).status, 403);
   assert.equal((await post("/app/api/friendview", { initData: lyna, id: 555 })).status, 403);   // Lyna et Joss : retirés
+});
+await step("inscription web sans Telegram : lien d'invitation → prénom + email → code → connecté·e à qui invite", async () => {
+  const invite = (await post("/app/api/state", { initData: me })).json.invite.split("invite=")[1];
+  assert.equal((await post("/app/api/invite/info", { invite: "pnope1234" })).status, 404);
+  const info = (await post("/app/api/invite/info", { invite })).json;
+  assert.equal(info.name, "Justine");
+  assert.equal((await post("/app/api/signup", { invite: "pnope1234", name: "Nora", email: "nora@example.com" })).status, 404);
+  assert.equal((await post("/app/api/signup", { invite, name: "  ", email: "nora@example.com" })).status, 400);
+  assert.equal((await post("/app/api/login/email", { email: "nora@example.com" })).status, 404);   // pas encore de compte
+  calls = [];
+  let r = await post("/app/api/signup", { invite, name: "Nora", email: "Nora@Example.com", lang: "en" });
+  assert.equal(r.status, 200);
+  const mail = calls.find((c) => c.method === "emails"); assert.deepEqual(mail.to, ["nora@example.com"]);
+  assert.equal(calls.filter((c) => c.method === "sendMessage").length, 0);
+  // pas encore validé : pas dans le cercle de Justine
+  assert.ok(!(await post("/app/api/state", { initData: me })).json.circle.friends.some((f) => f.name === "Nora"));
+  r = await post("/app/api/login/code", { id: r.json.id, code: mail.text.match(/\b(\d{6})\b/)[1] });
+  const tok = r.json.token; assert.match(tok, /^[a-f0-9]{64}$/);
+  const ns = (await bearer("/app/api/state", tok)).json;
+  assert.equal(ns.lang, "en"); assert.equal(ns.email, "nora@example.com");
+  assert.ok(ns.circle.friends.some((f) => f.name === "Justine"));
+  assert.ok(ns.venues.every((v) => v.followed));
+  assert.ok((await post("/app/api/state", { initData: me })).json.circle.friends.some((f) => f.name === "Nora"));
+  // la propriétaire est prévenue ; Nora (web) ne reçoit jamais de message Telegram
+  const tgTo = calls.filter((c) => c.method === "sendMessage").map((c) => c.chat_id);
+  assert.ok(tgTo.length >= 1 && tgTo.every((c) => c < 1e15));
+  // déjà inscrite : refaire le signup = simple code de connexion, pas de doublon
+  calls = [];
+  assert.equal((await post("/app/api/signup", { invite, name: "Nora B", email: "nora@example.com" })).status, 200);
+  assert.equal((await bearer("/app/api/state", tok)).json.circle.friends.filter((f) => f.name === "Justine").length, 1);
+});
+await step("inscription sans lien : compte seul, sans ami", async () => {
+  calls = [];
+  const r = await post("/app/api/signup", { name: "Solo", email: "solo@example.com" });
+  assert.equal(r.status, 200);
+  const code = calls.find((c) => c.method === "emails").text.match(/\b(\d{6})\b/)[1];
+  const tok = (await post("/app/api/login/code", { id: r.json.id, code })).json.token;
+  const st = (await bearer("/app/api/state", tok)).json;
+  assert.equal(st.circle.friends.length, 0); assert.ok(st.handle.startsWith("solo"));
 });
 await step("photo : envoyée, vue par mes connexions à la place du prénom ; retirée", async () => {
   const pic = "data:image/jpeg;base64," + "A".repeat(400);
