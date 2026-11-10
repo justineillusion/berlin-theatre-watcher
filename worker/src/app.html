@@ -112,7 +112,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .logo{width:24px;height:24px;object-fit:contain;vertical-align:middle;border-radius:3px}
 .set .line .logo{width:20px;height:20px;margin-right:8px;flex:none}.set .line > div{display:flex;align-items:center}
 .badge{font-size:15px;padding-top:2px}
-.social{font-size:14px;color:var(--ink);margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;column-gap:14px;row-gap:6px}
+.social{font-size:14px;color:var(--ink);margin-top:6px;display:flex;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;align-items:center;column-gap:14px;row-gap:6px}
 .social .sp{display:inline-flex;align-items:center;gap:6px;line-height:22px}
 .social .ostar,.social .stack,.social .fnames,.social .av{vertical-align:baseline;margin:0}
 .social .stack .face{margin-left:-6px}.social .stack .face:first-child{margin-left:0}
@@ -122,7 +122,10 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .stack .face{display:inline-flex;border-radius:50%;box-shadow:0 0 0 2px var(--bg);margin-left:-6px}
 .stack .face:first-child{margin-left:0}
 .stack .av.none{width:22px;height:22px;font-size:10.5px}
-.fnames{color:var(--muted);font-size:13px;vertical-align:middle}
+.fnames{color:var(--muted);font-size:13px;vertical-align:middle;overflow:hidden;text-overflow:ellipsis}
+.social .sp:last-child{min-width:0}
+.face[data-face]{cursor:pointer}
+.seenp{display:inline-flex;align-items:center;gap:3px}
 .rv{color:#a37700;font-weight:800}
 .av.none{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font:800 10px var(--sans);vertical-align:-5px}
 .ostar{font-size:14px;line-height:1}
@@ -140,8 +143,8 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .cropz input{flex:1;accent-color:var(--velvet)}
 .cropbox .acts{justify-content:center}
 .tab .tabn{display:inline-block;min-width:17px;height:17px;margin-left:6px;border-radius:9px;background:var(--velvet);color:#fff;font:800 10.5px/17px var(--sans);font-style:normal;text-align:center;padding:0 4px;vertical-align:1px;letter-spacing:0}
-.note-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.note-row.unread{box-shadow:inset 3px 0 0 var(--velvet);padding-left:10px}
+.note-row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+.note-row.unread{box-shadow:inset 3px 0 0 var(--velvet)}
 .note-row small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
 .note-row .quote{margin-top:4px;font-size:14px}
 .note-row .avmid.none{display:inline-flex;align-items:center;justify-content:center;font:800 14px var(--sans);flex:none}
@@ -220,7 +223,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .lform .hint{margin:0}
 .what{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .what li{display:flex;gap:12px;align-items:baseline;font:500 15px/1.35 var(--sans);color:var(--ink)}
-.what li span{width:22px;flex:none;text-align:center}
+.what li::before{content:"";width:12px;height:2px;background:var(--velvet);flex:none;align-self:center}
 .sign{text-align:center;font:700 11.5px var(--sans)!important;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .ftitle{font:800 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--velvet)}
 .inviter{display:flex;align-items:center;gap:0;font:700 16px var(--sans)}
@@ -314,7 +317,7 @@ const L = {
         fbVenueT:"A venue missing?", fbVenuePh:"Its name, and a link if you have one", fbT:"An idea, a problem?", fbPh:"Tell me everything", fbSend:"Send", fbThanks:"Thanks, it's on its way.", photoT:"My photo", photoHint:"Shown instead of your name to friends.", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
-let T = L.en, S = null;   // accueil en anglais par défaut ; une fois connecté·e : la langue du compte
+let T = L[new URLSearchParams(location.search).get("lang")] || L.en, S = null;   // accueil en anglais par défaut ; une fois connecté·e : la langue du compte
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
 st.setArea = "";
@@ -406,10 +409,10 @@ async function showLogin() {
   const lang = `<div class="lpick">${["fr", "en"].map((c) => `<button class="${T === L[c] ? "on" : ""}" data-loginlang="${c}">${c.toUpperCase()}</button>`).join("")}</div>`;
   const when = (d) => `${cap(T.dows[dt(d).getUTCDay()]).slice(0, 3)} ${+d.slice(8, 10)} · ${d.slice(11, 16)}`;
   const bill = (teaser || []).length ? `<div class="bill"><b class="billt">${esc(T.thisWeek)}</b>${teaser.map((x) =>
-    `<div class="billrow"><span class="bw">${esc(when(x.at))}</span><span class="bt">${esc(x.title)}</span><span class="bv">${x.kind === "theatre" ? "🎭" : "🎬"} ${esc(x.venue)}</span></div>`).join("")}</div>` : "";
+    `<div class="billrow"><span class="bw">${esc(when(x.at))}</span><span class="bt">${esc(x.title)}</span><span class="bv">${esc(x.venue)}</span></div>`).join("")}</div>` : "";
   const hero = `<section class="hero">${lang}<div class="wm"><small>Berlin</small><b>Encore<i>!</i></b></div>
     <p class="tag">${esc(T.tagline)}</p></section>`;
-  const pitch = `<ul class="what">${T.what.map(([i, w]) => `<li><span>${i}</span>${esc(w)}</li>`).join("")}</ul>`;
+  const pitch = `<ul class="what">${T.what.map(([i, w]) => `<li>${esc(w)}</li>`).join("")}</ul>`;
   const signup = (INVITE && inviter) || login.step === "new";
   let form;
   if (!loginCfg.email) form = `<p>${esc(T.error)}</p>`;
@@ -518,7 +521,7 @@ function chips(el, items, key) {
   el.innerHTML = items.map(([v, l]) => `<button class="chip" data-${key}="${v}" aria-pressed="${st[key] === v}">${l}</button>`).join("");
 }
 /** Un ami dans les lignes ⭐/🎟/✅ : sa photo s'il en a mis une, sinon son prénom. */
-const who = (p) => S.photos && S.photos[p.id] ? `<img class="av" src="${S.photos[p.id]}" alt="${esc(p.name)}" title="${esc(p.name)}">` : esc(p.name);
+const who = (p) => S.photos && S.photos[p.id] ? `<span class="face" data-face="${p.id}" title="${esc(p.name)}"><img class="av" src="${S.photos[p.id]}" alt="${esc(p.name)}"></span>` : esc(p.name);
 /** Pastille : la photo, sinon l'initiale du pseudo sur une couleur fixe (moi en rouge, puis noir, blanc… pour les amis). */
 const AV_COLORS = 7;
 const avColor = (id) => id === "me" ? 0 : 1 + Math.max(0, ((S.circle && S.circle.friends) || []).findIndex((f) => f.id === id)) % (AV_COLORS - 1);
@@ -530,19 +533,22 @@ function socialLine(x) {
   const together = mine ? f.filter((p) => p.booked === mine).map(who) : [];
   if (together.length) parts.push(`🎟 ${esc(T.withF)} ${together.join(", ")}`);
   // Intéressés : visages qui se chevauchent (moi d'abord si je le suis aussi), prénoms en petit à côté.
-  const face = (p) => `<span class="face" title="${esc(p.name)}">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)}</span>`;
+  const face = (p) => `<span class="face" data-face="${p.id}" title="${esc(p.name)}">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)}</span>`;
+  const hasPhoto = (p) => !!(S.photos && S.photos[p.id]);
   const wantP = f.filter((p) => p.star && !p.booked && !p.seen);
   const bookP = f.filter((p) => p.booked && !p.seen && !(mine && p.booked === mine));
-  const stack = (ps, withMe) => `<span class="stack">${withMe ? `<span class="face" title="${esc(T.me)}">${avatar(S.photo, S.handle, "av", "me")}</span>` : ""}${ps.map(face).join("")}</span>`
-    + `<span class="fnames">${esc(ps.slice(0, 3).map((p) => p.name).join(", "))}${ps.length > 3 ? "…" : ""}</span>`;
+  const stack = (ps, withMe) => `<span class="stack">${withMe ? `<span class="face" data-face="me" title="${esc(T.me)}">${avatar(S.photo, S.handle, "av", "me")}</span>` : ""}${ps.map(face).join("")}</span>`
+    + names(ps);
+  const names = (ps) => { const n = ps.filter((p) => !hasPhoto(p)); return n.length ? `<span class="fnames">${esc(n.slice(0, 3).map((p) => p.name).join(", "))}${n.length > 3 ? "…" : ""}</span>` : ""; };
   // Moi aussi intéressée : ma tête à côté des leurs + « Organiser › » (Envoyer à… pré-rempli avec eux).
   const meToo = x.me && x.me.star && !x.me.booked && !(x.me.status === "seen");
   if (wantP.length) parts.push(`<span class="ostar">🙋</span>` + stack(wantP, meToo));
   if (bookP.length) parts.push(`<span class="ostar tk">🎟</span>` + stack(bookP, false));
   // Vu : ✅ en cercle, visages, puis « Joss 4★ » (la note de chacun en valeur).
   const seenP = f.filter((p) => p.seen);
-  if (seenP.length) parts.push(`<span class="ostar ok">✅</span><span class="stack">${seenP.map(face).join("")}</span><span class="fnames">${
-    seenP.slice(0, 3).map((p) => `${esc(p.name)}${p.rating ? ` <b class="rv">${p.rating}★</b>` : ""}`).join(", ")}${seenP.length > 3 ? "…" : ""}</span>`);
+  if (seenP.length) parts.push(`<span class="ostar ok">✅</span>` + (seenP.some((p) => p.rating)
+    ? seenP.slice(0, 4).map((p) => `<span class="seenp">${face(p)}${hasPhoto(p) ? "" : `<span class="fnames">${esc(p.name)}</span>`}${p.rating ? `<b class="rv">${p.rating}★</b>` : ""}</span>`).join("")
+    : `<span class="stack">${seenP.map(face).join("")}</span>` + names(seenP)));
   return parts.length ? `<div class="social">${parts.map((x) => `<span class="sp">${x}</span>`).join("")}</div>` : "";
 }
 function reviewBlock(x, full) {
@@ -811,6 +817,8 @@ function readHash() {
   if (tab === "prog" && ["week", "month", "all"].includes(b)) st.when = b;
 }
 function writeHash() {
+  const lg = T === L.en ? "en" : "fr", q = new URLSearchParams(location.search);
+  if (q.get("lang") !== lg) { q.set("lang", lg); history.replaceState(null, "", location.pathname + "?" + q + location.hash); }
   if (!S) return;
   const h = "#" + (st.tab === "set" ? `set/${st.setTab || "venues"}` : st.tab === "mine" ? `mine/${st.kind}` : `prog/${st.kind}/${st.when}`);
   if (location.hash !== h) history.replaceState(null, "", location.pathname + location.search + h);
@@ -916,6 +924,10 @@ function render() {
 document.addEventListener("click", (e) => {
   const a = e.target.closest("a[data-link]");
   if (a) { if (tgApp?.openLink) { e.preventDefault(); tgApp.openLink(a.href); } return; }
+  const fc = e.target.closest("[data-face]");
+  if (fc) { e.preventDefault(); e.stopPropagation(); st.tab = "set"; st.open = null;
+    if (fc.dataset.face === "me") { st.friend = null; st.setTab = "account"; window.scrollTo?.(0, 0); return void render(); }
+    st.setTab = "friends"; return void openFriend(+fc.dataset.face); }
   const pl = e.target.closest("[data-plan]");
   if (pl) { e.preventDefault(); e.stopPropagation(); st.open = pl.dataset.plan; st.sharing = pl.dataset.plan; st.picking = null;
     st.sel = new Set(pl.dataset.ids.split(",").map(Number)); st.note = T.planNote; return void render(); }
@@ -948,7 +960,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.friendview) { return void openFriend(+t.dataset.friendview); }
   else if (t.dataset.friendback) { st.friend = null; st.open = null; }
   else if (t.dataset.settab) { st.friend = null; st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
-  else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; document.documentElement.lang = t.dataset.loginlang; return void showLogin(); }
+  else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; document.documentElement.lang = t.dataset.loginlang; writeHash(); return void showLogin(); }
   else if (t.dataset.signup) { return void signup(); }
   else if (t.dataset.loginemail) { return void loginEmail(); }
   else if (t.dataset.logincode) { return void loginCode(); }
