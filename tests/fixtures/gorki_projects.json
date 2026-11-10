@@ -1,0 +1,163 @@
+{
+    "docs": [
+        {
+            "id": 13,
+            "title": {
+                "de": "IN THE CORPSE OF THE PRESENT Prinz Friedrich von Homburg Heinrich von Kleist",
+                "en": "IN THE CORPSE OF THE PRESENT Prinz Friedrich von Homburg Heinrich von Kleist"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "in-the-corpse-of-the-present-prinz-friedrich-von-homburg-2",
+                "en": "in-the-corpse-of-the-present-prinz-friedrich-von-homburg-2"
+            }
+        },
+        {
+            "id": 9,
+            "title": {
+                "de": "Membrana Study",
+                "en": "Membrana Study"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "membrana",
+                "en": "membrana"
+            }
+        },
+        {
+            "id": 10,
+            "title": {
+                "de": "Das H\u00f6rrohr",
+                "en": "The Hearing Trumpet"
+            },
+            "language": {
+                "de": "Deutsch + eng. \u00dcT",
+                "en": null
+            },
+            "slug": {
+                "de": "das-hoerrohr",
+                "en": "the-hearing-trumpet"
+            }
+        },
+        {
+            "id": 12,
+            "title": {
+                "de": "HELLZAPOPPIN\u2019: What about the bees?",
+                "en": "HELLZAPOPPIN\u2019: What about the bees?"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "hellzapoppin-what-about-the-bees",
+                "en": "hellzapoppin-what-about-the-bees"
+            }
+        },
+        {
+            "id": 14,
+            "title": {
+                "de": "Back to the Present. New Version",
+                "en": "Back to the Present. New Version"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "back-to-the-present",
+                "en": "back-to-the-present"
+            }
+        },
+        {
+            "id": 16,
+            "title": {
+                "de": "Music of Fears",
+                "en": "Music of Fears "
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "music-of-fears",
+                "en": "music-of-fears"
+            }
+        },
+        {
+            "id": 17,
+            "title": {
+                "de": "UNSPEAKABLE Sittenausstellung",
+                "en": "UNSPEAKABLE Sittenausstellung"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "unspeakable-sittenausstellung",
+                "en": "unspeakable-sittenausstellung"
+            }
+        },
+        {
+            "id": 24,
+            "title": {
+                "de": "PLAYBACK",
+                "en": "PLAYBACK"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "playback-sessions",
+                "en": "playback-sessions"
+            }
+        },
+        {
+            "id": 26,
+            "title": {
+                "de": "Noise als Strategie \u2014 Workshop",
+                "en": "Noise as a Strategy \u2014 Workshop"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "noise-als-strategie",
+                "en": "noise-as-a-strategy"
+            }
+        },
+        {
+            "id": 27,
+            "title": {
+                "de": "BAM BAM BAM",
+                "en": "BAM BAM BAM"
+            },
+            "language": {
+                "de": null,
+                "en": null
+            },
+            "slug": {
+                "de": "bam-bam-bam",
+                "en": "bam-bam-bam"
+            }
+        }
+    ],
+    "hasNextPage": false,
+    "hasPrevPage": false,
+    "limit": 200,
+    "nextPage": null,
+    "page": 1,
+    "pagingCounter": 1,
+    "prevPage": null,
+    "totalDocs": 10,
+    "totalPages": 1
+}

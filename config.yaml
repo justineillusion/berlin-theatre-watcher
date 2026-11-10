@@ -93,6 +93,17 @@ theaters:
     parser: volksbuehne
     url: https://www.volksbuehne.berlin/en/
 
+  # Spielplan HTML + langue des productions via l'API du site (voir parsers/gorki.py)
+  - name: Maxim Gorki Theater
+    parser: gorki
+    url: https://www.gorki.de/en/schedule
+
+  # Programme de hebbel-am-ufer.de (hau4.de = scène numérique, sans dates) ;
+  # compte aussi les spectacles joués en anglais sans surtitres (parsers/hau.py)
+  - name: HAU Hebbel am Ufer
+    parser: hau
+    url: https://www.hebbel-am-ufer.de/en/programme/schedule-tickets/
+
   # Next.js : on passe par le sitemap de chaque festival (voir parsers/festspiele.py)
   - name: Berliner Festspiele — Performing Arts Season
     parser: festspiele

@@ -146,6 +146,32 @@ def _co_berlin(soup: BeautifulSoup) -> Optional[str]:
     return None
 
 
+def _paragraphs(soup: BeautifulSoup, selector: str) -> Optional[str]:
+    """Premiers paragraphes (≈ 2–3 phrases) du bloc de texte de la page."""
+    out: list = []
+    for p in soup.select(selector):
+        txt = _clean(p.get_text(" ", strip=True))
+        if len(txt) < 60 or _LABEL_RE.search(txt):
+            if out:
+                break
+            continue
+        out.append(txt)
+        if len(" ".join(out)) >= 300:
+            break
+    return " ".join(out) or None
+
+
+def _gorki(soup: BeautifulSoup) -> Optional[str]:
+    # Next.js : classes hachées « project-module__XXXX__prose »
+    return _paragraphs(soup, 'main div[class*="__prose"] p')
+
+
+def _hau(soup: BeautifulSoup) -> Optional[str]:
+    # TYPO3 : le texte est dans le bloc dépliable « .foldable .realContent »
+    # (le consentement vidéo YouTube, lui, est hors de ce bloc).
+    return _paragraphs(soup, ".foldable .realContent p")
+
+
 def _generic(soup: BeautifulSoup) -> Optional[str]:
     for attrs in ({"property": "og:description"}, {"name": "description"}):
         meta = soup.find("meta", attrs=attrs)
@@ -159,6 +185,8 @@ _EXTRACTORS = {
     "Schaubühne": _schaubuehne,
     "Volksbühne": _volksbuehne,
     "C/O Berlin": _co_berlin,
+    "Maxim Gorki Theater": _gorki,
+    "HAU Hebbel am Ufer": _hau,
 }
 
 
