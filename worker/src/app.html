@@ -571,6 +571,7 @@ function render() {
   if (st.kind !== "all" && !followedKinds.has(st.kind)) st.kind = "all";
   K.hidden = kindChips.length < 2;
   chips(K, kindChips.length < 2 ? [] : [["all", T.all], ...kindChips], "kind");
+  chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
   if (st.kind !== "expo") W.insertAdjacentHTML("beforeend", `<button class="chip soldtoggle" data-hidesold="1" aria-pressed="${!!st.hideSold}">${esc(T.hideSold)}</button>`);
   let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
   let h = "";
