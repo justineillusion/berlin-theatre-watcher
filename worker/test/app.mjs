@@ -324,5 +324,14 @@ await step("email : lier mon adresse (unique), puis connexion par code et par li
   assert.equal((await post("/app/api/login/email", { email: "justine@example.com" })).status, 429);
 });
 
+await step("Compte : changer mon prénom (vu par les amis), nettoyé, jamais vide", async () => {
+  let r = await post("/app/api/name", { initData: me, name: "  Juju <b>  " });
+  assert.equal(r.json.name, "Juju b");
+  assert.equal((await post("/app/api/name", { initData: me, name: "   " })).status, 400);
+  const joss = (await post("/app/api/state", { initData: initData({ id: 555, first_name: "Joss" }) })).json;
+  assert.ok(joss.people.some((p) => p.name === "Juju b"));
+  await post("/app/api/name", { initData: me, name: "Justine" });
+});
+
 console.log(`\n${ok} étapes OK`);
 dev.kill(); tgServer.close(); rmSync(STATE, { recursive: true, force: true }); rmSync(`${STATE}-seed.sql`, { force: true });

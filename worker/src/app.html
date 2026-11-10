@@ -179,6 +179,7 @@ const L = {
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"📍 Partout",
         loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Ajoute-la d'abord dans Réglages → Compte, depuis l'app dans Telegram.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
+        nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour ouvrir l'app hors de Telegram (navigateur, écran d'accueil) : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
@@ -195,6 +196,7 @@ const L = {
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"📍 Anywhere",
         loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Add it first in Settings → Account, from the app inside Telegram.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
+        nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To open the app outside Telegram (browser, home screen): we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
 let T = (navigator.language || "fr").toLowerCase().startsWith("fr") ? L.fr : L.en, S = null;
@@ -321,6 +323,7 @@ async function loginCode() {
 function signedIn(token) { setToken(token); login.step = "email"; login.err = ""; document.querySelector(".top").hidden = false; load(); }
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Enter") return;
+  if (e.target.id === "setname") return void saveName(e.target.value);
   if (e.target.id === "lemail") loginEmail(); else if (e.target.id === "lcode") loginCode();
 });
 document.addEventListener("input", (e) => { if (e.target.id === "lcode" && e.target.value.replace(/\D/g, "").length === 6) loginCode(); });
@@ -476,7 +479,12 @@ function noteIdeas(x) {
 /** Réglages → Compte : email de connexion (lié depuis Telegram ou le web), déconnexion. */
 function accountSection() {
   const e = S.email;
-  let h = `<p class="hint">${esc(T.emailHint)}</p>`;
+  let h = st.editName
+    ? `<input id="setname" class="note" maxlength="40" autocomplete="given-name" value="${esc(S.name || "")}">
+       <div class="acts"><button class="act on" data-savename="1">${esc(T.save)}</button><button class="act" data-editname="">${esc(T.cancel)}</button></div>`
+    : `<div class="fline"><div><b>${esc(T.nameT)}</b><span>${esc(S.name || "")} · ${esc(T.nameHint)}</span></div>
+       <button class="act" data-editname="1">${esc(T.editName)}</button></div>`;
+  h += `<p class="hint">${esc(T.emailHint)}</p>`;
   if (st.editEmail) {
     h += `<input id="setemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(e || "")}">
       <div class="acts"><button class="act on" data-saveemail="1">${esc(T.save)}</button><button class="act" data-editemail="">${esc(T.cancel)}</button>
@@ -637,6 +645,8 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.loginemail) { return void loginEmail(); }
   else if (t.dataset.logincode) { return void loginCode(); }
   else if (t.dataset.loginback) { login.step = "email"; login.err = ""; return void showLogin(); }
+  else if (t.dataset.editname !== undefined) { st.editName = !!t.dataset.editname; render(); if (st.editName) setTimeout(() => $("setname")?.select(), 0); return; }
+  else if (t.dataset.savename) { return void saveName($("setname")?.value || ""); }
   else if (t.dataset.editemail !== undefined) { st.editEmail = !!t.dataset.editemail; render(); if (st.editEmail) setTimeout(() => $("setemail")?.focus(), 0); return; }
   else if (t.dataset.saveemail) { return void saveEmail(t.dataset.saveemail === "clear" ? "" : ($("setemail")?.value || "")); }
   else if (t.dataset.logout) { api("logout").catch(() => {}).finally(() => { setToken(""); st.tab = "prog"; showLogin(); }); return; }
@@ -646,6 +656,11 @@ document.addEventListener("click", (e) => {
   else return;
   render();
 });
+async function saveName(name) {
+  if (st.busy || !name.trim()) return; st.busy = true;
+  try { S = await api("name", { name }); st.editName = false; } catch { notify(T.error); }
+  st.busy = false; render();
+}
 async function saveEmail(email) {
   if (st.busy) return; st.busy = true;
   try { S = await api("email", { email }); st.editEmail = false; }

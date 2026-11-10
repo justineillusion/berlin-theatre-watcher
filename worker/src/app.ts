@@ -279,6 +279,13 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     const lang = op === "l" ? asLang(id) : asLang(me.lang);
     return Response.json(await state(env, me.chat_id, lang, focus));
   }
+  if (url.pathname === "/app/api/name") {
+    // Mon prénom tel que les amis le voient (⭐, 💌, groupe).
+    const name = String(body.name ?? "").replace(/[\u0000-\u001f<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 40);
+    if (!name) return Response.json({ error: "bad_name" }, { status: 400 });
+    await env.DB.prepare("UPDATE users SET first_name = ? WHERE chat_id = ?").bind(name, me.chat_id).run();
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  }
   if (url.pathname === "/app/api/email") {
     // Mon adresse pour la connexion web (vide = retirer). Une adresse = un compte.
     const email = normEmail(body.email);
@@ -365,10 +372,12 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
       .map((x) => ({ venue: String(names.get(x.venue_id)), day: x.day, at: x.hour_known && x.at ? String(x.at).slice(11, 16) : null, month: x.month }))
       .sort((a, b) => a.day.localeCompare(b.day));
   } catch { /* calendrier illisible : on n'affiche rien */ }
-  const myEmail = (await env.DB.prepare("SELECT email FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null }>())?.email ?? null;
+  const meRow = await env.DB.prepare("SELECT email, first_name FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null; first_name: string }>();
+  const myEmail = meRow?.email ?? null;
   return {
     lang,
     email: myEmail,
+    name: meRow?.first_name ?? "",
     sales,
     venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null })),
     people,
