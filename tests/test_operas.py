@@ -113,6 +113,22 @@ def test_komische_oper_foyer_skipped():
     assert sum(s.title == "Echnaton (Akhnaten)" for s in shows) == 7
 
 
+def test_komische_oper_month_pages_link_to_the_production():
+    # /en/what/schedule/2027-01/madama-butterfly/1396/ -> /en/what/a-z/madama-butterfly/
+    shows = parse_komische_oper(_read("komische_oper_2027-01.html"), KO)
+    assert shows and all("/a-z/" in s.url for s in shows), {s.url for s in shows if "/a-z/" not in s.url}
+
+
+def test_press_aliases():
+    from src.parsers.opera import press_aliases
+    assert press_aliases("The Flying Dutchman") == ["Der fliegende Holländer"]
+    assert press_aliases("Queen of Spades", "Pique Dame") == ["Pique Dame"]
+    assert press_aliases("Tosca", "Tosca") == []
+    events = json.loads(_read("deutsche_oper_events_p1.json"))["EventOverview"]
+    dutch = [s for s in parse_deutsche_oper(events, {}) if s.title == "The Flying Dutchman"][0]
+    assert dutch.aliases == ["Der fliegende Holländer"]
+
+
 def test_grouped_per_production():
     shows = parse_komische_oper(_read("komische_oper_schedule.html"), KO)
     hits = select(shows, {})

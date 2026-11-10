@@ -35,6 +35,7 @@ class Show:
     end_date: Optional[str] = None        # expos : "YYYY-MM-DD" de fin (date = début)
     venue_id: str = ""                    # slug du lieu dans config.yaml (abonnements)
     venue_name: str = ""                  # nom du lieu tel que dans config.yaml
+    aliases: List[str] = field(default_factory=list)  # autres titres (titre original, pour la presse)
 
     def key(self) -> str:
         """Identité d'une PIÈCE (pour la déduplication : 1 alerte par pièce)."""
