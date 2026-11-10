@@ -76,11 +76,11 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .fhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:6px 0 4px}
 .fhead h2{font:800 22px var(--sans);letter-spacing:-.02em;margin:0}
 .invlink{display:block;font:500 13.5px var(--sans);background:var(--card);padding:10px 12px;margin:8px 0;word-break:break-all;user-select:all}
-/* Quartiers : du texte sur une ligne (défile), l'actif souligné, comme « 7 jours / Ce mois / Tout ». */
-.areas{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;margin:6px -18px 4px;padding:4px 18px 8px}
-.areas::-webkit-scrollbar{display:none}
-.areas .chip{flex:none;border:0;background:none;padding:2px 0;font:600 14px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted);white-space:nowrap}
-.areas .chip[aria-pressed="true"]{background:none;color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+/* Quartier : un petit menu déroulant, discret (sélecteur natif sur téléphone). */
+.areasel{display:flex;align-items:center;gap:6px;margin:4px 0 6px;font:500 13.5px var(--sans);color:var(--muted)}
+.areasel select{appearance:none;-webkit-appearance:none;border:0;background:none;font:700 13.5px var(--sans);color:var(--ink);padding:2px 16px 2px 0;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);
+  background-position:calc(100% - 7px) 55%,calc(100% - 3px) 55%;background-size:4px 4px;background-repeat:no-repeat;cursor:pointer}
 .row{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 8px;border:0;background:none;width:100%;text-align:left}
 .when{font:700 15.5px var(--sans);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px;line-height:1.1}
 .when small{display:block;font:500 12px var(--sans);color:var(--muted);margin-top:3px}
@@ -190,7 +190,7 @@ const L = {
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Connecte-toi une fois avec Telegram : ton compte est celui du bot.", loginBtn:"Se connecter avec Telegram ↗", loginWait:"Dans Telegram, touche « ✅ Oui, c'est moi », puis reviens ici.", loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
-        cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout",
+        cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
         loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Ajoute-la d'abord dans Réglages → Compte, depuis l'app dans Telegram.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
         setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien dans Telegram et appuie sur « Démarrer » : vous êtes connectés.",
@@ -208,7 +208,7 @@ const L = {
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Sign in once with Telegram: your account is the bot's.", loginBtn:"Sign in with Telegram ↗", loginWait:"In Telegram, tap “✅ Yes, it's me”, then come back here.", loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
-        cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere",
+        cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
         loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Add it first in Settings → Account, from the app inside Telegram.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
         setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link in Telegram and taps “Start”: you're connected.",
@@ -615,8 +615,8 @@ function render() {
     const areas = [...new Set(S.venues.map((v) => v.district).filter(Boolean))].sort();
     if (st.setArea && !areas.includes(st.setArea)) st.setArea = "";
     const inSet = (v) => !st.setArea || v.district === st.setArea;
-    const areaChips = areas.length < 2 ? "" : `<div class="areas"><button class="chip" data-area="" aria-pressed="${!st.setArea}">${esc(T.everywhere)}</button>` +
-      areas.map((a) => `<button class="chip" data-area="${esc(a)}" aria-pressed="${st.setArea === a}">${esc(a)}</button>`).join("") + "</div>";
+    const areaChips = areas.length < 2 ? "" : `<label class="areasel">${esc(T.areaL)}<select id="areasel">` +
+      [["", T.everywhere], ...areas.map((a) => [a, a])].map(([v, l]) => `<option value="${esc(v)}"${st.setArea === v ? " selected" : ""}>${esc(l)}</option>`).join("") + "</select></label>";
     const cats = ["theatre", "expo", "cinema"].map((k) => [k, S.venues.filter((v) => v.kind === k && inSet(v))]).filter(([, vs]) => vs.length);
     const venuesTab = `<p class="hint">${esc(T.tapToggle)}</p>${areaChips}${cats.map(([k, vs]) => {
       const any = vs.some((v) => v.followed);
@@ -777,6 +777,7 @@ function shareInvite() {
   else navigator.clipboard?.writeText(link).then(() => notify(T.copied), () => {});
 }
 document.addEventListener("input", (e) => { if (e.target.id === "note") st.note = e.target.value; });
+document.addEventListener("change", (e) => { if (e.target.id === "areasel") { st.setArea = e.target.value; render(); } });
 render(); load();
 </script>
 </body>
