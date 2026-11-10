@@ -8,8 +8,15 @@ on:
     # n'envoie rien si le récap de la semaine est déjà parti (mémorisé par le Worker).
     - cron: "17 5 * * 0"
     - cron: "17 7 * * 0"
+    # Mercredi : rafraîchissement silencieux (nouveaux films, séances, notes) — aucun message.
+    - cron: "17 5 * * 3"
   workflow_dispatch:      # bouton "Run workflow" pour tester à la main
     inputs:
+      mode:
+        description: "refresh = mettre à jour les films sans rien envoyer ; send = renvoyer le récap (--force)"
+        type: choice
+        options: [refresh, send]
+        default: refresh
       only:
         description: "Cinémas seulement (noms de cinema.yaml, séparés par des virgules) ; vide = tous"
         required: false
@@ -48,5 +55,6 @@ jobs:
         run: >-
           python -m src.cinema
           ${{ github.event.schedule == '17 7 * * 0' && '--backup' || '' }}
-          ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}
+          ${{ (github.event.schedule == '17 5 * * 3' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'refresh')) && '--refresh' || '' }}
+          ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'send' && '--force' || '' }}
           ${{ inputs.only != '' && format('--only "{0}"', inputs.only) || '' }}

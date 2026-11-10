@@ -343,7 +343,7 @@ def _own_card(f: Film, films: Dict[str, Film]) -> dict:
     }
 
 
-def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
+def send_multi(cfg: dict, start: date, token: str, force: bool = False, refresh: bool = False) -> None:
     """Bot multi-utilisateurs : un récap par ami, limité aux cinémas qu'il suit
     (/suivre). Personne ne suit de cinéma = aucun envoi. Idempotent par semaine
     (second créneau cron) sauf `force`."""
@@ -364,10 +364,13 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
         data = resp.json()
         # Récap déjà parti : on n'envoie rien, mais on RE-REND les fiches des films
         # (pitch traduit entre-temps, note…) pour /programme et /sorties.
-        rerender_only = bool(data.get("already_sent"))
+        # --refresh (milieu de semaine) : fiches et séances mises à jour en silence, aucun message.
+        rerender_only = refresh or bool(data.get("already_sent"))
+        if refresh:
+            print("🔄 Rafraîchissement silencieux : fiches films mises à jour, aucun envoi.")
         if rerender_only:
             print(f"✅ Récap de la semaine du {week} déjà envoyé : fiches re-rendues seulement (--force pour renvoyer).")
-        recipients = data["recipients"]
+        recipients = [] if refresh else data["recipients"]
         print(f"👥 {len(recipients)} ami·e(s) suivent au moins un cinéma.")
         analysis = analyse(cfg, start)
 
@@ -407,7 +410,7 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False) -> None:
         # et rien n'est envoyé d'ici ; sinon (autre jour, après midi) : envoi direct comme avant.
         resp = api.post("/api/film-plan", json={
             "films": [_film_item(f, by_id) for f in films.values()],
-            "queue": True,
+            "queue": not refresh,
             "targets": [{"chat_id": rcp["chat_id"], "ids": [f.item_id() for f in res["kept"]],
                          "header": res["header"],
                          "cards": {f.item_id(): _own_card(f, films) for f in res["kept"]}}
@@ -493,6 +496,8 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("--lang", choices=["fr", "en"], default="fr",
                     help="langue du récap (bot : chaque ami reçoit la sienne, /langue)")
     ap.add_argument("--force", action="store_true", help="renvoie même si le récap de la semaine est déjà parti")
+    ap.add_argument("--refresh", action="store_true",
+                    help="milieu de semaine : met à jour les films (séances, notes, fiches) sans rien envoyer")
     ap.add_argument("--backup", action="store_true",
                     help="créneau cron de secours : n'envoie que si le 1er n'est pas passé (bot multi-utilisateurs)")
     args = ap.parse_args(argv)
@@ -521,7 +526,7 @@ def main(argv: List[str] | None = None) -> int:
     if not token:
         sys.exit("❌ TELEGRAM_BOT_TOKEN manquant (ou utilise --dry-run)")
     if os.environ.get("BOT_API_URL"):
-        send_multi(cfg, start, token, force=args.force)
+        send_multi(cfg, start, token, force=args.force, refresh=args.refresh)
         return 0
     if args.backup:
         print("Créneau de secours sans bot multi-utilisateurs : impossible de savoir si le "
