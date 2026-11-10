@@ -237,10 +237,47 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
   if (req.method === "GET" && (url.pathname === "/app" || url.pathname === "/app/")) {
     return new Response(PAGE, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
   }
+  const cal = url.pathname.match(/^\/app\/cal\/([A-Za-z0-9_-]{1,40})\.ics$/);
+  if (req.method === "GET" && cal) return calendarFile(env, cal[1], url.searchParams.get("at") || "");
   if (req.method === "GET") return webAsset(url.pathname) ?? new Response("not found", { status: 404 });
   if (req.method === "OPTIONS") return cors(req, new Response(null, { status: 204 }));
   if (req.method !== "POST") return new Response("not found", { status: 404 });
   return cors(req, await api(req, env, ctx, url));
+}
+
+/** « Ajouter au calendrier » : un .ics pour une séance (données publiques : titre, lieu, heure).
+ *  Heure locale Berlin ; durée inconnue → 2 h 30 (théâtre) / 2 h (cinéma) ; rappel 2 h avant. */
+async function calendarFile(env: Env, id: string, at: string): Promise<Response> {
+  const m = at.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$/);
+  const item = m && await env.DB.prepare(
+    "SELECT i.id, i.kind, i.title, i.url, v.name AS venue FROM items i JOIN venues v ON v.id = i.venue_id WHERE i.id = ?",
+  ).bind(id).first<{ id: string; kind: string; title: string; url: string | null; venue: string }>();
+  if (!m || !item) return new Response("not found", { status: 404 });
+  const [, y, mo, d, h, mi] = m;
+  const start = new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi));
+  const end = new Date(start.getTime() + (item.kind === "cinema" ? 120 : 150) * 60000);
+  const local = (t: Date) => t.toISOString().replace(/[-:]/g, "").slice(0, 13) + "00";   // « flottant » relu en Europe/Berlin
+  const txt = (v: string) => v.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+  const fold = (l: string) => { const out: string[] = []; let b = l; while (enc.encode(b).length > 73) { let n = 73; while (enc.encode(b.slice(0, n)).length > 73) n--; out.push(b.slice(0, n)); b = " " + b.slice(n); } out.push(b); return out.join("\r\n"); };
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  const lines = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Berlin Encore!//FR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+    "BEGIN:VTIMEZONE", "TZID:Europe/Berlin",
+    "BEGIN:DAYLIGHT", "TZOFFSETFROM:+0100", "TZOFFSETTO:+0200", "TZNAME:CEST", "DTSTART:19700329T020000", "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU", "END:DAYLIGHT",
+    "BEGIN:STANDARD", "TZOFFSETFROM:+0200", "TZOFFSETTO:+0100", "TZNAME:CET", "DTSTART:19701025T030000", "RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU", "END:STANDARD",
+    "END:VTIMEZONE",
+    "BEGIN:VEVENT", `UID:${item.id}-${at}@berlinencore.app`, `DTSTAMP:${stamp}`,
+    `DTSTART;TZID=Europe/Berlin:${local(start)}`, `DTEND;TZID=Europe/Berlin:${local(end)}`,
+    `SUMMARY:${txt(`🎟 ${item.title}`)}`, `LOCATION:${txt(`${item.venue}, Berlin`)}`,
+    ...(item.url ? [`URL:${item.url}`, `DESCRIPTION:${txt(item.url)}`] : []),
+    "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${txt(item.title)}`, "TRIGGER:-PT2H", "END:VALARM",
+    "END:VEVENT", "END:VCALENDAR",
+  ];
+  return new Response(lines.map(fold).join("\r\n") + "\r\n", { headers: {
+    "content-type": "text/calendar; charset=utf-8",
+    "content-disposition": `inline; filename="berlin-encore-${item.id}.ics"`,
+    "cache-control": "no-store",
+  } });
 }
 
 async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Promise<Response> {
