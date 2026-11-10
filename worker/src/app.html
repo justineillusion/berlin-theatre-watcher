@@ -235,7 +235,7 @@ const L = {
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
         tagline:"Sortir ensemble à Berlin, même sans parler allemand.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "Théâtre et opéra surtitrés en anglais"], ["🎬", "Cinéma en version originale"], ["🖼", "Les expos du moment"], ["👯", "Ce qui tente tes amis, pour y aller ensemble"]],
         invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Rejoindre", joinGo:"Valider", signupHint:"On t'envoie un code par email pour confirmer. Pas de mot de passe.",
-        haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Entre ton email : on le crée.", newAccount:"Créer ton compte", newAccountHint:"Cette adresse est nouvelle ici. Ton prénom, et c'est parti.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
+        haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Entre ton email : on le crée.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
         setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
@@ -256,7 +256,7 @@ const L = {
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
         tagline:"Go out together in Berlin, no German needed.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "Theatre and opera with English surtitles"], ["🎬", "Films in original version"], ["🖼", "Current exhibitions"], ["👯", "What your friends fancy, so you can go together"]],
         invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Join", joinGo:"Confirm", signupHint:"We'll email you a code to confirm. No password.",
-        haveAccount:"Sign in", noAccount:"No account yet? Enter your email: we'll create one.", newAccount:"Create your account", newAccountHint:"This address is new here. Just your first name and you're in.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
+        haveAccount:"Sign in", noAccount:"No account yet? Enter your email: we'll create one.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
         setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
@@ -342,7 +342,7 @@ let loginCfg = null, inviter = undefined, teaser = null;
 const login = { step: "email", email: "", name: "", id: null, err: "" };
 const PARAMS = new URLSearchParams(location.search);
 let INVITE = PARAMS.get("invite") || "";
-const ERR = { bad_email: "badEmail", unknown_email: "unknownEmail", too_many: "tooMany", expired: "codeExpired", bad_invite: "badInvite", bad_name: "badName" };
+const ERR = { mail_failed: "mailFailed", bad_email: "badEmail", unknown_email: "unknownEmail", too_many: "tooMany", expired: "codeExpired", bad_invite: "badInvite", bad_name: "badName" };
 const errText = (e) => T[ERR[e.info?.error]] || T.error;
 async function showLogin() {
   S = null;
@@ -368,8 +368,7 @@ async function showLogin() {
   else if (signup) form = (inviter ? `<div class="inviter">${avatar(inviter.photo, inviter.name, "avmid", "me")}<b>${esc(T.invitedBy(inviter.name))}</b></div>` : `<b class="ftitle">${esc(T.newAccount)}</b><p>${esc(T.newAccountHint)}</p>`) + `
        <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">
        <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}">
-       <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>
-       <p class="hint">${esc(T.signupHint)}</p>` + (inviter ? "" : `<button class="act" data-loginback="1">${esc(T.haveAccount)}</button>`);
+       <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>` + (inviter ? "" : `<button class="act" data-loginback="1">${esc(T.haveAccount)}</button>`);
   else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.haveAccount)}</b>
        <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}">
        <button class="act on" data-loginemail="1">${esc(T.sendCode)}</button>
@@ -418,6 +417,12 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("input", (e) => { if (e.target.id === "lcode" && e.target.value.replace(/\D/g, "").length === 6) loginCode(); });
 // Lien de l'email : /app?login=<lien> → connecté·e, puis l'adresse redevient /app.
 const LOGIN_LINK = PARAMS.get("login");
+// Nouvelle version déployée ? (l'app d'écran d'accueil sur iPhone reprend sans recharger) → on recharge.
+const BUILD = "__BUILD__";
+async function checkBuild() {
+  try { const j = await api("login/config"); if (j.v && BUILD !== "__" + "BUILD__" && j.v !== BUILD && !document.querySelector("input:focus")) location.reload(); } catch {}
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden) checkBuild(); });
 if (LOGIN_LINK) history.replaceState(null, "", location.pathname);
 
 async function load() {

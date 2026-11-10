@@ -28,6 +28,9 @@ import { DISTRICT } from "./districts";
 import { LOGOS } from "./web/logos";
 
 const enc = new TextEncoder();
+// Empreinte de la page (change à chaque déploiement qui la modifie) : la page compare et se recharge.
+const BUILD = (() => { let h = 0; for (let i = 0; i < PAGE.length; i++) h = (h * 31 + PAGE.charCodeAt(i)) | 0; return (h >>> 0).toString(36); })();
+const PAGE_BUILT = PAGE.replace("__BUILD__", BUILD);
 const hmac = async (key: ArrayBuffer | Uint8Array, msg: string) =>
   crypto.subtle.sign("HMAC", await crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]), enc.encode(msg));
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
@@ -207,7 +210,7 @@ async function finishSignup(env: Env, chat: number): Promise<void> {
 }
 
 async function emailLogin(env: Env, path: string, body: any): Promise<Response | null> {
-  if (path === "/app/api/login/config") return Response.json({ email: !!env.RESEND_API_KEY, bot: env.BOT_USERNAME });
+  if (path === "/app/api/login/config") return Response.json({ email: !!env.RESEND_API_KEY, bot: env.BOT_USERNAME, v: BUILD });
   if (path === "/app/api/login/email") {
     if (!env.RESEND_API_KEY) return Response.json({ error: "mail_off" }, { status: 503 });
     const email = normEmail(body.email);
@@ -309,7 +312,7 @@ async function ensureHandle(env: Env, chat: number): Promise<string> {
 export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(req.url);
   if (req.method === "GET" && (url.pathname === "/app" || url.pathname === "/app/")) {
-    return new Response(PAGE, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+    return new Response(PAGE_BUILT, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
   }
   const cal = url.pathname.match(/^\/app\/cal\/([A-Za-z0-9_-]{1,40})\.ics$/);
   if (req.method === "GET" && cal) return calendarFile(env, cal[1], url.searchParams.get("at") || "");
