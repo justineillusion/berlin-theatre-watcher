@@ -154,7 +154,18 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .login{max-width:420px;margin:0 auto;padding:40px 24px;display:grid;gap:14px;text-align:left}
 .login p{margin:0;color:var(--muted)}.login .act{text-align:center;padding:12px 14px;font-size:15px}
 .landing .mast{display:none}
-.hero{background:#0e0f11;color:#fff;padding:18px 24px 26px;position:relative;overflow:hidden}
+html:has(body.landing),body.landing{background:#0e0f11;color:#fff}
+.landing .login p{color:#a6abb2}
+.landing .lform{background:#1b1c20;border-top-color:var(--velvet)}
+.landing .lform .note{background:#0e0f11;color:#fff;border-color:#3a3d43}
+.landing .lform .note::placeholder{color:#7d828a}
+.landing .lform .act:not(.on){background:transparent;color:#fff;border-color:#fff}
+.landing .lform .ftitle,.landing .inviter{color:#fff}
+.landing .what li{color:#e8e8ea}
+.landing .hint{color:#8a8f96}
+.landing .sign{color:#5d6168}
+.landing .bill{border-top-color:#3a3d43;filter:blur(1.2px);opacity:.6;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);pointer-events:none;user-select:none;margin-top:4px}
+.hero{background:#0e0f11;color:#fff;padding:18px 20px 4px;position:relative;overflow:hidden}
 .hero .lpick{position:absolute;top:14px;right:16px;display:flex;gap:2px;z-index:1}
 .lpick button{border:0;background:none;font:700 12px var(--sans);letter-spacing:.08em;color:#8a8f96;padding:4px 6px;cursor:pointer}
 .lpick button.on{color:#fff;box-shadow:inset 0 -2px 0 var(--velvet)}
@@ -163,7 +174,7 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .wm b{display:block;font:800 clamp(62px,19vw,92px)/.86 var(--sans);letter-spacing:-.055em}
 .wm b i{font-style:normal;color:var(--velvet)}
 .hero .tag{font:600 19px/1.3 var(--sans);color:#e8e8ea;margin:18px 0 0;max-width:22ch;position:relative;z-index:1}
-.bill{margin-top:24px;border-top:2px solid #fff;position:relative;z-index:1}
+.bill{border-top:2px solid #fff;position:relative;z-index:1}
 .billt{display:block;font:800 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--velvet);padding:10px 0 4px}
 .billrow{display:grid;grid-template-columns:96px 1fr;column-gap:12px;padding:8px 0;border-bottom:1px solid #2a2c30}
 .billrow .bw{grid-row:span 2;font:700 12.5px/1.5 var(--sans);color:#a6abb2;text-transform:uppercase;letter-spacing:.03em}
@@ -235,7 +246,7 @@ const L = {
         cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
         tagline:"Sortir ensemble à Berlin, même sans parler allemand.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "Théâtre et opéra surtitrés en anglais"], ["🎬", "Cinéma en version originale"], ["🖼", "Les expos du moment"], ["👯", "Ce qui tente tes amis, pour y aller ensemble"]],
         invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Rejoindre", joinGo:"Valider", signupHint:"On t'envoie un code par email pour confirmer. Pas de mot de passe.",
-        haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Entre ton email : on le crée.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
+        haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
         setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en ⭐.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
@@ -256,7 +267,7 @@ const L = {
         cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
         tagline:"Go out together in Berlin, no German needed.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "Theatre and opera with English surtitles"], ["🎬", "Films in original version"], ["🖼", "Current exhibitions"], ["👯", "What your friends fancy, so you can go together"]],
         invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Join", joinGo:"Confirm", signupHint:"We'll email you a code to confirm. No password.",
-        haveAccount:"Sign in", noAccount:"No account yet? Enter your email: we'll create one.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
+        haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
         setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
@@ -356,7 +367,7 @@ async function showLogin() {
   const bill = (teaser || []).length ? `<div class="bill"><b class="billt">${esc(T.thisWeek)}</b>${teaser.map((x) =>
     `<div class="billrow"><span class="bw">${esc(when(x.at))}</span><span class="bt">${esc(x.title)}</span><span class="bv">${x.kind === "theatre" ? "🎭" : "🎬"} ${esc(x.venue)}</span></div>`).join("")}</div>` : "";
   const hero = `<section class="hero">${lang}<div class="wm"><small>Berlin</small><b>Encore<i>!</i></b></div>
-    <p class="tag">${esc(T.tagline)}</p>${bill}</section>`;
+    <p class="tag">${esc(T.tagline)}</p></section>`;
   const pitch = `<ul class="what">${T.what.map(([i, w]) => `<li><span>${i}</span>${esc(w)}</li>`).join("")}</ul>`;
   const signup = (INVITE && inviter) || login.step === "new";
   let form;
@@ -375,7 +386,7 @@ async function showLogin() {
        <p class="hint">${esc(T.noAccount)}</p>`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
   document.body.classList.add("landing");
-  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div>${pitch}${ios}<p class="sign">Berlin Encore! · ${esc(T.madeIn)}</p></div>`;
+  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div>${bill}${pitch}${ios}<p class="sign">Berlin Encore! · ${esc(T.madeIn)}</p></div>`;
   setTimeout(() => ($("lcode") || (signup ? $("lname") : null))?.focus(), 0);
 }
 async function loginEmail() {
