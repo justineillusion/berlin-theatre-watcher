@@ -762,6 +762,30 @@ async function adminStats(env: Env) {
       mails24: await one("SELECT COUNT(*) n FROM rate_hits WHERE key = 'mail:' AND at > datetime('now', '-1 day')"),
     },
     weeks: weeks.results, blocked: blocked.results, feedback: feedback.results,
+    ...(await adminUsage(env)),
     users: users.results.map((u: any) => ({ ...u, web: u.chat_id >= WEB_ID_BASE, chat_id: undefined })),
   };
+}
+
+/** Admin : usage (réactions, lieux suivis, ce qui plaît), comptes actifs seulement. */
+async function adminUsage(env: Env) {
+  const act = "chat_id IN (SELECT chat_id FROM users WHERE active = 1)";
+  const [reac, subs, venues, top, last7] = await Promise.all([
+    env.DB.prepare(`SELECT COALESCE(SUM(interested = 1), 0) AS wants, COALESCE(SUM(booked_at IS NOT NULL), 0) AS booked, COALESCE(SUM(status = 'seen'), 0) AS seen,
+        COALESCE(SUM(status = 'ignored'), 0) AS ignored, COALESCE(SUM(rating IS NOT NULL), 0) AS rated, ROUND(AVG(rating), 1) AS avg_rating,
+        COALESCE(SUM(comment IS NOT NULL AND comment != ''), 0) AS reviews, COUNT(DISTINCT chat_id) AS users
+      FROM reactions WHERE ${act}`).first<any>(),
+    env.DB.prepare(`SELECT ROUND(AVG(n), 1) AS avg, MIN(n) AS min, MAX(n) AS max FROM
+      (SELECT u.chat_id, (SELECT COUNT(*) FROM subscriptions s WHERE s.chat_id = u.chat_id) AS n FROM users u WHERE u.active = 1)`).first<any>(),
+    env.DB.prepare(`SELECT v.name, v.kind, v.optional, COUNT(s.chat_id) AS n FROM venues v
+      LEFT JOIN subscriptions s ON s.venue_id = v.id AND s.${act}
+      WHERE v.active = 1 GROUP BY v.id ORDER BY n DESC, v.name`).all<any>(),
+    env.DB.prepare(`SELECT i.title, v.name AS venue, COALESCE(SUM(r.interested = 1), 0) AS wants, COALESCE(SUM(r.booked_at IS NOT NULL), 0) AS booked,
+        COALESCE(SUM(r.status = 'seen'), 0) AS seen, COALESCE(SUM(r.status = 'ignored'), 0) AS ignored
+      FROM reactions r JOIN items i ON i.id = r.item_id JOIN venues v ON v.id = i.venue_id
+      WHERE r.${act} GROUP BY r.item_id ORDER BY wants + booked * 2 + seen DESC LIMIT 12`).all<any>(),
+    env.DB.prepare(`SELECT COALESCE(SUM(interested = 1), 0) AS wants, COALESCE(SUM(booked_at IS NOT NULL), 0) AS booked, COALESCE(SUM(status = 'seen'), 0) AS seen, COALESCE(SUM(status = 'ignored'), 0) AS ignored
+      FROM reactions WHERE ${act} AND updated_at > datetime('now', '-7 days')`).first<any>(),
+  ]);
+  return { usage: { ...reac, last7, subs }, venues: venues.results, top: top.results };
 }

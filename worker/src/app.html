@@ -144,7 +144,8 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .cropbox .acts{justify-content:center}
 .tab .tabn{display:inline-block;min-width:17px;height:17px;margin-left:6px;border-radius:9px;background:var(--velvet);color:#fff;font:800 10.5px/17px var(--sans);font-style:normal;text-align:center;padding:0 4px;vertical-align:1px;letter-spacing:0}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px}
-.kpi{border:1.5px solid var(--line);padding:10px}.kpi b{display:block;font:800 22px var(--sans)}.kpi span{font-size:12px;color:var(--muted)}
+.kpi{border:1.5px solid var(--line);padding:10px}.kpi b small{font-size:13px;color:var(--muted);font-weight:600}
+.vbars{padding:4px 0 8px}.vbars div{display:grid;grid-template-columns:1fr 90px 28px;gap:8px;align-items:center;font-size:13px;padding:3px 0}.vbars span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vbars i{display:block;height:8px;background:var(--velvet);min-width:2px}.vbars b{text-align:right}.kpi b{display:block;font:800 22px var(--sans)}.kpi span{font-size:12px;color:var(--muted)}
 .wk{display:flex;align-items:flex-end;gap:6px;padding:8px 16px;overflow-x:auto}.wk div{display:flex;flex-direction:column;align-items:center;min-width:30px;font-size:11px}
 .wk i{display:block;width:16px;background:var(--velvet)}.wk small{color:var(--muted)}
 .adm{padding:4px 16px;margin:0;color:var(--muted);font-size:14px}
@@ -742,6 +743,15 @@ function adminTab() {
   return `<div class="kpis" style="padding:12px 0">${kpi(t.active, "inscrits")}${kpi(t.new7, "nouveaux 7 j")}${kpi(t.seen7, "actifs 7 j")}${kpi(t.web, "via le web")}${kpi(t.pending, "pas confirmés")}${kpi(t.mails24, "emails 24 h")}</div>`
     + dayHead("Inscriptions par semaine") + `<div class="wk">${A.weeks.map((w) => `<div><i style="height:${Math.round(w.n / max * 48) + 2}px"></i><small>${esc(w.from_day.slice(5))}</small><b>${w.n}</b></div>`).join("") || "—"}</div>`
     + dayHead("Robots bloqués · 24 h") + `<p class="adm">${A.blocked.length ? A.blocked.map((b) => `${esc(b.kind)} : ${b.n}`).join(" · ") : "aucun"}</p>`
+    + (A.usage ? (() => { const u = A.usage, w = u.last7 || {}, n = (v) => v ?? 0; const pct = (a, b) => b ? `${Math.round((a || 0) / b * 100)} %` : "—";
+        const vmax = Math.max(1, ...A.venues.map((v) => v.n));
+        return dayHead("Réactions", "total · 7 derniers jours")
+          + `<div class="kpis" style="padding:12px 0">${kpi(`${n(u.wants)}<small> · ${n(w.wants)}</small>`, "🙋 intéressés")}${kpi(`${n(u.booked)}<small> · ${n(w.booked)}</small>`, "🎟 réservés")}${kpi(`${n(u.seen)}<small> · ${n(w.seen)}</small>`, "✅ vus")}${kpi(`${n(u.ignored)}<small> · ${n(w.ignored)}</small>`, "✖ pas pour moi")}${kpi(n(u.rated) ? `${u.avg_rating}★` : "—", `${n(u.rated)} notes · ${n(u.reviews)} critiques`)}${kpi(n(u.users), "ont réagi")}</div>`
+          + `<div class="kpis" style="padding:0 0 12px;grid-template-columns:1fr 1fr">${kpi(pct(u.rated, u.seen), `notés / vus (${n(u.rated)}/${n(u.seen)})`)}${kpi(pct(u.reviews, u.rated), `critiques / notes (${n(u.reviews)}/${n(u.rated)})`)}</div>`
+          + dayHead("Lieux suivis", `moyenne ${n(u.subs?.avg)} · min ${n(u.subs?.min)} · max ${n(u.subs?.max)}`)
+          + `<div class="vbars">${A.venues.map((v) => `<div><span>${esc(v.name)}</span><i style="width:${Math.round(v.n / vmax * 100)}%"></i><b>${v.n}</b></div>`).join("")}</div>`
+          + dayHead("Ce qui plaît") + A.top.map((x) => `<div class="au"><div><b>${esc(x.title)}</b><br><small>${esc(x.venue)}</small></div><div class="aun"><small>🙋 ${x.wants} · 🎟 ${x.booked} · ✅ ${x.seen} · ✖ ${x.ignored}</small></div></div>`).join("");
+      })() : "")
     + dayHead("Inscrits", String(A.users.length)) + `<div class="ausers">${A.users.map((u) => `<div class="au${u.active ? "" : " off"}">
         <div><b>${esc(u.first_name)}</b>${u.handle ? ` <span>@${esc(u.handle)}</span>` : ""}${u.pending ? ` <em>pas confirmé</em>` : !u.active ? ` <em>inactif</em>` : ""}<br><small>${esc(u.email || (u.web ? "" : "Telegram"))}</small></div>
         <div class="aun"><small>inscrit ${d(u.joined_at)} · vu ${d(u.seen_at)}</small><small>👥 ${u.friends} · 🙋 ${u.wants} · 🎟 ${u.booked} · ✅ ${u.seen} · lieux ${u.venues} · ${esc(u.lang)}</small></div></div>`).join("")}</div>`
