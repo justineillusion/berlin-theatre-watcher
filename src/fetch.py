@@ -18,6 +18,23 @@ def fetch_html(url: str, timeout: float = 30.0) -> str:
         return resp.text
 
 
+def fetch_many(urls, workers: int = 6, timeout: float = 20.0) -> dict:
+    """{url: html} pour plusieurs pages en parallèle (opéras, Philharmonie :
+    une page par production). Une page en échec est simplement absente."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    urls = list(dict.fromkeys(urls))
+
+    def one(u):
+        try:
+            return u, fetch_html(u, timeout=timeout)
+        except Exception:  # noqa: BLE001 — on garde les autres pages
+            return u, None
+
+    with ThreadPoolExecutor(max_workers=max(1, min(workers, len(urls) or 1))) as pool:
+        return {u: h for u, h in pool.map(one, urls) if h is not None}
+
+
 def html_to_text(html: str, max_chars: int = 60_000) -> str:
     """Nettoie le HTML pour réduire le nombre de tokens envoyés au LLM.
 

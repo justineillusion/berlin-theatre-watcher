@@ -102,6 +102,32 @@ theaters:
     parser: festspiele
     url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=theatertreffen
 
+  # --- Opéras & concerts (à la carte) -----------------------------------------
+  # optional: true = lieu proposé dans /suivre mais PAS d'abonnement d'office
+  # (géré côté Worker). Surtitres : voir src/parsers/opera.py.
+  - name: Staatsoper Unter den Linden
+    parser: staatsoper
+    optional: true
+    url: https://www.staatsoper-berlin.de/en/programme/operas/
+
+  - name: Deutsche Oper Berlin
+    parser: deutsche_oper
+    optional: true
+    url: https://deutscheoperberlin.de/en_EN/calendar
+
+  # Au Schillertheater pendant les travaux du bâtiment Behrenstraße.
+  - name: Komische Oper Berlin
+    parser: komische_oper
+    optional: true
+    url: https://www.komische-oper-berlin.de/en/what/schedule/
+
+  # Concerts : pas de filtre de langue. kind theatre faute de kind « concert »
+  # côté Worker (il ne connaît que theatre / expo / cinema).
+  - name: Berliner Philharmoniker
+    parser: philharmonie
+    optional: true
+    url: https://www.berliner-philharmoniker.de/en/concerts/subscriptions-and-flex-packages/
+
   # --- Expos -----------------------------------------------------------------
   - name: Hamburger Bahnhof
     parser: smb

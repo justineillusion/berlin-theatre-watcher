@@ -40,7 +40,10 @@ def _venues(config: dict) -> List[dict]:
     from .main import venue_slug
 
     return [
-        {"id": venue_slug(t["name"]), "name": t["name"], "kind": t.get("kind", "theatre")}
+        {"id": venue_slug(t["name"]), "name": t["name"], "kind": t.get("kind", "theatre"),
+         # Lieu « à la carte » : proposé dans /suivre mais pas d'abonnement d'office
+         # (lu côté Worker ; ignoré tant que le Worker ne le gère pas).
+         **({"optional": True} if t.get("optional") else {})}
         for t in config["theaters"]
     ]
 

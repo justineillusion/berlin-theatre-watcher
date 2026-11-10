@@ -169,7 +169,8 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
         if "en" in langs:
             en = to_english(summary, keep=[show.title, *_aliases(show)])
             out["en"] = "" if not summary else (en if en and (en != summary or looks_english(summary)) else None)
-        if show.kind != "expo":
+        # Concerts (Philharmonie) : ni langue de plateau ni surtitres à afficher.
+        if show.kind != "expo" and show.production_type != "Concert":
             out["spoken"], out["surtitles"] = detect_language(show.languages, page_text, show.has_english_surtitles)
         out["at"] = datetime.now(timezone.utc).isoformat()
         out["v"] = _SUMMARY_VERSION
