@@ -112,9 +112,20 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .logo{width:24px;height:24px;object-fit:contain;vertical-align:middle;border-radius:3px}
 .set .line .logo{width:20px;height:20px;margin-right:8px;flex:none}.set .line > div{display:flex;align-items:center}
 .badge{font-size:15px;padding-top:2px}
-.social{font-size:14px;color:var(--ink);margin-top:4px}
+.social{font-size:14px;color:var(--ink);margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;column-gap:14px;row-gap:6px}
+.social .sp{display:inline-flex;align-items:center;gap:6px;line-height:22px}
+.social .ostar,.social .stack,.social .fnames,.social .av{vertical-align:baseline;margin:0}
+.social .stack .face{margin-left:-6px}.social .stack .face:first-child{margin-left:0}
 .plan{border:0;background:none;padding:0 0 0 4px;font:700 13px var(--sans);color:var(--velvet);cursor:pointer;white-space:nowrap}
-.social .av{width:20px;height:20px;vertical-align:-5px}
+.social .av{width:22px;height:22px;vertical-align:middle}
+.stack{display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px}
+.stack .face{display:inline-flex;border-radius:50%;box-shadow:0 0 0 2px var(--bg);margin-left:-6px}
+.stack .face:first-child{margin-left:0}
+.stack .av.none{width:22px;height:22px;font-size:10.5px}
+.fnames{color:var(--muted);font-size:13px;vertical-align:middle}
+.ostar.ok{background:#fff;box-shadow:inset 0 0 0 1px var(--ok)}
+.rv{color:#a37700;font-weight:800}
+.ostar.tk{background:#fff;box-shadow:inset 0 0 0 1px var(--velvet)}
 .av.none{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font:800 10px var(--sans);vertical-align:-5px}
 .ostar{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:11px;background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold);vertical-align:-5px;margin-right:4px}
 .badge.disc{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:15px;line-height:1;padding:0;margin-top:2px;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line)}
@@ -520,14 +531,21 @@ function socialLine(x) {
   const mine = x.me && x.me.booked;
   const together = mine ? f.filter((p) => p.booked === mine).map(who) : [];
   if (together.length) parts.push(`🎟 ${esc(T.withF)} ${together.join(", ")}`);
-  const want = f.filter((p) => (p.star || p.booked) && !p.seen && !(mine && p.booked === mine)).map((p) => who(p) + (p.booked ? " 🎟" : ""));
+  // Intéressés : visages qui se chevauchent (moi d'abord si je le suis aussi), prénoms en petit à côté.
+  const face = (p) => `<span class="face" title="${esc(p.name)}">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)}</span>`;
+  const wantP = f.filter((p) => p.star && !p.booked && !p.seen);
+  const bookP = f.filter((p) => p.booked && !p.seen && !(mine && p.booked === mine));
+  const stack = (ps, withMe) => `<span class="stack">${withMe ? `<span class="face" title="${esc(T.me)}">${avatar(S.photo, S.handle, "av", "me")}</span>` : ""}${ps.map(face).join("")}</span>`
+    + `<span class="fnames">${esc(ps.slice(0, 3).map((p) => p.name).join(", "))}${ps.length > 3 ? "…" : ""}</span>`;
   // Moi aussi intéressée : ma tête à côté des leurs + « Organiser › » (Envoyer à… pré-rempli avec eux).
   const meToo = x.me && x.me.star && !x.me.booked && !(x.me.status === "seen");
-  const wantIds = f.filter((p) => p.star && !p.booked && !p.seen).map((p) => p.id);
-  if (want.length) parts.push(`<span class="ostar">🙋</span>` + (meToo ? avatar(S.photo, S.handle, "av", "me") + " + " : "") + want.join(", "));
-  const seen = f.filter((p) => p.seen).map((p) => who(p) + (p.rating ? ` <span class="stars">${"★".repeat(p.rating)}</span>` : ""));
-  if (seen.length) parts.push("✅ " + seen.join(", "));
-  return parts.length ? `<div class="social">${parts.join(" · ")}</div>` : "";
+  if (wantP.length) parts.push(`<span class="ostar">🙋</span>` + stack(wantP, meToo));
+  if (bookP.length) parts.push(`<span class="ostar tk">🎟</span>` + stack(bookP, false));
+  // Vu : ✅ en cercle, visages, puis « Joss 4★ » (la note de chacun en valeur).
+  const seenP = f.filter((p) => p.seen);
+  if (seenP.length) parts.push(`<span class="ostar ok">✅</span><span class="stack">${seenP.map(face).join("")}</span><span class="fnames">${
+    seenP.slice(0, 3).map((p) => `${esc(p.name)}${p.rating ? ` <b class="rv">${p.rating}★</b>` : ""}`).join(", ")}${seenP.length > 3 ? "…" : ""}</span>`);
+  return parts.length ? `<div class="social">${parts.map((x) => `<span class="sp">${x}</span>`).join("")}</div>` : "";
 }
 function reviewBlock(x, full) {
   const me = x.me || {};
