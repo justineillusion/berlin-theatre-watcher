@@ -132,3 +132,18 @@ Après un changement du menu des commandes (`COMMANDS` dans `src/index.ts`), rel
 Ajoute-le dans `config.yaml` (avec `kind: expo` pour une expo, et un parser dans
 `src/parsers/`). Au scan suivant il apparaît dans `/suivre` ; les amis qui suivaient
 déjà tout y sont abonnés d'office, en silence pour le catalogue existant.
+
+## App web (hors Telegram) — même page que la mini-app
+
+`https://<worker>/app` marche aussi dans un navigateur : connexion une fois via le bot
+(« Se connecter avec Telegram » → `/start web_<nonce>` → « ✅ Oui, c'est moi »), puis jeton de
+session (180 j glissants, `web_sessions`, seul le SHA-256 est gardé). Installable (manifeste,
+icônes, service worker réseau-d'abord) : sur iPhone, Safari → Partager → « Sur l'écran d'accueil ».
+
+Mise en service : `npx wrangler d1 execute theatre-bot --remote --file=migrations/009_web_sessions.sql`
+puis `npm run deploy`.
+
+Vers une appli iOS : embarquer `src/app.html` dans Capacitor, avec
+`<script>window.BE_API_BASE = "https://<worker>"</script>` avant le script de la page ;
+l'API répond déjà en CORS à `capacitor://localhost`. Les notifications passent encore par Telegram
+(prochaine étape côté appli : push APNs).

@@ -7,6 +7,13 @@
 //   POST /app/api/friend   { initData, op: add|accept|ignore|remove, id } -> 👋 Mes amis
 //   POST /app/api/share    { initData, id, to, note? }  -> 💌 « ça te dit ? » (+ un mot) en privé à ces amis
 //
+// Même page hors de Telegram (navigateur, écran d'accueil iPhone, plus tard Capacitor) :
+//   POST /app/api/login/start            -> { nonce, link }  (lien t.me/<bot>?start=web_<nonce>)
+//   POST /app/api/login/poll { nonce }   -> { pending } | { token }  après « ✅ » dans le bot
+//   POST /app/api/logout                 (Authorization: Bearer <token>)
+//   GET  /app/manifest.webmanifest, /app/sw.js, /app/icon-*.png
+//   Partout ailleurs, `Authorization: Bearer <token>` remplace `initData`.
+//
 // Qui parle ? Telegram passe à la page `initData`, signé avec le token du bot :
 // on le vérifie (HMAC), on n'a donc ni login ni mot de passe.
 // Les actions passent par le même code que les boutons du chat (handleUpdate) :
@@ -16,6 +23,8 @@ import { Env, Item, esc, getItem, getReaction, inCircle, loadCircles, itemText, 
 import { acceptFriend, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
 import { Lang, asLang } from "./i18n";
 import PAGE from "./app.html";
+import { webAsset } from "./web/assets";
+import { DISTRICT } from "./districts";
 
 const enc = new TextEncoder();
 const hmac = async (key: ArrayBuffer | Uint8Array, msg: string) =>
@@ -43,24 +52,122 @@ export async function verifyInitData(initData: string, botToken: string, now = D
 // « s » (suivre / ne plus suivre un lieu) : id = le lieu ; « l » (langue) : id = fr | en.
 const OPS = new Set(["i", "ui", "v", "r", "w", "x", "u", "bd", "bx", "s", "l"]);
 
+// --- App web (hors Telegram) -------------------------------------------------
+// Connexion : la page demande un nonce, ouvre t.me/<bot>?start=web_<nonce>, la personne
+// confirme dans le bot (bot.ts, « wl: »), la page récupère alors un jeton de session.
+// Le jeton (Authorization: Bearer) remplace initData ; on n'en garde que le SHA-256.
+const sha256 = async (s: string) => hex(await crypto.subtle.digest("SHA-256", enc.encode(s)));
+const randomHex = (n: number) => hex(crypto.getRandomValues(new Uint8Array(n)).buffer as ArrayBuffer);
+const SESSION_DAYS = 180;
+
+/** Jeton de session valide -> chat_id (et rafraîchit « vu le ») ; sinon null. */
+async function sessionUser(env: Env, req: Request, ctx: ExecutionContext): Promise<number | null> {
+  const m = (req.headers.get("authorization") || "").match(/^Bearer ([a-f0-9]{64})$/);
+  if (!m) return null;
+  const h = await sha256(m[1]);
+  const row = await env.DB.prepare(`SELECT chat_id FROM web_sessions WHERE token_hash = ? AND seen_at > datetime('now', '-${SESSION_DAYS} days')`)
+    .bind(h).first<{ chat_id: number }>();
+  if (row) ctx.waitUntil(env.DB.prepare("UPDATE web_sessions SET seen_at = datetime('now') WHERE token_hash = ?").bind(h).run().then(() => {}, () => {}));
+  return row?.chat_id ?? null;
+}
+
+/** Appli iOS/Android (Capacitor) : la page tourne sur capacitor://localhost et appelle l'API ici. */
+const NATIVE_ORIGINS = new Set(["capacitor://localhost", "ionic://localhost", "http://localhost", "https://localhost"]);
+function cors(req: Request, res: Response): Response {
+  const o = req.headers.get("origin") || "";
+  if (!NATIVE_ORIGINS.has(o)) return res;
+  const r = new Response(res.body, res);
+  r.headers.set("access-control-allow-origin", o);
+  r.headers.set("access-control-allow-headers", "content-type, authorization");
+  r.headers.set("access-control-allow-methods", "POST, OPTIONS");
+  r.headers.set("vary", "origin");
+  return r;
+}
+
+async function login(env: Env, path: string, body: any): Promise<Response | null> {
+  if (path === "/app/api/login/start") {
+    const nonce = randomHex(12);
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM web_logins WHERE created_at < datetime('now', '-10 minutes')"),
+      env.DB.prepare("INSERT INTO web_logins (nonce) VALUES (?)").bind(nonce),
+    ]);
+    return Response.json({ nonce, link: `https://t.me/${env.BOT_USERNAME}?start=web_${nonce}`, bot: env.BOT_USERNAME });
+  }
+  if (path === "/app/api/login/poll") {
+    const nonce = String(body.nonce ?? "");
+    if (!/^[a-f0-9]{24}$/.test(nonce)) return Response.json({ error: "bad_request" }, { status: 400 });
+    const row = await env.DB.prepare("SELECT chat_id FROM web_logins WHERE nonce = ? AND created_at > datetime('now', '-10 minutes')")
+      .bind(nonce).first<{ chat_id: number | null }>();
+    if (!row) return Response.json({ error: "expired" }, { status: 410 });
+    if (!row.chat_id) return Response.json({ pending: true });
+    const token = randomHex(32);
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM web_logins WHERE nonce = ?").bind(nonce),
+      env.DB.prepare("INSERT INTO web_sessions (token_hash, chat_id) VALUES (?, ?)").bind(await sha256(token), row.chat_id),
+    ]);
+    return Response.json({ token });
+  }
+  return null;
+}
+
+/** Bot (/start web_<nonce> puis « ✅ Oui ») : la demande de connexion est rattachée à cette personne. */
+export async function confirmWebLogin(env: Env, nonce: string, chat: number): Promise<boolean> {
+  const r = await env.DB.prepare(
+    "UPDATE web_logins SET chat_id = ? WHERE nonce = ? AND chat_id IS NULL AND created_at > datetime('now', '-10 minutes')",
+  ).bind(chat, nonce).run();
+  return !!r.meta.changes;
+}
+
+const KINDS = new Set(["theatre", "expo", "cinema"]);
+
 export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(req.url);
   if (req.method === "GET" && (url.pathname === "/app" || url.pathname === "/app/")) {
     return new Response(PAGE, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
   }
+  if (req.method === "GET") return webAsset(url.pathname) ?? new Response("not found", { status: 404 });
+  if (req.method === "OPTIONS") return cors(req, new Response(null, { status: 204 }));
   if (req.method !== "POST") return new Response("not found", { status: 404 });
+  return cors(req, await api(req, env, ctx, url));
+}
+
+async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Promise<Response> {
   const body: any = await req.json().catch(() => ({}));
-  const user = await verifyInitData(String(body.initData ?? ""), env.BOT_TOKEN);
-  if (!user) return Response.json({ error: "auth" }, { status: 401 });
-  const me = await env.DB.prepare("SELECT chat_id, first_name, lang FROM users WHERE chat_id = ? AND active = 1")
-    .bind(user.id).first<{ chat_id: number; first_name: string; lang: string | null }>();
+  const pre = await login(env, url.pathname, body);
+  if (pre) return pre;
+  // Qui parle : Telegram (initData signé) ou l'app web (jeton de session).
+  let uid: number | null = null, tgUser: AppUser | null = null;
+  if (body.initData) {
+    tgUser = await verifyInitData(String(body.initData), env.BOT_TOKEN);
+    uid = tgUser?.id ?? null;
+  } else {
+    uid = await sessionUser(env, req, ctx);
+  }
+  if (!uid) return Response.json({ error: "auth" }, { status: 401 });
+  if (url.pathname === "/app/api/logout") {
+    const m = (req.headers.get("authorization") || "").match(/^Bearer ([a-f0-9]{64})$/);
+    if (m) await env.DB.prepare("DELETE FROM web_sessions WHERE token_hash = ?").bind(await sha256(m[1])).run();
+    return Response.json({ ok: true });
+  }
+  const me = await env.DB.prepare("SELECT chat_id, first_name, username, lang FROM users WHERE chat_id = ? AND active = 1")
+    .bind(uid).first<{ chat_id: number; first_name: string; username: string | null; lang: string | null }>();
   if (!me) return Response.json({ error: "not_member", bot: env.BOT_USERNAME }, { status: 403 });
+  const user: AppUser = tgUser ?? { id: me.chat_id, first_name: me.first_name, username: me.username ?? undefined };
 
   ctx.waitUntil(env.DB.prepare("UPDATE users SET app_seen_at = datetime('now') WHERE chat_id = ?").bind(me.chat_id).run().then(() => {}, () => {}));
   const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
   if (url.pathname === "/app/api/state") return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   if (url.pathname === "/app/api/act") {
     const op = String(body.op ?? ""), id = String(body.id ?? ""), arg = body.arg == null ? "" : String(body.arg);
+    // Réglages : suivre / ne plus suivre tous les lieux d'un type (théâtres, expos, cinémas).
+    if (op === "sk") {
+      if (!KINDS.has(id) || !["on", "off"].includes(arg)) return Response.json({ error: "bad_request" }, { status: 400 });
+      await (arg === "on"
+        ? env.DB.prepare("INSERT OR IGNORE INTO subscriptions (chat_id, venue_id, primed) SELECT ?, id, 0 FROM venues WHERE active = 1 AND kind = ?")
+        : env.DB.prepare("DELETE FROM subscriptions WHERE chat_id = ? AND venue_id IN (SELECT id FROM venues WHERE kind = ?)"))
+        .bind(me.chat_id, id).run();
+      return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+    }
     if (!OPS.has(op) || !/^[\w-]{1,40}$/.test(id) || !/^[\w-]{0,20}$/.test(arg)) {
       return Response.json({ error: "bad_request" }, { status: 400 });
     }
@@ -159,7 +266,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
   return {
     lang,
     sales,
-    venues,
+    venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null })),
     people,
     circle,
     invite: invite.split("\n").pop(),

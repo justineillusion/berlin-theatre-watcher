@@ -7,6 +7,7 @@ import { digestFor } from "./scan";
 import { openCard } from "./daily";
 import { cardMarkup, currentSql, getList, openItem, sendList, showList } from "./list";
 import { Lang, MENU_VERSION, asLang, guessLang, langKeyboard, setChatMenu, setGlobalMenus, tr } from "./i18n";
+import { confirmWebLogin } from "./app";   // cycle app ↔ bot sans souci : appelé à l'exécution
 import {
   announceInterest, announceReview, card, groupChat, groupInterests, groupLang as grpLang, groupProgramme, threadKey,
 } from "./group";
@@ -185,6 +186,14 @@ export async function handleUpdate(env: Env, update: any, ctx: ExecutionContext)
 // ---------------------------------------------------------------------------
 async function onStart(env: Env, from: TgUser, user: any, code?: string): Promise<void> {
   const chat = from.id;
+  // App web : « Se connecter avec Telegram » ouvre t.me/<bot>?start=web_<nonce> (app.ts).
+  // On demande confirmation : un lien reçu d'un inconnu ne connecte pas son navigateur à mon compte.
+  const web = code?.match(/^web_([a-f0-9]{24})$/);
+  if (web) {
+    const T = tr(user ? user.lang : guessLang(from.language_code));
+    if (!user?.active) return void (await send(env, chat, T.privateBot));
+    return void (await send(env, chat, T.webLoginAsk, { inline_keyboard: [[{ text: T.webLoginBtn, callback_data: `wl:${web[1]}` }]] }));
+  }
   // Lien PERSONNEL de quelqu'un (circles.ts) : inscription + connexion à cette personne.
   const inviter = await codeOwner(env, code);
   if (user) {
@@ -504,6 +513,12 @@ async function onCallback(env: Env, cq: any, ctx: ExecutionContext): Promise<voi
 
   // --- demandes d'ami (circles.ts) ------------------------------------------
   if (/^f[ax]:/.test(data)) return void (await friendCallback(env, cq, chat, user.lang));
+  // --- connexion de l'app web (app.ts) ----------------------------------------
+  if (/^wl:[a-f0-9]{24}$/.test(data)) {
+    const ok = await confirmWebLogin(env, data.slice(3), chat);
+    if (cq.message?.message_id) await edit(env, cq.message.chat.id, cq.message.message_id, ok ? T.webLoginDone : T.webLoginExpired);
+    return void (await answer(ok ? T.webLoginDone : T.webLoginExpired));
+  }
 
   // --- /langue -------------------------------------------------------------
   if (data.startsWith("l:")) {

@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Berlin Encore!</title>
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Théâtre surtitré, expos et ciné en VO à Berlin, avec tes amis.">
+<link rel="manifest" href="/app/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/app/icon-180.png">
+<link rel="icon" type="image/png" href="/app/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Encore!">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
@@ -56,6 +65,10 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .item.soldout:not(.open) .row{opacity:.42}.item.soldout .when small{color:var(--velvet);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);text-transform:uppercase;letter-spacing:.04em}.detail s{color:var(--muted)}
 #whens .soldtoggle{margin-left:auto}
+/* Quartiers : petites cases, plusieurs à la fois ; défile si besoin. */
+#areas{gap:6px;padding-top:6px}
+#areas .chip{border-width:1px;font-weight:600;font-size:11.5px;padding:5px 8px;color:var(--muted);border-color:var(--line)}
+#areas .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .row{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 8px;border:0;background:none;width:100%;text-align:left}
 .when{font:700 15.5px var(--sans);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px;line-height:1.1}
 .when small{display:block;font:500 12px var(--sans);color:var(--muted);margin-top:3px}
@@ -105,10 +118,16 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .set{padding:8px 18px}
 .set .line{padding:12px 0;border:0;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;display:flex;justify-content:space-between;gap:12px;font:400 14.5px var(--sans)}
 .set .line span{color:var(--muted)}
+.set .line .dist{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
 .set .line.on span{color:var(--ok)}
 .fline{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .fline b{font-weight:700}.fline span{display:block;font-size:13px;color:var(--muted)}
 .hint{color:var(--muted);font-size:13px;margin-top:14px}
+.login{max-width:420px;margin:0 auto;padding:40px 24px;display:grid;gap:14px;text-align:left}
+.login p{margin:0;color:var(--muted)}.login .act{text-align:center;padding:12px 14px;font-size:15px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;font:600 14px var(--sans);max-width:calc(100% - 32px);z-index:9}
+.cat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;padding:10px 0 4px;border-top:2px solid var(--ink)}
+.cat b{font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}.cat .act{padding:5px 10px;font-size:12px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -121,14 +140,25 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
     <button class="tab" data-tab="set" aria-selected="false"></button>
   </div>
   <div class="filters" id="kinds"></div>
+  <div class="filters" id="areas"></div>
   <div class="filters" id="whens"></div>
 </div>
 <main id="list"><div class="msg">…</div></main>
 <script>
-const tgApp = window.Telegram && Telegram.WebApp;
-const INIT = (tgApp && tgApp.initData) || "";
-// Ouvert depuis une annonce du groupe (…/Programme?startapp=<fiche>) : cette fiche d'abord, ouverte.
-const FOCUS = (tgApp && tgApp.initDataUnsafe && tgApp.initDataUnsafe.start_param) || "";
+// Deux façons d'ouvrir la page :
+//  - dans Telegram (mini-app) : Telegram signe initData, rien à faire ;
+//  - ailleurs (navigateur, écran d'accueil, plus tard appli Capacitor) : connexion une fois via le bot,
+//    puis un jeton de session gardé dans localStorage (Authorization: Bearer).
+const INIT = (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) || "";
+const tgApp = INIT ? Telegram.WebApp : null;
+const WEB = !INIT;
+// Appli native (Capacitor) : la page est embarquée, l'API reste sur le Worker.
+const API_BASE = window.BE_API_BASE || "";
+const TOKEN_KEY = "be_session";
+let TOKEN = ""; try { TOKEN = localStorage.getItem(TOKEN_KEY) || ""; } catch {}
+// Ouvert depuis une annonce du groupe (…/Programme?startapp=<fiche>) ou un lien web (/app?item=<fiche>) : cette fiche d'abord.
+const FOCUS = (tgApp && tgApp.initDataUnsafe && tgApp.initDataUnsafe.start_param) || new URLSearchParams(location.search).get("item") || "";
+if (WEB && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("/app/sw.js", { scope: "/app" }).catch(() => {});
 if (tgApp) {
   tgApp.ready(); tgApp.expand();
   try { tgApp.setHeaderColor("#ffffff"); tgApp.setBackgroundColor("#ffffff"); } catch {}
@@ -145,7 +175,9 @@ const L = {
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, notForMeN:(n) => `Pas pour moi · ${n}`, hideD:"Masquer", showD:"Afficher", whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} ⭐/🎟 plus tard`,
         whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont grisées.", soldShort:"complet", hideSold:"Sans complets", whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
-        smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin" },
+        smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
+        loginHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Connecte-toi une fois avec Telegram : ton compte est celui du bot.", loginBtn:"Se connecter avec Telegram ↗", loginWait:"Dans Telegram, touche « ✅ Oui, c'est moi », puis reviens ici.", loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
+        cats:{ theatre:"Théâtres", expo:"Expos", cinema:"Cinémas" }, everywhere:"📍 Partout", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"⭐ Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking",
@@ -156,11 +188,15 @@ const L = {
         reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, notForMeN:(n) => `Not for me · ${n}`, hideD:"Hide", showD:"Show", whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} ⭐/🎟 later on`,
         whyRule:"Theatre: only dates with English surtitles. Sold-out shows are greyed out.", soldShort:"sold out", hideSold:"Hide sold out", whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
-        smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends" },
+        smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
+        loginHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Sign in once with Telegram: your account is the bot's.", loginBtn:"Sign in with Telegram ↗", loginWait:"In Telegram, tap “✅ Yes, it's me”, then come back here.", loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
+        cats:{ theatre:"Theatres", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"📍 Anywhere", catOn:"Follow all", catOff:"Follow none" },
 };
-let T = L.fr, S = null;
+let T = (navigator.language || "fr").toLowerCase().startsWith("fr") ? L.fr : L.en, S = null;
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
+st.areas = new Set();
+try { st.areas = new Set(JSON.parse(localStorage.getItem("areas") || "[]")); } catch {}
 try { st.hideSold = localStorage.getItem("hideSold") === "1"; st.hideDismissed = localStorage.getItem("hideDismissed") === "1"; } catch {}
 const ICON = { theatre:"🎭", expo:"🏛", film:"🎬" };
 const $ = (id) => document.getElementById(id);
@@ -211,15 +247,59 @@ function facts(x) {
 }
 
 async function api(path, extra = {}) {
-  const r = await fetch("/app/api/" + path, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ initData: INIT, focus: FOCUS, ...extra }) });
+  const headers = { "content-type":"application/json" };
+  if (WEB && TOKEN) headers.authorization = "Bearer " + TOKEN;
+  const r = await fetch(API_BASE + "/app/api/" + path, { method:"POST", headers, body: JSON.stringify({ ...(INIT ? { initData: INIT } : {}), focus: FOCUS, ...extra }) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok) throw Object.assign(new Error(j.error || r.status), { info: j });
+  if (WEB && r.status === 401 && !path.startsWith("login/") && path !== "logout") { setToken(""); showLogin(); }
+  if (!r.ok) throw Object.assign(new Error(j.error || r.status), { info: j, status: r.status });
   return j;
 }
+function setToken(t) { TOKEN = t; try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} }
+/** Message bref : la bulle Telegram dans la mini-app, un bandeau ailleurs. */
+function notify(text, then) {
+  if (tgApp?.showAlert) return tgApp.showAlert(text, then);
+  document.querySelector(".toast")?.remove();
+  const d = document.createElement("div"); d.className = "toast"; d.setAttribute("role", "status"); d.textContent = text;
+  document.body.appendChild(d); setTimeout(() => d.remove(), 3200); then?.();
+}
+
+// --- Connexion hors Telegram : lien vers le bot, confirmation là-bas, on attend le jeton. ---
+let loginTimer = null, loginNonce = null, loginT0 = 0;
+function showLogin(state = {}) {
+  S = null; clearTimeout(loginTimer); if (!state.link) loginNonce = null;
+  document.querySelector(".top").hidden = true;
+  const body = state.expired
+    ? `<p>${esc(T.loginExpired)}</p><button class="act on" data-login="1">${esc(T.retry)}</button>`
+    : state.link
+      ? `<a class="act on" href="${esc(state.link)}" target="_blank" rel="noopener">${esc(T.loginBtn)}</a><p>${esc(T.loginWait)}</p>`
+      : `<div class="msg">…</div>`;
+  $("list").innerHTML = `<div class="login"><p>${esc(T.loginHint)}</p>${body}${/iphone|ipad/i.test(navigator.userAgent) && !navigator.standalone ? `<p class="hint">${esc(T.installHint)}</p>` : ""}</div>`;
+  if (!state.link && !state.expired) startLogin();
+}
+async function startLogin() {
+  try { const j = await api("login/start"); showLogin({ link: j.link }); loginNonce = j.nonce; loginT0 = Date.now(); pollLogin(); }
+  catch { $("list").innerHTML = `<div class="msg">${esc(T.error)}</div>`; }
+}
+async function pollLogin() {
+  clearTimeout(loginTimer); loginTimer = null;
+  const nonce = loginNonce; if (!nonce) return;
+  try {
+    const j = await api("login/poll", { nonce });
+    if (nonce !== loginNonce) return;
+    if (j.token) { loginNonce = null; setToken(j.token); document.querySelector(".top").hidden = false; return void load(); }
+  } catch (e) { if (e.status === 410) { loginNonce = null; return void showLogin({ expired: true }); } }
+  if (Date.now() - loginT0 > 10 * 60e3) { loginNonce = null; return void showLogin({ expired: true }); }
+  loginTimer = setTimeout(pollLogin, document.hidden ? 5000 : 1500);
+}
+// Retour depuis Telegram : on vérifie tout de suite.
+document.addEventListener("visibilitychange", () => { if (!document.hidden && loginNonce) pollLogin(); });
+
 async function load() {
-  if (!INIT) { $("list").innerHTML = `<div class="msg">${esc(T.outside)}</div>`; return; }
+  if (WEB && !TOKEN) return void showLogin();
   try { S = await api("state"); T = L[S.lang] || L.fr; document.documentElement.lang = S.lang; render(); }
   catch (e) {
+    if (e.status === 401 && WEB) return;
     $("list").innerHTML = e.info?.error === "not_member"
       ? `<div class="msg">${esc(T.notMember)}<a href="https://t.me/${esc(e.info.bot)}">@${esc(e.info.bot)}</a></div>`
       : `<div class="msg">${esc(T.error)}</div>`;
@@ -234,7 +314,7 @@ async function act(op, id, arg, extra = {}) {
     st.open = null;
   }
   try { tgApp?.HapticFeedback?.selectionChanged(); S = await api(extra.path || "act", { op, id, arg, ...extra.body }); if (S.sent) st.sent = { id, names: S.sent }; T = L[S.lang] || L.fr; document.documentElement.lang = S.lang; }
-  catch { tgApp?.showAlert?.(T.error); }
+  catch { notify(T.error); }
   st.busy = false; st.picking = null; st.sharing = null; st.sel.clear(); st.withs.clear(); render();
   // ✍️ : la critique s'écrit dans le chat, en réponse à l'invitation que le bot vient d'envoyer.
   if (op === "w" && tgApp) tgApp.showAlert(T.reviewInChat, () => tgApp.close());
@@ -324,9 +404,9 @@ function item(x) {
       <button class="act" data-act="v" data-id="${x.id}">${T.seen}</button>
       ${s === "ignored" ? `<button class="act on" data-act="u" data-id="${x.id}">${T.unignore}</button>` : `<button class="act" data-act="x" data-id="${x.id}">${T.ignore}</button>`}
       ${(S.people || []).length ? `<button class="act" data-sharing="${x.id}">${T.send}</button>` : ""}
-      ${x.url ? `<a class="act" href="${esc(x.url)}" data-link="1">${T.site}</a>` : ""}</div>`;
+      ${x.url ? `<a class="act" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a>` : ""}</div>`;
   } else if (x.url) {
-    h += `<div class="acts"><a class="act" href="${esc(x.url)}" data-link="1">${T.site}</a></div>`;
+    h += `<div class="acts"><a class="act" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a></div>`;
   }
   return h + "</div></div>";
 }
@@ -373,9 +453,15 @@ function exposByVenue(expos) {
 const dayHead = (label, note = "") => { const [a, b] = String(label).split(" · "); return `<div class="day">${esc(a)}${b ? ` <span>${esc(b)}</span>` : ""}${note ? ` <span>${esc(note)}</span>` : ""}</div>`; };
 /** Sous le programme : ce qui n'y est pas et pourquoi (écarté, vu, réservé plus tard), la règle
  *  (surtitres EN, pas complet) et les prochaines ouvertures de billetterie. */
+/** Filtre quartiers : aucun choisi = partout. */
+function inArea(x) {
+  if (!st.areas.size) return true;
+  const v = (S.venues || []).find((v) => v.id === x.venue_id);
+  return !!v && st.areas.has(v.district);
+}
 function whyNote() {
   if (st.kind === "expo") return "";
-  const shows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind));
+  const shows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind) && inArea(x));
   const inWin = (x) => (x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when]);
   const n = (k) => shows.filter((x) => inWin(x) && state(x) === k).length;
   const soldHidden = st.hideSold ? shows.filter((x) => !["seen", "ignored"].includes(state(x)) && !(x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])
@@ -395,19 +481,39 @@ function render() {
   document.querySelectorAll(".tab").forEach((b, i) => { b.textContent = T.tabs[i]; b.setAttribute("aria-selected", b.dataset.tab === st.tab); });
   const K = $("kinds"), W = $("whens"), list = $("list");
   if (!S) return;
-  K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog";
+  const A = $("areas");
+  K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog"; A.hidden = st.tab === "set";
   if (st.tab === "set") {
-    list.innerHTML = `<div class="set">${friendsSection()}${dayHead(T.venues)}${S.venues.map((v) =>
-      `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}">${ICON[v.kind === "cinema" ? "film" : v.kind] || "🎭"} ${esc(v.name)}<span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("")}
-      <p class="hint">${esc(T.tapToggle)}</p>
+    // Lieux par type : un bouton suit / ne suit plus tous les théâtres (expos, cinémas) d'un coup.
+    const cats = ["theatre", "expo", "cinema"].map((k) => [k, S.venues.filter((v) => v.kind === k)]).filter(([, vs]) => vs.length);
+    list.innerHTML = `<div class="set">${friendsSection()}${dayHead(T.venues)}<p class="hint">${esc(T.tapToggle)}</p>${cats.map(([k, vs]) => {
+      const any = vs.some((v) => v.followed);
+      return `<div class="cat"><b>${ICON[k === "cinema" ? "film" : k]} ${esc(T.cats[k])} · ${vs.filter((v) => v.followed).length}/${vs.length}</b>
+        <button class="act${any ? "" : " on"}" data-act="sk" data-id="${k}" data-arg="${any ? "off" : "on"}">${esc(any ? T.catOff : T.catOn)}</button></div>` +
+        vs.map((v) => `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}"><div>${esc(v.name)}${v.district ? `<small class="dist">${esc(v.district)}</small>` : ""}</div><span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("");
+    }).join("")}
       ${dayHead(T.language)}<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
-        `<button class="act ${S.lang === c ? "on" : ""}" data-act="l" data-id="${c}">${l}</button>`).join("")}</div></div>`;
+        `<button class="act ${S.lang === c ? "on" : ""}" data-act="l" data-id="${c}">${l}</button>`).join("")}</div>
+      ${WEB ? `${dayHead(T.account)}<div class="acts"><button class="act" data-logout="1">${esc(T.logout)}</button></div>` : ""}</div>`;
     return;
   }
-  chips(K, [["all", T.all], ["theatre", T.theatre], ["film", T.film], ["expo", T.expo]], "kind");
+  // Types suivis seulement : ne plus suivre aucun cinéma retire « Ciné » du menu.
+  const followedKinds = new Set(S.venues.filter((v) => v.followed).map((v) => v.kind === "cinema" ? "film" : v.kind));
+  const kindChips = [["theatre", T.theatre], ["film", T.film], ["expo", T.expo]].filter(([k]) => followedKinds.has(k));
+  if (st.kind !== "all" && !followedKinds.has(st.kind)) st.kind = "all";
+  K.hidden = kindChips.length < 2;
+  chips(K, kindChips.length < 2 ? [] : [["all", T.all], ...kindChips], "kind");
+  // Quartiers des lieux suivis (dans le type choisi) ; plusieurs à la fois, mémorisés.
+  const vKind = (v) => v.kind === "cinema" ? "film" : v.kind;
+  const areas = [...new Set(S.venues.filter((v) => v.followed && v.district && (st.kind === "all" || vKind(v) === st.kind)).map((v) => v.district))].sort();
+  for (const a of [...st.areas]) if (!areas.includes(a)) st.areas.delete(a);
+  A.hidden = A.hidden || areas.length < 2;
+  A.innerHTML = areas.length < 2 ? "" : `<button class="chip" data-area="" aria-pressed="${!st.areas.size}">${esc(T.everywhere)}</button>` +
+    areas.map((a) => `<button class="chip" data-area="${esc(a)}" aria-pressed="${st.areas.has(a)}">${esc(a)}</button>`).join("");
+
   chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
   if (st.kind !== "expo") W.insertAdjacentHTML("beforeend", `<button class="chip soldtoggle" data-hidesold="1" aria-pressed="${!!st.hideSold}">${esc(T.hideSold)}</button>`);
-  let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
+  let xs = S.items.filter((x) => (st.kind === "all" || x.kind === st.kind) && inArea(x));
   let h = "";
   if (st.tab === "prog") {
     // Ce que j'ai vu ou écarté n'est plus reproposé (sauf la fiche ouverte, le temps de voir l'effet du clic).
@@ -446,9 +552,13 @@ document.addEventListener("click", (e) => {
   const sc = e.target.closest("[data-href]");
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
-  if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
+  if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold || t.dataset.area !== undefined) st.focus = null;
   if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
+  else if (t.dataset.area !== undefined) {
+    const a = t.dataset.area; if (!a) st.areas.clear(); else st.areas.has(a) ? st.areas.delete(a) : st.areas.add(a);
+    try { localStorage.setItem("areas", JSON.stringify([...st.areas])); } catch {}
+  }
   else if (t.dataset.hidesold) { st.hideSold = !st.hideSold; try { localStorage.setItem("hideSold", st.hideSold ? "1" : ""); } catch {} }
   else if (t.dataset.when) st.when = t.dataset.when;
   else if (t.dataset.pick) { st.picking = st.picking === t.dataset.pick ? null : t.dataset.pick; st.sharing = null; st.withs.clear(); }
@@ -464,6 +574,8 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.askremove) { st.confirmRemove = +t.dataset.askremove; }
   else if (t.dataset.friend) { st.confirmRemove = null; return void friendAct(t.dataset.friend, +t.dataset.id); }
   else if (t.dataset.invite) { return void shareInvite(); }
+  else if (t.dataset.login) { return void showLogin(); }
+  else if (t.dataset.logout) { api("logout").catch(() => {}).finally(() => { setToken(""); st.tab = "prog"; showLogin(); }); return; }
   else if (t.dataset.dismissed) { st.hideDismissed = !st.hideDismissed; try { localStorage.setItem("hideDismissed", st.hideDismissed ? "1" : ""); } catch {} }
   else if (t.dataset.venue) { const v = t.dataset.venue; st.venuesOpen.has(v) ? st.venuesOpen.delete(v) : st.venuesOpen.add(v); }
   else if (t.dataset.open) { st.open = st.open === t.dataset.open ? null : t.dataset.open; st.picking = null; st.sharing = null; st.sent = null; }
@@ -472,15 +584,16 @@ document.addEventListener("click", (e) => {
 });
 async function friendAct(op, id) {
   if (st.busy) return; st.busy = true;
-  try { S = await api("friend", { op, id }); if (S.result === "sent") tgApp?.showAlert?.(T.requestSent); }
-  catch { tgApp?.showAlert?.(T.error); }
+  try { S = await api("friend", { op, id }); if (S.result === "sent") notify(T.requestSent); }
+  catch { notify(T.error); }
   st.busy = false; render();
 }
 function shareInvite() {
   const link = S.invite || "";
   const url = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Berlin Encore!")}`;
   if (tgApp?.openTelegramLink) tgApp.openTelegramLink(url);
-  else navigator.clipboard?.writeText(link).then(() => alert(T.copied), () => {});
+  else if (navigator.share) navigator.share({ title: "Berlin Encore!", url: link }).catch(() => {});
+  else navigator.clipboard?.writeText(link).then(() => notify(T.copied), () => {});
 }
 document.addEventListener("input", (e) => { if (e.target.id === "note") st.note = e.target.value; });
 render(); load();

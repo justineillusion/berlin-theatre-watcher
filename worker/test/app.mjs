@@ -214,5 +214,79 @@ await step("action inconnue / id bizarre : 400", async () => {
   assert.equal((await post("/app/api/act", { initData: me, op: "i", id: "p1:x" })).status, 400);
 });
 
+// --- App web (hors Telegram) ------------------------------------------------
+const tgHook = (update) => fetch(W + "/tg", { method: "POST", headers: { "x-telegram-bot-api-secret-token": "h", "content-type": "application/json" }, body: JSON.stringify(update) });
+const bearer = async (path, token, body = {}) => {
+  const r = await fetch(W + path, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
+  return { status: r.status, json: await r.json().catch(() => null) };
+};
+let session = "";
+await step("web : manifeste, icônes, service worker", async () => {
+  const m = await (await fetch(W + "/app/manifest.webmanifest")).json();
+  assert.equal(m.start_url, "/app"); assert.equal(m.display, "standalone");
+  const icon = await fetch(W + "/app/icon-512.png");
+  assert.equal(icon.headers.get("content-type"), "image/png");
+  assert.deepEqual([...new Uint8Array(await icon.arrayBuffer()).slice(1, 4)], [80, 78, 71]);   // « PNG »
+  assert.match(await (await fetch(W + "/app/sw.js")).text(), /caches/);
+  assert.match(await (await fetch(W + "/app")).text(), /manifest\.webmanifest/);
+});
+await step("web : connexion via le bot (lien → ✅ Oui → jeton), refus des inconnus et des faux jetons", async () => {
+  assert.equal((await bearer("/app/api/state", "0".repeat(64))).status, 401);
+  const start = (await post("/app/api/login/start", {})).json;
+  assert.match(start.link, /^https:\/\/t\.me\/TestBot\?start=web_[a-f0-9]{24}$/);
+  assert.equal((await post("/app/api/login/poll", { nonce: start.nonce })).json.pending, true);
+  // Un inconnu qui ouvre le lien : refusé, rien n'est rattaché.
+  calls = [];
+  await tgHook({ message: { from: { id: OTHER, first_name: "X" }, chat: { id: OTHER, type: "private" }, text: `/start web_${start.nonce}` } });
+  assert.ok(!calls.some((c) => c.reply_markup?.inline_keyboard?.[0]?.[0]?.callback_data?.startsWith("wl:")));
+  assert.equal((await post("/app/api/login/poll", { nonce: start.nonce })).json.pending, true);
+  // Moi : le bot demande confirmation…
+  calls = [];
+  await tgHook({ message: { from: { id: ME, first_name: "Justine" }, chat: { id: ME, type: "private" }, text: `/start web_${start.nonce}` } });
+  const ask = calls.find((c) => c.method === "sendMessage" && c.chat_id === ME);
+  assert.equal(ask.reply_markup.inline_keyboard[0][0].callback_data, `wl:${start.nonce}`);
+  assert.equal((await post("/app/api/login/poll", { nonce: start.nonce })).json.pending, true);   // pas encore confirmé
+  // … « ✅ Oui, c'est moi » : la page reçoit son jeton, une seule fois.
+  await tgHook({ callback_query: { id: "cb1", from: { id: ME, first_name: "Justine" }, data: `wl:${start.nonce}`, message: { message_id: 7, chat: { id: ME, type: "private" } } } });
+  session = (await post("/app/api/login/poll", { nonce: start.nonce })).json.token;
+  assert.match(session, /^[a-f0-9]{64}$/);
+  assert.equal((await post("/app/api/login/poll", { nonce: start.nonce })).status, 410);
+  // Re-cliquer le vieux bouton ne rattache rien.
+  calls = [];
+  await tgHook({ callback_query: { id: "cb2", from: { id: ME, first_name: "Justine" }, data: `wl:${start.nonce}`, message: { message_id: 7, chat: { id: ME, type: "private" } } } });
+  assert.ok(calls.some((c) => /expir/.test(c.text || "")));
+});
+await step("web : même programme et mêmes actions avec le jeton qu'avec initData", async () => {
+  const a = (await bearer("/app/api/state", session)).json, b = (await post("/app/api/state", { initData: me })).json;
+  assert.deepEqual(a.items.map((x) => x.id).sort(), b.items.map((x) => x.id).sort());
+  const s = (await bearer("/app/api/act", session, { op: "i", id: "e1" })).json;
+  assert.equal(item(s, "e1").me.star, 1);
+});
+await step("web : CORS pour l'appli native (capacitor://localhost) seulement", async () => {
+  const pre = await fetch(W + "/app/api/state", { method: "OPTIONS", headers: { origin: "capacitor://localhost" } });
+  assert.equal(pre.headers.get("access-control-allow-origin"), "capacitor://localhost");
+  const evil = await fetch(W + "/app/api/state", { method: "POST", headers: { origin: "https://evil.example", authorization: `Bearer ${session}` }, body: "{}" });
+  assert.equal(evil.headers.get("access-control-allow-origin"), null);
+});
+await step("Réglages : ne plus suivre aucune expo, puis toutes", async () => {
+  let s = (await bearer("/app/api/act", session, { op: "sk", id: "expo", arg: "off" })).json;
+  assert.ok(!s.venues.find((v) => v.kind === "expo").followed);
+  assert.equal(item(s, "e1").me.star, 1);          // une expo ⭐ reste dans Mes sorties même sans lieu suivi
+  assert.ok(s.venues.find((v) => v.id === "be").followed);          // les théâtres ne bougent pas
+  s = (await bearer("/app/api/act", session, { op: "sk", id: "expo", arg: "on" })).json;
+  assert.ok(s.venues.find((v) => v.kind === "expo").followed);
+  assert.equal((await bearer("/app/api/act", session, { op: "sk", id: "opera", arg: "on" })).status, 400);
+});
+await step("quartiers : chaque lieu connu a son quartier dans l'état", async () => {
+  const s = (await post("/app/api/state", { initData: me })).json;
+  assert.equal(s.venues.find((v) => v.id === "be")?.district ?? null, null);   // id de test inconnu → pas de quartier
+  const { DISTRICT } = await import("../src/districts.ts").catch(() => ({ DISTRICT: null }));
+  if (DISTRICT) assert.equal(DISTRICT["berliner-ensemble"], "Mitte");
+});
+await step("web : déconnexion → le jeton ne marche plus", async () => {
+  assert.equal((await bearer("/app/api/logout", session)).status, 200);
+  assert.equal((await bearer("/app/api/state", session)).status, 401);
+});
+
 console.log(`\n${ok} étapes OK`);
 dev.kill(); tgServer.close(); rmSync(STATE, { recursive: true, force: true }); rmSync(`${STATE}-seed.sql`, { force: true });
