@@ -165,6 +165,14 @@
  },
  {
   "kind": "expo",
+  "venue": "Gropius Bau",
+  "title": "Gabriele Stötzer: Dabei sein und nicht schweigen",
+  "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/gabriele-stoetzer",
+  "opens": "2026-06-19",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "Hamburger Bahnhof",
   "title": "[ materialistin ]",
   "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/materialistin/",
@@ -192,6 +200,14 @@
   "venue": "Neue Nationalgalerie",
   "title": "Maurizio Cattelan. NIGHT",
   "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/maurizio-cattelan-night/",
+  "opens": "2026-09-10",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Gropius Bau",
+  "title": "Kreuzberg",
+  "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/kreuzberg",
   "opens": "2026-09-10",
   "aliases": []
  },
@@ -245,6 +261,14 @@
  },
  {
   "kind": "expo",
+  "venue": "Gropius Bau",
+  "title": "Christoph Schlingensief",
+  "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/christoph-schlingensief",
+  "opens": "2026-10-09",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "Fotografiska Berlin",
   "title": "Miji Ih — Mouths: On Water and Whisky",
   "url": "https://berlin.fotografiska.com/en/exhibitions/miji-ih",
@@ -258,17 +282,6 @@
   "url": "https://berlin.fotografiska.com/en/exhibitions/roger-ballen",
   "opens": "2026-11-07",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "The Last Sky: My Search for Palestine (Der letzte Himmel)",
-  "url": "https://www.berliner-ensemble.de/en/production/last-sky-my-search-palestine-der-letzte-himmel",
-  "opens": "2026-11-10",
-  "aliases": [
-   "The Last Sky: My Search for Palestine",
-   "Der letzte Himmel"
-  ]
  },
  {
   "kind": "expo",
@@ -323,17 +336,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
-  "opens": "2026-12-01",
-  "aliases": [
-   "Die Dreigroschenoper",
-   "The Threepenny Opera"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "SAVE A HORSE RIDE A COWGIRL",
   "url": "https://www.volksbuehne-berlin.de/en/productions/save-a-horse-ride-a-cowgirl/20261204-1900/",
@@ -363,6 +365,17 @@
   "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
   "opens": "2026-12-26",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Ensemble",
+  "title": "Die Dreigroschenoper (The Threepenny Opera)",
+  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
+  "opens": "2026-12-27",
+  "aliases": [
+   "Die Dreigroschenoper",
+   "The Threepenny Opera"
+  ]
  },
  {
   "kind": "theatre",
