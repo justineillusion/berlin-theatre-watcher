@@ -167,6 +167,7 @@ async function mailCode(env: Env, chat: number, email: string, name: string, lan
   const recent = await env.DB.prepare("SELECT COUNT(*) n FROM email_logins WHERE chat_id = ? AND created_at > datetime('now', '-15 minutes')")
     .bind(chat).first<{ n: number }>();
   if ((recent?.n ?? 0) >= 3) return Response.json({ error: "too_many" }, { status: 429 });
+  if (await tooMany(env, "mail:", 90, 1440)) return slowDown();   // plafond du jour (Resend gratuit : 100 / jour)
   const id = randomHex(12), link = randomHex(24);
   const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
   await env.DB.batch([
@@ -209,10 +210,31 @@ async function finishSignup(env: Env, chat: number): Promise<void> {
   }
 }
 
-async function emailLogin(env: Env, path: string, body: any): Promise<Response | null> {
+/** Anti-robots : compte les coups par clé (IP, global) sur une fenêtre glissante ; au-delà de max → bloqué (et noté pour l'admin). */
+async function tooMany(env: Env, key: string, max: number, minutes: number): Promise<boolean> {
+  if (/:(127\.0\.0\.1|::1)?$/.test(key) && !key.endsWith("all:") && key !== "mail:") return false;   // tests locaux (en prod l'IP est toujours là)
+  const r = await env.DB.prepare(`SELECT COUNT(*) n FROM rate_hits WHERE key = ? AND at > datetime('now', '-${minutes} minutes')`).bind(key).first<{ n: number }>();
+  if ((r?.n ?? 0) >= max) {
+    await env.DB.prepare("INSERT INTO rate_hits (key) VALUES (?)").bind("blocked:" + key.split(":")[0]).run();
+    return true;
+  }
+  await env.DB.batch([
+    env.DB.prepare("INSERT INTO rate_hits (key) VALUES (?)").bind(key),
+    env.DB.prepare("DELETE FROM rate_hits WHERE at < datetime('now', '-2 days')"),
+  ]);
+  return false;
+}
+const slowDown = () => Response.json({ error: "too_many" }, { status: 429 });
+/** Formulaire rempli par un robot : champ piège rempli, ou envoyé moins d'une seconde après l'affichage. On fait semblant. */
+const looksBot = (body: any) => !!String(body.website ?? "").trim() || (typeof body.t === "number" && body.t < 900);
+const fakeSent = () => Response.json({ id: randomHex(12) });
+
+async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<Response | null> {
   if (path === "/app/api/login/config") return Response.json({ email: !!env.RESEND_API_KEY, bot: env.BOT_USERNAME, v: BUILD });
   if (path === "/app/api/login/email") {
     if (!env.RESEND_API_KEY) return Response.json({ error: "mail_off" }, { status: 503 });
+    if (looksBot(body)) return fakeSent();
+    if (await tooMany(env, "login:" + ip, 10, 60)) return slowDown();
     const email = normEmail(body.email);
     if (!EMAIL_RE.test(email)) return Response.json({ error: "bad_email" }, { status: 400 });
     const u = await env.DB.prepare("SELECT chat_id, first_name, lang FROM users WHERE email = ? AND active = 1")
@@ -232,6 +254,10 @@ async function emailLogin(env: Env, path: string, body: any): Promise<Response |
   if (path === "/app/api/signup") {
     // Inscription web : prénom + email ; le compte n'existe vraiment qu'après le code reçu par email.
     if (!env.RESEND_API_KEY) return Response.json({ error: "mail_off" }, { status: 503 });
+    if (looksBot(body)) return fakeSent();
+    // 4 inscriptions / h par IP, 25 / h en tout ; les comptes jamais confirmés disparaissent après 2 jours.
+    if (await tooMany(env, "signup:" + ip, 4, 60) || await tooMany(env, "signupall:", 25, 60)) return slowDown();
+    await env.DB.prepare("DELETE FROM users WHERE pending = 1 AND active = 0 AND joined_at < datetime('now', '-2 days')").run();
     // Avec un lien d'invitation : connecté·e à qui invite. Sans : compte seul (amis à ajouter par pseudo).
     const inviter = body.invite ? await inviterOf(env, body.invite) : null;
     if (body.invite && !inviter) return Response.json({ error: "bad_invite" }, { status: 404 });
@@ -260,6 +286,7 @@ async function emailLogin(env: Env, path: string, body: any): Promise<Response |
   if (path === "/app/api/login/code") {
     const id = String(body.id ?? ""), code = String(body.code ?? "").replace(/\D/g, "");
     if (!/^[a-f0-9]{24}$/.test(id) || code.length !== 6) return Response.json({ error: "bad_request" }, { status: 400 });
+    if (await tooMany(env, "code:" + ip, 30, 60)) return slowDown();
     const row = await env.DB.prepare("SELECT chat_id, code_hash, attempts FROM email_logins WHERE id = ? AND created_at > datetime('now', '-15 minutes')")
       .bind(id).first<{ chat_id: number; code_hash: string; attempts: number }>();
     if (!row || row.attempts >= 5) return Response.json({ error: "expired" }, { status: 410 });
@@ -359,7 +386,8 @@ async function calendarFile(env: Env, id: string, at: string): Promise<Response>
 
 async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Promise<Response> {
   const body: any = await req.json().catch(() => ({}));
-  const pre = (await emailLogin(env, url.pathname, body)) ?? (await login(env, url.pathname, body));
+  const ip = req.headers.get("cf-connecting-ip") || "";
+  const pre = (await emailLogin(env, url.pathname, body, ip)) ?? (await login(env, url.pathname, body));
   if (pre) return pre;
   // Qui parle : Telegram (initData signé) ou l'app web (jeton de session).
   let uid: number | null = null, tgUser: AppUser | null = null;
@@ -383,6 +411,10 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
   ctx.waitUntil(env.DB.prepare("UPDATE users SET app_seen_at = datetime('now') WHERE chat_id = ?").bind(me.chat_id).run().then(() => {}, () => {}));
   const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
   if (url.pathname === "/app/api/state") return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  if (url.pathname === "/app/api/admin") {
+    if (!isAdmin(env, me.chat_id)) return Response.json({ error: "forbidden" }, { status: 403 });
+    return Response.json(await adminStats(env));
+  }
   if (url.pathname === "/app/api/act") {
     const op = String(body.op ?? ""), id = String(body.id ?? ""), arg = body.arg == null ? "" : String(body.arg);
     // Réglages : suivre / ne plus suivre tous les lieux d'un type (théâtres, expos, cinémas).
@@ -597,6 +629,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
      WHERE n.chat_id = ? ORDER BY n.id DESC LIMIT 40`).bind(chat).all<any>();
   return {
     lang,
+    admin: isAdmin(env, chat) || undefined,
     inbox: notes,
     email: myEmail,
     name: meRow?.first_name ?? "",
@@ -699,4 +732,36 @@ async function bookFor(env: Env, me: Me, id: string, when: string, ids: number[]
     await inbox(env, u.chat_id, "booked", me.chat_id, id, null, iso);
     await send(env, u.chat_id, MSG[lang].booked(esc(me.first_name), esc(item.title), whenLabel(iso, lang)), keyboard(item, r, lang));
   }
+}
+
+/** Admin (la propriétaire seulement) : inscrits, activité, robots bloqués, derniers retours. */
+const isAdmin = (env: Env, chat: number) => !!env.OWNER_CHAT_ID && String(chat) === String(env.OWNER_CHAT_ID);
+async function adminStats(env: Env) {
+  const one = async (q: string) => (await env.DB.prepare(q).first<{ n: number }>())?.n ?? 0;
+  const [users, weeks, blocked, feedback] = await Promise.all([
+    env.DB.prepare(`SELECT u.chat_id, u.first_name, u.handle, u.email, u.lang, u.active, u.pending, u.joined_at,
+        MAX(COALESCE(u.app_seen_at, ''), COALESCE(u.bot_seen_at, '')) AS seen_at, u.photo IS NOT NULL AS has_photo,
+        (SELECT COUNT(*) FROM connections c WHERE (c.a = u.chat_id OR c.b = u.chat_id) AND c.status = 'ok') AS friends,
+        (SELECT COUNT(*) FROM reactions r WHERE r.chat_id = u.chat_id AND r.interested = 1) AS wants,
+        (SELECT COUNT(*) FROM reactions r WHERE r.chat_id = u.chat_id AND r.booked_at IS NOT NULL) AS booked,
+        (SELECT COUNT(*) FROM reactions r WHERE r.chat_id = u.chat_id AND r.status = 'seen') AS seen,
+        (SELECT COUNT(*) FROM subscriptions s WHERE s.chat_id = u.chat_id) AS venues
+      FROM users u ORDER BY u.joined_at DESC LIMIT 500`).all<any>(),
+    env.DB.prepare(`SELECT strftime('%Y-%W', joined_at) AS wk, MIN(date(joined_at)) AS from_day, COUNT(*) AS n
+      FROM users WHERE active = 1 AND joined_at > datetime('now', '-84 days') GROUP BY wk ORDER BY wk`).all<any>(),
+    env.DB.prepare(`SELECT substr(key, 9) AS kind, COUNT(*) AS n FROM rate_hits WHERE key LIKE 'blocked:%' AND at > datetime('now', '-1 day') GROUP BY kind`).all<any>(),
+    env.DB.prepare(`SELECT f.kind, f.text, f.created_at, u.first_name FROM feedback f LEFT JOIN users u ON u.chat_id = f.chat_id ORDER BY f.id DESC LIMIT 20`).all<any>(),
+  ]);
+  return {
+    totals: {
+      active: await one("SELECT COUNT(*) n FROM users WHERE active = 1"),
+      pending: await one("SELECT COUNT(*) n FROM users WHERE pending = 1 AND active = 0"),
+      web: await one(`SELECT COUNT(*) n FROM users WHERE active = 1 AND chat_id >= ${WEB_ID_BASE}`),
+      new7: await one("SELECT COUNT(*) n FROM users WHERE active = 1 AND joined_at > datetime('now', '-7 days')"),
+      seen7: await one("SELECT COUNT(*) n FROM users WHERE active = 1 AND MAX(COALESCE(app_seen_at, ''), COALESCE(bot_seen_at, '')) > datetime('now', '-7 days')"),
+      mails24: await one("SELECT COUNT(*) n FROM rate_hits WHERE key = 'mail:' AND at > datetime('now', '-1 day')"),
+    },
+    weeks: weeks.results, blocked: blocked.results, feedback: feedback.results,
+    users: users.results.map((u: any) => ({ ...u, web: u.chat_id >= WEB_ID_BASE, chat_id: undefined })),
+  };
 }

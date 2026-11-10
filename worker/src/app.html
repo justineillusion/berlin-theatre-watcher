@@ -67,7 +67,7 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 #whens .soldtoggle{margin-left:auto}
 /* Réglages → Mes lieux : quartiers (un à la fois), filtrent la liste des lieux. */
 /* Sous-onglets des Réglages : du texte, pas des cases ; l'actif souligné de rouge. */
-.subtabs{display:grid;grid-template-columns:repeat(3,1fr);margin:2px -18px 10px;border-bottom:1px solid var(--line)}
+.subtabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));grid-auto-flow:column;margin:2px -18px 10px;border-bottom:1px solid var(--line)}
 .subtabs .chip{border:0;background:none;text-align:center;padding:12px 4px 10px;font:700 12.5px var(--sans);letter-spacing:.08em;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
 .subtabs .chip[aria-pressed="true"]{background:none;color:var(--ink);border-bottom-color:var(--velvet)}
 .subtabs .chip i{font-style:normal;background:var(--velvet);color:#fff;border-radius:9px;padding:0 6px;margin-left:6px;font-size:11px}
@@ -143,6 +143,14 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .cropz input{flex:1;accent-color:var(--velvet)}
 .cropbox .acts{justify-content:center}
 .tab .tabn{display:inline-block;min-width:17px;height:17px;margin-left:6px;border-radius:9px;background:var(--velvet);color:#fff;font:800 10.5px/17px var(--sans);font-style:normal;text-align:center;padding:0 4px;vertical-align:1px;letter-spacing:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px}
+.kpi{border:1.5px solid var(--line);padding:10px}.kpi b{display:block;font:800 22px var(--sans)}.kpi span{font-size:12px;color:var(--muted)}
+.wk{display:flex;align-items:flex-end;gap:6px;padding:8px 16px;overflow-x:auto}.wk div{display:flex;flex-direction:column;align-items:center;min-width:30px;font-size:11px}
+.wk i{display:block;width:16px;background:var(--velvet)}.wk small{color:var(--muted)}
+.adm{padding:4px 16px;margin:0;color:var(--muted);font-size:14px}
+.au{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;padding:10px 16px;border-bottom:1px solid var(--line);font-size:14px}
+.au span,.au small{color:var(--muted)}.au em{color:var(--velvet);font-style:normal;font-size:12px}.au.off{opacity:.55}
+.aun{display:flex;flex-direction:column;text-align:right}
 .note-row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer}
 .note-row.unread{box-shadow:inset 3px 0 0 var(--velvet)}
 .note-row small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
@@ -221,6 +229,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .lform .act{box-shadow:none!important;border-radius:0;font:800 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:15px 14px}
 .lform .act:not(.on){border:0;background:none;padding:4px;color:var(--muted);letter-spacing:.06em}
 .lform .hint{margin:0}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
 .what{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .what li{display:flex;gap:12px;align-items:baseline;font:500 15px/1.35 var(--sans);color:var(--ink)}
 .what li::before{content:"";width:12px;height:2px;background:var(--velvet);flex:none;align-self:center}
@@ -286,7 +295,7 @@ const L = {
         haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
-        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en 🙋.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
+        setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte", admin:"Admin" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en 🙋.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
         cropT:"Cadre ta photo", planIt:"Organiser", planNote:"On y va ensemble ? Quel jour te va ?", forYou:"Pour toi", inboxT:"Notifications", close:"Fermer", inboxEmpty:"Rien pour l'instant. Quand un ami t'envoie une sortie ou te prend une place, ça arrive ici.",
         nShare:(n, t) => `${n} t'envoie ${t}`, nBooked:(n, t, w) => `🎟 ${n} t'a pris une place : ${t}${w ? `, ${w}` : ""}`, nRequest:(n) => `${n} veut être ton ami·e`, nOk:(n) => `${n} a accepté ta demande`,
         ignoreReq:"Ignorer", now:"à l'instant", minAgo:(m) => `il y a ${m} min`, hAgo:(h) => `il y a ${h} h`, dAgo:(d) => `il y a ${d} j`,
@@ -310,7 +319,7 @@ const L = {
         haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
-        setTabs:{ venues:"Venues", friends:"Friends", account:"Account" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
+        setTabs:{ venues:"Venues", friends:"Friends", account:"Account", admin:"Admin" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
         cropT:"Frame your photo", planIt:"Plan it", planNote:"Shall we go together? Which day works?", forYou:"For you", inboxT:"Notifications", close:"Close", inboxEmpty:"Nothing yet. When a friend sends you an outing or books you a seat, it lands here.",
         nShare:(n, t) => `${n} sent you ${t}`, nBooked:(n, t, w) => `🎟 ${n} got you a seat: ${t}${w ? `, ${w}` : ""}`, nRequest:(n) => `${n} wants to be friends`, nOk:(n) => `${n} accepted your request`,
         ignoreReq:"Ignore", now:"just now", minAgo:(m) => `${m} min ago`, hAgo:(h) => `${h} h ago`, dAgo:(d) => `${d} d ago`,
@@ -396,11 +405,14 @@ function notify(text, then) {
 let loginCfg = null, inviter = undefined, teaser = null;
 const login = { step: "email", email: "", name: "", id: null, err: "" };
 const PARAMS = new URLSearchParams(location.search);
+/** Anti-robots : champ piège (invisible) + temps écoulé depuis l'affichage du formulaire. */
+let shownAt = Date.now();
+const human = () => ({ website: $("lweb")?.value || "", t: Date.now() - shownAt });
 let INVITE = PARAMS.get("invite") || "";
 const ERR = { mail_failed: "mailFailed", bad_email: "badEmail", unknown_email: "unknownEmail", too_many: "tooMany", expired: "codeExpired", bad_invite: "badInvite", bad_name: "badName" };
 const errText = (e) => T[ERR[e.info?.error]] || T.error;
 async function showLogin() {
-  S = null;
+  S = null; shownAt = Date.now();
   document.querySelector(".top").hidden = true;
   if (!loginCfg) { try { loginCfg = await api("login/config"); } catch { loginCfg = { email: false }; } }
   if (!teaser) { try { teaser = (await api("teaser")).items || []; } catch { teaser = []; } }
@@ -422,10 +434,10 @@ async function showLogin() {
        <button class="act" data-loginback="1">${esc(T.otherEmail)}</button>`;
   else if (signup) form = (inviter ? `<div class="inviter">${avatar(inviter.photo, inviter.name, "avmid", "me")}<b>${esc(T.invitedBy(inviter.name))}</b></div>` : `<b class="ftitle">${esc(T.newAccount)}</b><p>${esc(T.newAccountHint)}</p>`) + `
        <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">
-       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}">
+       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
        <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>` + (inviter ? "" : `<button class="act" data-loginback="1">${esc(T.haveAccount)}</button>`);
   else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.haveAccount)}</b>
-       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}">
+       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
        <button class="act on" data-loginemail="1">${esc(T.sendCode)}</button>
        <p class="hint">${esc(T.noAccount)}</p>`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
@@ -435,14 +447,14 @@ async function showLogin() {
 }
 async function loginEmail() {
   login.email = ($("lemail")?.value || "").trim(); login.err = "";
-  try { const j = await api("login/email", { email: login.email }); login.id = j.id; login.step = "code"; }
+  try { const j = await api("login/email", { email: login.email, ...human() }); login.id = j.id; login.step = "code"; }
   catch (e) { if (e.info?.error === "unknown_email") login.step = "new"; else login.err = errText(e); }
   showLogin();
 }
 async function signup() {
   login.name = ($("lname")?.value || "").trim(); login.email = ($("lemail")?.value || "").trim(); login.err = "";
   if (!login.name) { login.err = T.badName; return void showLogin(); }
-  try { const j = await api("signup", { invite: inviter ? INVITE : "", name: login.name, email: login.email, lang: T === L.en ? "en" : "fr" }); login.id = j.id; login.step = "code"; }
+  try { const j = await api("signup", { invite: inviter ? INVITE : "", name: login.name, email: login.email, lang: T === L.en ? "en" : "fr", ...human() }); login.id = j.id; login.step = "code"; }
   catch (e) { login.err = errText(e); }
   showLogin();
 }
@@ -713,6 +725,22 @@ function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() - Date.parse(String(ts).replace(" ", "T") + "Z")) / 60000));
   return m < 1 ? T.now : m < 60 ? T.minAgo(m) : m < 1440 ? T.hAgo(Math.round(m / 60)) : T.dAgo(Math.round(m / 1440));
 }
+/** Admin (propriétaire) : inscrits, activité, robots bloqués, retours. Chargé à l'ouverture de l'onglet. */
+function adminTab() {
+  const A = st.adminData;
+  if (!A) { if (!st.adminLoading) { st.adminLoading = true; api("admin").then((j) => { st.adminData = j; }, () => { st.adminData = { error: 1 }; }).finally(() => { st.adminLoading = false; render(); }); } return `<p class="empty">…</p>`; }
+  if (A.error) return `<p class="empty">${esc(T.error)}</p>`;
+  const t = A.totals, d = (v) => v ? esc(String(v).slice(0, 10)) : "—";
+  const kpi = (n, l) => `<div class="kpi"><b>${n}</b><span>${esc(l)}</span></div>`;
+  const max = Math.max(1, ...A.weeks.map((w) => w.n));
+  return `<div class="kpis" style="padding:12px 0">${kpi(t.active, "inscrits")}${kpi(t.new7, "nouveaux 7 j")}${kpi(t.seen7, "actifs 7 j")}${kpi(t.web, "via le web")}${kpi(t.pending, "pas confirmés")}${kpi(t.mails24, "emails 24 h")}</div>`
+    + dayHead("Inscriptions par semaine") + `<div class="wk">${A.weeks.map((w) => `<div><i style="height:${Math.round(w.n / max * 48) + 2}px"></i><small>${esc(w.from_day.slice(5))}</small><b>${w.n}</b></div>`).join("") || "—"}</div>`
+    + dayHead("Robots bloqués · 24 h") + `<p class="adm">${A.blocked.length ? A.blocked.map((b) => `${esc(b.kind)} : ${b.n}`).join(" · ") : "aucun"}</p>`
+    + dayHead("Inscrits", String(A.users.length)) + `<div class="ausers">${A.users.map((u) => `<div class="au${u.active ? "" : " off"}">
+        <div><b>${esc(u.first_name)}</b>${u.handle ? ` <span>@${esc(u.handle)}</span>` : ""}${u.pending ? ` <em>pas confirmé</em>` : !u.active ? ` <em>inactif</em>` : ""}<br><small>${esc(u.email || (u.web ? "" : "Telegram"))}</small></div>
+        <div class="aun"><small>inscrit ${d(u.joined_at)} · vu ${d(u.seen_at)}</small><small>👥 ${u.friends} · 🙋 ${u.wants} · 🎟 ${u.booked} · ✅ ${u.seen} · lieux ${u.venues} · ${esc(u.lang)}</small></div></div>`).join("")}</div>`
+    + dayHead("Derniers retours") + (A.feedback.length ? A.feedback.map((f) => `<div class="au"><div><b>${esc(f.first_name || "?")}</b> <span>${f.kind === "venue" ? "lieu" : "idée"} · ${d(f.created_at)}</span><br>${esc(f.text)}</div></div>`).join("") : `<p class="adm">—</p>`);
+}
 function inboxSection() {
   const recent = (n) => !n.read_at || st.inboxNew?.has(n.id) || Date.now() - Date.parse(String(n.created_at).replace(" ", "T") + "Z") < 7 * 864e5;
   const ns = (S.inbox || []).filter((n) => n.kind !== "friend_request" && recent(n)).slice(0, 8);
@@ -812,7 +840,7 @@ function readHash() {
   const [tab, a, b] = decodeURIComponent(location.hash.slice(1)).split("/");
   if (!["prog", "mine", "set"].includes(tab)) return;
   st.tab = tab;
-  if (tab === "set" && ["venues", "friends", "account"].includes(a)) st.setTab = a;
+  if (tab === "set" && ["venues", "friends", "account", "admin"].includes(a)) st.setTab = a;
   if (tab !== "set" && ["all", "theatre", "film", "expo"].includes(a)) st.kind = a;
   if (tab === "prog" && ["week", "month", "all"].includes(b)) st.when = b;
 }
@@ -860,10 +888,10 @@ function render() {
     // Sous-onglets : Lieux · Amis (pastille = demandes reçues) · Compte. Demandes en attente : on ouvre Amis.
     const pending = (S.circle?.incoming || []).length;
     if (!st.setTab) st.setTab = pending ? "friends" : "venues";
-    const sub = ["venues", "friends", "account"].map((k) =>
+    const sub = ["venues", "friends", "account", ...(S.admin ? ["admin"] : [])].map((k) =>
       `<button class="chip" data-settab="${k}" aria-pressed="${st.setTab === k}">${esc(T.setTabs[k])}${k === "friends" && pending ? `<i>${pending}</i>` : ""}</button>`).join("");
     list.innerHTML = `<div class="set"><div class="subtabs">${sub}</div>${
-      st.setTab === "friends" ? (st.friend ? friendPage() : friendsSection()) : st.setTab === "account" ? accountTab : venuesTab + feedbackBox("venue")}</div>`;
+      st.setTab === "friends" ? (st.friend ? friendPage() : friendsSection()) : st.setTab === "account" ? accountTab : st.setTab === "admin" && S.admin ? adminTab() : venuesTab + feedbackBox("venue")}</div>`;
     return;
   }
   // Types suivis seulement : ne plus suivre aucun cinéma retire « Ciné » du menu.

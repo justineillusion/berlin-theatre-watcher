@@ -196,3 +196,10 @@ CREATE TABLE IF NOT EXISTS feedback (
   text       TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- rate_hits : anti-robots (migrations/016).
+CREATE TABLE IF NOT EXISTS rate_hits (
+  key TEXT NOT NULL,
+  at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS rate_hits_key_at ON rate_hits (key, at);
