@@ -124,6 +124,22 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Nixon in China",
+  "url": "https://deutscheoperberlin.de/en_EN/production/nixon-in-china.1385484",
+  "opens": "2027-01-10",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Good Vibes Only",
+  "url": "https://deutscheoperberlin.de/en_EN/production/good-vibes-only.1386831",
+  "opens": "2027-01-22",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "Neue Nationalgalerie",
   "title": "Extreme Tension. Art between Politics and Society",
@@ -284,6 +300,46 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "WorldKlezmer, Hora and love songs with She’Koyokh and Çiğdem Aslan",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57055/",
+  "opens": "2026-11-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Orfeo ed Euridice",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/orfeo-ed-euridice.27753/",
+  "opens": "2026-11-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Zubin Mehta and Pinchas Zukerman with Bruch’s First Violin Concerto",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57056/",
+  "opens": "2026-11-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Queen of Spades",
+  "url": "https://deutscheoperberlin.de/en_EN/production/queen-of-spades.1385561",
+  "opens": "2026-11-13",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Orpheus in the Underworld",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
+  "opens": "2026-11-13",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "Hamburger Bahnhof",
   "title": "Sophie Calle",
@@ -297,6 +353,78 @@
   "title": "T-Boy on Grindr",
   "url": "https://www.berliner-ensemble.de/en/production/t-boy-grindr",
   "opens": "2026-11-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Elektra",
+  "url": "https://deutscheoperberlin.de/en_EN/production/elektra.1385724",
+  "opens": "2026-11-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Eugene Onegin",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/eugene-onegin/",
+  "opens": "2026-11-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Around the World in 80 Days",
+  "url": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
+  "opens": "2026-11-15",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "The Flying Dutchman",
+  "url": "https://deutscheoperberlin.de/en_EN/production/the-flying-dutchman.1385827",
+  "opens": "2026-11-15",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "The Magic Flute",
+  "url": "https://deutscheoperberlin.de/en_EN/production/the-magic-flute.1385471",
+  "opens": "2026-11-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "OriginalklangIl pomo d’oro & Jakub Józef Orliński",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57058/",
+  "opens": "2026-11-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Maxim Emelyanychev conducts Mendelssohn, Mozart and Haydn",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57060/",
+  "opens": "2026-11-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "L’incoronazione di Poppea",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
+  "opens": "2026-11-20",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Madama Butterfly",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
+  "opens": "2026-11-21",
   "aliases": []
  },
  {
@@ -319,11 +447,43 @@
   ]
  },
  {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Jazz at Berlin Philharmonic“Conversations”",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57062/",
+  "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Rome with Kirill Petrenko and Ottorino Respighi",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57063/",
+  "opens": "2026-11-26",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Tosca",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
+  "opens": "2026-11-28",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "Neue Nationalgalerie",
   "title": "Ulay, Ulay & Abramović",
   "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ulay-ulay-abramovic/",
   "opens": "2026-11-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Die Zauberflöte",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
+  "opens": "2026-11-29",
   "aliases": []
  },
  {
@@ -336,9 +496,25 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "The Abduction from the Seraglio",
+  "url": "https://deutscheoperberlin.de/en_EN/production/the-abduction-from-the-seraglio.1383413",
+  "opens": "2026-12-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "SAVE A HORSE RIDE A COWGIRL",
   "url": "https://www.volksbuehne-berlin.de/en/productions/save-a-horse-ride-a-cowgirl/20261204-1900/",
+  "opens": "2026-12-04",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Bohème",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-boheme.24/",
   "opens": "2026-12-04",
   "aliases": []
  },
@@ -352,6 +528,22 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Hansel and Gretel",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/hansel-und-gretel/",
+  "opens": "2026-12-06",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Piano Recital with Mitsuko Uchida",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57070/",
+  "opens": "2026-12-06",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "Alles Glück der Welt",
   "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261207-1830/",
@@ -360,9 +552,89 @@
  },
  {
   "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "OriginalklangBaroque Christmas music with Les Accents",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57071/",
+  "opens": "2026-12-08",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "QuartetBeethoven cycle with the Quatuor Ébène",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57073/",
+  "opens": "2026-12-09",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Marek Janowski conducts Bruckner’s Eighth",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57074/",
+  "opens": "2026-12-10",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "La bohème",
+  "url": "https://deutscheoperberlin.de/en_EN/production/la-boheme.1385732",
+  "opens": "2026-12-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Berliner Philharmoniker EnsemblesBerliner Barock Solisten and Daishin Kashimoto with Vivaldi’s “The Four Seasons”",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57448/",
+  "opens": "2026-12-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Maxime Pascal makes his debut with Berlioz’s “L’Enfance du Christ”",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57079/",
+  "opens": "2026-12-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Treading the boards",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
+  "opens": "2026-12-20",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Nabucco",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/nabucco.15505/",
+  "opens": "2026-12-22",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Hänsel und Gretel",
+  "url": "https://deutscheoperberlin.de/en_EN/production/haensel-und-gretel.1385736",
+  "opens": "2026-12-23",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "It's Britney, Bitch!",
   "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
+  "opens": "2026-12-26",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "La traviata",
+  "url": "https://deutscheoperberlin.de/en_EN/production/la-traviata.1385739",
   "opens": "2026-12-26",
   "aliases": []
  },
@@ -406,10 +678,141 @@
  },
  {
   "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Berliner Philharmoniker EnsemblesWind chamber music by Beethoven, Schreck and Enescu",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57082/",
+  "opens": "2027-01-06",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La traviata",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-traviata.12528/",
+  "opens": "2027-01-07",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Jakub Hrůša and Yuja Wang",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57083/",
+  "opens": "2027-01-07",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "#Motherfuckinghood",
   "url": "https://www.berliner-ensemble.de/en/production/motherfuckinghood",
   "opens": "2027-01-08",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Echnaton (Akhnaten)",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-01/akhnaten-echnaton/1281/",
+  "opens": "2027-01-09",
+  "aliases": [
+   "Echnaton",
+   "Akhnaten"
+  ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Salome",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/salome.96/",
+  "opens": "2027-01-10",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Lisa Batiashvili, Robin Ticciati and the Chamber Orchestra of Europe",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57086/",
+  "opens": "2027-01-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Kirill Petrenko opens the Biennale of the Berliner Philharmoniker",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57088/",
+  "opens": "2027-01-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Jazz at Berlin PhilharmonicSoul Train",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57091/",
+  "opens": "2027-01-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Piano recital with Bertrand Chamayou",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57092/",
+  "opens": "2027-01-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "François-Xavier Roth conducts Strauss, Berlioz and Boulanger",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57095/",
+  "opens": "2027-01-21",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "BiennaleHarlem Gospel Singers",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57099/",
+  "opens": "2027-01-24",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Organ matinee with Wayne Marshall",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57097/",
+  "opens": "2027-01-24",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "WorldLast Breaths from Aleppo",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57100/",
+  "opens": "2027-01-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Le nozze di Figaro",
+  "url": "https://deutscheoperberlin.de/en_EN/production/le-nozze-di-figaro.1385793",
+  "opens": "2027-01-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Kirill Petrenko conducts Beethoven’s Missa solemnis",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57102/",
+  "opens": "2027-01-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Rigoletto",
+  "url": "https://deutscheoperberlin.de/en_EN/production/rigoletto.1385794",
+  "opens": "2027-01-29",
   "aliases": []
  },
  {
@@ -418,6 +821,46 @@
   "title": "Schatten Reich",
   "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/schatten-reich/",
   "opens": "2027-01-29",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "King Roger",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-01/king-roger/1404/",
+  "opens": "2027-01-30",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Fiddler on the Roof",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-02/fiddler-on-the-roof/1270/",
+  "opens": "2027-02-06",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Homage to Beethoven: Mahler Chamber Orchestra and Alina Ibragimova",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57105/",
+  "opens": "2027-02-08",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Berliner Philharmoniker EnsemblesPhilharmonic String Quartet with Beethoven, Schubert and Brahms",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57107/",
+  "opens": "2027-02-10",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Sakari Oramo and Vilde Frang",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57108/",
+  "opens": "2027-02-11",
   "aliases": []
  },
  {
@@ -469,6 +912,38 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Lohengrin",
+  "url": "https://deutscheoperberlin.de/en_EN/production/lohengrin.1385795",
+  "opens": "2027-02-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Beethoven cycle with the Quatuor Ébène",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57109/",
+  "opens": "2027-02-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Markus Poschner and Christian Gerhaher",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57111/",
+  "opens": "2027-02-18",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Lahav Shani and Martha Argerich",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57114/",
+  "opens": "2027-02-25",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "Berlinische Galerie",
   "title": "Drag, Desire and the City — Rolf von Bergmann. Photographs",
@@ -485,11 +960,235 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Horse Eats Hat",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-02/pferd-frisst-hut/1309/",
+  "opens": "2027-02-27",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Così fan tutte",
+  "url": "https://deutscheoperberlin.de/en_EN/production/cosi-fan-tutte.1385840",
+  "opens": "2027-02-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Les Contes d’Hoffmann",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/les-contes-d-hoffmann.21881/",
+  "opens": "2027-03-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Carmen",
+  "url": "https://deutscheoperberlin.de/en_EN/production/carmen.1385520",
+  "opens": "2027-03-04",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Music of Changes",
+  "url": "https://deutscheoperberlin.de/en_EN/production/music-of-changes.1388473",
+  "opens": "2027-03-05",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "The Ball of the Komische Oper Berlin",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-03/opernball-2027/1412/",
+  "opens": "2027-03-06",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "WorldVärttinä – warm sounds from Finland",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57122/",
+  "opens": "2027-03-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Don Giovanni",
+  "url": "https://deutscheoperberlin.de/en_EN/production/don-giovanni.1385522",
+  "opens": "2027-03-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Organ matinee with Alma Bettencourt",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57123/",
+  "opens": "2027-03-14",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "Berlinische Galerie",
   "title": "Anna-Eva Bergman — The Edge of the Visible",
   "url": "https://berlinischegalerie.de/en/exhibitions/preview/anna-eva-bergman/",
   "opens": "2027-03-18",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Tannhäuser",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tannhaeuser.20/",
+  "opens": "2027-03-20",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Semele",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-03/semele/1330/",
+  "opens": "2027-03-20",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Manon Lescaut",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/manon-lescaut.27276/",
+  "opens": "2027-03-21",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "OriginalklangIl Caravaggio and Camille Delaforge",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57126/",
+  "opens": "2027-03-21",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "St Matthew Passion",
+  "url": "https://deutscheoperberlin.de/en_EN/production/st-matthew-passion.1385796",
+  "opens": "2027-03-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "The Golden Cockerel",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-03/the-golden-cockerel/1291/",
+  "opens": "2027-03-27",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Tosca",
+  "url": "https://deutscheoperberlin.de/en_EN/production/tosca.1385472",
+  "opens": "2027-04-01",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Les pêcheurs de perles",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/les-pecheurs-de-perles.3/",
+  "opens": "2027-04-02",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Norma",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/norma.15538/",
+  "opens": "2027-04-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Russian Modernism with Christian Tetzlaff and Paavo Järvi",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57135/",
+  "opens": "2027-04-08",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Piano recital with Daniil Trifonov",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57137/",
+  "opens": "2027-04-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Berliner Philharmoniker EnsemblesLet’s jazz – Bolero Berlin",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57138/",
+  "opens": "2027-04-13",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Kirill Gerstein, Andrés Orozco-Estrada and the Chamber Orchestra of Europe with Beethoven and Schumann",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57140/",
+  "opens": "2027-04-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Gustavo Dudamel conducts Mahler’s Seventh Symphony",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57141/",
+  "opens": "2027-04-15",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Salome",
+  "url": "https://deutscheoperberlin.de/en_EN/production/salome.1383424",
+  "opens": "2027-04-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Piano recital with Leif Ove AndsnesBeethoven’s legacy",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57145/",
+  "opens": "2027-04-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Gustavo Dudamel and Mitsuko Uchida",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57147/",
+  "opens": "2027-04-22",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Rigoletto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/rigoletto.2774/",
+  "opens": "2027-04-24",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Nabucco",
+  "url": "https://deutscheoperberlin.de/en_EN/production/nabucco.1385815",
+  "opens": "2027-04-24",
   "aliases": []
  },
  {
@@ -501,11 +1200,147 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Cast a Diva",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-04/cast-a-diva/1399/",
+  "opens": "2027-04-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Jazz at Berlin Philharmonic“Wanderlust” with Michael Wollny & Friends",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57151/",
+  "opens": "2027-04-29",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "Berlinische Galerie",
   "title": "Anne Duk Hee Jordan",
   "url": "https://berlinischegalerie.de/en/exhibitions/preview/anne-duk-hee-jordan/",
   "opens": "2027-04-29",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Vestale",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-vestale.27273/",
+  "opens": "2027-04-30",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "QuartetFinale of the Beethoven cycle with the Quatuor Ébène",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57152/",
+  "opens": "2027-04-30",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Turandot",
+  "url": "https://deutscheoperberlin.de/en_EN/production/turandot.1385817",
+  "opens": "2027-05-01",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Originalklang“Vivaldi e Venezia”",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57159/",
+  "opens": "2027-05-07",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Porgy and Bess",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-05/porgy-and-bess/1414/",
+  "opens": "2027-05-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Tugan Sokhiev and Yefim Bronfman",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57162/",
+  "opens": "2027-05-13",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Antikrist",
+  "url": "https://deutscheoperberlin.de/en_EN/production/antikrist.1385820",
+  "opens": "2027-05-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Piano recital with Yuja Wang",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57164/",
+  "opens": "2027-05-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Berliner Philharmoniker Ensembles",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57167/",
+  "opens": "2027-05-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Klaus Mäkelä and Yunchan Lim",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57168/",
+  "opens": "2027-05-20",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La forza del destino",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-forza-del-destino.27278/",
+  "opens": "2027-05-22",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Il barbiere di Siviglia",
+  "url": "https://deutscheoperberlin.de/en_EN/production/il-barbiere-di-siviglia.1385828",
+  "opens": "2027-05-23",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Kirill Petrenko conducts “Hänsel und Gretel”",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57170/",
+  "opens": "2027-05-27",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Don Carlo",
+  "url": "https://deutscheoperberlin.de/en_EN/production/don-carlo.1385834",
+  "opens": "2027-05-29",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Dima Slobodeniouk and Yo-Yo Ma",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57173/",
+  "opens": "2027-06-03",
   "aliases": []
  },
  {
@@ -538,6 +1373,102 @@
   "title": "ZEITFENSTER: Norman Behrendt — Exit",
   "url": "https://co-berlin.org/en/program/exhibitions/zeitfenster-norman-behrendt",
   "opens": "2027-06-05",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Elim Chan and Seong-Jin Cho with Prokofiev’s Second Piano Concerto",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57178/",
+  "opens": "2027-06-10",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Die Zarenbraut",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zarenbraut.27712/",
+  "opens": "2027-06-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Once around the world",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-06/sommerkonzert-einmal-um-die-welt/1435/",
+  "opens": "2027-06-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Sweeney Todd",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-06/sweeney-todd/1337/",
+  "opens": "2027-06-13",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Organ matinee with Isabelle Demers",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57179/",
+  "opens": "2027-06-13",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "2 x Brahms: Yuja Wang and the Mahler Chamber Orchestra",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57180/",
+  "opens": "2027-06-15",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Idomeneo",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/idomeneo.7542/",
+  "opens": "2027-06-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "The Magic Flute",
+  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-06/the-magic-flute/1347/",
+  "opens": "2027-06-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Alan Gilbert and Isabelle Faust",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57182/",
+  "opens": "2027-06-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "War Requiem",
+  "url": "https://deutscheoperberlin.de/en_EN/production/war-requiem.1385838",
+  "opens": "2027-06-18",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "Jazz at Berlin Philharmonic“Remember Esbjörn Svensson”",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57183/",
+  "opens": "2027-06-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Philharmoniker",
+  "title": "WorldSenegal meets Sweden & the Zawose Queens",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57185/",
+  "opens": "2027-06-22",
   "aliases": []
  },
  {
