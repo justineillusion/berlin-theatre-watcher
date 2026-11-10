@@ -118,6 +118,95 @@ export async function confirmWebLogin(env: Env, nonce: string, chat: number): Pr
   return !!r.meta.changes;
 }
 
+// --- Connexion par email ----------------------------------------------------
+//   POST /app/api/login/config            -> { email: bool }  (email activé = RESEND_API_KEY posé)
+//   POST /app/api/login/email { email }   -> { id } ; envoie un code à 6 chiffres + un lien
+//   POST /app/api/login/code  { id, code }-> { token }   (5 essais, 15 min)
+//   POST /app/api/login/link  { link }    -> { token }   (lien /app?login=<link> de l'email)
+//   POST /app/api/email       { email }   (connecté·e) lie / change / retire (« ») mon adresse
+const EMAIL_RE = /^[^\s@<>"]{1,64}@[^\s@<>"]{1,190}\.[a-z]{2,}$/i;
+const normEmail = (s: unknown) => String(s ?? "").trim().toLowerCase();
+const APP_URL = (env: Env) => (env.APP_URL || "https://berlin-encore.pages.dev").replace(/\/$/, "");
+
+const MAIL = {
+  fr: { subject: "Ta connexion à Berlin Encore!", hi: (n: string) => `Bonjour ${n},`, code: "Ton code :", or: "Ou touche ce bouton :", btn: "Ouvrir Berlin Encore!", note: "Valable 15 minutes. Si tu n'as rien demandé, ignore cet email." },
+  en: { subject: "Your Berlin Encore! sign-in", hi: (n: string) => `Hi ${n},`, code: "Your code:", or: "Or tap this button:", btn: "Open Berlin Encore!", note: "Valid for 15 minutes. If you didn't ask for this, ignore this email." },
+};
+
+async function sendLoginMail(env: Env, to: string, name: string, lang: Lang, code: string, link: string): Promise<boolean> {
+  const M = MAIL[lang];
+  const url = `${APP_URL(env)}/app?login=${link}`;
+  const html = `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:16px;color:#111214;max-width:440px">
+<p style="font-size:22px;font-weight:800;margin:0 0 16px">Berlin Encore<span style="color:#d7263d">!</span></p>
+<p>${esc(M.hi(name))}</p><p>${M.code}</p>
+<p style="font-size:32px;font-weight:800;letter-spacing:.15em;margin:4px 0 18px">${code}</p>
+<p>${M.or}</p><p><a href="${url}" style="display:inline-block;background:#d7263d;color:#fff;padding:12px 18px;text-decoration:none;font-weight:700">${M.btn}</a></p>
+<p style="color:#686e75;font-size:13px">${M.note}</p></div>`;
+  const text = `${M.hi(name)}\n\n${M.code} ${code}\n\n${M.or} ${url}\n\n${M.note}`;
+  const r = await fetch(`${env.RESEND_API || "https://api.resend.com"}/emails`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
+    body: JSON.stringify({ from: env.MAIL_FROM || "Berlin Encore! <onboarding@resend.dev>", to: [to], subject: M.subject, html, text }),
+  }).catch(() => null);
+  if (!r?.ok) console.log("mail failed", r?.status, await r?.text().catch(() => ""));
+  return !!r?.ok;
+}
+
+async function newSession(env: Env, chat: number): Promise<string> {
+  const token = randomHex(32);
+  await env.DB.prepare("INSERT INTO web_sessions (token_hash, chat_id) VALUES (?, ?)").bind(await sha256(token), chat).run();
+  return token;
+}
+
+async function emailLogin(env: Env, path: string, body: any): Promise<Response | null> {
+  if (path === "/app/api/login/config") return Response.json({ email: !!env.RESEND_API_KEY, bot: env.BOT_USERNAME });
+  if (path === "/app/api/login/email") {
+    if (!env.RESEND_API_KEY) return Response.json({ error: "mail_off" }, { status: 503 });
+    const email = normEmail(body.email);
+    if (!EMAIL_RE.test(email)) return Response.json({ error: "bad_email" }, { status: 400 });
+    const u = await env.DB.prepare("SELECT chat_id, first_name, lang FROM users WHERE email = ? AND active = 1")
+      .bind(email).first<{ chat_id: number; first_name: string; lang: string | null }>();
+    // Bande d'amis : on dit franchement quand l'adresse n'est liée à aucun compte.
+    if (!u) return Response.json({ error: "unknown_email" }, { status: 404 });
+    const recent = await env.DB.prepare("SELECT COUNT(*) n FROM email_logins WHERE chat_id = ? AND created_at > datetime('now', '-15 minutes')")
+      .bind(u.chat_id).first<{ n: number }>();
+    if ((recent?.n ?? 0) >= 3) return Response.json({ error: "too_many" }, { status: 429 });
+    const id = randomHex(12), link = randomHex(24);
+    const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM email_logins WHERE created_at < datetime('now', '-15 minutes')"),
+      env.DB.prepare("INSERT INTO email_logins (id, chat_id, code_hash, link_hash) VALUES (?, ?, ?, ?)")
+        .bind(id, u.chat_id, await sha256(id + code), await sha256(link)),
+    ]);
+    if (!(await sendLoginMail(env, email, u.first_name, asLang(u.lang), code, link))) return Response.json({ error: "mail_failed" }, { status: 502 });
+    return Response.json({ id });
+  }
+  if (path === "/app/api/login/code") {
+    const id = String(body.id ?? ""), code = String(body.code ?? "").replace(/\D/g, "");
+    if (!/^[a-f0-9]{24}$/.test(id) || code.length !== 6) return Response.json({ error: "bad_request" }, { status: 400 });
+    const row = await env.DB.prepare("SELECT chat_id, code_hash, attempts FROM email_logins WHERE id = ? AND created_at > datetime('now', '-15 minutes')")
+      .bind(id).first<{ chat_id: number; code_hash: string; attempts: number }>();
+    if (!row || row.attempts >= 5) return Response.json({ error: "expired" }, { status: 410 });
+    if ((await sha256(id + code)) !== row.code_hash) {
+      await env.DB.prepare("UPDATE email_logins SET attempts = attempts + 1 WHERE id = ?").bind(id).run();
+      return Response.json({ error: "bad_code", left: 4 - row.attempts }, { status: 401 });
+    }
+    await env.DB.prepare("UPDATE email_logins SET attempts = 99 WHERE id = ?").bind(id).run();   // utilisé (compte encore pour la limite)
+    return Response.json({ token: await newSession(env, row.chat_id) });
+  }
+  if (path === "/app/api/login/link") {
+    const link = String(body.link ?? "");
+    if (!/^[a-f0-9]{48}$/.test(link)) return Response.json({ error: "bad_request" }, { status: 400 });
+    const h = await sha256(link);
+    const row = await env.DB.prepare("SELECT id, chat_id FROM email_logins WHERE link_hash = ? AND attempts < 5 AND created_at > datetime('now', '-15 minutes')")
+      .bind(h).first<{ id: string; chat_id: number }>();
+    if (!row) return Response.json({ error: "expired" }, { status: 410 });
+    await env.DB.prepare("UPDATE email_logins SET attempts = 99 WHERE id = ?").bind(row.id).run();
+    return Response.json({ token: await newSession(env, row.chat_id) });
+  }
+  return null;
+}
+
 const KINDS = new Set(["theatre", "expo", "cinema"]);
 
 export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -133,7 +222,7 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
 
 async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Promise<Response> {
   const body: any = await req.json().catch(() => ({}));
-  const pre = await login(env, url.pathname, body);
+  const pre = (await emailLogin(env, url.pathname, body)) ?? (await login(env, url.pathname, body));
   if (pre) return pre;
   // Qui parle : Telegram (initData signé) ou l'app web (jeton de session).
   let uid: number | null = null, tgUser: AppUser | null = null;
@@ -185,6 +274,15 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     // La langue a pu changer (« l ») : on la relit.
     const lang = op === "l" ? asLang(id) : asLang(me.lang);
     return Response.json(await state(env, me.chat_id, lang, focus));
+  }
+  if (url.pathname === "/app/api/email") {
+    // Mon adresse pour la connexion web (vide = retirer). Une adresse = un compte.
+    const email = normEmail(body.email);
+    if (email && !EMAIL_RE.test(email)) return Response.json({ error: "bad_email" }, { status: 400 });
+    try {
+      await env.DB.prepare("UPDATE users SET email = ? WHERE chat_id = ?").bind(email || null, me.chat_id).run();
+    } catch { return Response.json({ error: "email_taken" }, { status: 409 }); }
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   if (url.pathname === "/app/api/review") {
     // ✍️ Critique écrite dans l'app : enregistrée, rien n'est envoyé à personne.
@@ -263,8 +361,10 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
       .map((x) => ({ venue: String(names.get(x.venue_id)), day: x.day, at: x.hour_known && x.at ? String(x.at).slice(11, 16) : null, month: x.month }))
       .sort((a, b) => a.day.localeCompare(b.day));
   } catch { /* calendrier illisible : on n'affiche rien */ }
+  const myEmail = (await env.DB.prepare("SELECT email FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null }>())?.email ?? null;
   return {
     lang,
+    email: myEmail,
     sales,
     venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null })),
     people,

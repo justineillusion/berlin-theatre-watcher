@@ -10,6 +10,10 @@ export interface Env {
   BOT_USERNAME: string;    // sans @, pour le lien d'invitation
   APP_SHORT_NAME?: string; // mini-app (BotFather), défaut « Programme »
   TG_API?: string;         // tests uniquement (faux Telegram local)
+  RESEND_API_KEY?: string; // connexion par email de l'app web (secret) ; absent = connexion par Telegram
+  MAIL_FROM?: string;      // expéditeur, sur un domaine vérifié chez Resend : « Berlin Encore! <bonjour@…> »
+  APP_URL?: string;        // adresse publique de l'app (liens des emails), défaut https://berlin-encore.pages.dev
+  RESEND_API?: string;     // tests uniquement (faux Resend local)
 }
 
 export interface Item {

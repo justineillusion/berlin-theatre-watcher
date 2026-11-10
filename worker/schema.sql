@@ -14,8 +14,10 @@ CREATE TABLE IF NOT EXISTS users (
   invite_code  TEXT,                         -- lien d'invitation personnel (migrations/006)
   joined_at    TEXT NOT NULL DEFAULT (datetime('now')),
   bot_seen_at TEXT,                          -- dernier message / clic dans le bot
-  app_seen_at TEXT                           -- dernière ouverture de la mini-app
+  app_seen_at TEXT,                          -- dernière ouverture de la mini-app
+  email       TEXT                           -- connexion de l'app web (migrations/010)
 );
+CREATE UNIQUE INDEX IF NOT EXISTS users_email ON users (email) WHERE email IS NOT NULL;
 
 -- Lieux : théâtres + expos (config.yaml, scan) et cinémas (cinema.yaml, job ciné).
 CREATE TABLE IF NOT EXISTS venues (
@@ -158,3 +160,12 @@ CREATE TABLE IF NOT EXISTS web_sessions (
   seen_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS web_sessions_chat ON web_sessions (chat_id);
+
+CREATE TABLE IF NOT EXISTS email_logins (
+  id         TEXT PRIMARY KEY,
+  chat_id    INTEGER NOT NULL,
+  code_hash  TEXT NOT NULL,
+  link_hash  TEXT NOT NULL,
+  attempts   INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);

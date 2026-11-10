@@ -23,7 +23,7 @@ const tgServer = http.createServer((req, res) => {
 await new Promise((r) => tgServer.listen(TG_PORT, r));
 
 rmSync(STATE, { recursive: true, force: true });
-writeFileSync(".dev.vars", `BOT_TOKEN=${TOKEN}\nAPI_TOKEN=a\nWEBHOOK_SECRET=h\nOWNER_CHAT_ID=${ME}\nBOT_USERNAME=TestBot\nTG_API=http://127.0.0.1:${TG_PORT}\n`);
+writeFileSync(".dev.vars", `BOT_TOKEN=${TOKEN}\nAPI_TOKEN=a\nWEBHOOK_SECRET=h\nOWNER_CHAT_ID=${ME}\nBOT_USERNAME=TestBot\nTG_API=http://127.0.0.1:${TG_PORT}\nRESEND_API_KEY=k\nRESEND_API=http://127.0.0.1:${TG_PORT}\nAPP_URL=https://encore.test\n`);
 const d1 = (args) => execSync(`npx wrangler d1 execute theatre-bot --local --persist-to ${STATE} ${args}`, { stdio: ["ignore", "pipe", "ignore"] }).toString();
 d1("--file=schema.sql");
 for (const m of ["003_bookings.sql"]) { try { d1(`--file=migrations/${m}`); } catch {} }
@@ -286,6 +286,39 @@ await step("quartiers : chaque lieu connu a son quartier dans l'état", async ()
 await step("web : déconnexion → le jeton ne marche plus", async () => {
   assert.equal((await bearer("/app/api/logout", session)).status, 200);
   assert.equal((await bearer("/app/api/state", session)).status, 401);
+});
+
+await step("email : lier mon adresse (unique), puis connexion par code et par lien", async () => {
+  assert.equal((await post("/app/api/login/config", {})).json.email, true);
+  assert.equal((await post("/app/api/login/email", { email: "justine@example.com" })).status, 404);   // pas encore liée
+  let r = await post("/app/api/email", { initData: me, email: " Justine@Example.com " });
+  assert.equal(r.status, 200); assert.equal(r.json.email, "justine@example.com");
+  assert.equal((await post("/app/api/email", { initData: lyna, email: "justine@example.com" })).status, 409);
+  assert.equal((await post("/app/api/email", { initData: me, email: "pas-un-email" })).status, 400);
+  // Code
+  calls = [];
+  const { id } = (await post("/app/api/login/email", { email: "JUSTINE@example.com" })).json;
+  const mail = calls.find((c) => c.method === "emails");
+  assert.deepEqual(mail.to, ["justine@example.com"]);
+  const code = mail.text.match(/\b(\d{6})\b/)[1], link = mail.text.match(/login=([a-f0-9]{48})/)[1];
+  assert.match(mail.text, /https:\/\/encore\.test\/app\?login=/);
+  r = await post("/app/api/login/code", { id, code: code === "000000" ? "111111" : "000000" });
+  assert.equal(r.status, 401); assert.equal(r.json.left, 4);
+  r = await post("/app/api/login/code", { id, code });
+  assert.match(r.json.token, /^[a-f0-9]{64}$/);
+  assert.equal((await bearer("/app/api/state", r.json.token)).json.email, "justine@example.com");
+  assert.equal((await post("/app/api/login/code", { id, code })).status, 410);          // une seule fois
+  // Lien (nouvelle demande)
+  calls = [];
+  await post("/app/api/login/email", { email: "justine@example.com" });
+  const link2 = calls.find((c) => c.method === "emails").text.match(/login=([a-f0-9]{48})/)[1];
+  r = await post("/app/api/login/link", { link: link2 });
+  assert.equal((await bearer("/app/api/state", r.json.token)).status, 200);
+  assert.equal((await post("/app/api/login/link", { link: link2 })).status, 410);
+  assert.equal((await post("/app/api/login/link", { link })).status, 410);            // le 1er lien est mort avec son code
+  // 3 demandes / 15 min au plus
+  assert.equal((await post("/app/api/login/email", { email: "justine@example.com" })).status, 200);
+  assert.equal((await post("/app/api/login/email", { email: "justine@example.com" })).status, 429);
 });
 
 console.log(`\n${ok} étapes OK`);
