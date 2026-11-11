@@ -131,12 +131,17 @@ def is_pure_language_note(note: Optional[str]) -> bool:
     """
     if not note:
         return True
+    note = re.sub(r"no language (?:needed|required)(?:\s*\([^)]*\))?", " ", note, flags=re.I)
     rest = re.sub(rf"{_ONE}|surtitles?|(?:ü|ue)bertiteln?|sprache|language", " ", note, flags=re.I)
     rest = re.sub(r"\b(?:in|with|and|und|mit|auf|the|or|oder)\b|[^\w]", " ", rest, flags=re.I)
     return not rest.strip()
 
 
 _WORDLESS = re.compile(r"no spoken (?:word|language)|without words|ohne (?:worte|sprache)", re.I)
+# Cirque contemporain (Chamäleon) : « No language needed (circus) ». Pas de
+# surtitres à annoncer : il n'y a (presque) rien à comprendre.
+_NO_LANGUAGE = re.compile(r"no language (?:needed|required)|keine sprachkenntnisse", re.I)
+NO_LANGUAGE_FR = "Aucune langue requise"
 
 
 def detect(
@@ -153,6 +158,8 @@ def detect(
     # Danse / théâtre visuel sans texte (Berliner Festspiele : « No spoken word »).
     if _WORDLESS.search(note):
         return "Sans texte", None
+    if _NO_LANGUAGE.search(note):
+        return NO_LANGUAGE_FR + (" (cirque)" if re.search(r"circus|zirkus|cirque", note, re.I) else ""), None
     detail = _context(page_text or "")
     haystack = f"{note} | {detail}"
 
@@ -234,6 +241,8 @@ def to_english_labels(spoken: Optional[str], surtitles: Optional[str]) -> Tuple[
     if spoken:
         if spoken == "Sans texte":
             en_spoken = "No spoken word"
+        elif spoken.startswith(NO_LANGUAGE_FR):
+            en_spoken = "No language needed" + (" (circus)" if spoken.endswith("(cirque)") else "")
         elif spoken == "Multilingue":
             en_spoken = "Multilingual"
         elif spoken.startswith("En "):

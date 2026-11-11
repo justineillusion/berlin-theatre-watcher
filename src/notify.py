@@ -157,7 +157,7 @@ def press_line(show: Show, lang: str = "fr") -> str:
 
 _CREDIT_NOISE = re.compile(
     r"\s*(World Premiere|Uraufführung|Premiere|With English surtitles|Mit englischen Übertiteln|"
-    r"PLATZ ?FR ?E ?I|Eine Aktion|Stage [A-Z]\b|Tickets?|Dauer|Duration).*$", re.I)
+    r"PLATZ ?FR ?E ?I|Eine Aktion|Stage [A-Z]\b|Tickets?|Dauer|Duration|No language needed).*$", re.I)
 
 
 def clean_credits(text: str) -> str:
