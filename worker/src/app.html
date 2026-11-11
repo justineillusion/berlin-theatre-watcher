@@ -757,8 +757,8 @@ function mineSections(xs) {
         [T.later, coming.filter((x) => x.me.booked.slice(0, 10) >= week)]])
       if (g.length) h += `<div class="msub">${esc(l)}</div>` + g.map(row).join("");
   }
-  if (toRate.length) h += dayHead(`★ ${T.toRate} · ${toRate.length}`) + toRate.map((x) => row(x) + (st.open === x.id ? "" : qrate(x))).join("");
   if (wish.length) h += dayHead(`🙋 ${T.wish} · ${wish.length}`) + wish.map(row).join("");
+  if (toRate.length) h += dayHead(`★ ${T.toRate} · ${toRate.length}`) + toRate.map((x) => row(x) + (st.open === x.id ? "" : qrate(x))).join("");
   if (seen.length) h += `<details class="mseen"${st.seenOpen ? " open" : ""}><summary>✅ ${esc(T.done)} · ${seen.length}</summary>${seen.map(row).join("")}</details>`;
   return h;
 }
