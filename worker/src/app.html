@@ -496,7 +496,6 @@ async function showLogin() {
   const lang = `<div class="lpick">${["fr", "en"].map((c) => `<button class="${T === L[c] ? "on" : ""}" data-loginlang="${c}">${c.toUpperCase()}</button>`).join("")}</div>`;
   const hero = `<section class="hero">${lang}<div class="wm"><small>Berlin</small><b>Encore<i>!</i></b></div>
     <p class="tag">${esc(T.tagline)}</p></section>`;
-  const pitch = `<ul class="what">${T.what.map(([i, w]) => `<li>${esc(w).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")}</li>`).join("")}</ul>`;
   const signup = (INVITE && inviter) || login.step === "new";
   const known = !!(lsGet("known") || lsGet("pk"));   // cet appareil s'est déjà connecté
 
@@ -521,7 +520,7 @@ async function showLogin() {
   if (PK_OK && lsGet("pk") && !signup && loginCfg.email && (login.useEmail || login.step === "code")) form += `<button class="lnk" data-usepk="1">${esc(T.pkBack)}</button>`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
   document.body.classList.add("landing");
-  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div>${pitch}${ios}<p class="sign">Berlin Encore! · ${esc(T.madeIn)}</p></div>`;
+  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div>${ios}</div>`;
   setTimeout(() => ($("lcode") || (signup ? $("lname") : null))?.focus(), 0);
   // Face ID dans les suggestions du clavier (champ email), sans 2e bouton : iOS 16+, Chrome, Android.
   if (PK_OK && $("lemail") && !signup && window.PublicKeyCredential.isConditionalMediationAvailable)
