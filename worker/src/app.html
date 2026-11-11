@@ -235,7 +235,8 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .lform .act{box-shadow:none!important;border-radius:0;font:800 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:15px 14px}
 .lform .act:not(.on){border:0;background:none;padding:4px;color:var(--muted);letter-spacing:.06em}
 .lform .hint{margin:0}
-.lform .pkor{text-align:center;margin:-6px 0 0}
+.lform .pkhi{margin:-8px 0 0;color:var(--muted);font-size:15px}
+.lform .lnk{border:0;background:none;padding:2px 0;justify-self:center;font:600 14px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
 .what{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .what li{display:flex;gap:12px;align-items:baseline;font:500 15px/1.35 var(--sans);color:var(--ink)}
@@ -284,7 +285,7 @@ if (tgApp) {
 }
 
 const L = {
-  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pushT:"Notifications sur ce téléphone", pushOn:"Activées ✓ : un ami t'envoie une sortie, réserve pour toi ou t'ajoute → tu es prévenu·e.", pushOff:"Sois prévenu·e quand un ami t'envoie une sortie ou réserve pour toi. Chiffré de bout en bout ; désactivable quand tu veux.", pushIos:"Sur iPhone : ajoute d'abord l'app à l'écran d'accueil (Partager → « Sur l'écran d'accueil »), puis ouvre-la de là.", pushYes:"Activer", pushNo:"Désactiver", pushTest:"M'envoyer un test", pushDenied:"Notifications bloquées : réautorise-les dans les réglages du téléphone.", pushSent:"Test envoyé ✓", pushOfferT:"Être prévenu·e sur ton téléphone ?", pushOfferP:"Quand un ami t'envoie une sortie ou réserve pour toi.", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas encore activé. Ton visage ou ton doigt restent sur ton appareil : l'app ne garde qu'une clé publique.", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Commence par choisir tes lieux : théâtres, cinés, expos, opéras. Le programme se règle dessus.", onbGo:"Choisir mes lieux", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
+  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pushT:"Notifications sur ce téléphone", pushOn:"Activées ✓ : un ami t'envoie une sortie, réserve pour toi ou t'ajoute → tu es prévenu·e.", pushOff:"Sois prévenu·e quand un ami t'envoie une sortie ou réserve pour toi. Chiffré de bout en bout ; désactivable quand tu veux.", pushIos:"Sur iPhone : ajoute d'abord l'app à l'écran d'accueil (Partager → « Sur l'écran d'accueil »), puis ouvre-la de là.", pushYes:"Activer", pushNo:"Désactiver", pushTest:"M'envoyer un test", pushDenied:"Notifications bloquées : réautorise-les dans les réglages du téléphone.", pushSent:"Test envoyé ✓", pushOfferT:"Être prévenu·e sur ton téléphone ?", pushOfferP:"Quand un ami t'envoie une sortie ou réserve pour toi.", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkUseEmail:"Utiliser mon email plutôt", pkWelcome:"Content de te revoir.", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas encore activé. Ton visage ou ton doigt restent sur ton appareil : l'app ne garde qu'une clé publique.", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Commence par choisir tes lieux : théâtres, cinés, expos, opéras. Le programme se règle dessus.", onbGo:"Choisir mes lieux", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
         week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
         star:"🙋 Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
         booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : 🙋 ce qui te tente.",
@@ -308,7 +309,7 @@ const L = {
         ignoreReq:"Ignorer", now:"à l'instant", minAgo:(m) => `il y a ${m} min`, hAgo:(h) => `il y a ${h} h`, dAgo:(d) => `il y a ${d} j`,
         fbVenueT:"Un lieu manque ?", fbVenuePh:"Son nom, et le lien si tu l'as", fbT:"Une idée, un souci ?", fbPh:"Dis-moi tout", fbSend:"Envoyer", fbThanks:"Merci, c'est transmis.", photoT:"Ma photo", photoHint:"Remplace ton prénom chez tes amis.", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
-  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pushT:"Notifications on this phone", pushOn:"On ✓: when a friend sends you an outing, books for you or adds you, you'll know.", pushOff:"Get notified when a friend sends you an outing or books for you. End-to-end encrypted; turn off any time.", pushIos:"On iPhone: first add the app to your home screen (Share → “Add to Home Screen”), then open it from there.", pushYes:"Turn on", pushNo:"Turn off", pushTest:"Send me a test", pushDenied:"Notifications are blocked: allow them again in your phone settings.", pushSent:"Test sent ✓", pushOfferT:"Get notified on your phone?", pushOfferP:"When a friend sends you an outing or books for you.", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Not on yet. Your face or finger stays on your device: the app only keeps a public key.", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"Start by picking your venues: theatres, cinemas, galleries, operas. The programme follows your picks.", onbGo:"Pick my venues", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
+  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pushT:"Notifications on this phone", pushOn:"On ✓: when a friend sends you an outing, books for you or adds you, you'll know.", pushOff:"Get notified when a friend sends you an outing or books for you. End-to-end encrypted; turn off any time.", pushIos:"On iPhone: first add the app to your home screen (Share → “Add to Home Screen”), then open it from there.", pushYes:"Turn on", pushNo:"Turn off", pushTest:"Send me a test", pushDenied:"Notifications are blocked: allow them again in your phone settings.", pushSent:"Test sent ✓", pushOfferT:"Get notified on your phone?", pushOfferP:"When a friend sends you an outing or books for you.", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkUseEmail:"Use my email instead", pkWelcome:"Good to see you again.", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Not on yet. Your face or finger stays on your device: the app only keeps a public key.", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"Start by picking your venues: theatres, cinemas, galleries, operas. The programme follows your picks.", onbGo:"Pick my venues", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"🙋 Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to", calOther:"iPhone / Outlook",
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: 🙋 what tempts you.",
@@ -447,9 +448,12 @@ async function pkRegister() {
   await api("passkey/register/verify", { id, response: credJSON(c), device: deviceName() });
   lsSet("pk", "1"); st.pks = null;
 }
-async function pkLogin() {
+let pkAbort = null;
+async function pkLogin(conditional = false) {
+  pkAbort?.abort(); pkAbort = new AbortController();
   const { id, options: o } = await api("passkey/login/options");
-  const c = await navigator.credentials.get({ publicKey: { ...o, challenge: b64u.dec(o.challenge), allowCredentials: [] } });
+  const c = await navigator.credentials.get({ publicKey: { ...o, challenge: b64u.dec(o.challenge), allowCredentials: [] },
+    signal: pkAbort.signal, ...(conditional ? { mediation: "conditional" } : {}) });
   const j = await api("passkey/login/verify", { id, response: credJSON(c) });
   lsSet("pk", "1"); signedIn(j.token);
 }
@@ -497,15 +501,20 @@ async function showLogin() {
        <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">
        <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
        <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>` + (inviter ? "" : `<button class="act" data-loginback="1">${esc(T.haveAccount)}</button>`);
-  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.haveAccount)}</b>${
-       PK_OK && lsGet("pk") ? `<button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button><p class="hint pkor">${esc(T.pkOr)}</p>` : ""}
-       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  else if (PK_OK && lsGet("pk") && !login.useEmail) form = `<b class="ftitle">${esc(T.haveAccount)}</b><p class="pkhi">${esc(T.pkWelcome)}</p>
+       <button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button>
+       <button class="lnk" data-useemail="1">${esc(T.pkUseEmail)}</button>`;
+  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.haveAccount)}</b>
+       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email webauthn" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
        <button class="act on" data-loginemail="1">${esc(T.sendCode)}</button>
-       <p class="hint">${esc(T.noAccount)}</p>${PK_OK && !lsGet("pk") ? `<button class="act" data-pklogin="1">${esc(T.pkLogin)}</button>` : ""}`;
+       <p class="hint">${esc(T.noAccount)}</p>`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
   document.body.classList.add("landing");
   $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div>${bill}${pitch}${ios}<p class="sign">Berlin Encore! · ${esc(T.madeIn)}</p></div>`;
   setTimeout(() => ($("lcode") || (signup ? $("lname") : null))?.focus(), 0);
+  // Face ID dans les suggestions du clavier (champ email), sans 2e bouton : iOS 16+, Chrome, Android.
+  if (PK_OK && $("lemail") && !signup && window.PublicKeyCredential.isConditionalMediationAvailable)
+    PublicKeyCredential.isConditionalMediationAvailable().then((ok) => ok && pkLogin(true).catch(() => {}), () => {});
 }
 async function loginEmail() {
   login.email = ($("lemail")?.value || "").trim(); login.err = "";
@@ -1083,9 +1092,10 @@ document.addEventListener("click", (e) => {
     (pu.dataset.pushoff ? pushOff() : pushOn()).then(() => render(), (err) => { lsSet("pushAsked", "1"); notify(err?.name === "Denied" ? T.pushDenied : T.error); render(); });
     return;
   }
-  const pk = e.target.closest("[data-pklogin], [data-pkadd], [data-pkdel], [data-pklater]");
+  const pk = e.target.closest("[data-pklogin], [data-pkadd], [data-pkdel], [data-pklater], [data-useemail]");
   if (pk) {
     e.preventDefault(); e.stopPropagation();
+    if (pk.dataset.useemail) { login.useEmail = true; return void showLogin(); }
     if (pk.dataset.pklater) { lsSet("pkLater", "1"); st.pkOffer = false; return void render(); }
     if (pk.dataset.pkdel) { api("passkey/remove", { id: pk.dataset.pkdel }).then((j) => { st.pks = j.passkeys || []; render(); }, () => {}); return; }
     if (pk.dataset.pklogin) { pkLogin().catch((err) => { if (err?.name !== "NotAllowedError") { login.err = T.pkFail; showLogin(); } }); return; }
