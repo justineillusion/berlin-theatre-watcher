@@ -43,6 +43,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 
 .tab{border:0;border-right:2px solid var(--ink);background:var(--bg);padding:10px 4px;font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);border-radius:0}
 .tab:last-child{border-right:0}
+.tabav{width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:-6px;margin-right:7px;background:#fff;box-shadow:0 0 0 1.5px currentColor}
 .tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
 .filters{display:flex;gap:6px;overflow-x:auto;padding:8px 12px 0;margin:0 -12px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
@@ -983,7 +984,7 @@ function render() {
   const reqs = S ? (S.circle?.incoming || []).length : 0;
   document.querySelectorAll(".tab").forEach((b, i) => {
     const n = b.dataset.tab === "mine" ? unread : b.dataset.tab === "set" ? reqs : 0;
-    b.innerHTML = esc(T.tabs[i]) + (n ? `<i class="tabn">${n > 9 ? "9+" : n}</i>` : "");
+    b.innerHTML = (b.dataset.tab === "set" && S?.photo ? `<img class="tabav" src="${S.photo}" alt="">` : "") + esc(T.tabs[i]) + (n ? `<i class="tabn">${n > 9 ? "9+" : n}</i>` : "");
     b.setAttribute("aria-selected", b.dataset.tab === st.tab);
   });
   const K = $("kinds"), W = $("whens"), list = $("list");
