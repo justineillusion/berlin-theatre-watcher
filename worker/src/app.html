@@ -334,7 +334,7 @@ if (FOCUS) st.open = FOCUS;
 st.setArea = "";
 try { localStorage.removeItem("areas"); } catch {}
 st.hideSold = true;   // complets masqués par défaut ; « Voir les complets » les montre, grisés
-try { st.hideSold = localStorage.getItem("showSold") !== "1"; st.hideDismissed = localStorage.getItem("hideDismissed") === "1"; } catch {}
+try { st.hideDismissed = localStorage.getItem("hideDismissed") === "1"; } catch {}
 const ICON = { theatre:"🎭", expo:"🏛", film:"🎬", music:"🎻" };
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
@@ -945,25 +945,27 @@ function render() {
     for (const x of shows) { const d = dayLabel(next(x)); if (d !== cur) { h += dayHead(d); cur = d; } h += item(x); }
     if (expos.length) h += dayHead(T.expos, T.exposNote) + exposByVenue(expos);
     // « Voir les complets » : les pièces sans séance libre dans la période, à leur 1re date complète, grisées, en bas.
-    if (!st.hideSold) {
+    let soldHtml = "", soldCount = 0;
+    {
       const inWin = (d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when];
       const shown = new Set([...shows, ...(focused ? [focused] : [])].map((x) => x.id));
       const soldRows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind)
           && !["seen", "ignored"].includes(state(x)) && !shown.has(x.id))
         .map((x) => ({ x, d: (x.sold || []).filter(inWin).sort()[0] })).filter((r) => r.d)
         .sort((a, b) => a.d.localeCompare(b.d));
-      if (soldRows.length) {
-        h += `<div class="day dim">${esc(T.soldN(soldRows.length))}</div>`;
-        st.dateCell = true; h += soldRows.map((r) => item({ ...r.x, _at: r.d })).join(""); st.dateCell = false;
-      }
+      soldCount = soldRows.length;
+      if (st.hideSold) {}
+      else if (soldRows.length) {
+        st.dateCell = true; soldHtml = `<div id="soldlist">${soldRows.map((r) => item({ ...r.x, _at: r.d })).join("")}</div>`; st.dateCell = false;
+      } else soldHtml = `<p class="hint" id="soldlist" style="text-align:center">${esc(T.empty)}</p>`;
     }
     if (dismissed.length) {
       // Affichés par défaut, grisés, à la fin ; « Masquer » les replie (mémorisé).
       h += `<div class="day dim">${esc(T.notForMeN(dismissed.length))}<button class="fold" data-dismissed="1">${esc(st.hideDismissed ? T.showD : T.hideD)}</button></div>`;
       if (!st.hideDismissed) { st.dateCell = true; h += `<div class="dismissed">${dismissed.map(item).join("")}</div>`; st.dateCell = false; }
     }
-    const soldBtn = st.kind !== "expo" ? `<div class="soldfoot"><button class="chip" data-hidesold="1" aria-pressed="${!st.hideSold}">${esc(st.hideSold ? T.hideSold : T.hideSoldOff)}</button></div>` : "";
-    list.innerHTML = (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + whyNote();
+    const soldBtn = st.kind !== "expo" && soldCount ? `<div class="soldfoot"><button class="chip" data-hidesold="1" aria-pressed="${!st.hideSold}">${esc(st.hideSold ? T.hideSold : T.hideSoldOff)} · ${soldCount}</button></div>` : "";
+    list.innerHTML = (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + soldHtml + whyNote();
   } else {
     for (const [k, l] of [["booked", T.booked], ["star", T.wish], ["seen", T.done]]) {
       let g = xs.filter((x) => state(x) === k);
@@ -1012,7 +1014,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.kind) st.kind = t.dataset.kind;
   else if (t.dataset.area !== undefined) st.setArea = t.dataset.area;
   else if (t.dataset.sk) return void act("sk", t.dataset.sk, t.dataset.arg, { body: { area: st.setArea } });
-  else if (t.dataset.hidesold) { st.hideSold = !st.hideSold; try { localStorage.setItem("showSold", st.hideSold ? "" : "1"); } catch {} }
+  else if (t.dataset.hidesold) { st.hideSold = !st.hideSold; if (!st.hideSold) setTimeout(() => document.querySelector(".soldfoot")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }
   else if (t.dataset.when) st.when = t.dataset.when;
   else if (t.dataset.pick) { st.picking = st.picking === t.dataset.pick ? null : t.dataset.pick; st.sharing = null; st.withs.clear(); }
   else if (t.dataset.sharing) { st.sharing = st.sharing === t.dataset.sharing ? null : t.dataset.sharing; st.picking = null; st.sel.clear(); }
