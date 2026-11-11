@@ -349,15 +349,22 @@ const TODAY = berlin(), TOMORROW = berlin(new Date(Date.now() + 864e5));
 const plus = (n) => berlin(new Date(Date.now() + n * 864e5));
 // « Ce mois » = le mois du calendrier (jusqu'au 30 novembre, pas 31 jours glissants).
 const MONTH_END = (([y, m]) => m === 12 ? `${y + 1}-01-01` : `${y}-${String(m + 1).padStart(2, "0")}-01`)(TODAY.split("-").map(Number));
-const LIMIT = { week: plus(7), month: MONTH_END, all: "9999" };
+const nextMonth = (d) => (([y, m]) => m === 12 ? `${y + 1}-01-01` : `${y}-${String(m + 1).padStart(2, "0")}-01`)(d.split("-").map(Number));
+const M2 = nextMonth(MONTH_END), M3 = nextMonth(M2);
+// Fenêtres de dates : [FROM, LIMIT). m1 / m2 = les deux mois calendaires suivants (ex. décembre, janvier).
+const LIMIT = { week: plus(7), month: MONTH_END, m1: M2, m2: M3, all: "9999" };
+const FROM_ = { m1: MONTH_END, m2: M2 };
+const FROM = () => (st.tab === "prog" && FROM_[st.when]) || TODAY;
+const monthName = (d) => cap(new Intl.DateTimeFormat(T === L.en ? "en-GB" : "fr-FR", { month: "long", timeZone: "UTC" }).format(new Date(d + "T12:00:00Z")));
 
 function next(x) {
   if (x._at) return x._at;   // ligne « Complets » : la séance complète affichée
-  if (x.kind === "expo") return x.start && x.start > TODAY ? x.start : TODAY;
+  const from = FROM();
+  if (x.kind === "expo") return x.end && x.end.slice(0, 10) < from ? null : x.start && x.start > from ? x.start : from;
   // Réservé : la séance réservée, pas la prochaine date de la pièce.
-  if (x.me && x.me.booked && x.me.booked.slice(0, 10) >= TODAY) return x.me.booked;
+  if (x.me && x.me.booked && x.me.booked.slice(0, 10) >= from) return x.me.booked;
   // Programme : seulement les séances encore libres ; les complètes vont dans « Complets », en bas.
-  return (x.dates || []).slice().sort().find((d) => d.slice(0, 10) >= TODAY) || null;
+  return (x.dates || []).slice().sort().find((d) => d.slice(0, 10) >= from) || null;
 }
 /** Cette séance est complète (et ce n'est pas la mienne). */
 const isSold = (x, d) => !!d && (x.sold || []).includes(d) && !(x.me && x.me.booked === d);
@@ -677,7 +684,7 @@ function gcal(x, at) {
 }
 function moreDates(x) {
   if (st.tab !== "prog" || x.kind === "expo" || x._at || st.dateCell) return "";
-  const n = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when] && !isSold(x, d)).length - 1;
+  const n = (x.dates || []).filter((d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when] && !isSold(x, d)).length - 1;
   return n > 0 ? ` · <span class="more">${esc(T.moreDates(n))}</span>` : "";
 }
 function item(x) {
@@ -936,10 +943,10 @@ const dayHead = (label, note = "") => { const [a, b] = String(label).split(" · 
 function whyNote() {
   if (st.kind === "expo") return "";
   const shows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind));
-  const inWin = (x) => (x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when]);
+  const inWin = (x) => (x.dates || []).some((d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when]);
   const n = (k) => shows.filter((x) => inWin(x) && state(x) === k).length;
-  const soldHidden = st.hideSold ? shows.filter((x) => !["seen", "ignored"].includes(state(x)) && !(x.dates || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])
-    && (x.sold || []).some((d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when])).length : 0;
+  const soldHidden = st.hideSold ? shows.filter((x) => !["seen", "ignored"].includes(state(x)) && !(x.dates || []).some((d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when])
+    && (x.sold || []).some((d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when])).length : 0;
   const later = shows.filter((x) => ["booked", "star"].includes(state(x)) && next(x) && next(x).slice(0, 10) >= LIMIT[st.when]).length;
   const bits = [[st.hideDismissed ? n("ignored") : 0, T.whyIgnored], [n("seen"), T.whySeen], [later, T.whyLater], [soldHidden, T.whySold]].filter(([c]) => c).map(([c, f]) => f(c));
   const lines = [];
@@ -957,7 +964,7 @@ function readHash() {
   st.tab = tab;
   if (tab === "set" && ["venues", "friends", "account", "admin"].includes(a)) st.setTab = a;
   if (tab !== "set" && ["all", "theatre", "music", "film", "expo"].includes(a)) st.kind = a;
-  if (tab === "prog" && ["week", "month", "all"].includes(b)) st.when = b;
+  if (tab === "prog" && ["week", "month", "m1", "m2", "all"].includes(b)) st.when = b;
 }
 function writeHash() {
   const lg = T === L.en ? "en" : "fr", q = new URLSearchParams(location.search);
@@ -1016,7 +1023,7 @@ function render() {
   if (st.kind !== "all" && !followedKinds.has(st.kind)) st.kind = "all";
   K.hidden = kindChips.length < 2;
   chips(K, kindChips.length < 2 ? [] : [["all", T.all], ...kindChips], "kind");
-  chips(W, [["week", T.week], ["month", T.month], ["all", T.any]], "when");
+  chips(W, [["week", T.week], ["month", T.month], ["m1", monthName(MONTH_END)], ["m2", monthName(M2)], ["all", T.any]], "when");
 
   let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
   let h = "";
@@ -1036,7 +1043,7 @@ function render() {
     // « Voir les complets » : les pièces sans séance libre dans la période, à leur 1re date complète, grisées, en bas.
     let soldHtml = "", soldCount = 0;
     {
-      const inWin = (d) => d.slice(0, 10) >= TODAY && d.slice(0, 10) < LIMIT[st.when];
+      const inWin = (d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when];
       const shown = new Set([...shows, ...(focused ? [focused] : [])].map((x) => x.id));
       const soldRows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind)
           && !["seen", "ignored"].includes(state(x)) && !shown.has(x.id))
