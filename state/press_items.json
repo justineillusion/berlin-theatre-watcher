@@ -376,6 +376,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Chamäleon Berlin",
+  "title": "Kintsugi",
+  "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
+  "opens": "2026-11-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "WorldKlezmer, Hora and love songs with She’Koyokh and Çiğdem Aslan",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57055/",
@@ -819,6 +827,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Chamäleon Berlin",
+  "title": "New Year’s Eve at Chamäleon",
+  "url": "https://chamaeleonberlin.com/en/shows/new-years-eve-at-chamaeleon-berlin/",
+  "opens": "2026-12-31",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Berliner Philharmoniker EnsemblesWind chamber music by Beethoven, Schreck and Enescu",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57082/",
@@ -938,6 +954,14 @@
   "title": "WorldLast Breaths from Aleppo",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57100/",
   "opens": "2027-01-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Chamäleon Berlin",
+  "title": "North of Now",
+  "url": "https://chamaeleonberlin.com/en/shows/north-of-now-berlin/",
+  "opens": "2027-01-26",
   "aliases": []
  },
  {
@@ -1450,6 +1474,14 @@
   "title": "Berliner Philharmoniker Ensembles",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57167/",
   "opens": "2027-05-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Chamäleon Berlin",
+  "title": "Ten Thousand Hours",
+  "url": "https://chamaeleonberlin.com/en/shows/ten-thousand-hours/",
+  "opens": "2027-05-20",
   "aliases": []
  },
  {
