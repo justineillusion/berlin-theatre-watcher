@@ -272,6 +272,20 @@ def _philharmonie(soup: BeautifulSoup) -> Optional[str]:
     return _paragraphs(body or [p for p in sec.find_all("p") if not p.get("class")])
 
 
+def _chamaeleon(soup: BeautifulSoup) -> Optional[str]:
+    """WordPress : le texte du spectacle est le 1er bloc « .Module.Text » après
+    l'ancre « info » ; il finit par « Age recommendation: … Language: none »,
+    où _paragraphs s'arrête (un paragraphe-étiquette n'est pas un résumé)."""
+    anchor = soup.select_one('span.Anchor[data-id="info"]')
+    module = anchor.find_next(class_="Text__item") if anchor else soup.select_one(".Module.Text .Text__item")
+    if not module:
+        return None
+    paras = [p for p in module.find_all("p")
+             if not re.match(r"\s*(?:age recommendation|altersempfehlung|language|sprache|duration|dauer|content note)",
+                             p.get_text(" ", strip=True), re.I)]
+    return _paragraphs(paras, 300)
+
+
 def _generic(soup: BeautifulSoup) -> Optional[str]:
     for attrs in ({"property": "og:description"}, {"name": "description"}):
         meta = soup.find("meta", attrs=attrs)
@@ -291,6 +305,7 @@ _EXTRACTORS = {
     "Deutsche Oper Berlin": _deutsche_oper,
     "Komische Oper Berlin": _komische_oper,
     "Berliner Philharmoniker": _philharmonie,
+    "Chamäleon Berlin": _chamaeleon,
 }
 
 

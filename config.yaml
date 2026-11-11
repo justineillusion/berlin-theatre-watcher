@@ -104,6 +104,12 @@ theaters:
     parser: hau
     url: https://www.hebbel-am-ufer.de/en/programme/schedule-tickets/
 
+  # Cirque contemporain (Hackesche Höfe, Mitte) : sans barrière de langue, donc
+  # toutes les dates comptent (sauf pièce annoncée en allemand), voir parsers/chamaeleon.py
+  - name: Chamäleon Berlin
+    parser: chamaeleon
+    url: https://chamaeleonberlin.com/en/schedule/
+
   # Next.js : on passe par le sitemap de chaque festival (voir parsers/festspiele.py)
   # Un seul lieu pour tous les programmes théâtre des Festspiele (un sitemap par programme).
   - name: Berliner Festspiele
