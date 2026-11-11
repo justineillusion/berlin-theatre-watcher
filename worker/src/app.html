@@ -49,7 +49,11 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .chip{flex:none;border:1.5px solid var(--ink);background:var(--bg);font:700 12px var(--sans);letter-spacing:.03em;text-transform:uppercase;padding:6px 8px;border-radius:0;white-space:nowrap}
 /* Types : 4 cases égales sur toute la largeur, tout tient sur un téléphone. */
 #kinds{gap:6px;overflow:visible}
-#kinds .chip{flex:1 1 auto;text-align:center}
+#kinds .chip{flex:1 1 auto;text-align:center;border:0;background:none;box-shadow:none;border-radius:0;color:var(--muted);border-bottom:2px solid transparent;padding:9px 2px 7px}
+#kinds .chip[aria-pressed="true"]{background:none;color:var(--ink);border-bottom-color:var(--velvet);box-shadow:none}
+.onb{margin:14px 16px 4px;padding:14px 16px;border-left:3px solid var(--velvet);background:var(--card);font-size:14.5px;line-height:1.4;display:flex;gap:10px;align-items:flex-start}
+.onb div{flex:1}.onb b{display:block;margin-bottom:2px}.onb .go{margin-top:8px;border:0;background:none;padding:0;font:800 13px var(--sans);color:var(--velvet);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.onb .x{border:0;background:none;font-size:16px;color:var(--muted);cursor:pointer;padding:0 2px}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 /* Temporel : du texte, pas des boîtes ; le choix actif est souligné. */
 #whens{gap:18px;padding-top:10px}
@@ -279,7 +283,7 @@ if (tgApp) {
 }
 
 const L = {
-  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
+  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", onbT:"Bienvenue !", onbP:"Commence par choisir tes lieux : théâtres, cinés, expos, opéras. Le programme se règle dessus.", onbGo:"Choisir mes lieux", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
         week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
         star:"🙋 Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
         booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : 🙋 ce qui te tente.",
@@ -303,7 +307,7 @@ const L = {
         ignoreReq:"Ignorer", now:"à l'instant", minAgo:(m) => `il y a ${m} min`, hAgo:(h) => `il y a ${h} h`, dAgo:(d) => `il y a ${d} j`,
         fbVenueT:"Un lieu manque ?", fbVenuePh:"Son nom, et le lien si tu l'as", fbT:"Une idée, un souci ?", fbPh:"Dis-moi tout", fbSend:"Envoyer", fbThanks:"Merci, c'est transmis.", photoT:"Ma photo", photoHint:"Remplace ton prénom chez tes amis.", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
-  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
+  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", onbT:"Welcome!", onbP:"Start by picking your venues: theatres, cinemas, galleries, operas. The programme follows your picks.", onbGo:"Pick my venues", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"🙋 Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to", calOther:"iPhone / Outlook",
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: 🙋 what tempts you.",
@@ -379,7 +383,8 @@ function facts(x) {
   const credits = x.kind === "film" ? ((lines[0] || "").match(/\(([^)]*\d{4}[^)]*)\)\s*$/) || [])[1] || "" : "";
   const rating = lines.find((l) => /^★\s*\d/.test(l)) || "";
   const ratingUrl = ((x.text || "").match(/<a href="(https?:[^"]+)"[^>]*>\s*★\s*\d[^<]*<\/a>/) || [])[1] || "";
-  return { ratingUrl, meta: [...(credits ? ["🎬 " + credits] : []), ...pick("📍"), ...pick("✍️"), ...pick("🗣"), ...pick("📰")],
+  const nkUrl = ((x.text || "").match(/<a href="(https?:[^"]+)"[^>]*>\s*Nachtkritik/) || [])[1] || "";
+  return { ratingUrl, nkUrl, meta: [...(credits ? ["🎬 " + credits] : []), ...pick("📍"), ...pick("✍️"), ...pick("🗣"), ...pick("📰")],
            rating, syn: pick("📝").map((l) => l.replace(/^📝\s*/, "")).join(" ").slice(0, 420) };
 }
 
@@ -644,7 +649,9 @@ function item(x) {
   if (me.booked && s !== "seen") h += `<div>🎟 ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}` +
     (me.booked.length >= 16 && me.booked.slice(0, 10) >= TODAY ? ` · <span class="calrow">${esc(T.addCal)} <a class="cal" href="${gcal(x, me.booked)}" data-link="1" target="_blank" rel="noopener">Google</a> · <a class="cal" href="${API_BASE || location.origin}/app/cal/${x.id}.ics?at=${me.booked.replace(/\D/g, "").slice(0, 12)}" data-link="1" target="_blank" rel="noopener">${esc(T.calOther)}</a></span>` : "") + `</div>`;
   if (f.rating) h += `<div>${scTag(f)}</div>`;
-  h += f.meta.map((l) => `<div class="m">${esc(l)}</div>`).join("");
+  // 📰 Nachtkritik ★★★½☆ : la note mène à la critique.
+  const nkLink = (l) => { const m = l.match(/^(📰\s*)(Nachtkritik [★½☆]+)(.*)$/); return f.nkUrl && m ? `${esc(m[1])}<b class="sc link" data-href="${esc(f.nkUrl)}">${esc(m[2])} ↗</b>${esc(m[3])}` : esc(l); };
+  h += f.meta.map((l) => `<div class="m">${nkLink(l)}</div>`).join("");
   if (f.syn) h += `<div class="syn">${esc(f.syn)}${f.syn.length >= 420 ? "…" : ""}</div>`;
   const people = S.people || [];
   if (st.sent && st.sent.id === x.id && st.sent.names.length) h += `<div class="sent">✓ ${esc(T.sentTo)} ${esc(st.sent.names.join(", "))}</div>`;
@@ -965,7 +972,10 @@ function render() {
       if (!st.hideDismissed) { st.dateCell = true; h += `<div class="dismissed">${dismissed.map(item).join("")}</div>`; st.dateCell = false; }
     }
     const soldBtn = st.kind !== "expo" && soldCount ? `<div class="soldfoot"><button class="chip" data-hidesold="1" aria-pressed="${!st.hideSold}">${esc(st.hideSold ? T.hideSold : T.hideSoldOff)} · ${soldCount}</button></div>` : "";
-    list.innerHTML = (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + soldHtml + whyNote();
+    // 1re visite : choisir ses lieux d'abord (disparaît après un passage dans Lieux, une réaction, ou ✕).
+    let onb = false; try { onb = !localStorage.getItem("onbDone") && !S.items.some((x) => x.me && (x.me.star || x.me.booked || x.me.status)); } catch {}
+    const onbHtml = onb ? `<div class="onb"><div><b>${esc(T.onbT)}</b>${esc(T.onbP)}<br><button class="go" data-onbgo="1">${esc(T.onbGo)} ›</button></div><button class="x" data-onbx="1" aria-label="OK">✕</button></div>` : "";
+    list.innerHTML = onbHtml + (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + soldHtml + whyNote();
   } else {
     for (const [k, l] of [["booked", T.booked], ["star", T.wish], ["seen", T.done]]) {
       let g = xs.filter((x) => state(x) === k);
@@ -1032,6 +1042,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.copyinvite) { navigator.clipboard?.writeText(S.invite || "").then(() => notify(T.copied), () => {}); return; }
   else if (t.dataset.friendview) { return void openFriend(+t.dataset.friendview); }
   else if (t.dataset.friendback) { st.friend = null; st.open = null; }
+  else if (t.dataset.onbgo || t.dataset.onbx) { try { localStorage.setItem("onbDone", "1"); } catch {} if (t.dataset.onbgo) { st.tab = "set"; st.setTab = "venues"; st.friend = null; window.scrollTo?.(0, 0); } }
   else if (t.dataset.settab) { st.friend = null; st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
   else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; document.documentElement.lang = t.dataset.loginlang; writeHash(); return void showLogin(); }
   else if (t.dataset.signup) { return void signup(); }

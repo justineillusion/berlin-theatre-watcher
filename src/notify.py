@@ -132,7 +132,7 @@ def _aliases(show: Show) -> List[str]:
 
 def press_line(show: Show, lang: str = "fr") -> str:
     """Ligne 📰 unique : uniquement ce qui informe vraiment.
-    - Nachtkritik (note + nb de critiques), sans lien ;
+    - Nachtkritik (note + nb de critiques), la note en lien vers la critique ;
     - buzz presse seulement s'il y a un avis tranché (👍/😐/👎/🔥).
     Rien sinon : pas de « pas encore de critiques » / « pas encore ouvert »,
     qui prennent de la place pour rien (et la 1re date réservable n'est pas
@@ -141,16 +141,18 @@ def press_line(show: Show, lang: str = "fr") -> str:
     if show.critics:
         n = show.critics.count
         rev = (f"{n} review{'s' if n > 1 else ''}" if lang == "en" else f"{n} critique{'s' if n > 1 else ''}")
-        parts.append(f"Nachtkritik {show.critics.star_bar()} ({rev})")
+        nk = f"Nachtkritik {show.critics.star_bar()}"
+        url = getattr(show.critics, "url", "") or ""
+        parts.append((f'<a href="{html.escape(url)}">{_esc(nk)}</a>' if url else _esc(nk)) + _esc(f" ({rev})"))
     try:
         from .press import press_for, format_buzz
         venue = (show.venue_name or show.theater) if show.kind == "expo" else show.theater
         b = press_for(show.kind, venue, show.title, show.url or "", opens=None, aliases=_aliases(show))
         if b.get("status") == "verdict":
-            parts.append(format_buzz(b, lang).removeprefix("📰 "))
+            parts.append(_esc(format_buzz(b, lang).removeprefix("📰 ")))
     except Exception:  # noqa: BLE001 — la presse est un bonus, jamais bloquante
         pass
-    return ("📰 " + _esc(" · ".join(parts))) if parts else ""
+    return ("📰 " + " · ".join(parts)) if parts else ""
 
 
 _CREDIT_NOISE = re.compile(
