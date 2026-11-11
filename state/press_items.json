@@ -1,6 +1,14 @@
 [
  {
   "kind": "theatre",
+  "venue": "Berliner Festspiele",
+  "title": "Archives of Feelings",
+  "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/archives-of-feelings",
+  "opens": "2027-01-21",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Maxim Gorki Theater",
   "title": "Noise as a Strategy — English Workshop",
   "url": "https://www.gorki.de/en/noise-as-a-strategy",
@@ -384,6 +392,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Berliner Festspiele",
+  "title": "MAMI",
+  "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/mami",
+  "opens": "2026-11-12",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Orfeo ed Euridice",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/orfeo-ed-euridice.27753/",
@@ -404,7 +420,9 @@
   "title": "Queen of Spades",
   "url": "https://deutscheoperberlin.de/en_EN/production/queen-of-spades.1385561",
   "opens": "2026-11-13",
-  "aliases": []
+  "aliases": [
+   "Pique Dame"
+  ]
  },
  {
   "kind": "theatre",
@@ -412,7 +430,9 @@
   "title": "Orpheus in the Underworld",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
   "opens": "2026-11-13",
-  "aliases": []
+  "aliases": [
+   "Orpheus in der Unterwelt"
+  ]
  },
  {
   "kind": "expo",
@@ -444,7 +464,9 @@
   "title": "Eugene Onegin",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/eugene-onegin/",
   "opens": "2026-11-14",
-  "aliases": []
+  "aliases": [
+   "Eugen Onegin"
+  ]
  },
  {
   "kind": "theatre",
@@ -452,7 +474,9 @@
   "title": "Around the World in 80 Days",
   "url": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
   "opens": "2026-11-15",
-  "aliases": []
+  "aliases": [
+   "In 80 Tagen um die Welt"
+  ]
  },
  {
   "kind": "theatre",
@@ -460,7 +484,9 @@
   "title": "The Flying Dutchman",
   "url": "https://deutscheoperberlin.de/en_EN/production/the-flying-dutchman.1385827",
   "opens": "2026-11-15",
-  "aliases": []
+  "aliases": [
+   "Der fliegende Holländer"
+  ]
  },
  {
   "kind": "theatre",
@@ -476,7 +502,9 @@
   "title": "The Magic Flute",
   "url": "https://deutscheoperberlin.de/en_EN/production/the-magic-flute.1385471",
   "opens": "2026-11-16",
-  "aliases": []
+  "aliases": [
+   "Die Zauberflöte"
+  ]
  },
  {
   "kind": "theatre",
@@ -583,7 +611,9 @@
   "title": "The Abduction from the Seraglio",
   "url": "https://deutscheoperberlin.de/en_EN/production/the-abduction-from-the-seraglio.1383413",
   "opens": "2026-12-03",
-  "aliases": []
+  "aliases": [
+   "Die Entführung aus dem Serail"
+  ]
  },
  {
   "kind": "theatre",
@@ -623,7 +653,9 @@
   "title": "Hansel and Gretel",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/hansel-und-gretel/",
   "opens": "2026-12-06",
-  "aliases": []
+  "aliases": [
+   "Hänsel und Gretel"
+  ]
  },
  {
   "kind": "theatre",
@@ -711,7 +743,9 @@
   "title": "Treading the boards",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
   "opens": "2026-12-20",
-  "aliases": []
+  "aliases": [
+   "Bretter, die die Welt bedeuten"
+  ]
  },
  {
   "kind": "theatre",
@@ -819,7 +853,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Echnaton (Akhnaten)",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-01/akhnaten-echnaton/1281/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
   "opens": "2027-01-09",
   "aliases": [
    "Echnaton",
@@ -848,6 +882,14 @@
   "title": "Kirill Petrenko opens the Biennale of the Berliner Philharmoniker",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57088/",
   "opens": "2027-01-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Festspiele",
+  "title": "2020",
+  "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/2020",
+  "opens": "2027-01-15",
   "aliases": []
  },
  {
@@ -934,17 +976,21 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "King Roger",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-01/king-roger/1404/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/king-roger/",
   "opens": "2027-01-30",
-  "aliases": []
+  "aliases": [
+   "Król Roger"
+  ]
  },
  {
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Fiddler on the Roof",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-02/fiddler-on-the-roof/1270/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/fiddler-on-the-roof/",
   "opens": "2027-02-06",
-  "aliases": []
+  "aliases": [
+   "Anatevka"
+  ]
  },
  {
   "kind": "theatre",
@@ -1070,7 +1116,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Horse Eats Hat",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-02/pferd-frisst-hut/1309/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/pferd-frisst-hut/",
   "opens": "2027-02-27",
   "aliases": []
  },
@@ -1110,7 +1156,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "The Ball of the Komische Oper Berlin",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-03/opernball-2027/1412/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/opernball-2027/",
   "opens": "2027-03-06",
   "aliases": []
  },
@@ -1158,7 +1204,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Semele",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-03/semele/1330/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/semele/",
   "opens": "2027-03-20",
   "aliases": []
  },
@@ -1184,15 +1230,19 @@
   "title": "St Matthew Passion",
   "url": "https://deutscheoperberlin.de/en_EN/production/st-matthew-passion.1385796",
   "opens": "2027-03-25",
-  "aliases": []
+  "aliases": [
+   "Matthäus-Passion"
+  ]
  },
  {
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "The Golden Cockerel",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-03/the-golden-cockerel/1291/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/the-golden-cockerel/",
   "opens": "2027-03-27",
-  "aliases": []
+  "aliases": [
+   "Der goldene Hahn"
+  ]
  },
  {
   "kind": "theatre",
@@ -1310,7 +1360,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Cast a Diva",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-04/cast-a-diva/1399/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/cast-a-diva/",
   "opens": "2027-04-25",
   "aliases": []
  },
@@ -1366,7 +1416,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Porgy and Bess",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-05/porgy-and-bess/1414/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/porgy-and-bess/",
   "opens": "2027-05-11",
   "aliases": []
  },
@@ -1502,7 +1552,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Once around the world",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-06/sommerkonzert-einmal-um-die-welt/1435/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/sommerkonzert-einmal-um-die-welt/",
   "opens": "2027-06-12",
   "aliases": []
  },
@@ -1510,7 +1560,7 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Sweeney Todd",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-06/sweeney-todd/1337/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/sweeney-todd/",
   "opens": "2027-06-13",
   "aliases": []
  },
@@ -1542,9 +1592,11 @@
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "The Magic Flute",
-  "url": "https://www.komische-oper-berlin.de/en/what/schedule/2027-06/the-magic-flute/1347/",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/the-magic-flute/",
   "opens": "2027-06-17",
-  "aliases": []
+  "aliases": [
+   "Die Zauberflöte"
+  ]
  },
  {
   "kind": "theatre",
