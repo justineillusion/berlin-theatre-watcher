@@ -48,9 +48,9 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .filters::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1.5px solid var(--ink);background:var(--bg);font:700 12px var(--sans);letter-spacing:.03em;text-transform:uppercase;padding:6px 8px;border-radius:0;white-space:nowrap}
 /* Types : 4 cases égales sur toute la largeur, tout tient sur un téléphone. */
-#kinds{gap:6px;overflow:visible}
-#kinds .chip{flex:1 1 auto;text-align:center;border:0;background:none;box-shadow:none;border-radius:0;color:var(--muted);border-bottom:2px solid transparent;padding:9px 2px 7px}
-#kinds .chip[aria-pressed="true"]{background:none;color:var(--ink);border-bottom-color:var(--velvet);box-shadow:none}
+#kinds{gap:2px;overflow:visible;background:var(--velvet);margin-top:8px;padding:0 8px}
+#kinds .chip{flex:1 1 auto;text-align:center;border:0;background:none;box-shadow:none;border-radius:0;color:var(--velvet-ink);opacity:.72;border-bottom:3px solid transparent;padding:11px 2px 8px}
+#kinds .chip[aria-pressed="true"]{background:none;color:var(--velvet-ink);opacity:1;border-bottom-color:var(--velvet-ink);box-shadow:none}
 .onb{margin:14px 16px 4px;padding:14px 16px;border-left:3px solid var(--velvet);background:var(--card);font-size:14.5px;line-height:1.4;display:flex;gap:10px;align-items:flex-start}
 .onb div{flex:1}.onb b{display:block;margin-bottom:2px}.onb .go{margin-top:8px;border:0;background:none;padding:0;font:800 13px var(--sans);color:var(--velvet);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .onb .x{border:0;background:none;font-size:16px;color:var(--muted);cursor:pointer;padding:0 2px}
