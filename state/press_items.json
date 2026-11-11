@@ -408,14 +408,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "La Calisto",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
-  "opens": "2026-11-13",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Queen of Spades",
   "url": "https://deutscheoperberlin.de/en_EN/production/queen-of-spades.1385561",
@@ -467,6 +459,14 @@
   "aliases": [
    "Eugen Onegin"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Calisto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
+  "opens": "2026-11-15",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -532,6 +532,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Madama Butterfly",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
+  "opens": "2026-11-21",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "Mononoke",
   "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261122-1700/",
@@ -570,14 +578,6 @@
   "venue": "Staatsoper Unter den Linden",
   "title": "Tosca",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
-  "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Madama Butterfly",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
   "opens": "2026-11-28",
   "aliases": []
  },
@@ -754,14 +754,6 @@
   "aliases": [
    "Bretter, die die Welt bedeuten"
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Nabucco",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/nabucco.15505/",
-  "opens": "2026-12-22",
-  "aliases": []
  },
  {
   "kind": "theatre",
