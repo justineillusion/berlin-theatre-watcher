@@ -416,7 +416,10 @@ function facts(x) {
   const rating = lines.find((l) => /^★\s*\d/.test(l)) || "";
   const ratingUrl = ((x.text || "").match(/<a href="(https?:[^"]+)"[^>]*>\s*★\s*\d[^<]*<\/a>/) || [])[1] || "";
   const nkUrl = ((x.text || "").match(/<a href="(https?:[^"]+)"[^>]*>\s*Nachtkritik/) || [])[1] || "";
-  return { ratingUrl, nkUrl, meta: [...(credits ? ["🎬 " + credits] : []), ...pick("📍"), ...pick("✍️"), ...pick("🗣"), ...pick("📰")],
+  // La langue n'est dite qu'une fois, par 🗣 : on retire du générique ✍️ les morceaux « In English, with … surtitles ».
+  const LANG_SEG = /surtit|subtit|[üu]e?bertit|untertit|sign language|gebärdensprach|translation into|übersetzung|\blanguages?\b|\bsprachen?\b|^\s*(?:in|auf|en)\s+(?:english|englisch|anglais|german|deutsch|allemand|french|français|italian|italien|italienisch|spanish|russian|polish|turkish|arabic|several|plusieurs)\b/i;
+  const who = pick("✍️").map((l) => l.replace(/^✍️\s*/, "").split(/\s+·\s+/).filter((p) => !LANG_SEG.test(p)).join(" · ")).filter(Boolean).map((l) => "✍️ " + l);
+  return { ratingUrl, nkUrl, meta: [...(credits ? ["🎬 " + credits] : []), ...pick("📍"), ...who, ...pick("🗣"), ...pick("📰")],
            rating, syn: pick("📝").map((l) => l.replace(/^📝\s*/, "")).join(" ").slice(0, 420) };
 }
 

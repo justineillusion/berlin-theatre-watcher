@@ -8,7 +8,7 @@ from typing import List
 
 import httpx
 
-from .language import is_pure_language_note, to_english_labels
+from .language import is_pure_language_note, strip_language_notes, to_english_labels
 from .models import Show
 
 _API = "https://api.telegram.org/bot{token}/sendMessage"
@@ -232,8 +232,9 @@ def format_expo(show: Show, lang: str = "fr") -> str:
     period = expo_period(show, lang)
     if period:
         lines.append(f"🗓 {_esc(period[0].upper() + period[1:])}")
-    if show.languages:
-        lines.append(f"✍️ {_esc(credits_line(show.languages, lang))}")
+    credits = strip_language_notes(show.languages)
+    if credits:
+        lines.append(f"✍️ {_esc(credits_line(credits, lang))}")
     press = press_line(show, lang)
     if press:
         lines.append(press)
@@ -309,8 +310,9 @@ def format_show(show: Show, lang: str = "fr") -> str:
     # « In English » en 🎬 = la langue jouée, déjà dite (traduite) par 🗣 : pas de doublon.
     if show.production_type and not is_pure_language_note(show.production_type):
         lines.append(f"🎬 {_esc(show.production_type)}")
-    if show.languages and not is_pure_language_note(show.languages):
-        lines.append(f"✍️ {_esc(credits_line(show.languages, lang))}")
+    credits = strip_language_notes(show.languages)   # la langue est dite une fois, par 🗣
+    if credits:
+        lines.append(f"✍️ {_esc(credits_line(credits, lang))}")
     spoken = " · ".join(p for p in _labels(show, lang) if p)
     if spoken:
         lines.append(f"🗣 {_esc(spoken)}")

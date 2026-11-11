@@ -137,6 +137,20 @@ def is_pure_language_note(note: Optional[str]) -> bool:
     return not rest.strip()
 
 
+_LANG_SEG = re.compile(r"surtit|subtit|(?:ü|ue)bertit|untertit|sign language|gebärdensprach|translation into|übersetzung|\blanguages?\b|\bsprachen?\b"
+                       r"|^\s*(?:in|auf)\s+(?:english|englisch|german|deutsch|french|französisch|italian|italien|italienisch|spanish|spanisch|russian|russisch|polish|polnisch|turkish|türkisch|arabic|arabisch|hebrew|ukrainian|portuguese|several|multiple|mehreren)\b", re.I)
+
+
+def strip_language_notes(note: Optional[str]) -> str:
+    """Retire du générique les morceaux qui ne disent que la langue / les surtitres
+    (« … · In English, with German and English surtitles ») : la ligne 🗣 le dit déjà, proprement."""
+    if not note:
+        return ""
+    keep = [seg for seg in re.split(r"\s+·\s+|\s*\|\s*", note)
+            if seg.strip() and not is_pure_language_note(seg) and not _LANG_SEG.search(seg)]
+    return " · ".join(s.strip() for s in keep)
+
+
 _WORDLESS = re.compile(r"no spoken (?:word|language)|without words|ohne (?:worte|sprache)", re.I)
 # Cirque contemporain (Chamäleon) : « No language needed (circus) ». Pas de
 # surtitres à annoncer : il n'y a (presque) rien à comprendre.
