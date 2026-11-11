@@ -122,14 +122,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "CURSED – a preinvented world.",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261211-1900/",
-  "opens": "2026-12-11",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "HAU Hebbel am Ufer",
   "title": "KIDS",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/boris-nikitin-kids/",
@@ -408,18 +400,18 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Orfeo ed Euridice",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/orfeo-ed-euridice.27753/",
+  "venue": "Berliner Philharmoniker",
+  "title": "Zubin Mehta and Pinchas Zukerman with Bruch’s First Violin Concerto",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57056/",
   "opens": "2026-11-12",
   "aliases": []
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Philharmoniker",
-  "title": "Zubin Mehta and Pinchas Zukerman with Bruch’s First Violin Concerto",
-  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57056/",
-  "opens": "2026-11-12",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Calisto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
+  "opens": "2026-11-13",
   "aliases": []
  },
  {
@@ -540,14 +532,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Madama Butterfly",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
-  "opens": "2026-11-21",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "Mononoke",
   "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261122-1700/",
@@ -586,6 +570,14 @@
   "venue": "Staatsoper Unter den Linden",
   "title": "Tosca",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
+  "opens": "2026-11-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Madama Butterfly",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
   "opens": "2026-11-28",
   "aliases": []
  },
@@ -703,6 +695,14 @@
   "title": "Marek Janowski conducts Bruckner’s Eighth",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57074/",
   "opens": "2026-12-10",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "CURSED – a preinvented world.",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261211-1900/",
+  "opens": "2026-12-11",
   "aliases": []
  },
  {
