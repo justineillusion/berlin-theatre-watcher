@@ -25,6 +25,7 @@ import { Lang, asLang, tr } from "./i18n";
 import PAGE from "./app.html";
 import { webAsset } from "./web/assets";
 import { DISTRICT } from "./districts";
+import { pushCount, pushTo, subscribe, unsubscribe } from "./push";
 import { listPasskeys, loginOptions, loginVerify, registerOptions, registerVerify, removePasskey } from "./passkeys";
 import { LOGOS } from "./web/logos";
 
@@ -426,6 +427,19 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     if (r.ok) track(env, ctx, uid, "passkey_add");
     return Response.json(r, { status: r.ok ? 200 : 400 });
   }
+  if (url.pathname === "/app/api/push/subscribe") {
+    const ok = await subscribe(env, uid, body.subscription);
+    if (ok) { track(env, ctx, uid, "push_on"); await pushTo(env, uid, { title: "Berlin Encore! 🎭", body: (await env.DB.prepare("SELECT lang FROM users WHERE chat_id = ?").bind(uid).first<{ lang: string }>())?.lang === "en" ? "Notifications are on ✓" : "Notifications activées ✓", url: "/app", tag: "welcome" }); }
+    return Response.json({ ok, push: await pushCount(env, uid) }, { status: ok ? 200 : 400 });
+  }
+  if (url.pathname === "/app/api/push/unsubscribe") { await unsubscribe(env, uid, String(body.endpoint ?? "")); return Response.json({ push: await pushCount(env, uid) }); }
+  if (url.pathname === "/app/api/push/test") {
+    // Test : à moi-même, ou (admin) à un compte par email.
+    let to = uid;
+    if (body.email && isAdmin(env, uid)) to = (await env.DB.prepare("SELECT chat_id FROM users WHERE email = ?").bind(String(body.email).trim().toLowerCase()).first<{ chat_id: number }>())?.chat_id ?? 0;
+    const sent = to ? await pushTo(env, to, { title: String(body.title || "Berlin Encore! 🎭").slice(0, 80), body: String(body.text || "Test ✓").slice(0, 200), url: "/app", tag: "test" }) : 0;
+    return Response.json({ sent, devices: to ? await pushCount(env, to) : 0 });
+  }
   if (url.pathname === "/app/api/passkey/list") return Response.json({ passkeys: await listPasskeys(env, uid) });
   if (url.pathname === "/app/api/passkey/remove") { await removePasskey(env, uid, String(body.id ?? "")); return Response.json({ passkeys: await listPasskeys(env, uid) }); }
   if (url.pathname === "/app/api/logout") {
@@ -677,6 +691,8 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
   return {
     lang,
     admin: isAdmin(env, chat) || undefined,
+    vapid: env.VAPID_PRIVATE_KEY ? env.VAPID_PUBLIC_KEY : undefined,
+    push: await pushCount(env, chat),
     inbox: notes,
     email: myEmail,
     name: meRow?.first_name ?? "",

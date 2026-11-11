@@ -19,6 +19,8 @@ BOT_USERNAME = "Justine_theatre_bot"
 APP_SHORT_NAME = "Programme"
 # Adresse publique de l'app web (liens des emails de connexion).
 APP_URL = "https://berlinencore.app"
+# Web Push : clé publique VAPID (la privée est un secret : VAPID_PRIVATE_KEY).
+VAPID_PUBLIC_KEY = "BHFwWuXrB0AN7b9VEYEu3cOC53p4Caz16hrwF_7oVLVpo-BY2jWgYkV5zQhO29OdA-p7JoR_Xr_rqmt6yfwqx2w"
 # Expéditeur des emails de connexion (domaine vérifié chez Resend).
 MAIL_FROM = "Berlin Encore! <bonjour@berlinencore.app>"
 

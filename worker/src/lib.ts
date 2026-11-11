@@ -1,7 +1,10 @@
+import { notifyPush } from "./push";
 // Briques communes : types, accès D1, Telegram, rendu des messages.
 import { Lang, tr } from "./i18n";
 
 export interface Env {
+  VAPID_PUBLIC_KEY?: string;          // Web Push (clé publique, wrangler.toml)
+  VAPID_PRIVATE_KEY?: string;         // Web Push (secret : JWK de la clé privée)
   PASSKEY_ORIGIN?: string;            // tests locaux seulement
   DB: D1Database;
   BOT_TOKEN: string;       // token @BotFather (secret)
@@ -113,6 +116,7 @@ export const isWebUser = (chat: unknown) => typeof chat === "number" && chat >= 
 export async function inbox(env: Env, chat: number, kind: string, from: number | null, item: string | null = null, note: string | null = null, at: string | null = null): Promise<void> {
   await env.DB.prepare("INSERT INTO notifications (chat_id, kind, from_id, item_id, note, at) VALUES (?, ?, ?, ?, ?, ?)")
     .bind(chat, kind, from, item, note, at).run();
+  await notifyPush(env, chat, kind, from, item, note, at).catch((e) => console.log("push", String(e)));   // + notif sur le téléphone
 }
 
 export async function tg(env: Env, method: string, body: unknown): Promise<any> {

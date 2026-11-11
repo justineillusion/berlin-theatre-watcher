@@ -235,3 +235,15 @@ CREATE TABLE IF NOT EXISTS passkey_challenges (
   chat_id    INTEGER,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- push_subs : Web Push (migrations/019).
+CREATE TABLE IF NOT EXISTS push_subs (
+  endpoint   TEXT PRIMARY KEY,
+  chat_id    INTEGER NOT NULL,
+  p256dh     TEXT NOT NULL,
+  auth       TEXT NOT NULL,
+  device     TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  last_ok_at TEXT
+);
+CREATE INDEX IF NOT EXISTS push_subs_chat ON push_subs (chat_id);
