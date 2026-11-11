@@ -7,6 +7,7 @@ export const DISTRICT: Record<string, string> = {
   "volksbuhne": "Mitte",                                       // Rosa-Luxemburg-Platz
   "maxim-gorki-theater": "Mitte",                              // Am Festungsgraben 2
   "hau-hebbel-am-ufer": "Kreuzberg",                           // Hallesches Ufer 32
+  "chamaleon-berlin": "Mitte",                                 // Rosenthaler Str. 40/41 (Hackesche Höfe)
   "berliner-festspiele": "Wilmersdorf",                       // Schaperstraße 24
   // Expos
   "hamburger-bahnhof": "Mitte",                                // Invalidenstraße 50
