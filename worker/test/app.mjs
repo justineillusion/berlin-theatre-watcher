@@ -378,10 +378,12 @@ await step("inscription web sans Telegram : lien d'invitation → prénom + emai
   let r = await post("/app/api/signup", { invite, name: "Nora", email: "Nora@Example.com", lang: "en" });
   assert.equal(r.status, 200);
   const mail = calls.find((c) => c.method === "emails"); assert.deepEqual(mail.to, ["nora@example.com"]);
+  assert.equal(r.json.link, true); assert.ok(!/\b\d{6}\b/.test(mail.text) && !/(?<!#)\b\d{6}\b/.test(mail.html));   // inscription : lien seul, pas de code
+  assert.match(mail.subject, /sign-up/);
   assert.equal(calls.filter((c) => c.method === "sendMessage").length, 0);
   // pas encore validé : pas dans le cercle de Justine
   assert.ok(!(await post("/app/api/state", { initData: me })).json.circle.friends.some((f) => f.name === "Nora"));
-  r = await post("/app/api/login/code", { id: r.json.id, code: mail.text.match(/\b(\d{6})\b/)[1] });
+  r = await post("/app/api/login/link", { link: mail.text.match(/login=([a-f0-9]{48})/)[1] });
   const tok = r.json.token; assert.match(tok, /^[a-f0-9]{64}$/);
   const ns = (await bearer("/app/api/state", tok)).json;
   assert.equal(ns.lang, "en"); assert.equal(ns.email, "nora@example.com");
@@ -393,15 +395,18 @@ await step("inscription web sans Telegram : lien d'invitation → prénom + emai
   assert.ok(tgTo.length >= 1 && tgTo.every((c) => c < 1e15));
   // déjà inscrite : refaire le signup = simple code de connexion, pas de doublon
   calls = [];
-  assert.equal((await post("/app/api/signup", { invite, name: "Nora B", email: "nora@example.com" })).status, 200);
+  r = await post("/app/api/signup", { invite, name: "Nora B", email: "nora@example.com" });
+  assert.equal(r.status, 200); assert.equal(r.json.link, false);
+  assert.match(calls.find((c) => c.method === "emails").text, /\b\d{6}\b/);
   assert.equal((await bearer("/app/api/state", tok)).json.circle.friends.filter((f) => f.name === "Justine").length, 1);
 });
 await step("inscription sans lien : compte seul, sans ami", async () => {
   calls = [];
   const r = await post("/app/api/signup", { name: "Solo", email: "solo@example.com" });
   assert.equal(r.status, 200);
-  const code = calls.find((c) => c.method === "emails").text.match(/\b(\d{6})\b/)[1];
-  const tok = (await post("/app/api/login/code", { id: r.json.id, code })).json.token;
+  const link = calls.find((c) => c.method === "emails").text.match(/login=([a-f0-9]{48})/)[1];
+  assert.equal((await post("/app/api/login/code", { id: r.json.id, code: "000000" })).status, 401);   // aucun code ne marche
+  const tok = (await post("/app/api/login/link", { link })).json.token;
   const st = (await bearer("/app/api/state", tok)).json;
   assert.equal(st.circle.friends.length, 0); assert.ok(st.handle.startsWith("solo"));
 });
@@ -413,6 +418,15 @@ await step("🔔 notifications : 💌 envoyé → dans l'inbox de l'ami (même s
   assert.ok(n && n.from_name === "Justine" && n.note === "On y va ?" && !n.read_at);
   js = (await post("/app/api/inbox/read", { initData: joss })).json;
   assert.ok(js.inbox.every((x) => x.read_at));
+  // ✕ retirer une notification ; personne d'autre ne peut retirer les miennes ; « Tout effacer »
+  const nid = js.inbox.find((x) => x.kind === "share" && x.item_id === "p1").id;
+  assert.equal((await post("/app/api/inbox/dismiss", { initData: me, id: nid })).status, 200);
+  assert.ok((await post("/app/api/state", { initData: joss })).json.inbox.some((x) => x.id === nid));   // pas à moi : intact
+  js = (await post("/app/api/inbox/dismiss", { initData: joss, id: nid })).json;
+  assert.ok(!js.inbox.some((x) => x.id === nid));
+  assert.equal((await post("/app/api/inbox/dismiss", { initData: joss, id: "x" })).status, 400);
+  js = (await post("/app/api/inbox/dismiss", { initData: joss, all: true })).json;
+  assert.ok(js.inbox.every((x) => x.kind === "friend_request"));
   calls = [];
   assert.equal((await post("/app/api/feedback", { initData: joss, kind: "venue", text: "Radialsystem please" })).status, 200);
   assert.ok(calls.some((c) => c.method === "sendMessage" && /Radialsystem/.test(c.text)));

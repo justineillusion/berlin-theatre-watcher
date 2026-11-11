@@ -138,21 +138,31 @@ const MAIL = {
   fr: { subject: "Ta connexion à Berlin Encore!", hi: (n: string) => `Bonjour ${n},`, code: "Ton code :", or: "Ou touche ce bouton :", btn: "Ouvrir Berlin Encore!", note: "Valable 15 minutes. Si tu n'as rien demandé, ignore cet email." },
   en: { subject: "Your Berlin Encore! sign-in", hi: (n: string) => `Hi ${n},`, code: "Your code:", or: "Or tap this button:", btn: "Open Berlin Encore!", note: "Valid for 15 minutes. If you didn't ask for this, ignore this email." },
 };
+// Inscription : pas de code, juste le bouton de confirmation.
+const JOIN_MAIL = {
+  fr: { subject: "Confirme ton inscription à Berlin Encore!", p: "Touche ce bouton pour confirmer ton inscription :", btn: "Confirmer mon inscription", note: "Valable 15 minutes. Si tu n'as rien demandé, ignore cet email." },
+  en: { subject: "Confirm your Berlin Encore! sign-up", p: "Tap this button to confirm your sign-up:", btn: "Confirm my sign-up", note: "Valid for 15 minutes. If you didn't ask for this, ignore this email." },
+};
 
-async function sendLoginMail(env: Env, to: string, name: string, lang: Lang, code: string, link: string): Promise<boolean> {
-  const M = MAIL[lang];
+/** code = null → email d'inscription : seulement le bouton de confirmation. */
+async function sendLoginMail(env: Env, to: string, name: string, lang: Lang, code: string | null, link: string): Promise<boolean> {
+  const M = MAIL[lang], J = JOIN_MAIL[lang];
   const url = `${APP_URL(env)}/app?login=${link}`;
+  const button = (label: string) => `<p><a href="${url}" style="display:inline-block;background:#d7263d;color:#fff;padding:12px 18px;text-decoration:none;font-weight:700">${label}</a></p>`;
+  const body = code === null ? `<p>${J.p}</p>${button(J.btn)}`
+    : `<p>${M.code}</p>
+<p style="font-size:32px;font-weight:800;letter-spacing:.15em;margin:4px 0 18px">${code}</p>
+<p>${M.or}</p>${button(M.btn)}`;
   const html = `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:16px;color:#111214;max-width:440px">
 <p style="font-size:22px;font-weight:800;margin:0 0 16px">Berlin Encore<span style="color:#d7263d">!</span></p>
-<p>${esc(M.hi(name))}</p><p>${M.code}</p>
-<p style="font-size:32px;font-weight:800;letter-spacing:.15em;margin:4px 0 18px">${code}</p>
-<p>${M.or}</p><p><a href="${url}" style="display:inline-block;background:#d7263d;color:#fff;padding:12px 18px;text-decoration:none;font-weight:700">${M.btn}</a></p>
+<p>${esc(M.hi(name))}</p>${body}
 <p style="color:#686e75;font-size:13px">${M.note}</p></div>`;
-  const text = `${M.hi(name)}\n\n${M.code} ${code}\n\n${M.or} ${url}\n\n${M.note}`;
+  const text = code === null ? `${M.hi(name)}\n\n${J.p} ${url}\n\n${M.note}` : `${M.hi(name)}\n\n${M.code} ${code}\n\n${M.or} ${url}\n\n${M.note}`;
+  const subject = code === null ? J.subject : M.subject;
   const r = await fetch(`${env.RESEND_API || "https://api.resend.com"}/emails`, {
     method: "POST",
     headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
-    body: JSON.stringify({ from: env.MAIL_FROM || "Berlin Encore! <onboarding@resend.dev>", to: [to], subject: M.subject, html, text }),
+    body: JSON.stringify({ from: env.MAIL_FROM || "Berlin Encore! <onboarding@resend.dev>", to: [to], subject, html, text }),
   }).catch(() => null);
   if (!r?.ok) console.log("mail failed", r?.status, await r?.text().catch(() => ""));
   return !!r?.ok;
@@ -165,8 +175,9 @@ async function newSession(env: Env, chat: number): Promise<string> {
   return token;
 }
 
-/** Code à 6 chiffres + lien, envoyés par email (3 demandes / 15 min). Renvoie l'id de la demande. */
-async function mailCode(env: Env, chat: number, email: string, name: string, lang: Lang): Promise<string | Response> {
+/** Code à 6 chiffres + lien, envoyés par email (3 demandes / 15 min). Renvoie l'id de la demande.
+ *  withCode = false (inscription) : lien seul ; le code tiré au sort n'est envoyé nulle part, donc inutilisable. */
+async function mailCode(env: Env, chat: number, email: string, name: string, lang: Lang, withCode = true): Promise<string | Response> {
   const recent = await env.DB.prepare("SELECT COUNT(*) n FROM email_logins WHERE chat_id = ? AND created_at > datetime('now', '-15 minutes')")
     .bind(chat).first<{ n: number }>();
   if ((recent?.n ?? 0) >= 3) return Response.json({ error: "too_many" }, { status: 429 });
@@ -178,7 +189,7 @@ async function mailCode(env: Env, chat: number, email: string, name: string, lan
     env.DB.prepare("INSERT INTO email_logins (id, chat_id, code_hash, link_hash) VALUES (?, ?, ?, ?)")
       .bind(id, chat, await sha256(id + code), await sha256(link)),
   ]);
-  if (!(await sendLoginMail(env, email, name, lang, code, link))) return Response.json({ error: "mail_failed" }, { status: 502 });
+  if (!(await sendLoginMail(env, email, name, lang, withCode ? code : null, link))) return Response.json({ error: "mail_failed" }, { status: 502 });
   return id;
 }
 
@@ -265,9 +276,9 @@ async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<R
     return Response.json({ name: inviter.first_name, photo: inviter.photo ?? null });
   }
   if (path === "/app/api/signup") {
-    // Inscription web : prénom + email ; le compte n'existe vraiment qu'après le code reçu par email.
+    // Inscription web : prénom + email ; le compte n'existe vraiment qu'après le clic sur le lien de l'email.
     if (!env.RESEND_API_KEY) return Response.json({ error: "mail_off" }, { status: 503 });
-    if (looksBot(body)) return fakeSent();
+    if (looksBot(body)) return Response.json({ id: randomHex(12), link: true });
     // 4 inscriptions / h par IP, 25 / h en tout ; les comptes jamais confirmés disparaissent après 2 jours.
     if (await tooMany(env, "signup:" + ip, 4, 60) || await tooMany(env, "signupall:", 25, 60)) return slowDown();
     await env.DB.prepare("DELETE FROM users WHERE pending = 1 AND active = 0 AND joined_at < datetime('now', '-2 days')").run();
@@ -293,8 +304,10 @@ async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<R
     }
     // Déjà inscrit·e : simple connexion (et connexion à qui invite, faite à la validation).
     else await env.DB.prepare("UPDATE users SET invited_by = COALESCE(invited_by, ?) WHERE chat_id = ? AND chat_id != ?").bind(inviter?.chat_id ?? null, u.chat_id, inviter?.chat_id ?? null).run();
-    const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang));
-    return sent instanceof Response ? sent : Response.json({ id: sent });
+    // Nouveau compte : lien seul dans l'email (pas de code) ; déjà inscrit·e : connexion habituelle (code + lien).
+    const join = !!u.pending;
+    const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang), !join);
+    return sent instanceof Response ? sent : Response.json({ id: sent, link: join });
   }
   if (path === "/app/api/login/code") {
     const id = String(body.id ?? ""), code = String(body.code ?? "").replace(/\D/g, "");
@@ -528,6 +541,16 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     await env.DB.prepare("UPDATE notifications SET read_at = datetime('now') WHERE chat_id = ? AND read_at IS NULL").bind(me.chat_id).run();
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
+  if (url.pathname === "/app/api/inbox/dismiss") {
+    // « Pour toi » : retirer une notification (ou toutes avec all) ; les demandes d'ami restent (elles ont leurs boutons).
+    if (body.all) await env.DB.prepare("DELETE FROM notifications WHERE chat_id = ? AND kind != 'friend_request'").bind(me.chat_id).run();
+    else {
+      const id = Number(body.id);
+      if (!Number.isInteger(id) || id <= 0) return Response.json({ error: "bad_request" }, { status: 400 });
+      await env.DB.prepare("DELETE FROM notifications WHERE id = ? AND chat_id = ? AND kind != 'friend_request'").bind(id, me.chat_id).run();
+    }
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  }
   if (url.pathname === "/app/api/feedback") {
     track(env, ctx, me.chat_id, "feedback", null);
     // « Proposer un lieu » / « Un retour » : enregistré, et la propriétaire est prévenue.
@@ -627,7 +650,7 @@ async function teaser(env: Env) {
   // Un mélange : théâtre d'abord (le cœur), puis ciné ; les ⭐ du moment en tête ; un titre par lieu.
   rows.sort((a, b) => (b.starred - a.starred) || (a.kind === "theatre" ? -1 : 0) - (b.kind === "theatre" ? -1 : 0) || a.at.localeCompare(b.at));
   const seen = new Set<string>(), out: any[] = [];
-  for (const r of rows) { if (seen.has(r.venue)) continue; seen.add(r.venue); out.push(r); if (out.length === 5) break; }
+  for (const r of rows) { if (seen.has(r.venue)) continue; seen.add(r.venue); out.push(r); if (out.length === 8) break; }
   return { items: out.sort((a, b) => a.at.localeCompare(b.at)).map(({ starred, ...r }) => r) };
 }
 
