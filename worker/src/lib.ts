@@ -2,6 +2,7 @@
 import { Lang, tr } from "./i18n";
 
 export interface Env {
+  PASSKEY_ORIGIN?: string;            // tests locaux seulement
   DB: D1Database;
   BOT_TOKEN: string;       // token @BotFather (secret)
   API_TOKEN: string;       // partagé avec le scraper GitHub Actions (secret)

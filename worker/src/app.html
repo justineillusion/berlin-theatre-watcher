@@ -235,6 +235,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .lform .act{box-shadow:none!important;border-radius:0;font:800 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:15px 14px}
 .lform .act:not(.on){border:0;background:none;padding:4px;color:var(--muted);letter-spacing:.06em}
 .lform .hint{margin:0}
+.lform .pkor{text-align:center;margin:-6px 0 0}
 .hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
 .what{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .what li{display:flex;gap:12px;align-items:baseline;font:500 15px/1.35 var(--sans);color:var(--ink)}
@@ -283,7 +284,7 @@ if (tgApp) {
 }
 
 const L = {
-  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", onbT:"Bienvenue !", onbP:"Commence par choisir tes lieux : théâtres, cinés, expos, opéras. Le programme se règle dessus.", onbGo:"Choisir mes lieux", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
+  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas encore activé. Ton visage ou ton doigt restent sur ton appareil : l'app ne garde qu'une clé publique.", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Commence par choisir tes lieux : théâtres, cinés, expos, opéras. Le programme se règle dessus.", onbGo:"Choisir mes lieux", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
         week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
         star:"🙋 Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
         booked:"Réservé", wish:"Envies", done:"Vu", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : 🙋 ce qui te tente.",
@@ -307,7 +308,7 @@ const L = {
         ignoreReq:"Ignorer", now:"à l'instant", minAgo:(m) => `il y a ${m} min`, hAgo:(h) => `il y a ${h} h`, dAgo:(d) => `il y a ${d} j`,
         fbVenueT:"Un lieu manque ?", fbVenuePh:"Son nom, et le lien si tu l'as", fbT:"Une idée, un souci ?", fbPh:"Dis-moi tout", fbSend:"Envoyer", fbThanks:"Merci, c'est transmis.", photoT:"Ma photo", photoHint:"Remplace ton prénom chez tes amis.", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
-  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", onbT:"Welcome!", onbP:"Start by picking your venues: theatres, cinemas, galleries, operas. The programme follows your picks.", onbGo:"Pick my venues", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
+  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Not on yet. Your face or finger stays on your device: the app only keeps a public key.", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"Start by picking your venues: theatres, cinemas, galleries, operas. The programme follows your picks.", onbGo:"Pick my venues", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
         week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"🙋 Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to", calOther:"iPhone / Outlook",
         booked:"Booked", wish:"Wishlist", done:"Seen", empty:"Nothing in this window.", emptyMine:"Nothing yet: 🙋 what tempts you.",
@@ -423,6 +424,35 @@ const human = () => ({ website: $("lweb")?.value || "", t: Date.now() - shownAt 
 let INVITE = PARAMS.get("invite") || "";
 const ERR = { mail_failed: "mailFailed", bad_email: "badEmail", unknown_email: "unknownEmail", too_many: "tooMany", expired: "codeExpired", bad_invite: "badInvite", bad_name: "badName" };
 const errText = (e) => T[ERR[e.info?.error]] || T.error;
+/** Face ID / empreinte (passkeys WebAuthn) : le navigateur signe un défi ; on n'envoie que la signature. */
+const PK_OK = WEB && !!window.PublicKeyCredential && !!navigator.credentials;
+const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+const b64u = {
+  enc: (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""),
+  dec: (str) => Uint8Array.from(atob(str.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((str.length + 3) % 4)), (c) => c.charCodeAt(0)),
+};
+function credJSON(c) {
+  const r = c.response, out = { id: c.id, rawId: b64u.enc(c.rawId), type: c.type, clientExtensionResults: c.getClientExtensionResults?.() || {},
+    authenticatorAttachment: c.authenticatorAttachment || undefined, response: { clientDataJSON: b64u.enc(r.clientDataJSON) } };
+  if (r.attestationObject) { out.response.attestationObject = b64u.enc(r.attestationObject); out.response.transports = r.getTransports?.() || []; }
+  if (r.authenticatorData) { out.response.authenticatorData = b64u.enc(r.authenticatorData); out.response.signature = b64u.enc(r.signature); if (r.userHandle) out.response.userHandle = b64u.enc(r.userHandle); }
+  return out;
+}
+const deviceName = () => { const u = navigator.userAgent; return /iPhone/.test(u) ? "iPhone" : /iPad/.test(u) ? "iPad" : /Android/.test(u) ? "Android" : /Mac/.test(u) ? "Mac" : /Windows/.test(u) ? "Windows" : "Navigateur"; };
+async function pkRegister() {
+  const { id, options: o } = await api("passkey/register/options");
+  const c = await navigator.credentials.create({ publicKey: { ...o, challenge: b64u.dec(o.challenge), user: { ...o.user, id: b64u.dec(o.user.id) },
+    excludeCredentials: (o.excludeCredentials || []).map((x) => ({ ...x, id: b64u.dec(x.id) })) } });
+  await api("passkey/register/verify", { id, response: credJSON(c), device: deviceName() });
+  lsSet("pk", "1"); st.pks = null;
+}
+async function pkLogin() {
+  const { id, options: o } = await api("passkey/login/options");
+  const c = await navigator.credentials.get({ publicKey: { ...o, challenge: b64u.dec(o.challenge), allowCredentials: [] } });
+  const j = await api("passkey/login/verify", { id, response: credJSON(c) });
+  lsSet("pk", "1"); signedIn(j.token);
+}
 async function showLogin() {
   S = null; shownAt = Date.now();
   document.querySelector(".top").hidden = true;
@@ -439,7 +469,7 @@ async function showLogin() {
   const pitch = `<ul class="what">${T.what.map(([i, w]) => `<li>${esc(w)}</li>`).join("")}</ul>`;
   const signup = (INVITE && inviter) || login.step === "new";
   let form;
-  if (!loginCfg.email) form = `<p>${esc(T.error)}</p>`;
+  if (!loginCfg.email) form = PK_OK ? `<button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button>` : `<p>${esc(T.error)}</p>`;
   else if (login.step === "code") form = `<p>${esc(T.codeSent(login.email))}</p>
        <input id="lcode" class="note" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="${esc(T.codePh)}">
        <button class="act on" data-logincode="1">${esc(signup ? T.joinGo : T.signIn)}</button>
@@ -448,10 +478,11 @@ async function showLogin() {
        <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">
        <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
        <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>` + (inviter ? "" : `<button class="act" data-loginback="1">${esc(T.haveAccount)}</button>`);
-  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.haveAccount)}</b>
+  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.haveAccount)}</b>${
+       PK_OK && lsGet("pk") ? `<button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button><p class="hint pkor">${esc(T.pkOr)}</p>` : ""}
        <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
        <button class="act on" data-loginemail="1">${esc(T.sendCode)}</button>
-       <p class="hint">${esc(T.noAccount)}</p>`;
+       <p class="hint">${esc(T.noAccount)}</p>${PK_OK && !lsGet("pk") ? `<button class="act" data-pklogin="1">${esc(T.pkLogin)}</button>` : ""}`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
   document.body.classList.add("landing");
   $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div>${bill}${pitch}${ios}<p class="sign">Berlin Encore! · ${esc(T.madeIn)}</p></div>`;
@@ -481,6 +512,7 @@ async function loginCode() {
 }
 function signedIn(token) {
   document.body.classList.remove("landing");
+  if (PK_OK && !lsGet("pk") && !lsGet("pkLater")) st.pkOffer = true;
   setToken(token); login.step = "email"; login.err = ""; INVITE = "";   // l'inscription a déjà fait la connexion
   if (PARAMS.has("invite")) history.replaceState(null, "", location.pathname);
   document.querySelector(".top").hidden = false; load();
@@ -700,6 +732,12 @@ function accountSection() {
        <div class="acts"><button class="act on" data-savehandle="1">${esc(T.save)}</button><button class="act" data-edithandle="">${esc(T.cancel)}</button></div>`
     : `<div class="fline"><div><b>${esc(T.handleT)}</b><span>@${esc(S.handle || "")} · ${esc(T.handleHint)}</span></div>
        <button class="act" data-edithandle="1">${esc(T.editName)}</button></div>`;
+  if (PK_OK) {
+    if (st.pks === undefined || st.pks === null) { if (!st.pkLoading) { st.pkLoading = true; api("passkey/list").then((j) => { st.pks = j.passkeys || []; }, () => { st.pks = []; }).finally(() => { st.pkLoading = false; render(); }); } }
+    const pks = st.pks || [];
+    h += `<div class="fline"><div><b>🔒 ${esc(T.pkT)}</b><span>${esc(pks.length ? T.pkOn(pks.map((k) => k.device || "?").join(", ")) : T.pkNone)}</span></div>
+      <div class="who"><button class="act${pks.length ? "" : " on"}" data-pkadd="1">${esc(T.pkAdd)}</button>${pks.map((k) => `<button class="act" data-pkdel="${esc(k.id)}">${esc(T.pkDel)} ${esc(k.device || "")}</button>`).join("")}</div></div>`;
+  }
   h += `<p class="hint">${esc(T.emailHint)}</p>`;
   if (st.editEmail) {
     h += `<input id="setemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(e || "")}">
@@ -974,7 +1012,8 @@ function render() {
     const soldBtn = st.kind !== "expo" && soldCount ? `<div class="soldfoot"><button class="chip" data-hidesold="1" aria-pressed="${!st.hideSold}">${esc(st.hideSold ? T.hideSold : T.hideSoldOff)} · ${soldCount}</button></div>` : "";
     // 1re visite : choisir ses lieux d'abord (disparaît après un passage dans Lieux, une réaction, ou ✕).
     let onb = false; try { onb = !localStorage.getItem("onbDone") && !S.items.some((x) => x.me && (x.me.star || x.me.booked || x.me.status)); } catch {}
-    const onbHtml = onb ? `<div class="onb"><div><b>${esc(T.onbT)}</b>${esc(T.onbP)}<br><button class="go" data-onbgo="1">${esc(T.onbGo)} ›</button></div><button class="x" data-onbx="1" aria-label="OK">✕</button></div>` : "";
+    const pkHtml = st.pkOffer ? `<div class="onb"><div><b>🔒 ${esc(T.pkOfferT)}</b>${esc(T.pkOfferP)}<br><button class="go" data-pkadd="1">${esc(T.pkYes)} ›</button> &nbsp; <button class="go" style="color:var(--muted)" data-pklater="1">${esc(T.pkLater)}</button></div></div>` : "";
+    const onbHtml = pkHtml + (st.pkOffer ? "" : onb ? `<div class="onb"><div><b>${esc(T.onbT)}</b>${esc(T.onbP)}<br><button class="go" data-onbgo="1">${esc(T.onbGo)} ›</button></div><button class="x" data-onbx="1" aria-label="OK">✕</button></div>` : "");
     list.innerHTML = onbHtml + (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + soldHtml + whyNote();
   } else {
     for (const [k, l] of [["booked", T.booked], ["star", T.wish], ["seen", T.done]]) {
@@ -1007,6 +1046,15 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("[data-copyinvite]")) trackEv("invite_copy");
   const a = e.target.closest("a[data-link]");
   if (a) { if (tgApp?.openLink) { e.preventDefault(); tgApp.openLink(a.href); } return; }
+  const pk = e.target.closest("[data-pklogin], [data-pkadd], [data-pkdel], [data-pklater]");
+  if (pk) {
+    e.preventDefault(); e.stopPropagation();
+    if (pk.dataset.pklater) { lsSet("pkLater", "1"); st.pkOffer = false; return void render(); }
+    if (pk.dataset.pkdel) { api("passkey/remove", { id: pk.dataset.pkdel }).then((j) => { st.pks = j.passkeys || []; render(); }, () => {}); return; }
+    if (pk.dataset.pklogin) { pkLogin().catch((err) => { if (err?.name !== "NotAllowedError") { login.err = T.pkFail; showLogin(); } }); return; }
+    pkRegister().then(() => { st.pkOffer = false; notify(T.pkDone); render(); }, (err) => { if (err?.name !== "NotAllowedError") notify(T.pkFail); });
+    return;
+  }
   const fc = e.target.closest("[data-face]");
   if (fc) { e.preventDefault(); e.stopPropagation(); st.tab = "set"; st.open = null;
     if (fc.dataset.face === "me") { st.friend = null; st.setTab = "account"; window.scrollTo?.(0, 0); return void render(); }

@@ -25,6 +25,7 @@ import { Lang, asLang, tr } from "./i18n";
 import PAGE from "./app.html";
 import { webAsset } from "./web/assets";
 import { DISTRICT } from "./districts";
+import { listPasskeys, loginOptions, loginVerify, registerOptions, registerVerify, removePasskey } from "./passkeys";
 import { LOGOS } from "./web/logos";
 
 const enc = new TextEncoder();
@@ -398,6 +399,16 @@ async function calendarFile(env: Env, id: string, at: string): Promise<Response>
 async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Promise<Response> {
   const body: any = await req.json().catch(() => ({}));
   const ip = req.headers.get("cf-connecting-ip") || "";
+  // Face ID / empreinte : connexion sans email (passkey découvrable).
+  if (url.pathname === "/app/api/passkey/login/options") {
+    if (await tooMany(env, "pk:" + ip, 30, 60)) return slowDown();
+    return Response.json(await loginOptions(env, req));
+  }
+  if (url.pathname === "/app/api/passkey/login/verify") {
+    const r = await loginVerify(env, req, body);
+    if ("error" in r) return Response.json(r, { status: 400 });
+    return Response.json({ token: await newSession(env, r.chat) });
+  }
   const pre = (await emailLogin(env, url.pathname, body, ip)) ?? (await login(env, url.pathname, body));
   if (pre) return pre;
   // Qui parle : Telegram (initData signé) ou l'app web (jeton de session).
@@ -409,6 +420,14 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     uid = await sessionUser(env, req, ctx);
   }
   if (!uid) return Response.json({ error: "auth" }, { status: 401 });
+  if (url.pathname === "/app/api/passkey/register/options") return Response.json(await registerOptions(env, req, uid));
+  if (url.pathname === "/app/api/passkey/register/verify") {
+    const r = await registerVerify(env, req, uid, body);
+    if (r.ok) track(env, ctx, uid, "passkey_add");
+    return Response.json(r, { status: r.ok ? 200 : 400 });
+  }
+  if (url.pathname === "/app/api/passkey/list") return Response.json({ passkeys: await listPasskeys(env, uid) });
+  if (url.pathname === "/app/api/passkey/remove") { await removePasskey(env, uid, String(body.id ?? "")); return Response.json({ passkeys: await listPasskeys(env, uid) }); }
   if (url.pathname === "/app/api/logout") {
     const m = (req.headers.get("authorization") || "").match(/^Bearer ([a-f0-9]{64})$/);
     if (m) await env.DB.prepare("DELETE FROM web_sessions WHERE token_hash = ?").bind(await sha256(m[1])).run();
