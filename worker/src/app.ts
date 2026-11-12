@@ -269,6 +269,10 @@ async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<R
     return sent instanceof Response ? sent : Response.json({ id: sent });
   }
   if (path === "/app/api/teaser") return Response.json(await teaser(env));
+  if (path === "/app/api/guest") {
+    const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
+    return Response.json(await guestState(env, asLang(body.lang), focus));
+  }
   if (path === "/app/api/invite/info") {
     // Page d'accueil d'un lien d'invitation : qui invite (prénom, photo), sans rien révéler d'autre.
     const inviter = await inviterOf(env, body.invite);
@@ -675,6 +679,44 @@ async function teaser(env: Env) {
 }
 
 /** Tout ce qu'affiche la page, en une fois (quelques centaines de lignes au plus). */
+/** Sans compte (comme SensCritique) : le programme qu'aurait un·e nouvel·le inscrit·e (tous les lieux hors « à la carte »),
+ *  sans rien de personnel ni d'amis. Même forme que state() ; mis en cache 5 min par langue (sans fiche ciblée). */
+const guestCache = new Map<string, { at: number; json: any }>();
+async function guestState(env: Env, lang: "fr" | "en", focus = "") {
+  const key = lang + "|" + focus, hit = guestCache.get(key);
+  if (hit && Date.now() - hit.at < 300_000) return hit.json;
+  const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
+  const { results: items } = await env.DB.prepare(
+    `SELECT i.*, v.name AS venue FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+     WHERE (v.optional = 0
+            AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
+                      ELSE i.last_seen >= ?1 END)
+            AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now')))
+        OR i.id = ?2
+     LIMIT 600`,
+  ).bind(since, focus).all<Item & { venue: string }>();
+  const { results: venues } = await env.DB.prepare(
+    `SELECT v.id, v.name, v.kind, v.optional, (1 - v.optional) AS followed FROM venues v WHERE v.active = 1
+     ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`).all<any>();
+  const salesRaw = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'sales'").first<{ value: string }>())?.value;
+  let sales: { venue: string; day: string; at: string | null; month: string }[] = [];
+  try {
+    const names = new Map(venues.filter((v: any) => v.followed).map((v: any) => [v.id, v.name]));
+    sales = Object.values(JSON.parse(salesRaw || "{}") as Record<string, any>)
+      .filter((x) => names.has(x.venue_id) && x.day >= new Date().toISOString().slice(0, 10))
+      .map((x) => ({ venue: String(names.get(x.venue_id)), day: x.day, at: x.hour_known && x.at ? String(x.at).slice(11, 16) : null, month: x.month }))
+      .sort((a, b) => a.day.localeCompare(b.day));
+  } catch { /* rien */ }
+  const json = {
+    lang, guest: true, push: 0, inbox: [], email: null, name: "", handle: "", photo: null, photos: {}, sales,
+    venues: venues.map((v: any) => ({ ...v, district: DISTRICT[v.id] ?? null, logo: LOGOS[v.id] ? `/app/logo/${v.id}.png` : null })),
+    people: [], circle: { friends: [], incoming: [], outgoing: [], suggestions: [] }, invite: "",
+    items: items.map((i) => shapeItem(i, undefined, [], lang)),
+  };
+  guestCache.set(key, { at: Date.now(), json });
+  return json;
+}
+
 async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
   const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
   // À l'affiche dans mes lieux + tout ce sur quoi j'ai réagi (⭐ 🎟 ✅, même passé).

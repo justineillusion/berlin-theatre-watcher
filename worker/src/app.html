@@ -252,6 +252,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .login{padding:22px 20px 40px;gap:22px}
 .landing .login{max-width:460px;margin:0;padding-left:24px;padding-right:24px}   /* aligné sur le logo */
 .lform{display:grid;gap:18px;padding:22px 0 6px;border-top:2px solid var(--ink)}
+.gset{padding-top:8px}.gwhy{color:var(--ink)!important;font-weight:600}.gmine{display:grid;gap:12px;padding:28px 0}.gmine p{margin:0;color:var(--muted)}
 .gbtn{min-height:44px;display:flex;justify-content:center}.gor{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}.gor::before,.gor::after{content:"";flex:1;border-top:1px solid var(--line)}
 .lform .note{background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 0;font:500 18px var(--sans);color:var(--ink);box-shadow:none;outline:none}
 .lform .note:focus{border-bottom-color:var(--velvet)}
@@ -325,7 +326,7 @@ const L = {
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
         cats:{ theatre:"Théâtres", optional:"Opéra & concerts", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
-        tagline:"Vois ce qui tente tes amis à Berlin, et sortez ensemble.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"]], start:"Ton email", go:"Continuer", orEmail:"ou avec ton email", newT:"Bienvenue !", newP:(e) => `Première fois avec ${e}. Ton prénom, pour que tes amis te reconnaissent :`, sentT:"Regarde tes emails", sentP:(e) => `Lien envoyé à ${e}. Touche-le, ou tape ici le code de l'email.`, changeEmail:"changer",
+        tagline:"Vois ce qui tente tes amis à Berlin, et sortez ensemble.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"]], start:"Ton email", go:"Continuer", orEmail:"ou avec ton email", gMineT:"Tes sorties", gMineP:"Tes envies, réservations et ce que tu as vu, à retrouver ici et à partager avec tes amis. Il te faut juste un compte.", gSignin:"Se connecter", gWhy:"Connecte-toi pour garder ça : c'est gratuit et ça prend 10 secondes.", newT:"Bienvenue !", newP:(e) => `Première fois avec ${e}. Ton prénom, pour que tes amis te reconnaissent :`, sentT:"Regarde tes emails", sentP:(e) => `Lien envoyé à ${e}. Touche-le, ou tape ici le code de l'email.`, changeEmail:"changer",
         invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Créer mon compte", joinGo:"Valider", signupHint:"On t'envoie un lien par email pour confirmer. Pas de mot de passe.", linkSent:(e) => `C'est presque fini : on t'a envoyé un lien à ${e}. Ouvre l'email et touche « Confirmer mon inscription ».`, linkHint:"Rien reçu ? Regarde dans les spams, ou réessaie dans une minute.",
         haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", startHint:"Nouveau·elle ou déjà inscrit·e : on s'occupe du reste.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon lien", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
@@ -349,7 +350,7 @@ const L = {
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
         cats:{ theatre:"Theatres", optional:"Opera & concerts", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
-        tagline:"See what your friends want to see in Berlin, and go together.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"]], start:"Your email", go:"Continue", orEmail:"or with your email", newT:"Welcome!", newP:(e) => `First time with ${e}. Your first name, so friends recognise you:`, sentT:"Check your email", sentP:(e) => `We sent a link to ${e}. Tap it, or type the code from the email here.`, changeEmail:"change",
+        tagline:"See what your friends want to see in Berlin, and go together.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"]], start:"Your email", go:"Continue", orEmail:"or with your email", gMineT:"Your outings", gMineP:"What you fancy, what you booked and what you saw, kept here and shared with your friends. You just need an account.", gSignin:"Sign in", gWhy:"Sign in to keep this: it's free and takes 10 seconds.", newT:"Welcome!", newP:(e) => `First time with ${e}. Your first name, so friends recognise you:`, sentT:"Check your email", sentP:(e) => `We sent a link to ${e}. Tap it, or type the code from the email here.`, changeEmail:"change",
         invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Create my account", joinGo:"Confirm", signupHint:"We'll email you a link to confirm. No password.", linkSent:(e) => `Almost done: we sent a link to ${e}. Open the email and tap “Confirm my sign-up”.`, linkHint:"Nothing there? Check your spam, or try again in a minute.",
         haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", startHint:"New or already signed up: we'll take care of the rest.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Email me a link", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
@@ -429,6 +430,10 @@ function facts(x) {
 }
 
 async function api(path, extra = {}) {
+  if (S?.guest && !/^(guest|login\/|invite\/info|teaser)/.test(path)) {
+    if (path === "track") return {};
+    askSignin(); throw Object.assign(new Error("guest"), { info: { error: "guest" }, status: 0 });
+  }
   const headers = { "content-type":"application/json" };
   if (WEB && TOKEN) headers.authorization = "Bearer " + TOKEN;
   const r = await fetch(API_BASE + "/app/api/" + path, { method:"POST", headers, body: JSON.stringify({ ...(INIT ? { initData: INIT } : {}), focus: FOCUS, ...extra }) });
@@ -445,6 +450,7 @@ async function api(path, extra = {}) {
 function setToken(t) { TOKEN = t; try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} }
 /** Message bref : la bulle Telegram dans la mini-app, un bandeau ailleurs. */
 function notify(text, then) {
+  if (S?.guest && st.why) return;   // invité renvoyé vers la connexion : pas de « Erreur » en plus
   if (tgApp?.showAlert) return tgApp.showAlert(text, then);
   document.querySelector(".toast")?.remove();
   const d = document.createElement("div"); d.className = "toast"; d.setAttribute("role", "status"); d.textContent = text;
@@ -516,14 +522,25 @@ async function pushOff() {
   if (sub) { await api("push/unsubscribe", { endpoint: sub.endpoint }).catch(() => {}); await sub.unsubscribe(); }
   st.pushHere = false;
 }
+// Sans compte (web, hors lien d'invitation) : l'app s'ouvre comme pour un compte, avec le programme de tous les lieux ;
+// la connexion vit dans Réglages, et toute action (🙋, réserver…) y mène puis se rejoue une fois connecté·e.
+let GUEST = null;
+const guestMode = () => WEB && !INVITE;
+async function loadGuest() {
+  try { S = GUEST = await api("guest", { lang: T === L.en ? "en" : "fr" }); }
+  catch { GUEST = null; return void landing(); }
+  document.body.classList.remove("landing"); document.querySelector(".top").hidden = false;
+  render();
+}
 async function showLogin() {
-  S = null; shownAt = Date.now();
-  document.querySelector(".top").hidden = true;
+  shownAt = Date.now();
   if (!loginCfg) { try { loginCfg = await api("login/config"); } catch { loginCfg = { email: false }; } }
-  if (INVITE && inviter === undefined) { try { inviter = await api("invite/info", { invite: INVITE }); } catch { inviter = null; } }
-  const lang = `<div class="lpick">${["fr", "en"].map((c) => `<button class="${T === L[c] ? "on" : ""}" data-loginlang="${c}">${c.toUpperCase()}</button>`).join("")}</div>`;
-  const hero = `<section class="hero">${lang}<div class="wm"><small>Berlin</small><b>Encore<i>!</i></b></div>
-    <p class="tag">${esc(T.tagline)}</p></section>`;
+  if (!guestMode()) return void landing();
+  if (!GUEST) return void loadGuest();
+  S = GUEST; st.tab = "set"; st.friend = null; document.body.classList.remove("landing"); document.querySelector(".top").hidden = false;
+  render();
+}
+function loginForm() {
   const signup = (INVITE && inviter) || login.step === "new";
   const known = !!(lsGet("known") || lsGet("pk"));   // cet appareil s'est déjà connecté
 
@@ -551,13 +568,28 @@ async function showLogin() {
        <button class="act on" data-loginemail="1">${esc(known ? T.sendCode : T.go)}</button>`;
   if (PK_OK && lsGet("pk") && !signup && loginCfg.email && (login.useEmail || login.step === "code")) form += `<button class="lnk" data-usepk="1">${esc(T.pkBack)}</button>`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
-  document.body.classList.add("landing");
-  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div></div>`;
+  return form;
+}
+function loginFormReady() {
+  const signup = (INVITE && inviter) || login.step === "new";
   setTimeout(() => ($("lcode") || (signup && !$("gbtn") ? $("lname") : null))?.focus(), 0);
   if ($("gbtn")) googleButton();
   // Face ID dans les suggestions du clavier (champ email), sans 2e bouton : iOS 16+, Chrome, Android.
   if (PK_OK && $("lemail") && !signup && window.PublicKeyCredential.isConditionalMediationAvailable)
     PublicKeyCredential.isConditionalMediationAvailable().then((ok) => ok && pkLogin(true).catch(() => {}), () => {});
+}
+/** Page d'accueil pleine (lien d'invitation, ou programme injoignable). */
+async function landing() {
+  S = null;
+  document.querySelector(".top").hidden = true;
+  if (!loginCfg) { try { loginCfg = await api("login/config"); } catch { loginCfg = { email: false }; } }
+  if (INVITE && inviter === undefined) { try { inviter = await api("invite/info", { invite: INVITE }); } catch { inviter = null; } }
+  const lang = `<div class="lpick">${["fr", "en"].map((c) => `<button class="${T === L[c] ? "on" : ""}" data-loginlang="${c}">${c.toUpperCase()}</button>`).join("")}</div>`;
+  const hero = `<section class="hero">${lang}<div class="wm"><small>Berlin</small><b>Encore<i>!</i></b></div>
+    <p class="tag">${esc(T.tagline)}</p></section>`;
+  document.body.classList.add("landing");
+  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${loginForm()}</div></div>`;
+  loginFormReady();
 }
 // Google Identity Services : script chargé seulement sur l'écran de connexion, bouton officiel dessiné dans #gbtn.
 let gsi = null;
@@ -596,7 +628,9 @@ async function loginCode() {
   }
   showLogin();
 }
+function askSignin() { st.why = true; st.tab = "set"; st.friend = null; st.open = null; render(); window.scrollTo?.(0, 0); }
 function signedIn(token) {
+  if (S?.guest || GUEST) { st.tab = "prog"; st.why = false; GUEST = null; S = null; }
   document.body.classList.remove("landing");
   lsSet("known", "1"); setToken(token); login.step = "email"; login.err = ""; INVITE = "";   // l'inscription a déjà fait la connexion
   if (PARAMS.has("invite")) history.replaceState(null, "", location.pathname);
@@ -627,6 +661,7 @@ async function load() {
     catch { login.err = T.codeExpired; }
   }
   if (WEB && !TOKEN) return void showLogin();
+  GUEST = null;
   try {
     S = await api("state"); T = L[S.lang] || L.fr; document.documentElement.lang = S.lang;
     if (WEB && INVITE) {   // déjà inscrit·e, ouvre le lien de quelqu'un : connectés
@@ -634,6 +669,7 @@ async function load() {
       try { const j = await api("friend", { op: "invite", code }); S = j; if (j.result === "connected") notify(T.nowFriends(j.inviter)); } catch {}
     }
     render();
+    if (st.after) { const a = st.after; st.after = null; st.why = false; act(...a); }
   }
   catch (e) {
     if (e.status === 401 && WEB) return;
@@ -643,6 +679,7 @@ async function load() {
   }
 }
 async function act(op, id, arg, extra = {}) {
+  if (S?.guest) { st.after = [op, id, arg, extra]; return void askSignin(); }
   if (st.busy) return; st.busy = true;
   // « Pas pour moi » : la fiche se grise, puis sort du programme (retrouvable via /ignores dans le chat).
   if (op === "x") {
@@ -1096,6 +1133,14 @@ function render() {
   const K = $("kinds"), W = $("whens"), list = $("list");
   if (!S) return;
   K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog";
+  if (S.guest && st.tab !== "prog") {
+    K.hidden = true; W.hidden = true;
+    if (st.tab === "mine") { list.innerHTML = `<div class="gmine"><b class="ftitle">${esc(T.gMineT)}</b><p>${esc(T.gMineP)}</p><button class="act on" data-tab="set">${esc(T.gSignin)}</button></div>`; return; }
+    if (!loginCfg) { api("login/config").then((c) => { loginCfg = c; }, () => { loginCfg = { email: false }; }).then(render); list.innerHTML = ""; return; }
+    const lang = `<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) => `<button class="act${T === L[c] ? " on" : ""}" data-loginlang="${c}">${l}</button>`).join("")}</div>`;
+    list.innerHTML = `<div class="login gset">${st.why ? `<p class="gwhy">${esc(T.gWhy)}</p>` : ""}<div class="lform">${loginForm()}</div></div>` + dayHead(T.language) + lang;
+    return void loginFormReady();
+  }
   if (st.tab === "set") {
     // Lieux par type : un bouton suit / ne suit plus tous les théâtres (expos, cinémas) d'un coup.
     // Quartier choisi : la liste n'en montre que les lieux, et « Tout suivre » ne vaut que pour eux.
@@ -1171,7 +1216,7 @@ function render() {
     }
     const soldBtn = st.kind !== "expo" && soldCount ? `<div class="soldfoot"><button class="chip" data-hidesold="1" aria-pressed="${!st.hideSold}">${esc(st.hideSold ? T.hideSold : T.hideSoldOff)} · ${soldCount}</button></div>` : "";
     // 1re visite : choisir ses lieux d'abord (disparaît après un passage dans Lieux, une réaction, ou ✕).
-    let onb = false; try { onb = !localStorage.getItem("onbDone") && !S.items.some((x) => x.me && (x.me.star || x.me.booked || x.me.status)); } catch {}
+    let onb = false; try { onb = !S.guest && !localStorage.getItem("onbDone") && !S.items.some((x) => x.me && (x.me.star || x.me.booked || x.me.status)); } catch {}
     const pkHtml = st.pkOffer ? `<div class="onb"><div><b>🔒 ${esc(T.pkOfferT)}</b>${esc(T.pkOfferP)}<br><button class="go" data-pkadd="1">${esc(T.pkYes)} ›</button> &nbsp; <button class="go" style="color:var(--muted)" data-pklater="1">${esc(T.pkLater)}</button></div></div>` : "";
     if (st.pushHere === undefined && pushSupported()) pushState().then(render);
     const pushOffer = false && pushSupported() && !(IOS && !STANDALONE) && st.pushHere === false && !lsGet("pushAsked") && Notification.permission === "default";
@@ -1190,7 +1235,7 @@ function render() {
 }
 /** Tracking (docs/tracking.md) : clics sortants, ajout agenda, partage du lien d'invitation. Silencieux, jamais bloquant. */
 function trackEv(name, item = "", target = "") {
-  if (!S) return;
+  if (!S || S.guest) return;
   const headers = { "content-type": "application/json" }; if (WEB && TOKEN) headers.authorization = "Bearer " + TOKEN;
   fetch(API_BASE + "/app/api/track", { method: "POST", keepalive: true, headers, body: JSON.stringify({ ...(INIT ? { initData: INIT } : {}), name, item, target }) }).catch(() => {});
 }
@@ -1270,7 +1315,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.friendback) { st.friend = null; st.open = null; }
   else if (t.dataset.onbgo || t.dataset.onbx) { try { localStorage.setItem("onbDone", "1"); } catch {} if (t.dataset.onbgo) { st.tab = "set"; st.setTab = "venues"; st.friend = null; window.scrollTo?.(0, 0); } }
   else if (t.dataset.settab) { st.friend = null; st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
-  else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; lsSet("lang", t.dataset.loginlang); document.documentElement.lang = t.dataset.loginlang; writeHash(); return void showLogin(); }
+  else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; lsSet("lang", t.dataset.loginlang); if (S?.guest) { document.documentElement.lang = t.dataset.loginlang; GUEST = null; return void loadGuest(); } document.documentElement.lang = t.dataset.loginlang; writeHash(); return void showLogin(); }
   else if (t.dataset.signup) { return void signup(); }
   else if (t.dataset.loginemail) { return void loginEmail(); }
   else if (t.dataset.logincode) { return void loginCode(); }
@@ -1284,7 +1329,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.savename) { return void saveName($("setname")?.value || ""); }
   else if (t.dataset.editemail !== undefined) { st.editEmail = !!t.dataset.editemail; render(); if (st.editEmail) setTimeout(() => $("setemail")?.focus(), 0); return; }
   else if (t.dataset.saveemail) { return void saveEmail(t.dataset.saveemail === "clear" ? "" : ($("setemail")?.value || "")); }
-  else if (t.dataset.logout) { api("logout").catch(() => {}).finally(() => { setToken(""); st.tab = "prog"; showLogin(); }); return; }
+  else if (t.dataset.logout) { api("logout").catch(() => {}).finally(() => { setToken(""); st.tab = "prog"; GUEST = null; showLogin(); }); return; }
   else if (t.dataset.dismissed) { st.hideDismissed = !st.hideDismissed; try { localStorage.setItem("hideDismissed", st.hideDismissed ? "1" : ""); } catch {} }
   else if (t.dataset.venue) { const v = t.dataset.venue; st.venuesOpen.has(v) ? st.venuesOpen.delete(v) : st.venuesOpen.add(v); }
   else if (t.dataset.wk) wkStep(Number(t.dataset.wk));

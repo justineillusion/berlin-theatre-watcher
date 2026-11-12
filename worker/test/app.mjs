@@ -453,6 +453,15 @@ await step("photo : envoyée, vue par mes connexions à la place du prénom ; re
   const friendState = (await post("/app/api/state", { initData: joss })).json;
   assert.equal(Object.values(friendState.photos).filter((x) => x === pic).length, 1);   // Joss (connecté) la voit
 });
+await step("sans compte : programme de tous les lieux (hors à la carte), rien de personnel", async () => {
+  const r = await post("/app/api/guest", { lang: "en" });
+  assert.equal(r.status, 200); assert.equal(r.json.guest, true); assert.equal(r.json.lang, "en");
+  const ids = r.json.items.map((x) => x.id);
+  assert.ok(ids.includes("p1") && ids.includes("e1") && ids.includes("v1"));   // tous les lieux, pas seulement ceux de quelqu'un
+  assert.ok(r.json.items.every((x) => !x.me && !(x.friends || []).length));    // ni mes réactions ni celles des autres
+  assert.deepEqual(r.json.circle.friends, []); assert.deepEqual(r.json.inbox, []); assert.equal(r.json.email, null);
+  assert.equal((await post("/app/api/act", { op: "i", id: "p1" })).status, 401);   // écrire demande un compte
+});
 await step("Continuer avec Google : nouveau compte actif, puis même compte ; faux jetons refusés", async () => {
   assert.equal((await post("/app/api/login/config", {})).json.google, "gtest");
   const other = generateKeyPairSync("rsa", { modulusLength: 2048 }).privateKey;
