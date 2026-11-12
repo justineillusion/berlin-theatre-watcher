@@ -378,7 +378,7 @@ await step("inscription web sans Telegram : lien d'invitation → prénom + emai
   let r = await post("/app/api/signup", { invite, name: "Nora", email: "Nora@Example.com", lang: "en" });
   assert.equal(r.status, 200);
   const mail = calls.find((c) => c.method === "emails"); assert.deepEqual(mail.to, ["nora@example.com"]);
-  assert.equal(r.json.link, true); assert.ok(!/\b\d{6}\b/.test(mail.text) && !/(?<!#)\b\d{6}\b/.test(mail.html));   // inscription : lien seul, pas de code
+  assert.equal(r.json.link, true); assert.match(mail.text, /\b\d{6}\b/); assert.ok(mail.text.indexOf("login=") < mail.text.search(/\b\d{6}\b/));   // inscription : lien d'abord, code en secours
   assert.match(mail.subject, /sign-up/);
   assert.equal(calls.filter((c) => c.method === "sendMessage").length, 0);
   // pas encore validé : pas dans le cercle de Justine

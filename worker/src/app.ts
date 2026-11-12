@@ -135,30 +135,29 @@ const normEmail = (s: unknown) => String(s ?? "").trim().toLowerCase();
 const APP_URL = (env: Env) => (env.APP_URL || "https://berlin-encore.pages.dev").replace(/\/$/, "");
 
 const MAIL = {
-  fr: { subject: "Ta connexion à Berlin Encore!", hi: (n: string) => `Bonjour ${n},`, code: "Ton code :", or: "Ou touche ce bouton :", btn: "Ouvrir Berlin Encore!", note: "Valable 15 minutes. Si tu n'as rien demandé, ignore cet email." },
-  en: { subject: "Your Berlin Encore! sign-in", hi: (n: string) => `Hi ${n},`, code: "Your code:", or: "Or tap this button:", btn: "Open Berlin Encore!", note: "Valid for 15 minutes. If you didn't ask for this, ignore this email." },
+  fr: { subject: "Ta connexion à Berlin Encore!", hi: (n: string) => `Bonjour ${n},`, p: "Touche ce bouton pour te connecter :", code: "Le lien s'ouvre dans le mauvais navigateur ? Tape ce code dans l'app :", btn: "Ouvrir Berlin Encore!", note: "Valable 15 minutes. Si tu n'as rien demandé, ignore cet email." },
+  en: { subject: "Your Berlin Encore! sign-in", hi: (n: string) => `Hi ${n},`, p: "Tap this button to sign in:", code: "Link opens in the wrong browser? Type this code in the app:", btn: "Open Berlin Encore!", note: "Valid for 15 minutes. If you didn't ask for this, ignore this email." },
 };
-// Inscription : pas de code, juste le bouton de confirmation.
+// Inscription : même email, bouton de confirmation (le code reste en secours).
 const JOIN_MAIL = {
   fr: { subject: "Confirme ton inscription à Berlin Encore!", p: "Touche ce bouton pour confirmer ton inscription :", btn: "Confirmer mon inscription", note: "Valable 15 minutes. Si tu n'as rien demandé, ignore cet email." },
   en: { subject: "Confirm your Berlin Encore! sign-up", p: "Tap this button to confirm your sign-up:", btn: "Confirm my sign-up", note: "Valid for 15 minutes. If you didn't ask for this, ignore this email." },
 };
 
-/** code = null → email d'inscription : seulement le bouton de confirmation. */
-async function sendLoginMail(env: Env, to: string, name: string, lang: Lang, code: string | null, link: string): Promise<boolean> {
+/** Bouton d'abord ; le code en secours (le lien peut s'ouvrir dans Safari au lieu de l'app d'écran d'accueil). join = inscription. */
+async function sendLoginMail(env: Env, to: string, name: string, lang: Lang, code: string, link: string, join = false): Promise<boolean> {
   const M = MAIL[lang], J = JOIN_MAIL[lang];
   const url = `${APP_URL(env)}/app?login=${link}`;
   const button = (label: string) => `<p><a href="${url}" style="display:inline-block;background:#d7263d;color:#fff;padding:12px 18px;text-decoration:none;font-weight:700">${label}</a></p>`;
-  const body = code === null ? `<p>${J.p}</p>${button(J.btn)}`
-    : `<p>${M.code}</p>
-<p style="font-size:32px;font-weight:800;letter-spacing:.15em;margin:4px 0 18px">${code}</p>
-<p>${M.or}</p>${button(M.btn)}`;
+  const body = `<p>${join ? J.p : M.p}</p>${button(join ? J.btn : M.btn)}
+<p style="color:#686e75;font-size:14px;margin-top:22px">${M.code}</p>
+<p style="font-size:26px;font-weight:800;letter-spacing:.15em;margin:4px 0 18px">${code}</p>`;
   const html = `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:16px;color:#111214;max-width:440px">
 <p style="font-size:22px;font-weight:800;margin:0 0 16px">Berlin Encore<span style="color:#d7263d">!</span></p>
 <p>${esc(M.hi(name))}</p>${body}
 <p style="color:#686e75;font-size:13px">${M.note}</p></div>`;
-  const text = code === null ? `${M.hi(name)}\n\n${J.p} ${url}\n\n${M.note}` : `${M.hi(name)}\n\n${M.code} ${code}\n\n${M.or} ${url}\n\n${M.note}`;
-  const subject = code === null ? J.subject : M.subject;
+  const text = `${M.hi(name)}\n\n${join ? J.p : M.p} ${url}\n\n${M.code} ${code}\n\n${M.note}`;
+  const subject = join ? J.subject : M.subject;
   const r = await fetch(`${env.RESEND_API || "https://api.resend.com"}/emails`, {
     method: "POST",
     headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
@@ -177,7 +176,7 @@ async function newSession(env: Env, chat: number): Promise<string> {
 
 /** Code à 6 chiffres + lien, envoyés par email (3 demandes / 15 min). Renvoie l'id de la demande.
  *  withCode = false (inscription) : lien seul ; le code tiré au sort n'est envoyé nulle part, donc inutilisable. */
-async function mailCode(env: Env, chat: number, email: string, name: string, lang: Lang, withCode = true): Promise<string | Response> {
+async function mailCode(env: Env, chat: number, email: string, name: string, lang: Lang, join = false): Promise<string | Response> {
   const recent = await env.DB.prepare("SELECT COUNT(*) n FROM email_logins WHERE chat_id = ? AND created_at > datetime('now', '-15 minutes')")
     .bind(chat).first<{ n: number }>();
   if ((recent?.n ?? 0) >= 3) return Response.json({ error: "too_many" }, { status: 429 });
@@ -189,7 +188,7 @@ async function mailCode(env: Env, chat: number, email: string, name: string, lan
     env.DB.prepare("INSERT INTO email_logins (id, chat_id, code_hash, link_hash) VALUES (?, ?, ?, ?)")
       .bind(id, chat, await sha256(id + code), await sha256(link)),
   ]);
-  if (!(await sendLoginMail(env, email, name, lang, withCode ? code : null, link))) return Response.json({ error: "mail_failed" }, { status: 502 });
+  if (!(await sendLoginMail(env, email, name, lang, code, link, join))) return Response.json({ error: "mail_failed" }, { status: 502 });
   return id;
 }
 
@@ -304,9 +303,9 @@ async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<R
     }
     // Déjà inscrit·e : simple connexion (et connexion à qui invite, faite à la validation).
     else await env.DB.prepare("UPDATE users SET invited_by = COALESCE(invited_by, ?) WHERE chat_id = ? AND chat_id != ?").bind(inviter?.chat_id ?? null, u.chat_id, inviter?.chat_id ?? null).run();
-    // Nouveau compte : lien seul dans l'email (pas de code) ; déjà inscrit·e : connexion habituelle (code + lien).
+    // Nouveau compte : email « confirme ton inscription » ; déjà inscrit·e : connexion habituelle. Les deux : lien + code.
     const join = !!u.pending;
-    const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang), !join);
+    const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang), join);
     return sent instanceof Response ? sent : Response.json({ id: sent, link: join });
   }
   if (path === "/app/api/login/code") {

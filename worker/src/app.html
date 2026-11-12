@@ -255,7 +255,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .lform .note{background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 0;font:500 18px var(--sans);color:var(--ink);box-shadow:none;outline:none}
 .lform .note:focus{border-bottom-color:var(--velvet)}
 .lform .note::placeholder{color:#a0a5ab}
-.lform .act{box-shadow:none!important;border-radius:0;font:800 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:15px 14px}
+.lform .act{box-shadow:none!important;border-radius:0;font:700 16px var(--sans);padding:15px 14px}.lform .lnk.inl{display:inline;padding:0;font-size:inherit}
 .lform .act:not(.on){border:0;background:none;padding:4px;color:var(--muted);letter-spacing:.06em}
 .lform .hint{margin:0}
 .lform .pkhi{margin:-8px 0 0;color:var(--muted);font-size:15px}
@@ -264,7 +264,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .what{list-style:none;margin:10px 0 0;padding:0;border-top:1px solid var(--line)}
 .what li{padding:11px 0;border-bottom:1px solid var(--line);font:400 15px/1.35 var(--sans);color:var(--muted)}.what li b{font-weight:600;color:var(--ink)}
 .sign{text-align:center;font:700 11.5px var(--sans)!important;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.ftitle{font:800 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--velvet)}
+.ftitle{font:700 20px/1.2 var(--sans);letter-spacing:-.01em;color:var(--ink)}
 .inviter{display:flex;align-items:center;gap:0;font:700 16px var(--sans)}
 .inviter .avmid{width:40px;height:40px;margin-right:12px}
 .inviter .avmid.none{display:inline-flex;align-items:center;justify-content:center;font:800 16px var(--sans)}
@@ -324,10 +324,10 @@ const L = {
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
         cats:{ theatre:"Théâtres", optional:"Opéra & concerts", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
-        tagline:"Les scènes, écrans et expos de Berlin, à vivre en anglais, entre amis.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"], ["👯", "Ce qui tente **tes amis**, pour y aller **ensemble**"]],
-        invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Rejoindre", joinGo:"Valider", signupHint:"On t'envoie un lien par email pour confirmer. Pas de mot de passe.", linkSent:(e) => `C'est presque fini : on t'a envoyé un lien à ${e}. Ouvre l'email et touche « Confirmer mon inscription ».`, linkHint:"Rien reçu ? Regarde dans les spams, ou réessaie dans une minute.",
-        haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", start:"Ton email pour commencer", startHint:"Nouveau·elle ou déjà inscrit·e : on s'occupe du reste.", go:"Continuer", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
-        nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon code", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
+        tagline:"Vois ce qui tente tes amis à Berlin, et sortez ensemble.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"]], start:"Ton email", go:"Continuer", newT:"Bienvenue !", newP:(e) => `Première fois avec ${e}. Ton prénom, pour que tes amis te reconnaissent :`, sentT:"Regarde tes emails", sentP:(e) => `Lien envoyé à ${e}. Touche-le, ou tape ici le code de l'email.`, changeEmail:"changer",
+        invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Créer mon compte", joinGo:"Valider", signupHint:"On t'envoie un lien par email pour confirmer. Pas de mot de passe.", linkSent:(e) => `C'est presque fini : on t'a envoyé un lien à ${e}. Ouvre l'email et touche « Confirmer mon inscription ».`, linkHint:"Rien reçu ? Regarde dans les spams, ou réessaie dans une minute.",
+        haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", startHint:"Nouveau·elle ou déjà inscrit·e : on s'occupe du reste.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
+        nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon lien", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
         setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte", admin:"Admin" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en 🙋.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
         cropT:"Cadre ta photo", planIt:"Organiser", planNote:"On y va ensemble ? Quel jour te va ?", forYou:"Pour toi", dismiss:"Retirer", dismissAll:"Tout effacer", inboxT:"Notifications", close:"Fermer", inboxEmpty:"Rien pour l'instant. Quand un ami t'envoie une sortie ou te prend une place, ça arrive ici.",
@@ -348,10 +348,10 @@ const L = {
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
         cats:{ theatre:"Theatres", optional:"Opera & concerts", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
-        tagline:"Berlin's stages, screens and galleries, in English, with friends.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"], ["👯", "What **your friends** fancy, so you can go **together**"]],
-        invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Join", joinGo:"Confirm", signupHint:"We'll email you a link to confirm. No password.", linkSent:(e) => `Almost done: we sent a link to ${e}. Open the email and tap “Confirm my sign-up”.`, linkHint:"Nothing there? Check your spam, or try again in a minute.",
-        haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", start:"Your email to get started", startHint:"New or already signed up: we'll take care of the rest.", go:"Continue", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
-        nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Send my code", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
+        tagline:"See what your friends want to see in Berlin, and go together.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"]], start:"Your email", go:"Continue", newT:"Welcome!", newP:(e) => `First time with ${e}. Your first name, so friends recognise you:`, sentT:"Check your email", sentP:(e) => `We sent a link to ${e}. Tap it, or type the code from the email here.`, changeEmail:"change",
+        invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Create my account", joinGo:"Confirm", signupHint:"We'll email you a link to confirm. No password.", linkSent:(e) => `Almost done: we sent a link to ${e}. Open the email and tap “Confirm my sign-up”.`, linkHint:"Nothing there? Check your spam, or try again in a minute.",
+        haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", startHint:"New or already signed up: we'll take care of the rest.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
+        nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Email me a link", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
         setTabs:{ venues:"Venues", friends:"Friends", account:"Account", admin:"Admin" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
         cropT:"Frame your photo", planIt:"Plan it", planNote:"Shall we go together? Which day works?", forYou:"For you", dismiss:"Dismiss", dismissAll:"Clear all", inboxT:"Notifications", close:"Close", inboxEmpty:"Nothing yet. When a friend sends you an outing or books you a seat, it lands here.",
@@ -360,7 +360,8 @@ const L = {
         fbVenueT:"A venue missing?", fbVenuePh:"Its name, and a link if you have one", fbT:"An idea, a problem?", fbPh:"Tell me everything", fbSend:"Send", fbThanks:"Thanks, it's on its way.", photoT:"My photo", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
-let T = L[new URLSearchParams(location.search).get("lang")] || L.en, S = null;   // accueil en anglais par défaut ; une fois connecté·e : la langue du compte
+let T = L[new URLSearchParams(location.search).get("lang")] || L[(() => { try { return localStorage.getItem("lang"); } catch { return ""; } })()]
+  || ((navigator.languages || [navigator.language || ""]).some((l) => /^fr\b/i.test(l)) ? L.fr : L.en), S = null;   // accueil : langue du téléphone (ou choisie) ; connecté·e : celle du compte
 const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
 st.setArea = "";
@@ -519,7 +520,6 @@ async function showLogin() {
   document.querySelector(".top").hidden = true;
   if (!loginCfg) { try { loginCfg = await api("login/config"); } catch { loginCfg = { email: false }; } }
   if (INVITE && inviter === undefined) { try { inviter = await api("invite/info", { invite: INVITE }); } catch { inviter = null; } }
-  const ios = /iphone|ipad/i.test(navigator.userAgent) && !navigator.standalone ? `<p class="hint">${esc(T.installHint)}</p>` : "";
   const lang = `<div class="lpick">${["fr", "en"].map((c) => `<button class="${T === L[c] ? "on" : ""}" data-loginlang="${c}">${c.toUpperCase()}</button>`).join("")}</div>`;
   const hero = `<section class="hero">${lang}<div class="wm"><small>Berlin</small><b>Encore<i>!</i></b></div>
     <p class="tag">${esc(T.tagline)}</p></section>`;
@@ -527,27 +527,29 @@ async function showLogin() {
   const known = !!(lsGet("known") || lsGet("pk"));   // cet appareil s'est déjà connecté
 
   let form;
+  const emailIn = `<input id="lemail" class="note" type="email" inputmode="email" autocomplete="email webauthn" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">`;
   if (!loginCfg.email) form = PK_OK ? `<button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button>` : `<p>${esc(T.error)}</p>`;
-  else if (login.step === "link") form = `<p>${esc(T.linkSent(login.email))}</p><p class="hint">${esc(T.linkHint)}</p>
-       <button class="act" data-loginback="1">${esc(T.otherEmail)}</button>`;
-  else if (login.step === "code") form = `<p>${esc(T.codeSent(login.email))}</p>
+  // Un seul écran « envoyé » (connexion comme inscription) : on touche le lien, ou on tape le code s'il s'ouvre ailleurs.
+  else if (login.step === "code" || login.step === "link") form = `<b class="ftitle">${esc(T.sentT)}</b><p>${esc(T.sentP(login.email))}</p>
        <input id="lcode" class="note" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="${esc(T.codePh)}">
-       <button class="act on" data-logincode="1">${esc(signup ? T.joinGo : T.signIn)}</button>
-       <button class="act" data-loginback="1">${esc(T.otherEmail)}</button>`;
-  else if (signup) form = (inviter ? `<div class="inviter">${avatar(inviter.photo, inviter.name, "avmid", "me")}<b>${esc(T.invitedBy(inviter.name))}</b></div>` : `<b class="ftitle">${esc(T.newAccount)}</b><p>${esc(T.newAccountHint)}</p>`) + `
+       <p class="hint">${esc(T.linkHint)}</p>
+       <button class="lnk" data-loginback="1">${esc(T.otherEmail)}</button>`;
+  else if (INVITE && inviter) form = `<div class="inviter">${avatar(inviter.photo, inviter.name, "avmid", "me")}<b>${esc(T.invitedBy(inviter.name))}</b></div>
+       <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">${emailIn}
+       <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>`;
+  else if (login.step === "new") form = `<b class="ftitle">${esc(T.newT)}</b><p>${esc(T.newP(login.email))} <button class="lnk inl" data-loginback="1">${esc(T.changeEmail)}</button></p>
        <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">
-       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-       <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>` + (inviter ? "" : `<button class="act" data-loginback="1">${esc(T.haveAccount)}</button>`);
-  else if (PK_OK && lsGet("pk") && !login.useEmail) form = `<b class="ftitle">${esc(T.haveAccount)}</b><p class="pkhi">${esc(T.pkWelcome)}</p>
+       <input id="lemail" type="hidden" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+       <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>`;
+  else if (PK_OK && lsGet("pk") && !login.useEmail) form = `<b class="ftitle">${esc(T.pkWelcome)}</b>
        <button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button>
        <button class="lnk" data-useemail="1">${esc(T.pkUseEmail)}</button>`;
-  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(known ? T.haveAccount : T.start)}</b>
-       <input id="lemail" class="note" type="email" inputmode="email" autocomplete="email webauthn" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.start)}</b>${emailIn}
        <button class="act on" data-loginemail="1">${esc(known ? T.sendCode : T.go)}</button>`;
   if (PK_OK && lsGet("pk") && !signup && loginCfg.email && (login.useEmail || login.step === "code")) form += `<button class="lnk" data-usepk="1">${esc(T.pkBack)}</button>`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
   document.body.classList.add("landing");
-  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div>${ios}</div>`;
+  $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div></div>`;
   setTimeout(() => ($("lcode") || (signup ? $("lname") : null))?.focus(), 0);
   // Face ID dans les suggestions du clavier (champ email), sans 2e bouton : iOS 16+, Chrome, Android.
   if (PK_OK && $("lemail") && !signup && window.PublicKeyCredential.isConditionalMediationAvailable)
@@ -1249,7 +1251,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.friendback) { st.friend = null; st.open = null; }
   else if (t.dataset.onbgo || t.dataset.onbx) { try { localStorage.setItem("onbDone", "1"); } catch {} if (t.dataset.onbgo) { st.tab = "set"; st.setTab = "venues"; st.friend = null; window.scrollTo?.(0, 0); } }
   else if (t.dataset.settab) { st.friend = null; st.setTab = t.dataset.settab; st.editName = st.editEmail = false; window.scrollTo?.(0, 0); }
-  else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; document.documentElement.lang = t.dataset.loginlang; writeHash(); return void showLogin(); }
+  else if (t.dataset.loginlang) { T = L[t.dataset.loginlang]; lsSet("lang", t.dataset.loginlang); document.documentElement.lang = t.dataset.loginlang; writeHash(); return void showLogin(); }
   else if (t.dataset.signup) { return void signup(); }
   else if (t.dataset.loginemail) { return void loginEmail(); }
   else if (t.dataset.logincode) { return void loginCode(); }
