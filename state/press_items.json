@@ -36,14 +36,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "Hedda",
-  "url": "https://www.berliner-ensemble.de/en/production/hedda",
-  "opens": "2026-11-18",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "A Friend in Berlin",
   "url": "https://www.volksbuehne-berlin.de/en/productions/a-friend-in-berlin/20261119-1800/",
@@ -76,14 +68,6 @@
    "Die Seherin",
    "The Seer"
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Dido & Aeneas",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
-  "opens": "2026-11-25",
-  "aliases": []
  },
  {
   "kind": "theatre",
@@ -376,14 +360,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Perfection",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/perfection/20261112-1900/",
-  "opens": "2026-11-12",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "HAU Hebbel am Ufer",
   "title": "Justices",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/clement-papachristou-justices/",
@@ -395,14 +371,6 @@
   "venue": "Berliner Festspiele",
   "title": "MAMI",
   "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/mami",
-  "opens": "2026-11-12",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Orfeo ed Euridice",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/orfeo-ed-euridice.27753/",
   "opens": "2026-11-12",
   "aliases": []
  },
@@ -427,14 +395,6 @@
   "venue": "Chamäleon Berlin",
   "title": "Kintsugi",
   "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
-  "opens": "2026-11-13",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "La Calisto",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
   "opens": "2026-11-13",
   "aliases": []
  },
@@ -476,6 +436,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Orfeo ed Euridice",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/orfeo-ed-euridice.27753/",
+  "opens": "2026-11-14",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Elektra",
   "url": "https://deutscheoperberlin.de/en_EN/production/elektra.1385724",
@@ -491,6 +459,14 @@
   "aliases": [
    "Eugen Onegin"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Calisto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
+  "opens": "2026-11-15",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -715,18 +691,18 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Philharmoniker",
-  "title": "Marek Janowski conducts Bruckner’s Eighth",
-  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57074/",
+  "venue": "Volksbühne",
+  "title": "CURSED – a preinvented world.",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261210-1800/",
   "opens": "2026-12-10",
   "aliases": []
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "CURSED – a preinvented world.",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261211-1900/",
-  "opens": "2026-12-11",
+  "venue": "Berliner Philharmoniker",
+  "title": "Marek Janowski conducts Bruckner’s Eighth",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57074/",
+  "opens": "2026-12-10",
   "aliases": []
  },
  {
