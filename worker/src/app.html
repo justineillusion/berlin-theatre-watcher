@@ -41,6 +41,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .mast time{font:500 13px var(--sans);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 .top{position:sticky;top:0;z-index:3;background:var(--bg);padding:4px 12px 8px;border-bottom:1px solid var(--line)}
 /* Menu principal en bas, sous le pouce (comme une app iPhone). */
+body.landing .tabs,.top[hidden]~main~.tabs{display:none}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:0;right:0;bottom:0;z-index:9;margin:0;background:var(--bg);border-top:2px solid var(--ink);padding-bottom:env(safe-area-inset-bottom,0px)}
 .tabs .tab{padding:14px 4px}
 
@@ -276,15 +277,17 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 <body>
 <header class="mast"><div class="brand"><small>BERLIN</small><b>Berlin Encore<i>!</i></b></div><time id="today"></time></header>
 <div class="top">
-  <div class="tabs" role="tablist">
-    <button class="tab" data-tab="prog" aria-selected="true"></button>
-    <button class="tab" data-tab="mine" aria-selected="false"></button>
-    <button class="tab" data-tab="set" aria-selected="false"></button>
-  </div>
   <div class="filters" id="kinds"></div>
   <div class="filters" id="whens"></div>
 </div>
 <main id="list"><div class="msg">…</div></main>
+<!-- Barre du bas hors de .top : un fixed dans un sticky saute sur iPhone (rebond du scroll). -->
+<nav class="tabs" role="tablist">
+    <button class="tab" data-tab="prog" aria-selected="true"></button>
+    <button class="tab" data-tab="mine" aria-selected="false"></button>
+    <button class="tab" data-tab="set" aria-selected="false"></button>
+</nav>
+
 <script>
 // Deux façons d'ouvrir la page :
 //  - dans Telegram (mini-app) : Telegram signe initData, rien à faire ;
