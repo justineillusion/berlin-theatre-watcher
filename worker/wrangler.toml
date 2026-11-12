@@ -23,6 +23,8 @@ APP_URL = "https://berlinencore.app"
 VAPID_PUBLIC_KEY = "BHFwWuXrB0AN7b9VEYEu3cOC53p4Caz16hrwF_7oVLVpo-BY2jWgYkV5zQhO29OdA-p7JoR_Xr_rqmt6yfwqx2w"
 # Expéditeur des emails de connexion (domaine vérifié chez Resend).
 MAIL_FROM = "Berlin Encore! <bonjour@berlinencore.app>"
+# « Continuer avec Google » : client OAuth web (public ; origine autorisée https://berlinencore.app).
+GOOGLE_CLIENT_ID = "1003324600508-ntesd9ob8s8dqp84368kavmrahh5l1at.apps.googleusercontent.com"
 
 [[d1_databases]]
 binding = "DB"
