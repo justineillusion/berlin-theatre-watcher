@@ -252,7 +252,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .login{padding:22px 20px 40px;gap:22px}
 .landing .login{max-width:460px;margin:0;padding-left:24px;padding-right:24px}   /* aligné sur le logo */
 .lform{display:grid;gap:18px;padding:22px 0 6px;border-top:2px solid var(--ink)}
-.gset{padding-top:8px}.gwhy{color:var(--ink)!important;font-weight:600}.gmine{display:grid;gap:12px;padding:28px 0}.gmine p{margin:0;color:var(--muted)}
+.login.gset{max-width:420px;margin:0;padding:18px 12px 6px}.gset .lform{border-top:0;padding-top:0}.gset .gwhy{margin:0 0 -4px}.gwhy{color:var(--ink)!important;font-weight:600}.gmine{display:grid;gap:12px;padding:28px 0}.gmine p{margin:0;color:var(--muted)}
 .gbtn{min-height:44px;display:flex;justify-content:center}.gor{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}.gor::before,.gor::after{content:"";flex:1;border-top:1px solid var(--line)}
 .lform .note{background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 0;font:500 18px var(--sans);color:var(--ink);box-shadow:none;outline:none}
 .lform .note:focus{border-bottom-color:var(--velvet)}
@@ -430,7 +430,7 @@ function facts(x) {
 }
 
 async function api(path, extra = {}) {
-  if (S?.guest && !/^(guest|login\/|invite\/info|teaser)/.test(path)) {
+  if (S?.guest && !/^(guest|login\/|passkey\/login\/|invite\/info|teaser)/.test(path)) {
     if (path === "track") return {};
     askSignin(); throw Object.assign(new Error("guest"), { info: { error: "guest" }, status: 0 });
   }
@@ -594,7 +594,7 @@ async function landing() {
 // Google Identity Services : script chargé seulement sur l'écran de connexion, bouton officiel dessiné dans #gbtn.
 let gsi = null;
 function googleButton() {
-  gsi = gsi || new Promise((ok, ko) => { const sc = document.createElement("script"); sc.src = "https://accounts.google.com/gsi/client"; sc.async = true; sc.onload = ok; sc.onerror = ko; document.head.appendChild(sc); });
+  gsi = gsi || new Promise((ok, ko) => { const sc = document.createElement("script"); sc.src = "https://accounts.google.com/gsi/client?hl=" + (T === L.fr ? "fr" : "en"); sc.async = true; sc.onload = ok; sc.onerror = ko; document.head.appendChild(sc); });
   gsi.then(() => {
     const el = $("gbtn"); if (!el || !window.google?.accounts?.id) return;
     google.accounts.id.initialize({ client_id: loginCfg.google, callback: googleDone, ux_mode: "popup", auto_select: false, itp_support: true });
@@ -628,7 +628,9 @@ async function loginCode() {
   }
   showLogin();
 }
-function askSignin() { st.why = true; st.tab = "set"; st.friend = null; st.open = null; render(); window.scrollTo?.(0, 0); }
+function askSignin() {
+  if (st.why && st.tab === "set") return;   // déjà sur la connexion : ne pas redessiner (sinon boucle avec Face ID / Google)
+  st.why = true; st.tab = "set"; st.friend = null; st.open = null; render(); window.scrollTo?.(0, 0); }
 function signedIn(token) {
   if (S?.guest || GUEST) { st.tab = "prog"; st.why = false; GUEST = null; S = null; }
   document.body.classList.remove("landing");
