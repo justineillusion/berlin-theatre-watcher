@@ -252,6 +252,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .login{padding:22px 20px 40px;gap:22px}
 .landing .login{max-width:460px;margin:0;padding-left:24px;padding-right:24px}   /* aligné sur le logo */
 .lform{display:grid;gap:18px;padding:22px 0 6px;border-top:2px solid var(--ink)}
+.gbtn{min-height:44px;display:flex;justify-content:center}.gor{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}.gor::before,.gor::after{content:"";flex:1;border-top:1px solid var(--line)}
 .lform .note{background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 0;font:500 18px var(--sans);color:var(--ink);box-shadow:none;outline:none}
 .lform .note:focus{border-bottom-color:var(--velvet)}
 .lform .note::placeholder{color:#a0a5ab}
@@ -324,7 +325,7 @@ const L = {
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
         cats:{ theatre:"Théâtres", optional:"Opéra & concerts", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
-        tagline:"Vois ce qui tente tes amis à Berlin, et sortez ensemble.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"]], start:"Ton email", go:"Continuer", newT:"Bienvenue !", newP:(e) => `Première fois avec ${e}. Ton prénom, pour que tes amis te reconnaissent :`, sentT:"Regarde tes emails", sentP:(e) => `Lien envoyé à ${e}. Touche-le, ou tape ici le code de l'email.`, changeEmail:"changer",
+        tagline:"Vois ce qui tente tes amis à Berlin, et sortez ensemble.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"]], start:"Ton email", go:"Continuer", orEmail:"ou avec ton email", newT:"Bienvenue !", newP:(e) => `Première fois avec ${e}. Ton prénom, pour que tes amis te reconnaissent :`, sentT:"Regarde tes emails", sentP:(e) => `Lien envoyé à ${e}. Touche-le, ou tape ici le code de l'email.`, changeEmail:"changer",
         invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Créer mon compte", joinGo:"Valider", signupHint:"On t'envoie un lien par email pour confirmer. Pas de mot de passe.", linkSent:(e) => `C'est presque fini : on t'a envoyé un lien à ${e}. Ouvre l'email et touche « Confirmer mon inscription ».`, linkHint:"Rien reçu ? Regarde dans les spams, ou réessaie dans une minute.",
         haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", startHint:"Nouveau·elle ou déjà inscrit·e : on s'occupe du reste.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon lien", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
@@ -348,7 +349,7 @@ const L = {
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
         cats:{ theatre:"Theatres", optional:"Opera & concerts", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
-        tagline:"See what your friends want to see in Berlin, and go together.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"]], start:"Your email", go:"Continue", newT:"Welcome!", newP:(e) => `First time with ${e}. Your first name, so friends recognise you:`, sentT:"Check your email", sentP:(e) => `We sent a link to ${e}. Tap it, or type the code from the email here.`, changeEmail:"change",
+        tagline:"See what your friends want to see in Berlin, and go together.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"]], start:"Your email", go:"Continue", orEmail:"or with your email", newT:"Welcome!", newP:(e) => `First time with ${e}. Your first name, so friends recognise you:`, sentT:"Check your email", sentP:(e) => `We sent a link to ${e}. Tap it, or type the code from the email here.`, changeEmail:"change",
         invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Create my account", joinGo:"Confirm", signupHint:"We'll email you a link to confirm. No password.", linkSent:(e) => `Almost done: we sent a link to ${e}. Open the email and tap “Confirm my sign-up”.`, linkHint:"Nothing there? Check your spam, or try again in a minute.",
         haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", startHint:"New or already signed up: we'll take care of the rest.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Email me a link", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
@@ -527,6 +528,8 @@ async function showLogin() {
   const known = !!(lsGet("known") || lsGet("pk"));   // cet appareil s'est déjà connecté
 
   let form;
+  // « Continuer avec Google » d'abord (web seulement : Google refuse les navigateurs intégrés comme Telegram), puis l'email.
+  const gBlock = WEB && loginCfg.google ? `<div id="gbtn" class="gbtn"></div><div class="gor"><span>${esc(T.orEmail)}</span></div>` : "";
   const emailIn = `<input id="lemail" class="note" type="email" inputmode="email" autocomplete="email webauthn" placeholder="${esc(T.emailPh)}" value="${esc(login.email)}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">`;
   if (!loginCfg.email) form = PK_OK ? `<button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button>` : `<p>${esc(T.error)}</p>`;
   // Un seul écran « envoyé » (connexion comme inscription) : on touche le lien, ou on tape le code s'il s'ouvre ailleurs.
@@ -534,7 +537,7 @@ async function showLogin() {
        <input id="lcode" class="note" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="${esc(T.codePh)}">
        <p class="hint">${esc(T.linkHint)}</p>
        <button class="lnk" data-loginback="1">${esc(T.otherEmail)}</button>`;
-  else if (INVITE && inviter) form = `<div class="inviter">${avatar(inviter.photo, inviter.name, "avmid", "me")}<b>${esc(T.invitedBy(inviter.name))}</b></div>
+  else if (INVITE && inviter) form = `<div class="inviter">${avatar(inviter.photo, inviter.name, "avmid", "me")}<b>${esc(T.invitedBy(inviter.name))}</b></div>${gBlock}
        <input id="lname" class="note" autocomplete="given-name" maxlength="40" placeholder="${esc(T.firstNamePh)}" value="${esc(login.name)}">${emailIn}
        <button class="act on" data-signup="1">${esc(T.joinBtn)}</button>`;
   else if (login.step === "new") form = `<b class="ftitle">${esc(T.newT)}</b><p>${esc(T.newP(login.email))} <button class="lnk inl" data-loginback="1">${esc(T.changeEmail)}</button></p>
@@ -544,16 +547,32 @@ async function showLogin() {
   else if (PK_OK && lsGet("pk") && !login.useEmail) form = `<b class="ftitle">${esc(T.pkWelcome)}</b>
        <button class="act on" data-pklogin="1">${esc(T.pkLogin)}</button>
        <button class="lnk" data-useemail="1">${esc(T.pkUseEmail)}</button>`;
-  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}<b class="ftitle">${esc(T.start)}</b>${emailIn}
+  else form = `${INVITE && inviter === null ? `<p class="noreview">${esc(T.badInvite)}</p>` : ""}${gBlock ? gBlock : `<b class="ftitle">${esc(T.start)}</b>`}${emailIn}
        <button class="act on" data-loginemail="1">${esc(known ? T.sendCode : T.go)}</button>`;
   if (PK_OK && lsGet("pk") && !signup && loginCfg.email && (login.useEmail || login.step === "code")) form += `<button class="lnk" data-usepk="1">${esc(T.pkBack)}</button>`;
   if (login.err) form += `<p class="noreview">${esc(login.err)}</p>`;
   document.body.classList.add("landing");
   $("list").innerHTML = `${hero}<div class="login"><div class="lform">${form}</div></div>`;
-  setTimeout(() => ($("lcode") || (signup ? $("lname") : null))?.focus(), 0);
+  setTimeout(() => ($("lcode") || (signup && !$("gbtn") ? $("lname") : null))?.focus(), 0);
+  if ($("gbtn")) googleButton();
   // Face ID dans les suggestions du clavier (champ email), sans 2e bouton : iOS 16+, Chrome, Android.
   if (PK_OK && $("lemail") && !signup && window.PublicKeyCredential.isConditionalMediationAvailable)
     PublicKeyCredential.isConditionalMediationAvailable().then((ok) => ok && pkLogin(true).catch(() => {}), () => {});
+}
+// Google Identity Services : script chargé seulement sur l'écran de connexion, bouton officiel dessiné dans #gbtn.
+let gsi = null;
+function googleButton() {
+  gsi = gsi || new Promise((ok, ko) => { const sc = document.createElement("script"); sc.src = "https://accounts.google.com/gsi/client"; sc.async = true; sc.onload = ok; sc.onerror = ko; document.head.appendChild(sc); });
+  gsi.then(() => {
+    const el = $("gbtn"); if (!el || !window.google?.accounts?.id) return;
+    google.accounts.id.initialize({ client_id: loginCfg.google, callback: googleDone, ux_mode: "popup", auto_select: false, itp_support: true });
+    google.accounts.id.renderButton(el, { theme: "outline", size: "large", text: "continue_with", shape: "rectangular", logo_alignment: "center", width: Math.min(400, el.clientWidth || 320), locale: T === L.fr ? "fr" : "en" });
+  }, () => { $("gbtn")?.closest(".lform")?.querySelector(".gor")?.remove(); $("gbtn")?.remove(); });
+}
+async function googleDone(res) {
+  login.err = "";
+  try { const j = await api("login/google", { credential: res.credential, invite: inviter ? INVITE : "", lang: T === L.en ? "en" : "fr" }); return void signedIn(j.token); }
+  catch (e) { login.err = e.info?.error === "unknown_email" ? T.error : errText(e); showLogin(); }
 }
 async function loginEmail() {
   login.email = ($("lemail")?.value || "").trim(); login.err = "";

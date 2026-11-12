@@ -14,6 +14,8 @@ export interface Env {
   BOT_USERNAME: string;    // sans @, pour le lien d'invitation
   APP_SHORT_NAME?: string; // mini-app (BotFather), défaut « Programme »
   TG_API?: string;         // tests uniquement (faux Telegram local)
+  GOOGLE_CLIENT_ID?: string; // « Continuer avec Google » (client OAuth web, public : wrangler.toml) ; absent = pas de bouton
+  GOOGLE_CERTS?: string;     // tests : autre adresse pour les clés publiques de Google
   RESEND_API_KEY?: string; // connexion par email de l'app web (secret) ; absent = connexion par Telegram
   MAIL_FROM?: string;      // expéditeur, sur un domaine vérifié chez Resend : « Berlin Encore! <bonjour@…> »
   APP_URL?: string;        // adresse publique de l'app (liens des emails), défaut https://berlin-encore.pages.dev

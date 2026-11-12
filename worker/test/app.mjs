@@ -4,7 +4,7 @@
 // le programme renvoyé, et que ⭐ 🙅 ↩︎ 🎟 ✅ ★ passent par le même code que les boutons du chat.
 import { spawn, execSync } from "node:child_process";
 import http from "node:http";
-import { createHmac } from "node:crypto";
+import { createHmac, generateKeyPairSync, createSign } from "node:crypto";
 import { rmSync, writeFileSync } from "node:fs";
 import assert from "node:assert/strict";
 
@@ -12,9 +12,17 @@ const TG_PORT = 8789, W_PORT = 8788, W = `http://127.0.0.1:${W_PORT}`;
 const TOKEN = "123:test", ME = 111, OTHER = 444, GROUP = -999, STATE = ".wrangler/app-test-state";
 
 let calls = [];
+const G = generateKeyPairSync("rsa", { modulusLength: 2048 }), GJWK = { ...G.publicKey.export({ format: "jwk" }), kid: "k1", alg: "RS256", use: "sig" };
+const b64u = (x) => Buffer.from(typeof x === "string" ? x : JSON.stringify(x)).toString("base64url");
+function gToken(claims, key = G.privateKey) {
+  const now = Math.floor(Date.now() / 1000), h = b64u({ alg: "RS256", kid: "k1", typ: "JWT" });
+  const b = b64u({ iss: "https://accounts.google.com", aud: "gtest", iat: now, exp: now + 600, email_verified: true, sub: "g1", ...claims });
+  return `${h}.${b}.${createSign("RSA-SHA256").update(`${h}.${b}`).sign(key).toString("base64url")}`;
+}
 const tgServer = http.createServer((req, res) => {
   let body = ""; req.on("data", (c) => (body += c));
   req.on("end", () => {
+    if (req.url === "/certs") { res.setHeader("content-type", "application/json"); return void res.end(JSON.stringify({ keys: [GJWK] })); }
     calls.push({ method: req.url.split("/").pop(), ...JSON.parse(body || "{}") });
     res.setHeader("content-type", "application/json");
     res.end(JSON.stringify({ ok: true, result: { message_id: 1 } }));
@@ -23,7 +31,7 @@ const tgServer = http.createServer((req, res) => {
 await new Promise((r) => tgServer.listen(TG_PORT, r));
 
 rmSync(STATE, { recursive: true, force: true });
-writeFileSync(".dev.vars", `BOT_TOKEN=${TOKEN}\nAPI_TOKEN=a\nWEBHOOK_SECRET=h\nOWNER_CHAT_ID=${ME}\nBOT_USERNAME=TestBot\nTG_API=http://127.0.0.1:${TG_PORT}\nRESEND_API_KEY=k\nRESEND_API=http://127.0.0.1:${TG_PORT}\nAPP_URL=https://encore.test\n`);
+writeFileSync(".dev.vars", `BOT_TOKEN=${TOKEN}\nAPI_TOKEN=a\nWEBHOOK_SECRET=h\nOWNER_CHAT_ID=${ME}\nBOT_USERNAME=TestBot\nTG_API=http://127.0.0.1:${TG_PORT}\nRESEND_API_KEY=k\nRESEND_API=http://127.0.0.1:${TG_PORT}\nAPP_URL=https://encore.test\nGOOGLE_CLIENT_ID=gtest\nGOOGLE_CERTS=http://127.0.0.1:${TG_PORT}/certs\n`);
 const d1 = (args) => execSync(`npx wrangler d1 execute theatre-bot --local --persist-to ${STATE} ${args}`, { stdio: ["ignore", "pipe", "ignore"] }).toString();
 d1("--file=schema.sql");
 for (const m of ["003_bookings.sql"]) { try { d1(`--file=migrations/${m}`); } catch {} }
@@ -444,6 +452,22 @@ await step("photo : envoyée, vue par mes connexions à la place du prénom ; re
   await post("/app/api/photo", { initData: me, photo: pic });
   const friendState = (await post("/app/api/state", { initData: joss })).json;
   assert.equal(Object.values(friendState.photos).filter((x) => x === pic).length, 1);   // Joss (connecté) la voit
+});
+await step("Continuer avec Google : nouveau compte actif, puis même compte ; faux jetons refusés", async () => {
+  assert.equal((await post("/app/api/login/config", {})).json.google, "gtest");
+  const other = generateKeyPairSync("rsa", { modulusLength: 2048 }).privateKey;
+  for (const bad of [gToken({ email: "gg@example.com" }, other), gToken({ email: "gg@example.com", aud: "x" }), gToken({ email: "gg@example.com", email_verified: false }),
+    gToken({ email: "gg@example.com", exp: 1 }), gToken({ email: "gg@example.com", iss: "evil" }), "nope"])
+    assert.equal((await post("/app/api/login/google", { credential: bad })).status, 401);
+  let r = await post("/app/api/login/google", { credential: gToken({ email: "GG@Example.com", given_name: "Gaby" }), lang: "en" });
+  assert.equal(r.status, 200); const tok = r.json.token;
+  const st = (await bearer("/app/api/state", tok)).json;
+  assert.equal(st.email, "gg@example.com"); assert.equal(st.lang, "en"); assert.ok(st.venues.every((v) => v.followed));
+  r = await post("/app/api/login/google", { credential: gToken({ email: "gg@example.com", given_name: "Gaby" }) });
+  assert.equal(r.status, 200); assert.equal((await bearer("/app/api/state", r.json.token)).json.email, "gg@example.com");
+  // compte email existant : Google connecte le même compte
+  const jo = (await post("/app/api/login/google", { credential: gToken({ email: "nora@example.com", given_name: "X" }) }));
+  assert.equal(jo.status, 200); assert.equal((await bearer("/app/api/state", jo.json.token)).json.lang, "en");
 });
 await step("ajouter au calendrier : .ics en heure de Berlin, rappel 2 h avant", async () => {
   const r = await fetch(`${W}/app/cal/p1.ics?at=202612041930`); const t = await r.text();

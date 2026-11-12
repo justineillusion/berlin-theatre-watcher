@@ -18,6 +18,7 @@
 // on le vérifie (HMAC), on n'a donc ni login ni mot de passe.
 // Les actions passent par le même code que les boutons du chat (handleUpdate) :
 // annonces au groupe, fiches mises à jour, tout reste cohérent.
+import { verifyGoogle } from "./google";
 import { handleUpdate, saveReviewFromApp } from "./bot";
 import { Env, Item, WEB_ID_BASE, esc, getItem, inbox, setting, getReaction, inCircle, loadCircles, itemText, keyboard, send, whenLabel } from "./lib";
 import { acceptFriend, codeOwner, connect, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
@@ -253,7 +254,7 @@ const looksBot = (body: any) => !!String(body.website ?? "").trim() || (typeof b
 const fakeSent = () => Response.json({ id: randomHex(12) });
 
 async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<Response | null> {
-  if (path === "/app/api/login/config") return Response.json({ email: !!env.RESEND_API_KEY, bot: env.BOT_USERNAME, v: BUILD });
+  if (path === "/app/api/login/config") return Response.json({ email: !!env.RESEND_API_KEY, google: env.GOOGLE_CLIENT_ID || undefined, bot: env.BOT_USERNAME, v: BUILD });
   if (path === "/app/api/login/email") {
     if (!env.RESEND_API_KEY) return Response.json({ error: "mail_off" }, { status: 503 });
     if (looksBot(body)) return fakeSent();
@@ -307,6 +308,26 @@ async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<R
     const join = !!u.pending;
     const sent = await mailCode(env, u.chat_id, email, u.first_name, asLang(u.lang), join);
     return sent instanceof Response ? sent : Response.json({ id: sent, link: join });
+  }
+  if (path === "/app/api/login/google") {
+    // « Continuer avec Google » : compte existant → connecté·e ; adresse inconnue → compte créé (prénom Google), comme une inscription validée.
+    if (await tooMany(env, "google:" + ip, 20, 60)) return slowDown();
+    const g = await verifyGoogle(env, body.credential).catch(() => null);
+    if (!g) return Response.json({ error: "bad_google" }, { status: 401 });
+    const inviter = body.invite ? await inviterOf(env, body.invite) : null;
+    let u = await env.DB.prepare("SELECT chat_id, active, pending FROM users WHERE email = ?").bind(g.email)
+      .first<{ chat_id: number; active: number; pending: number }>();
+    if (u && !u.active && !u.pending) return Response.json({ error: "unknown_email" }, { status: 404 });   // compte fermé
+    if (!u) {
+      if (await tooMany(env, "signupall:", 25, 60)) return slowDown();
+      const chat = WEB_ID_BASE + Number(crypto.getRandomValues(new Uint32Array(2)).reduce((a, x) => a * 4096 + (x % 4096), 0));
+      await env.DB.prepare("INSERT INTO users (chat_id, first_name, lang, email, active, pending, invited_by) VALUES (?, ?, ?, ?, 0, 1, ?)")
+        .bind(chat, g.name, asLang(body.lang), g.email, inviter?.chat_id ?? null).run();
+      u = { chat_id: chat, active: 0, pending: 1 };
+    } else if (inviter) await env.DB.prepare("UPDATE users SET invited_by = COALESCE(invited_by, ?) WHERE chat_id = ? AND chat_id != ?").bind(inviter.chat_id, u.chat_id, inviter.chat_id).run();
+    await finishSignup(env, u.chat_id);
+    await track(env, null, u.chat_id, "login_google");
+    return Response.json({ token: await newSession(env, u.chat_id) });
   }
   if (path === "/app/api/login/code") {
     const id = String(body.id ?? ""), code = String(body.code ?? "").replace(/\D/g, "");
