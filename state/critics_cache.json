@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1794488583.434975,
+    "at": 1794572923.4078565,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,8 +784,13 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1794488595.6468287,
+    "at": 1794572935.120593,
     "items": [
+     {
+      "date": "13. November 2026.",
+      "title": "MAMI",
+      "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele/mami-berliner-festspiele"
+     },
      {
       "date": "29. August 2026.",
       "title": "What If Berlin",
@@ -812,7 +817,7 @@
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele/shared-landscapes-berliner-festspiele-caroline-barneaud-und-stefan-kaegi-versammeln-internationale-theaterschaffende-in-brandenburg"
      },
      {
-      "date": "22. Juni 2023.",
+      "date": "Berlin - 22. Juni 2023",
       "title": "idiota",
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele/idiota-berliner-festspiele-marlene-monteiro-freitas-schliesst-sich-in-pandoras-buechse-ein"
      },
@@ -993,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1794488576.589383,
+    "at": 1794572916.3683114,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -1795,7 +1800,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1794488590.544537,
+    "at": 1794572930.072474,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -2638,7 +2643,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/hamlet-berliner-ensemble": {
-   "at": 1794488599.9851258,
+   "at": 1794572939.5851908,
    "published": 1793957711.0,
    "scores": [
     0.0,
@@ -2679,8 +2684,14 @@
    ],
    "theater_ok": true
   },
+  "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele/mami-berliner-festspiele": {
+   "at": 1794572939.4165506,
+   "published": 1794563178.0,
+   "scores": [],
+   "theater_ok": true
+  },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/antigone-der-abschied-alexander-zeldins-familiendrama-um-abschied-trauer-und-verdraengung": {
-   "at": 1794488599.8875985,
+   "at": 1794572939.4813895,
    "published": 1793025056.0,
    "scores": [
     -0.8462,
@@ -3686,11 +3697,11 @@
    "results": []
   },
   "Berlin Review x Volksbühne Volksbühne": {
-   "at": 1794229828.8210297,
+   "at": 1794573028.605262,
    "results": []
   },
   "CURSED": {
-   "at": 1794147049.936151,
+   "at": 1794573181.3500597,
    "results": []
   },
   "CURSED Volksbühne": {
@@ -4038,7 +4049,7 @@
    ]
   },
   "Die Seherin Schaubühne": {
-   "at": 1794229785.4060946,
+   "at": 1794572969.4957292,
    "results": []
   },
   "Die Wildente": {
@@ -4172,11 +4183,11 @@
    ]
   },
   "Disrupt the Default": {
-   "at": 1794229791.5276942,
+   "at": 1794572975.6187153,
    "results": []
   },
   "Disrupt the Default Volksbühne": {
-   "at": 1794229851.6021304,
+   "at": 1794573026.8102546,
    "results": []
   },
   "EXXY": {
@@ -5579,6 +5590,10 @@
     ]
    ]
   },
+  "Marek Janowski conducts Bruckner’s Eighth": {
+   "at": 1794573201.5579362,
+   "results": []
+  },
   "Maxim Emelyanychev conducts Mendelssohn, Mozart and Haydn": {
    "at": 1794398828.5153992,
    "results": []
@@ -5998,12 +6013,20 @@
     ]
    ]
   },
+  "OriginalklangBaroque Christmas music with Les Accents": {
+   "at": 1794573198.3977995,
+   "results": []
+  },
   "OriginalklangIl pomo d’oro & Jakub Józef Orliński": {
    "at": 1794398801.6404707,
    "results": []
   },
   "Piano Recital with Mitsuko Uchida": {
    "at": 1794488864.022916,
+   "results": []
+  },
+  "QuartetBeethoven cycle with the Quatuor Ébène": {
+   "at": 1794573208.1649442,
    "results": []
   },
   "Queen of Spades": {
@@ -6278,7 +6301,7 @@
    ]
   },
   "The Seer Schaubühne": {
-   "at": 1794229835.055846,
+   "at": 1794573011.676775,
    "results": [
     [
      "The Bolaño Project – Das Duo Notfoundyet dilettiert für Euro-Scene und Schauspiel Leipzig mit einer hanebüchen-unterhaltsamen Meta-Als-Ob-Performance zu Bolaños \"2666\"",
