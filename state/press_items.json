@@ -87,14 +87,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Stereophonic",
-  "url": "https://www.schaubuehne.de/en/produktionen/stereophonic.html?ID_Vorstellung=7317&m=398",
-  "opens": "2026-12-04",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Twelfth Night (Was ihr wollt)",
   "url": "https://www.berliner-ensemble.de/en/production/twelfth-night-was-ihr-wollt",
@@ -192,26 +184,18 @@
  },
  {
   "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Extreme Tension. Art between Politics and Society",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/extreme-tension-art-between-politics-and-society/",
-  "opens": "2023-11-18",
+  "venue": "Hamburger Bahnhof",
+  "title": "Shilpa Gupta",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/shilpa-gupta/",
+  "opens": "2026-03-27",
   "aliases": []
  },
  {
   "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Christoph Schlingensief. Deutschlandsuche ’99",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/christoph-schlingensief-deutschlandsuche-99/",
-  "opens": "2025-05-02",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Ruin and Rush",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ruin-and-rush/",
-  "opens": "2026-04-25",
+  "venue": "Hamburger Bahnhof",
+  "title": "CHANEL Commission: Lina Lapelytė. We Make Years Out of Hours",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/chanel-commission-lina-lapelyte-we-make-years-out-of-hours/",
+  "opens": "2026-05-01",
   "aliases": []
  },
  {
@@ -220,6 +204,14 @@
   "title": "Gabriele Stötzer: Dabei sein und nicht schweigen",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/gabriele-stoetzer",
   "opens": "2026-06-19",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "[ materialistin ]",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/materialistin/",
+  "opens": "2026-07-03",
   "aliases": []
  },
  {
@@ -240,14 +232,6 @@
  },
  {
   "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Maurizio Cattelan. NIGHT",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/maurizio-cattelan-night/",
-  "opens": "2026-09-10",
-  "aliases": []
- },
- {
-  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Kreuzberg",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/kreuzberg",
@@ -256,10 +240,50 @@
  },
  {
   "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "Ryuichi Sakamoto",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/ryuichi-sakamoto/",
+  "opens": "2026-09-11",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Carrie Mae Weems — The Heart of the Matter",
+  "url": "https://co-berlin.org/en/programm/ausstellungen/carrie-mae-weems",
+  "opens": "2026-09-12",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Stelios Kallinikou — Cliffs Among Dreams",
+  "url": "https://co-berlin.org/en/program/exhibitions/stelios-kallinikou",
+  "opens": "2026-09-12",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Susanne Kriemann — Im Fieber der Sonne flattern Schmetterlinge im Bauch",
+  "url": "https://co-berlin.org/en/program/exhibitions/susanne-kriemann",
+  "opens": "2026-09-12",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "Fotografiska Berlin",
   "title": "Lauren Greenfield — Social Studies",
   "url": "https://berlin.fotografiska.com/en/exhibitions/lauren-greenfield",
   "opens": "2026-09-26",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "Next Door",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/next-door/",
+  "opens": "2026-10-09",
   "aliases": []
  },
  {
@@ -320,6 +344,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Calisto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
+  "opens": "2026-11-13",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Queen of Spades",
   "url": "https://deutscheoperberlin.de/en_EN/production/queen-of-spades.1385561",
@@ -337,6 +369,14 @@
   "aliases": [
    "Orpheus in der Unterwelt"
   ]
+ },
+ {
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "Sophie Calle",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/sophie-calle/",
+  "opens": "2026-11-13",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -482,14 +522,6 @@
   "venue": "Komische Oper Berlin",
   "title": "Madama Butterfly",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
-  "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Ulay, Ulay & Abramović",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ulay-ulay-abramovic/",
   "opens": "2026-11-28",
   "aliases": []
  },
@@ -662,6 +694,24 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Nabucco",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/nabucco.15505/",
+  "opens": "2026-12-20",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Treading the boards",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
+  "opens": "2026-12-20",
+  "aliases": [
+   "Bretter, die die Welt bedeuten"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Hänsel und Gretel",
   "url": "https://deutscheoperberlin.de/en_EN/production/haensel-und-gretel.1385736",
@@ -683,16 +733,6 @@
   "url": "https://deutscheoperberlin.de/en_EN/production/la-traviata.1385739",
   "opens": "2026-12-26",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Treading the boards",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
-  "opens": "2026-12-26",
-  "aliases": [
-   "Bretter, die die Welt bedeuten"
-  ]
  },
  {
   "kind": "theatre",
@@ -885,14 +925,6 @@
   "aliases": []
  },
  {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Schatten Reich",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/schatten-reich/",
-  "opens": "2027-01-29",
-  "aliases": []
- },
- {
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "King Roger",
@@ -958,6 +990,30 @@
   "title": "Tiffany Sia — Overt Listening: Berlin",
   "url": "https://www.kw-berlin.de/en/exhibitions/tiffany-sia-overt-listening-berlin",
   "opens": "2027-02-12",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Helen Levitt — City at Play",
+  "url": "https://co-berlin.org/en/program/exhibitions/helen-levitt",
+  "opens": "2027-02-13",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Nicolas Polli — To Make Everything You Need a Flower",
+  "url": "https://co-berlin.org/en/program/exhibitions/nicolas-polli",
+  "opens": "2027-02-13",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Amin Yousefi — Defensive Readiness: Revised Edition",
+  "url": "https://co-berlin.org/en/program/exhibitions/amin-yousefi",
+  "opens": "2027-02-13",
   "aliases": []
  },
  {
@@ -1245,14 +1301,6 @@
   "aliases": []
  },
  {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Katharina Sieverding",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/katharina-sieverding/",
-  "opens": "2027-04-24",
-  "aliases": []
- },
- {
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Cast a Diva",
@@ -1413,6 +1461,30 @@
   "aliases": []
  },
  {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Dana Lixenberg — American Images",
+  "url": "https://co-berlin.org/en/program/exhibitions/dana-lixenberg",
+  "opens": "2027-06-05",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Cemile Sahin — DIAMONDS ARE FOREVER",
+  "url": "https://co-berlin.org/en/program/exhibitions/cemile-sahin",
+  "opens": "2027-06-05",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "ZEITFENSTER: Norman Behrendt — Exit",
+  "url": "https://co-berlin.org/en/program/exhibitions/zeitfenster-norman-behrendt",
+  "opens": "2027-06-05",
+  "aliases": []
+ },
+ {
   "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Elim Chan and Seong-Jin Cho with Prokofiev’s Second Piano Concerto",
@@ -1516,6 +1588,22 @@
   "title": "Maria Lassnig — Paris – New York – Berlin",
   "url": "https://berlinischegalerie.de/en/exhibitions/preview/maria-lassnig/",
   "opens": "2027-09-03",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "Dawoud Bey — Berlin / Africa",
+  "url": "https://co-berlin.org/en/program/exhibitions/dawoud-bey",
+  "opens": "2027-09-25",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "C/O Berlin",
+  "title": "After Nature Prize 27 — Jamilah Sabur / Yuyan Wang",
+  "url": "https://co-berlin.org/en/program/exhibitions/after-nature-prize-27",
+  "opens": "2027-09-25",
   "aliases": []
  },
  {
