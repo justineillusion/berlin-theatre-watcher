@@ -1,6 +1,21 @@
 {
  "articles": [
   {
+   "date": "2026-11-13",
+   "dek": "",
+   "entries": [],
+   "headline": "La bola negra film kritik",
+   "is_pick": false,
+   "match": "kultur film la bola negra film kritik",
+   "origin": "sitemap",
+   "outlet": "tip Berlin",
+   "section": "film",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tip-berlin.de/kultur/film/la-bola-negra-film-kritik/",
+   "venues": []
+  },
+  {
    "date": "2026-11-12",
    "dek": "",
    "entries": [],
@@ -4860,6 +4875,36 @@
    "venues": []
   },
   {
+   "date": "2026-11-14",
+   "dek": "Mit Hubert Aiwanger ist ein Politiker verstorben, der polarisiert hat. taz-Leser:innen diskutieren, was im Nachhinein zum guten Ton gehört und wo Verklärung droht mehr...",
+   "entries": [],
+   "headline": "wortwechsel: Wie viel Lob verträgt ein Nachruf?",
+   "is_pick": false,
+   "match": "wortwechsel 6224424 und s alles 2bglueck 2bder 2bwelt",
+   "origin": "search",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/wortwechsel/!6224424/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Die historische Führungskrise um den CEO des Chipherstellers Nvidia Jensen Huang hat Potenzial zur popkulturellen Verarbeitung. Nur wie? mehr...",
+   "entries": [],
+   "headline": "Nvidia-Affäre: Stinknormale Midlifecrisis?",
+   "is_pick": false,
+   "match": "nvidia affaere 6229576",
+   "origin": "feed",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/Nvidia-Affaere/!6229576/",
+   "venues": []
+  },
+  {
    "date": "2026-11-13",
    "dek": "mehr...",
    "entries": [],
@@ -4872,6 +4917,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://taz.de/taz--lage/!6229651/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Fridays for Future demonstriert bundesweit in 70 Städten. In Berlin fordert die Bewegung am Freitag eigentlich nur, dass die Bundesregierung tut, was sie sagt. mehr...",
+   "entries": [],
+   "headline": "Weltklimakonferenz 2026: Klimastreik gegen die Untätigkeit",
+   "is_pick": false,
+   "match": "weltklimakonferenz 2026 6229256 und s was 2bihr 2bwollt",
+   "origin": "search",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/Weltklimakonferenz-2026/!6229256/",
    "venues": []
   },
   {
@@ -4903,6 +4963,23 @@
    "subjects": [],
    "url": "https://taz.de/Synthiepop-Album-von-Michi-Heinkel/!6226739/",
    "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Zum 30-jährigen Jubiläum des Hauses zeigt der Hamburger Bahnhof in Berlin eine Schau Sophie Calles. Die Kuratierung entpuppt sich dabei als verkopft. mehr...",
+   "entries": [],
+   "headline": "Sophie Calle Ausstellung in Berlin: Könnte es besser sein?",
+   "is_pick": false,
+   "match": "sophie calle ausstellung in berlin 6224514 und s sophie 2bcalle",
+   "origin": "search",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/Sophie-Calle-Ausstellung-in-Berlin/!6224514/",
+   "venues": [
+    "Hamburger Bahnhof"
+   ]
   },
   {
    "date": "2026-11-13",
@@ -5090,8 +5167,8 @@
    "entries": [],
    "headline": "„Membering“-Performance in Berlin: Fragmente von Leben zusammensetzen",
    "is_pick": false,
-   "match": "membering performance in berlin 6229465 und s kintsugi",
-   "origin": "search",
+   "match": "membering performance in berlin 6229465",
+   "origin": "feed",
    "outlet": "taz",
    "section": "",
    "stars": null,
@@ -5150,7 +5227,7 @@
    "entries": [],
    "headline": "Glitzerwelt im Botanischen Garten: Auch die Natur braucht ihren Schlaf",
    "is_pick": false,
-   "match": "glitzerwelt im botanischen garten 6229440 und s boden",
+   "match": "glitzerwelt im botanischen garten 6229440 und s zeitfenster",
    "origin": "search",
    "outlet": "taz",
    "section": "",
@@ -5210,8 +5287,8 @@
    "entries": [],
    "headline": "Afrikamera-Filmfestival in Berlin: Stille und Zusammenhalt",
    "is_pick": false,
-   "match": "afrikamera filmfestival in berlin 6229446 und s boden",
-   "origin": "search",
+   "match": "afrikamera filmfestival in berlin 6229446",
+   "origin": "feed",
    "outlet": "taz",
    "section": "",
    "stars": null,
@@ -5347,8 +5424,8 @@
    "entries": [],
    "headline": "Künstler Nicolas Daubanes in Karlsruhe: Sägt man das Gefängnisgitter an, entsteht Eisenpulver",
    "is_pick": false,
-   "match": "kuenstler nicolas daubanes in karlsruhe 6228831 und s justices",
-   "origin": "search",
+   "match": "kuenstler nicolas daubanes in karlsruhe 6228831",
+   "origin": "feed",
    "outlet": "taz",
    "section": "",
    "stars": null,
@@ -5419,6 +5496,21 @@
    "venues": []
   },
   {
+   "date": "2026-11-11",
+   "dek": "Geschlossen stimmen die Republikaner im US-Repräsentantenhaus gegen die Amtsenthebung des „Kriegsministers“. Ein Erfolg für Trump – und ein Problem. mehr...",
+   "entries": [],
+   "headline": "Abstimmung über Pete Hegseth: Den richtigen Zeitpunkt verpasst",
+   "is_pick": false,
+   "match": "abstimmung ueber pete hegseth 6229167 und s zeitfenster",
+   "origin": "search",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/Abstimmung-ueber-Pete-Hegseth/!6229167/",
+   "venues": []
+  },
+  {
    "date": "2026-11-10",
    "dek": "2016 sollte eine Reform des Sexualstrafrechts die Betroffenen von Vergewaltigung besser schützen. Zehn Jahre später sind viele ernüchtert. mehr...",
    "entries": [],
@@ -5482,9 +5574,9 @@
    "date": "2026-11-10",
    "dek": "Im Prater diskutieren Alice Hasters und Khuê Phạm über einen Ort des Erinnerns an den Kolonialismus. Die Frage ist: Wer entscheidet, was erinnert werden soll? mehr...",
    "entries": [],
-   "headline": "Kolonialismus erinnern: Je mehr mitreden, desto besser",
+   "headline": "Kolonialismus erinnern : Je mehr mitreden, desto besser",
    "is_pick": false,
-   "match": "kolonialismus erinnern 6227044 und s 20 2bminuten",
+   "match": "kolonialismus erinnern 6227044 und s kolonialismus 2berinnern",
    "origin": "search",
    "outlet": "taz",
    "section": "",
@@ -5784,8 +5876,8 @@
    "entries": [],
    "headline": "Premiere „Der Teich“ an der Volksbühne: Warten auf die Gewaltexplosion",
    "is_pick": false,
-   "match": "premiere der teich an der volksbuehne 6228346 und s bretter",
-   "origin": "search",
+   "match": "premiere der teich an der volksbuehne 6228346",
+   "origin": "feed",
    "outlet": "taz",
    "section": "",
    "stars": null,
@@ -5816,8 +5908,8 @@
    "entries": [],
    "headline": "Hamlet-Premiere im Berliner Ensemble: D wie Deutschland, Dänemark und Depression",
    "is_pick": false,
-   "match": "hamlet premiere im berliner ensemble 6228339",
-   "origin": "feed",
+   "match": "hamlet premiere im berliner ensemble 6228339 und s hamlet",
+   "origin": "search",
    "outlet": "taz",
    "section": "",
    "stars": null,
@@ -5848,8 +5940,8 @@
    "entries": [],
    "headline": "Begegnung mit dem Autor Jochen Schimmang: Paperback Writer",
    "is_pick": false,
-   "match": "begegnung mit dem autor jochen schimmang 6228233 und s war 2brequiem",
-   "origin": "search",
+   "match": "begegnung mit dem autor jochen schimmang 6228233",
+   "origin": "feed",
    "outlet": "taz",
    "section": "",
    "stars": null,
@@ -8318,6 +8410,23 @@
    "venues": []
   },
   {
+   "date": "2026-08-31",
+   "dek": "Stötzer schälte sich schon zu DDR-Zeiten von Zwängen frei. Zu ihrer aktuellen Soloschau im Berliner Gropius Bau gab sie ein Konzert auf dem Museumsdach. mehr...",
+   "entries": [],
+   "headline": "Dissidentische Kunst Gabriele Stötzers: „Nein, Nö, Nie“",
+   "is_pick": false,
+   "match": "dissidentische kunst gabriele stoetzers 6208507 und s gabriele 2bstoetzer",
+   "origin": "search",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/Dissidentische-Kunst-Gabriele-Stoetzers/!6208507/",
+   "venues": [
+    "Gropius Bau"
+   ]
+  },
+  {
    "date": "2026-08-30",
    "dek": "Die Arena di Verona zieht Opernfans aus aller Welt an. Unsere Autorin durfte als Statistin mit auf die Bühne. mehr...",
    "entries": [],
@@ -8745,7 +8854,7 @@
    "entries": [],
    "headline": "Schauspieler über Kunstfigur: „Lilo Wanders hat eine Schutzfunktion für mich übernommen“",
    "is_pick": false,
-   "match": "schauspieler ueber kunstfigur 6197072 und s orpheus 2bin 2bder 2bunterwelt",
+   "match": "schauspieler ueber kunstfigur 6197072 und s die 2bdreigroschenoper",
    "origin": "search",
    "outlet": "taz",
    "section": "",
@@ -9410,6 +9519,21 @@
    "venues": []
   },
   {
+   "date": "2026-04-27",
+   "dek": "Das Frauenfilmfestival in Dortmund und Köln widmet sich noch mal indigenem Widerstand gegen koloniale Ausbeutung. Der solidarische Austausch passte perfekt. mehr...",
+   "entries": [],
+   "headline": "Widerständiges Frauenfimlfestival: Erzählungen über Kolonialismus und Allmende",
+   "is_pick": false,
+   "match": "widerstaendiges frauenfimlfestival 6174343 und s gabriele 2bstoetzer",
+   "origin": "search",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/Widerstaendiges-Frauenfimlfestival/!6174343/",
+   "venues": []
+  },
+  {
    "date": "2026-04-26",
    "dek": "Anne Leichtfuß hat die antike Tragödie „Antigone“ in Leichte Sprache übersetzt. Sowas verändert den demokratischen Diskurs, sagt die Übersetzerin. mehr...",
    "entries": [],
@@ -10031,6 +10155,21 @@
    "venues": []
   },
   {
+   "date": "2026-01-27",
+   "dek": "Als erste ostdeutsche Künstlerin erhält Gabriele Stötzer den Goslarer Kaiserring. Ein Gespräch über späte Anerkennung und die Kraft der Frauen. mehr...",
+   "entries": [],
+   "headline": "Ehrung für Künstlerin Gabriele Stötzer: „Kein Schwein hat sich für mich interessiert“",
+   "is_pick": false,
+   "match": "ehrung fuer kuenstlerin gabriele stoetzer 6148639 und s gabriele 2bstoetzer",
+   "origin": "search",
+   "outlet": "taz",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://taz.de/Ehrung-fuer-Kuenstlerin-Gabriele-Stoetzer/!6148639/",
+   "venues": []
+  },
+  {
    "date": "2026-01-21",
    "dek": "Nach dem Hamburger Schauspielhaus inszeniert nun auch das Berliner Ensemble Sophokles’ Tragödie. Ruft der Zeitgeist nach alten Heldinnen? mehr...",
    "entries": [],
@@ -10270,6 +10409,36 @@
    "stars": null,
    "subjects": [],
    "url": "https://taz.de/Solidaritaet-unter-Frauen-in-Suedamerika/!6129791/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Die Berliner Kulturszene setzt große Hoffnungen in eine mögliche rot-grün-rote Landesregierung. In den Koalitionsverhandlungen scheint die Kultur aber keine große Rolle zu spielen. Währenddessen geraten Kulturschaffende immer weiter unter Druck.",
+   "entries": [],
+   "headline": "Koalitionsverhandlungen: Berliner Kulturszene fordert mehr Geld",
+   "is_pick": false,
+   "match": "kultur beitrag 2026 11 kultur finanzen berlin koalitionsverhandlungen kuerzungen html",
+   "origin": "feed",
+   "outlet": "rbb24",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.rbb24.de/kultur/beitrag/2026/11/kultur-finanzen-berlin-koalitionsverhandlungen-kuerzungen.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Als Kind wurde er die \"blonde Bombe\" genannt. Viele Jahre später hat Joachim Meyerhoff jetzt ein Kinderbuch geschrieben, in dem er selbst die Hauptrolle spielt. Dabei habe er sich selbst nochmal etwas besser kennengelernt, erzählt er im Interview.",
+   "entries": [],
+   "headline": "Schauspieler Joachim Meyerhoff über sein neues Kinderbuch",
+   "is_pick": false,
+   "match": "kultur beitrag 2026 11 interview joachim meyerhoff kinderbuch josse html",
+   "origin": "feed",
+   "outlet": "rbb24",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.rbb24.de/kultur/beitrag/2026/11/interview-joachim-meyerhoff-kinderbuch-josse.html",
    "venues": []
   },
   {
@@ -12151,10 +12320,25 @@
    "venues": []
   },
   {
-   "date": "2026-11-13",
-   "dek": "Madrigalchor der Hochschule für Musik und Theater München © Marian Lenhard Die Stimme ist das allerschönste Instrument! Der Madrigalchor der Hochschule für Musik und Theater München lässt mein Herz und meine Seele hüpfen. Ein Wahnsinnsklang. Missa Josef Gabriel Rheinberger (1839–1901) Madrigalchor d",
+   "date": "2026-11-14",
+   "dek": "Orchestre Philharmonique de Radio France © Christophe Abramowitz Es kommt nicht so oft vor, dass ein virtuoses Brüderpaar, ein Meisterorchester und ein beeindruckender Dirigent gemeinsam am Podium des Wiener Konzerthauses stehen. An diesem Abend war es so weit. Ich habe selten eine so musikalische u",
    "entries": [],
-   "headline": "Madrigalchor der Hochschule für Musik und Theater München Martin Steidler Musikhochschule, München, 12. November 2026",
+   "headline": "Renaud & Gautier Capuçon, Jaap van Zweden Wiener Konzerthaus, 12. November 2026",
+   "is_pick": false,
+   "match": "renaud gautier capucon jaap van zweden wiener konzerthaus 12 november 2026",
+   "origin": "feed",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/renaud-gautier-capucon-jaap-van-zweden-wiener-konzerthaus-12-november-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Madrigalchor der Hochschule für Musik und Theater München © Marian Lenhard Die Stimme ist das allerschönste Instrument! Der Madrigalchor der Hochschule für Musik und Theater München lässt mein Herz und meine Seele hüpfen. Ein Wahnsinnsklang. Missa Madrigalchor der Hochschule für Musik und Theater Mü",
+   "entries": [],
+   "headline": "Madrigalchor der Hochschule für Musik und Theater München, Martin Steidler Musikhochschule, München, 12. November 2026",
    "is_pick": false,
    "match": "madrigalchor der hochschule fuer musik und theater muenchen martin steidler musikhochschule muenchen 12 november 2026",
    "origin": "feed",
@@ -12166,10 +12350,57 @@
    "venues": []
   },
   {
+   "date": "2026-11-14",
+   "dek": "Marek Janowski und das NDR Elbphilharmonie Orchester Hamburg; Foto Patrik Klein Marek Janowski gilt als einer der letzten großen Vertreter der alten Kapellmeisterschule. Mit handwerklicher Strenge, intellektueller Durchdringung und einer Portion Kompromisslosigkeit setzt er seine musikalischen Anspr",
+   "entries": [],
+   "headline": "Klein beleuchtet kurz 82: Marek Janowski nimmt Abschied Elbphilharmonie, 13. November 2026",
+   "is_pick": false,
+   "match": "klein beleuchtet kurz 82 marek janowski nimmt abschied elbphilharmonie 13 november 2026",
+   "origin": "feed",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/klein-beleuchtet-kurz-82-marek-janowski-nimmt-abschied-elbphilharmonie-13-november-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Cecilia Bartoli © Kristian Schuller Ihr letzter Opernauftritt in der Berliner Staatsoper liegt wohl schon geraume Zeit zurück. Schon lange habe ich Cecilia Bartoli an diesem Ort nicht mehr gesehen. Meine persönlichen Erinnerungen geben nur noch ihre Donna Elvira in Mozarts „Don Giovanni“ her, die si",
+   "entries": [],
+   "headline": "Gluck, Orfeo ed Euridice, Cecilia Bartoli Staatsoper Unter den Linden, Berlin, 12. November 2026",
+   "is_pick": false,
+   "match": "cecilia bartoli glucks orfeo ed euridice staatsoper unter den linden berlin 12 november 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/cecilia-bartoli-glucks-orfeo-ed-euridice-staatsoper-unter-den-linden-berlin-12-november-2026/",
+   "venues": [
+    "Staatsoper Unter den Linden"
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "CD/Blu-ray Besprechung: Die titelgebende Hauptfigur Boris wird von der Inszenierung stiefmütterlich behandelt, in der überbordenden Bilderflut wird sie beinahe zur Nebenrolle. Das ist umso bedauerlicher, als Tomasz Konieczny bei seinem Rollendebüt seine kräftige Bass-Stimme fein nuanciert einsetzt,",
+   "entries": [],
+   "headline": "Modest Mussorgsky, Boris Godunov, Kirill Serebrennikov 13. November 2026",
+   "is_pick": false,
+   "match": "modest mussorgsky boris godunov kirill serebrennikov klassik begeistert de 13 november 2026",
+   "origin": "feed",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/modest-mussorgsky-boris-godunov-kirill-serebrennikov-klassik-begeistert-de-13-november-2026/",
+   "venues": []
+  },
+  {
    "date": "2026-11-13",
    "dek": "Nun wirft Paavo Järvi gemeinsam mit dem Tonhalle-Orchester Zürich seinen Hut in diesen hart umkämpften Ring und legt eine Interpretation von Gustav Mahlers zweiter Sinfonie vor, die den Hörer vom ersten Takt an in deutliche Spannung versetzt und gerade orchestral überzeugt. Gustav Mahler Sinfonie Nr",
    "entries": [],
-   "headline": "Gustav Mahler Sinfonie Nr. 2 „Auferstehung“ Paavo Järvi 13. November 2026",
+   "headline": "Gustav Mahler, Sinfonie Nr. 2 „Auferstehung“, Paavo Järvi 13. November 2026",
    "is_pick": false,
    "match": "gustav mahler sinfonie nr 2 auferstehung paavo jaervi klassik begeistert de 13 november 2026",
    "origin": "feed",
@@ -12343,7 +12574,7 @@
    "headline": "Schweitzers Klassikwelt 176: Biographien von Interpreten von Kleinrollen 10. November 2026",
    "is_pick": false,
    "match": "schweitzers klassikwelt 176 biographien von interpreten von kleinrollen klassik begeistert de 10 november 2026",
-   "origin": "feed",
+   "origin": "search",
    "outlet": "klassik-begeistert",
    "section": "",
    "stars": null,
@@ -12373,7 +12604,7 @@
    "headline": "Francesco Cavalli, La Calisto, Stefan Herheim Staatsoper Unter den Linden Berlin, 8. November 2026 PREMIERE",
    "is_pick": false,
    "match": "francesco cavalli la calisto stefan herheim staatsoper unter den linden berlin 8 november 2026 premiere",
-   "origin": "search",
+   "origin": "feed",
    "outlet": "klassik-begeistert",
    "section": "",
    "stars": null,
@@ -12544,7 +12775,7 @@
    "headline": "Claudio Monteverdi, L’Orfeo, Rolando Villazón Wiener Staatsoper, 3. November 2026",
    "is_pick": false,
    "match": "l orfeo claudio monteverdi rolando villazon wiener staatsoper 3 november 2026",
-   "origin": "feed",
+   "origin": "search",
    "outlet": "klassik-begeistert",
    "section": "",
    "stars": null,
@@ -12799,6 +13030,21 @@
    ]
   },
   {
+   "date": "2026-10-24",
+   "dek": "RChB © Peter Adamik Die Berliner Chöre, Opernhäuser und Orchester gehen in die Stadt. So auch und vor allem der Rundfunkchor Berlin, der mit seiner nun schon traditionellen RundfunkchorLounge, seit einiger Zeit im Heimathafen Neukölln angesiedelt, nicht nur örtlich, sondern auch thematisch den Bezug",
+   "entries": [],
+   "headline": "Rundfunkchor Berlin, Gijs Leenaars, RundfunkchorLounge Heimathafen Neukölln, 22. Oktober 2026",
+   "is_pick": false,
+   "match": "rundfunkchor berlin gijs leenaars rundfunkchorlounge heimathafen neukoelln 22 oktober 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/rundfunkchor-berlin-gijs-leenaars-rundfunkchorlounge-heimathafen-neukoelln-22-oktober-2026/",
+   "venues": []
+  },
+  {
    "date": "2026-10-23",
    "dek": "Krzysztof Bączyk © Ksenia S. Photography Krzysztof Bączyk begann seine Gesangsausbildung an der Jerzy-Kurczewski-Chorschule in Posen. Anschließend absolvierte er ein Gesangsstudium an der dortigen Ignacy-Jan-Paderewski-Musikhochschule und bildete sich an der Opernakademie des Teatr Wielki – National",
    "entries": [],
@@ -12831,6 +13077,23 @@
    ]
   },
   {
+   "date": "2026-10-22",
+   "dek": "Charlotte Larzelere (Manon Lescaut), Alexandre Riabko (Des Grieux), Michal Bialk (am Flügel), Anna Laudere (Marguerite Gautier), Jakob Feyferlik (Armand Duval), Markus Lehtinen (musikalische Leitung), Futaba Ishizaki (Prudence Duvernoy), Matias Oberlin (Gaston Rieux), Olivia Betteridge (Olympia), Em",
+   "entries": [],
+   "headline": "Die Kameliendame, Ballett von John Neumeier Hamburgische Staatsoper, Hamburg Ballett, 21. Oktober 2026",
+   "is_pick": false,
+   "match": "die kameliendame ballett von john neumeier hamburgische staatsoper hamburg ballett 21 oktober 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/die-kameliendame-ballett-von-john-neumeier-hamburgische-staatsoper-hamburg-ballett-21-oktober-2026/",
+   "venues": [
+    "Staatsoper Unter den Linden"
+   ]
+  },
+  {
    "date": "2026-10-21",
    "dek": "Jordan Shanahan (Der Holländer), Lina Lottes (junge Senta), Arnold Schoenberg Chor © Matthias Baus Prädikat „absolut sehens- und hörenswert“! Wenn Sie auf der Kärntner Straße stadtauswärts unterwegs in Richtung Wiener Staatsoper sind, dann gehen Sie die paar Hundert Meter weiter zum MusikTheater an",
    "entries": [],
@@ -12849,6 +13112,23 @@
   },
   {
    "date": "2026-10-21",
+   "dek": "Die Meistersinger von Nürnberg. Daniel Frank (Walther von Stolzing), (vorne) Anke Krabbe (Eva), Martin Gantner (Hans Sachs) © Sandra Then PREMIERE +++ Meistersinger von Nürnberg +++ Opernhaus Düsseldorf, 17. Oktober 2026 Wer eine Aufführung der Meistersinger von Nürnberg besucht, erwartet im Gegensa",
+   "entries": [],
+   "headline": "Richard Wagner, Die Meistersinger von Nürnberg PREMIERE Deutsche Oper am Rhein, Opernhaus Düsseldorf, 17. Oktober 2026",
+   "is_pick": false,
+   "match": "meistersinger von nuernberg richard wagner premiere deutsche oper am rhein opernhaus duesseldorf 17 oktober 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/meistersinger-von-nuernberg-richard-wagner-premiere-deutsche-oper-am-rhein-opernhaus-duesseldorf-17-oktober-2026/",
+   "venues": [
+    "Deutsche Oper Berlin"
+   ]
+  },
+  {
+   "date": "2026-10-21",
    "dek": "© Alpine Baek Die Pianistin Hai-Kyung Suh gehört zu den gefeierten Künstlern der letzten Jahrzehnte. Als eine der ersten koreanischen Musikerinnen, die in Europa und den USA reüssierten, errang sie Spitzenpreise beim Busoni-Wettbewerb und beim ARD-Musikwettbewerb, spielte zahlreiche Aufnahmen für di",
    "entries": [],
    "headline": "kb im Gespräch mit der Pianistin Hai-Kyung Suh, Teil II 22. Oktober 2026",
@@ -12860,6 +13140,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://klassik-begeistert.de/kb-im-gespraech-mit-der-pianistin-hai-kyung-suh-teil-ii-klassik-begeistert-de-22-oktober-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-10-21",
+   "dek": "Daniele Gatti © Oliver Killig Die Staatskapelle Dresden führt Mahlers 10. Sinfonie auf „Mein Gott, wie spielen die denn!“ Semperoper Dresden, 19. Oktober 2026 Gustav Mahler Sinfonie Nr. 10 Fis-Dur (Fassung nach Deryck Cooke) Staatskapelle Dresden Dirigent Daniele Gatti von Henriette Müller Daniele …",
+   "entries": [],
+   "headline": "Gustav Mahler, Sinfonie Nr. 10 Fis-Dur, Staatskapelle Dresden, Daniele Gatti Semperoper Dresden, 19. Oktober 2026",
+   "is_pick": false,
+   "match": "gustav mahler sinfonie nr 10 fis dur staatskapelle dresden daniele gatti semperoper dresden 19 oktber 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/gustav-mahler-sinfonie-nr-10-fis-dur-staatskapelle-dresden-daniele-gatti-semperoper-dresden-19-oktber-2026/",
    "venues": []
   },
   {
@@ -12929,6 +13224,21 @@
    ]
   },
   {
+   "date": "2026-10-19",
+   "dek": "© Lukas Anton Jacques Offenbach Hoffmanns Erzählungen Inszenierung, Bühne und Kostüme: Dennis Krauß Musikalische Leitung: Paul Taubitz Nachmittags-Vorstellung Hessisches Staatstheater Wiesbaden, 18. Oktober 2026 von Dirk Schauß Ein Zirkuszelt ist im Grunde nichts anderes als eine großangelegte Illus",
+   "entries": [],
+   "headline": "Jacques Offenbach, Hoffmanns Erzählungen, Paul Taubitz Hessisches Staatstheater Wiesbaden, 18. Oktober 2026",
+   "is_pick": false,
+   "match": "jacques offenbach hoffmanns erzaehlungen paul taubitz hessisches staatstheater wiesbaden 18 oktober 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/jacques-offenbach-hoffmanns-erzaehlungen-paul-taubitz-hessisches-staatstheater-wiesbaden-18-oktober-2026/",
+   "venues": []
+  },
+  {
    "date": "2026-10-18",
    "dek": "David Afkham © Gisela Schenker David Afkham kehrt nach Hamburg zurück, privat wie beruflich. In der wunderschönen Laeiszhalle dirigiert der in Bayern lebende Maestro Beethoven und Brahms, in der Hamburgischen Staatsoper sieht er mit Frau und Kindern Humperdinck, Ravel und Strawinsky. Dies nicht zule",
    "entries": [],
@@ -12941,6 +13251,23 @@
    "stars": null,
    "subjects": [],
    "url": "https://klassik-begeistert.de/kb-im-gespraech-mit-maestro-david-afkham-dirigent-teil-i-klassik-begeistert-de-19-oktober-2026/",
+   "venues": [
+    "Staatsoper Unter den Linden"
+   ]
+  },
+  {
+   "date": "2026-10-17",
+   "dek": "ARIADNE 2026 E.ROGNERUD E.SIERRA I.ROBERTS A.KAMPE M.GANTNER (c) Geoffroy Schied Mit der aktuellen Wiederaufnahme der Ariadne auf Naxos würdigt die Bayerische Staatsoper nicht nur eine meisterlich minimalistische, inzwischen 18 Jahre alte Inszenierung, sondern feiert ein Fest der Stimmen und der Mus",
+   "entries": [],
+   "headline": "Richard Strauss, Ariadne auf Naxos Bayerische Staatsoper, Nationaltheater, 16. Oktober 2026",
+   "is_pick": false,
+   "match": "richard strauss ariadne auf naxos bayerische staatsoper nationaltheater 16 oktober 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/richard-strauss-ariadne-auf-naxos-bayerische-staatsoper-nationaltheater-16-oktober-2026/",
    "venues": [
     "Staatsoper Unter den Linden"
    ]
@@ -13091,6 +13418,38 @@
    "venues": []
   },
   {
+   "date": "2026-10-03",
+   "dek": "Fotos: Vorstellung vom 13. September 2023 – Floria Tosca: Carmen Giannattasio, Mario Cavaradossi: Martin Muehle, Baron Scarpia: Ludovic Tézier © Bettina Stöß oder: wer Oper liebt, kann nicht mit Tyrannen leben Ja, natürlich schwelgen wir alle in den unvergänglichen Puccini-Melodien, auch bei der Tos",
+   "entries": [],
+   "headline": "Giacomo Puccini, Tosca, Leonardo Sini, Musikalische Leitung Deutsche Oper Berlin, 29. September 2026",
+   "is_pick": false,
+   "match": "giacomo puccini tosca leonardo sini musikalische leitung deutsche oper berlin 29 september 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/giacomo-puccini-tosca-leonardo-sini-musikalische-leitung-deutsche-oper-berlin-29-september-2026/",
+   "venues": [
+    "Deutsche Oper Berlin"
+   ]
+  },
+  {
+   "date": "2026-09-28",
+   "dek": "Gefunden: funpot.net Im Juni 2023 verfassten wir eine „Klassikwelt“ unter dem kurzen Titel „Aber“. Wir stellten fest, dass oft bei Rezensionen dieses Wörtchen zumindest einschränkend gebraucht wird. Diesmal gehen wir der Bedeutung der Wörter „etwas, ein wenig, ein bisschen“ in Opernkritiken nach. Vo",
+   "entries": [],
+   "headline": "Schweitzers Klassikwelt 173: Was bedeutet „etwas“, „ein wenig“, „ein bisschen“ in Kritiken? 29. September 2026",
+   "is_pick": false,
+   "match": "schweitzers klassikwelt 173 was bedeutet etwas ein wenig ein bisschen in kritiken klassik begeistert de 29 september 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/schweitzers-klassikwelt-173-was-bedeutet-etwas-ein-wenig-ein-bisschen-in-kritiken-klassik-begeistert-de-29-september-2026/",
+   "venues": []
+  },
+  {
    "date": "2026-09-28",
    "dek": "PREMIERE ++++ LA VESTALE ++++ STAATSOPER BERLIN Foto © Staatsoper Unter den Linden Mit der Primadonnenpartie der Julia hat die Staatsoper Sonya Yoncheva besetzt. Die stürzt sich beherzt in die einst auch von Maria Callas gesungene Partie, ist damit aber deutlich überfordert. Ihre Stimme klingt abges",
    "entries": [],
@@ -13105,6 +13464,23 @@
    "url": "https://klassik-begeistert.de/premiere-gaspare-spontini-la-vestale-sonya-yoncheva-staatsoper-unter-den-linden-berlin-26-september-2026/",
    "venues": [
     "Staatsoper Unter den Linden"
+   ]
+  },
+  {
+   "date": "2026-09-28",
+   "dek": "Mittwoch © Julian Roeder An dieser vom Chor der Deutschen Oper Berlin und etlichen Instrumentalsolisten außerordentlich dicht musizierten und auf die Bretter gebrachten Oper scheiden sich die Geister: Enthusiasten der Elektronischen Musik, die gegen die esoterische Weltsicht von Karlheinz Stockhause",
+   "entries": [],
+   "headline": "Karlheinz Stockhausen, Mittwoch aus Licht, Maxime Pascal Deutsche Oper Berlin, 27. September 2026",
+   "is_pick": false,
+   "match": "mittwoch aus licht von karlheinz stockhausen maxime pascal deutsche oper berlin 27 september 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/mittwoch-aus-licht-von-karlheinz-stockhausen-maxime-pascal-deutsche-oper-berlin-27-september-2026/",
+   "venues": [
+    "Deutsche Oper Berlin"
    ]
   },
   {
@@ -13135,6 +13511,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://klassik-begeistert.de/stephan-moesch-bayreuth-als-theater-auf-dem-weg-zu-einer-festspielgeschichte-klassik-begeistert-de-27-september-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-09-27",
+   "dek": "Lisa Batiashvili, Dresdner Philharmonie, Leitung Dalia Stasevska © Leoni Ridder Die georgischstämmige Geigerin, Residenzkünstlerin des diesjährigen Beethovenfests, spielt mit Glut und Intensität Sibelius. Die Dresdner Philharmonie spielt unter Daria Stasevska formidabel, wenn auch einige Tempi der K",
+   "entries": [],
+   "headline": "Lisa Batiashvili und Dresdner Philharmonie Beethovenfest 2026, Beethovenhalle Bonn, 25. September 2026",
+   "is_pick": false,
+   "match": "lisa batiashvili und dresdner philharmonie beethovenfest 2026 beethovenhalle bonn 25 september 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/lisa-batiashvili-und-dresdner-philharmonie-beethovenfest-2026-beethovenhalle-bonn-25-september-2026/",
    "venues": []
   },
   {
@@ -13195,6 +13586,36 @@
    "stars": null,
    "subjects": [],
    "url": "https://klassik-begeistert.de/daniels-anti-klassiker-40-richard-strauss-sinfonia-domestica-1904-klassik-begeistert-de-25-september-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-09-23",
+   "dek": "Peter Plate und Ulf Leo Sommer © Ferran Casanova 2026 feiert eines der traditionsreichsten und schönsten Theater Deutschlands seinen 130. Geburtstag – unter dem Motto: “Die Bretter, die Berlin bedeuten.” Der Hundertdreißigste ist kein runder, aber ein bemerkenswerter Geburtstag für ein Theater. Ein",
+   "entries": [],
+   "headline": "130 Jahre Theater des Westens! Theater des Westens, 23. September 2026",
+   "is_pick": false,
+   "match": "130 jahre theater des westens theater des westens 23 september 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/130-jahre-theater-des-westens-theater-des-westens-23-september-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-09-21",
+   "dek": "Sylvain Cambreling © Marco Borrgreve Damit Andreas Schmidt, Herausgeber von keine bösen Zuschriften erhält: Es ist nichts verkehrt daran, sich extrem intensiv für ein spezielles Thema zu interessieren. Ebenso wenig ist es kein Problem, kopflastig oder introvertiert zu sein. Desgl",
+   "entries": [],
+   "headline": "Zwischen den Sätzen 4: Programmgestaltung für Nerds Laeiszhalle Hamburg, 20. September 2026",
+   "is_pick": false,
+   "match": "zwischen den saetzen 4 programmgestaltung fuer nerds laeiszhalle hamburg 20 september 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/zwischen-den-saetzen-4-programmgestaltung-fuer-nerds-laeiszhalle-hamburg-20-september-2026/",
    "venues": []
   },
   {
@@ -13275,6 +13696,21 @@
    "venues": [
     "Deutsche Oper Berlin"
    ]
+  },
+  {
+   "date": "2026-09-06",
+   "dek": "CD-Buch: Die nun erstmals auf Tonträgern offiziell erhältliche Gesamtausgabe der Oper ist hoch willkommen, nicht zuletzt, weil sie instrumental und vokal packend und mitreißend musiziert ist. Sie vermittelt darüber hinaus dank des energischen Zugriffs Erik Nielsens, jenen Zunder, der einen vom Hocke",
+   "entries": [],
+   "headline": "Ferdinand Hérold, Zampa ou La Fiancée de marbre, Bru Zane 6. September 2026",
+   "is_pick": false,
+   "match": "ferdinand herold zampa ou la fiancee de marbre bru zane klassik begeistert de 6 september 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/ferdinand-herold-zampa-ou-la-fiancee-de-marbre-bru-zane-klassik-begeistert-de-6-september-2026/",
+   "venues": []
   },
   {
    "date": "2026-09-05",
@@ -13478,6 +13914,36 @@
    ]
   },
   {
+   "date": "2026-06-21",
+   "dek": "Lorenzo Viotti © Márcia Lessa Sommernachtskonzert, Schönbrunn, Wien, 19. Juni 2026 Wiener Philharmoniker Lorenzo Viotti, Dirigent von Jürgen Pathy „Sie sehen aus, als wären Sie aus einer Modezeitschrift gefallen.“ Das Kompliment nehme ich gerne an. Wann sonst sollte ich mich in Schale werfen als bei",
+   "entries": [],
+   "headline": "Sommernachtskonzert Wiener Philharmoniker, Lorenzo Viotti Schönbrunn, Wien, 19. Juni 2026",
+   "is_pick": false,
+   "match": "sommernachtskonzert wiener philharmoniker lorenzo viotti schoenbrunn wien 19 juni 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/sommernachtskonzert-wiener-philharmoniker-lorenzo-viotti-schoenbrunn-wien-19-juni-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-06-18",
+   "dek": "© Theater Lübeck – Olaf Malzahn „Es lebe der Rausch und der Wahnsinn!“ Was für ein berauschendes Erlebnis, wenn schon die Premiere großartig war, und dann in der Dernière alle noch etwas drauflegen! Jacques Offenbachs „Hoffmanns Erzählungen“ am Theater Lübeck ist vom eisigen Januar bis zum Fast-Mitt",
+   "entries": [],
+   "headline": "Jacques Offenbach, Hoffmanns Erzählungen Theater Lübeck, 18. Juni 2026",
+   "is_pick": false,
+   "match": "jacques offenbach hoffmanns erzaehlungen theater luebeck 18 juni 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/jacques-offenbach-hoffmanns-erzaehlungen-theater-luebeck-18-juni-2026/",
+   "venues": []
+  },
+  {
    "date": "2026-06-08",
    "dek": "Sommerarena © Bühne Baden Von der Sommerarena Baden …zur Staatsoper Wien von Lothar und Sylvia Schweitzer Bühne Baden – Wiener Staatsoper – Ilia Staple Beim Durchblättern der vorbildlich handlichen Programmhefte (16 x 12 cm) der Bühne Baden mit Blick auf Operetten von Jacques Offenbach waren wir übe",
    "entries": [],
@@ -13525,6 +13991,21 @@
    "venues": []
   },
   {
+   "date": "2026-05-11",
+   "dek": "Wonjun Kim, Robin Frindt, Natalie Beck, Viktor Aksentijević , Delia Bacher und Almog Aharoni (Photo Andreas Ströbl) In zahlreichen Opernproduktionen der vergangenen Jahre begeisterten junge Sängerinnen und Sänger aus dem Lübecker Opernstudio das Publikum durch hochprofessionelle und ausgesprochen re",
+   "entries": [],
+   "headline": "SolistInnen des Lübecker Opernstudios Theater Lübeck, 10. Mai 2026",
+   "is_pick": false,
+   "match": "solistinnen des luebecker opernstudios theater luebeck 10 mai 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/solistinnen-des-luebecker-opernstudios-theater-luebeck-10-mai-2026/",
+   "venues": []
+  },
+  {
    "date": "2026-04-28",
    "dek": "DIE EICHE © Jörg Schwarze 3. Klangbilderkonzert mit Werken von Brahms, Dvořák, Schumann und Hindemith In diesen sonnigen Frühlingstagen bietet Lübeck ein wunderbares Musik-Programm an besonderen Orten, auch jenseits des Jugendstil-Theaters und der „Musik- und Kongresshalle“. Nach einem Frühbarock-Ko",
    "entries": [],
@@ -13537,6 +14018,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://klassik-begeistert.de/3-klangbilderkonzert-werke-von-brahms-dvorak-schumann-und-hindemith-kolumbarium-die-eiche-luebeck-27-april-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-04-26",
+   "dek": "Vorstellung der Saison 2026/27 Theater Lübeck, Großes Haus, 24. April 2026 von Dr. Regina Ströbl Das Theater der Hansestadt Lübeck widmete den 24. April 2026 ganz der Vorstellung des Programms der Saison 2026/27. GMD Stefan Vladar, Schauspieldirektor Malte C. Lachmann und Geschäftsführer Caspar Sawa",
+   "entries": [],
+   "headline": "Saisonspielplan 2026/27, Theater Lübeck Theater Lübeck, 24. April 2026",
+   "is_pick": false,
+   "match": "saisonspielplan 2026 27 theater luebeck theater luebeck 24 april 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/saisonspielplan-2026-27-theater-luebeck-theater-luebeck-24-april-2026/",
    "venues": []
   },
   {
@@ -13629,6 +14125,36 @@
    "stars": null,
    "subjects": [],
    "url": "https://klassik-begeistert.de/cd-blu-ray-besprechung-anton-bruckner-sinfonie-nr-3-d-moll-ralf-weikert-dirigent-klassik-begeistert-de-25-februar-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-02-22",
+   "dek": "Krzysztof Urbańsky © Christian Kaufmann Berner Symphonieorchester Krzysztof Urbański / Dirigent María Dueñas / Violine Guillaume Connesson (*1970), Maslenitsa Karol Szymanowski (1882-1937), Konzert für Violine und Orchester Nr. 1 op. 35 Mieczysław Weinberg (1919–1996), Symphonie Nr. 3 h-Moll op. 45",
+   "entries": [],
+   "headline": "Berner Symphonieorchester, Krzysztof Urbański / María Dueñas Casino Bern, 20. Februar 2026",
+   "is_pick": false,
+   "match": "berner symphonieorchester krzysztof urbanski maria duenas casino bern 20 februar 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/berner-symphonieorchester-krzysztof-urbanski-maria-duenas-casino-bern-20-februar-2026/",
+   "venues": []
+  },
+  {
+   "date": "2026-01-26",
+   "dek": "Oslo Philharmonic / Klaus Mäkelä © John-Halvdan-Olsen-Halvorsen Lisa Batiashvili überzeugt einmal mehr in Tschaikowskis Violinkonzert. Pjotr Tschaikowski (1840-1893) – Konzert D-Dur für Violine und Orchester op. 35 Dmitri Schostakowitsch (1906-1975) – Sinfonie Nr. 8 c-Moll op. 65 Oslo Philharmonic L",
+   "entries": [],
+   "headline": "Oslo Philharmonic, Lisa Batiashvili, Klaus Mäkelä, Dirigat Philharmonie Essen, 24. Januar 2026",
+   "is_pick": false,
+   "match": "oslo philharmonic lisa batiashvili klaus maekelae dirigent philharmonie essen 24 januar 2026",
+   "origin": "search",
+   "outlet": "klassik-begeistert",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://klassik-begeistert.de/oslo-philharmonic-lisa-batiashvili-klaus-maekelae-dirigent-philharmonie-essen-24-januar-2026/",
    "venues": []
   },
   {
@@ -13754,6 +14280,231 @@
    "venues": [
     "Staatsoper Unter den Linden"
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Wer was Warmes essen möchte, aber keine Lust hat zu kochen, muss nicht zwingend ausgehen oder bestellen. Die Lösung: Spaghetti Pippolino, mit Petersilie und Pfeffer.",
+   "entries": [],
+   "headline": "Spaghetti Pippolino: Easy Nudeln",
+   "is_pick": false,
+   "match": "zeit magazin 2026 49 spaghetti pippolino pasta rezept",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/zeit-magazin/2026/49/spaghetti-pippolino-pasta-rezept",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Katherina Reiches Vorschlag zum Spritpreisdeckel würde aktuell nicht greifen, bemängelt SPD-Fraktionschef Miersch. Er forderte Nachbesserungen bis Mitte Dezember.",
+   "entries": [],
+   "headline": "Spritpreisdeckel: SPD kritisiert Reiches Vorschlag zum Spritpreisdeckel als unzureichend",
+   "is_pick": false,
+   "match": "politik deutschland 2026 11 spritpreisdeckel katherina reiche cdu spd tankrabatt gxe",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/politik/deutschland/2026-11/spritpreisdeckel-katherina-reiche-cdu-spd-tankrabatt-gxe",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Ein Nato-Beitritt der Ukraine ist wohl Thema bei den Friedensverhandlungen. Im Gegenzug hätten die USA einen Verzicht auf den Donbass ins Gespräch gebracht. Das Liveblog",
+   "entries": [],
+   "headline": "Krieg gegen die Ukraine: USA sehen laut Selenskyj Nato-Beitritt gegen Gebietsabtritt als Option",
+   "is_pick": false,
+   "match": "politik ausland ukraine krieg news liveblog",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/politik/ausland/ukraine-krieg-news-liveblog",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Tauscht die Ukraine Gebiete gegen eine Nato-Perspektive? Wolodymyr Selenskyj zufolge haben die USA diesen Vorschlag gemacht. Die Frage sei erstmals gestellt worden.",
+   "entries": [],
+   "headline": "Nato-Beitritt der Ukraine: USA schlagen laut Selenskyj Nato-Beitritt gegen Gebietsabtritt vor",
+   "is_pick": false,
+   "match": "politik ausland 2026 11 nato beitritt ukraine usa wolodymyr selenskyj gebietsverzicht gxe",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/politik/ausland/2026-11/nato-beitritt-ukraine-usa-wolodymyr-selenskyj-gebietsverzicht-gxe",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "2. Fußball-Bundesliga: Wegen Notfalls: Dynamo sagt Mitgliederversammlung ab",
+   "is_pick": false,
+   "match": "news 2026 11 14 wegen notfalls dynamo sagt mitgliederversammlung ab",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/wegen-notfalls-dynamo-sagt-mitgliederversammlung-ab",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Totenmesse in München: Staatsmann und Mensch: Söder und Aigner ehren Aiwanger",
+   "is_pick": false,
+   "match": "news 2026 11 14 staatsmann und mensch soeder und aigner ehren aiwanger",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/staatsmann-und-mensch-soeder-und-aigner-ehren-aiwanger",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Parteitag: Sachsens CDU will sich für die Zukunft rüsten",
+   "is_pick": false,
+   "match": "news 2026 11 14 sachsens cdu will sich fuer die zukunft ruesten",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/sachsens-cdu-will-sich-fuer-die-zukunft-ruesten",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "CDU-Landesparteitag: Merz räumt ein: Deutschland 2040 nicht gut genug erklärt",
+   "is_pick": false,
+   "match": "news 2026 11 14 merz raeumt ein deutschland 2040 nicht gut genug erklaert",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/merz-raeumt-ein-deutschland-2040-nicht-gut-genug-erklaert",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Zwei Verletzte: Krampfanfall am Steuer löst Unfallserie aus",
+   "is_pick": false,
+   "match": "news 2026 11 14 krampfanfall am steuer loest unfallserie aus",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/krampfanfall-am-steuer-loest-unfallserie-aus",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Parteibasis sagt «Ja»: Grüne stimmen Koalitionsvertrag für MV zu",
+   "is_pick": false,
+   "match": "news 2026 11 14 gruene stimmen koalitionsvertrag fuer mv zu",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/gruene-stimmen-koalitionsvertrag-fuer-mv-zu",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Feuer auf der Autobahn: Ehepaar rettet sich aus brennendem Auto auf der A9",
+   "is_pick": false,
+   "match": "news 2026 11 14 ehepaar rettet sich aus brennendem auto auf der a9",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/ehepaar-rettet-sich-aus-brennendem-auto-auf-der-a9",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "1,0 Promille: Betrunken überholt - Auto wird in Waldstück geschleudert",
+   "is_pick": false,
+   "match": "news 2026 11 14 betrunken ueberholt auto wird in waldstueck geschleudert",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/news/2026-11/14/betrunken-ueberholt-auto-wird-in-waldstueck-geschleudert",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Tesla ​bietet sein Robotaxi Cybercab ausgewählten Kunden zur privaten Nutzung an. Autonomes Fahren wird jedoch nur in einzelnen US-Städten verfügbar sein.",
+   "entries": [],
+   "headline": "Cybercab: Tesla lässt ausgewählte Käufer in den USA Cybercab vorbestellen",
+   "is_pick": false,
+   "match": "mobilitaet 2026 11 tesla robotaxi cybercab private nutzung ashok elluswamy gxe",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/mobilitaet/2026-11/tesla-robotaxi-cybercab-private-nutzung-ashok-elluswamy-gxe",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Voyager 1 ist so weit weg von der Erde wie noch nie ein menschengemachtes Objekt. Auf ihrem Weg in die Unendlichkeit passiert die Raumsonde nun eine historische Wegmarke.",
+   "entries": [],
+   "headline": "Nasa-Sonde Voyager 1: Licht von gestern",
+   "is_pick": false,
+   "match": "2026 49 nasa voyager 1 raumsonde lichttag entfernung all",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/2026/49/nasa-voyager-1-raumsonde-lichttag-entfernung-all",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Von Bielefeld nach Guatemala: Der Auswanderer Clemens Luhmann hat eine Biografie seines berühmten Soziologen-Vaters geschrieben. Ein Besuch beim Sohn am Atitlán-See.",
+   "entries": [],
+   "headline": "Biografie von Niklas Luhmann: Niklas Luhmann, ganz privat",
+   "is_pick": false,
+   "match": "2026 49 biografie niklas luhmann clemens soziologie systemtheorie",
+   "origin": "feed",
+   "outlet": "Zeit",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.zeit.de/2026/49/biografie-niklas-luhmann-clemens-soziologie-systemtheorie",
+   "venues": []
   },
   {
    "date": "2026-11-13",
@@ -14473,21 +15224,6 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.zeit.de/politik/deutschland/2026-11/kuerzungen-bundeshaushalt-spd-familien-wohngeld-elterngeld-gxe",
-   "venues": []
-  },
-  {
-   "date": "2026-11-10",
-   "dek": "Russlands Außenminister macht eine Waffenruhe von einer neuen Sicherheitsarchitektur in Europa abhängig. In Abu Dhabi laufen Gespräche über ein Kriegsende. Das Liveblog",
-   "entries": [],
-   "headline": "Krieg gegen die Ukraine: Russland lehnt Waffenruhe in der Ukraine vorerst ab",
-   "is_pick": false,
-   "match": "politik ausland ukraine krieg news liveblog",
-   "origin": "feed",
-   "outlet": "Zeit",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.zeit.de/politik/ausland/ukraine-krieg-news-liveblog",
    "venues": []
   },
   {
@@ -15271,6 +16007,96 @@
    "venues": []
   },
   {
+   "date": "2026-11-14",
+   "dek": "„Das ist natürlich so ein gemeinsamer digitaler Lagerfeuer-Moment“, sagt WELT-Wirtschaftsredakteur Benedikt Fuest zum Release von GTA VI: „Die Leute kaufen das blind. Das ist ein großer Vertrauensvorschuss, den das Studio da hat.“",
+   "entries": [],
+   "headline": "„Das wird der größte popkulturelle Spielmoment in der Geschichte der Unterhaltungsindustrie“",
+   "is_pick": false,
+   "match": "kultur video6af829fc4495f9bd85b7f9ba gta vi das wird der groesste popkulturelle spielmoment in der geschichte der unterhaltungsindustrie html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/video6af829fc4495f9bd85b7f9ba/gta-vi-das-wird-der-groesste-popkulturelle-spielmoment-in-der-geschichte-der-unterhaltungsindustrie.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Lieber triebhafte Unternehmer als prüde Soziologinnen: Die Welt kann auf Leute wie Jensen Huang nicht verzichten. Kleinliche Sexualmoral sollte kein Hindernis sein.",
+   "entries": [],
+   "headline": "Nach Nvidia brauchen wir ordentliche Mätressen statt gschlamperte Verhältnisse",
+   "is_pick": false,
+   "match": "kultur stuetzen der gesellschaft plus6af72eb57f8bbad09ea627eb sex und der westen nach nvidia brauchen wir ordentliche maetressen statt gschlamperte verhaeltnisse html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/stuetzen-der-gesellschaft/plus6af72eb57f8bbad09ea627eb/sex-und-der-westen-nach-nvidia-brauchen-wir-ordentliche-maetressen-statt-gschlamperte-verhaeltnisse.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Bernard-Henri Lévy erscheint mit Personenschützern zum Interview und wie immer nimmt Frankreichs Star-Philosoph kein Blatt vor den Mund. „Wir haben die Jugend geopfert“, sagt er. Und erklärt, warum Europa am Abgrund steht.",
+   "entries": [],
+   "headline": "„Länder sind wie Menschen. Auch sie können Selbstmord begehen“",
+   "is_pick": false,
+   "match": "kultur plus6af6b5ca5a72dceba1d60fde bernard henri levy laender sind wie menschen auch sie koennen selbstmord begehen html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/plus6af6b5ca5a72dceba1d60fde/bernard-henri-levy-laender-sind-wie-menschen-auch-sie-koennen-selbstmord-begehen.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Eric Dane ist an ALS gestorben, seine „Famous Last Words“ haben Millionen gerührt. Doch der Schauspieler hat auch ein Buch hinterlassen, in dem er von seiner Erkrankung erzählt. Vom ersten Symptom bis zur letzten Einsicht.",
+   "entries": [],
+   "headline": "Er kann sie nicht umarmen, er kann seine Arme nicht mehr heben. Dann weinen beide",
+   "is_pick": false,
+   "match": "kultur plus6af5be555596369bf0edd330 als opfer eric dane es ist was wir befuerchtet haben html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/plus6af5be555596369bf0edd330/als-opfer-eric-dane-es-ist-was-wir-befuerchtet-haben.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Nina Hoss ist eine der wenigen weltweit erfolgreichen deutschen Schauspielerinnen. Wie sie Professor McGonagall im ersten Harry-Potter-Hörspiel wurde. Und was sie als Kranke im Pandemie-Drama „Die andere Seite“ gelernt hat.",
+   "entries": [],
+   "headline": "„Auf was es ankommt? Auf die Menschlichkeit“",
+   "is_pick": false,
+   "match": "kultur plus6af2ba3c0caaf73de09f97a7 schauspielstar nina hoss auf was es ankommt auf die menschlichkeit html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/plus6af2ba3c0caaf73de09f97a7/schauspielstar-nina-hoss-auf-was-es-ankommt-auf-die-menschlichkeit.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "„Godzilla Minus Zero“ bricht an den Kinokassen alle Rekorde. Das liegt an der richtigen Mischung: Elemente aus 70 Jahren Monsterechsen-Spektakel treffen auf Innovationen, die nicht nur technischer Natur sind.",
+   "entries": [],
+   "headline": "Das Geheimnis von „Monster Zero“",
+   "is_pick": false,
+   "match": "kultur article6af803104495f9bd85b7f77d neuer godzilla film das geheimnis von monster zero html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/article6af803104495f9bd85b7f77d/neuer-godzilla-film-das-geheimnis-von-monster-zero.html",
+   "venues": []
+  },
+  {
    "date": "2026-11-13",
    "dek": "Sartre rief zur Ermordung von Weißen auf – und wurde nicht von der Justiz behelligt. Houellebecq sagt „Widerstand“ gegen den Islam voraus – und bekommt einen Prozess. Wie in Frankreich ein Klima geschaffen wurde, in dem so etwas möglich ist.",
    "entries": [],
@@ -15313,6 +16139,51 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.welt.de/kultur/plus6af4511de22aeb948141fb66/kollapsologie-als-ideologie-wir-spueren-schon-lange-dass-es-zu-ende-geht.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Als Marko Perković alias Thompson vor Kurzem in Stuttgart auftrat, waren faschistische Slogans im Publikum zu lesen. Jetzt tritt er in Frankfurt auf. Wer ist der Sänger, der in seiner Heimat schon vor einer halben Million Menschen sang?",
+   "entries": [],
+   "headline": "„Za Dom – Spremni!“ – Er singt für Gott und Kroatien",
+   "is_pick": false,
+   "match": "kultur plus6af40ba25d6c43adf40ca0be rockstar thompson za dom spremni er singt fuer gott und kroatien html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/plus6af40ba25d6c43adf40ca0be/rockstar-thompson-za-dom-spremni-er-singt-fuer-gott-und-kroatien.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Acht Jahre nach seiner Verbannung aus Hollywood ist Johnny Depp wieder da. In „Ebenezer“ spielt er einen geläuterten Menschenfeind. Wie eine Weihnachtsgeschichte zum Horrorfilm wird – und ein Star seine neue Lebensrolle findet.",
+   "entries": [],
+   "headline": "Johnny Depp bittet um Vergebung",
+   "is_pick": false,
+   "match": "kultur kino article6af6c65a7f8bbad09ea61c2b ebenezer im kino johnny depp bittet um vergebung html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/kino/article6af6c65a7f8bbad09ea61c2b/ebenezer-im-kino-johnny-depp-bittet-um-vergebung.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Der letzte Song von Sängerin Bonnie Tyler erscheint zur Adventszeit. In „Love, Light and Peace“ singt die im Juli gestorbene Musikerin von Menschen, die „in unseren Herzen weiterleben“.",
+   "entries": [],
+   "headline": "„And to all, good night“ – posthumer Weihnachtssong von Bonnie Tyler veröffentlicht",
+   "is_pick": false,
+   "match": "kultur article6af7363a27adfb0b7bb2d690 love light and peace and to all good night posthumer weihnachtssong von bonnie tyler veroeffentlicht html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/article6af7363a27adfb0b7bb2d690/love-light-and-peace-and-to-all-good-night-posthumer-weihnachtssong-von-bonnie-tyler-veroeffentlicht.html",
    "venues": []
   },
   {
@@ -15466,6 +16337,21 @@
    "venues": []
   },
   {
+   "date": "2026-11-12",
+   "dek": "Afrikanische Jutesäcke, deutsche Lokomotiven, archaische Tattoos: Der international gefeierte Künstler Ibrahim Mahama verbindet Ghanas Kolonialgeschichte mit den Spuren des Welthandels – jetzt im Ausstellungshaus eines Pariser Schmuckkonzerns.",
+   "entries": [],
+   "headline": "„Kunst so gewöhnlich wie möglich machen“",
+   "is_pick": false,
+   "match": "kultur article6ae21dfcd1f524f7ccaa9a38 ibrahim mahama der kuenstler der aus den narben der geschichte kunst macht html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/article6ae21dfcd1f524f7ccaa9a38/ibrahim-mahama-der-kuenstler-der-aus-den-narben-der-geschichte-kunst-macht.html",
+   "venues": []
+  },
+  {
    "date": "2026-11-11",
    "dek": "Der World Jewish Congress hat Mathias Döpfner, den Vorstandsvorsitzenden von Axel Springer, mit dem Theodor Herzl-Preis ausgezeichnet. In seiner Dankesrede erinnerte Döpfner an Deutschlands Verantwortung für den Schutz jüdischen Lebens.",
    "entries": [],
@@ -15525,6 +16411,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.welt.de/kultur/plus6af2ddca3bc207dbe197fff0/die-ringe-der-macht-so-wird-aus-der-teuersten-auch-noch-die-langweiligste-serie-der-welt.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-11",
+   "dek": "Wer war William Shakespeare und wer schrieb seine genialen Stücke? Neue KI-Analysen haben das größte Rätsel der Literaturgeschichte gelöst. Die Verfechter der „Oxford-Hypothese“ können einpacken. Doch die neue Gewissheit reicht noch weiter.",
+   "entries": [],
+   "headline": "Da ist sie, die Lösung des Shakespeare-Rätsels",
+   "is_pick": false,
+   "match": "kultur plus6aed97c6a389bc337cfc79f0 shakespeare wie ki das raetsel um die urheberschaft seiner stuecke loest html",
+   "origin": "feed",
+   "outlet": "Welt",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.welt.de/kultur/plus6aed97c6a389bc337cfc79f0/shakespeare-wie-ki-das-raetsel-um-die-urheberschaft-seiner-stuecke-loest.html",
    "venues": []
   },
   {
@@ -18472,6 +19373,111 @@
    "venues": []
   },
   {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Philippe jaroussky im kammermusiksaal in dieser stimme liegt ein stuck vom gluck",
+   "is_pick": false,
+   "match": "kultur philippe jaroussky im kammermusiksaal in dieser stimme liegt ein stuck vom gluck 16284558 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/philippe-jaroussky-im-kammermusiksaal-in-dieser-stimme-liegt-ein-stuck-vom-gluck-16284558.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Preisverleihung kitschkrieg ubt heftige kritik an radiosender 1live",
+   "is_pick": false,
+   "match": "kultur dpa preisverleihung kitschkrieg ubt heftige kritik an radiosender 1live 16281976 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/dpa-preisverleihung-kitschkrieg-ubt-heftige-kritik-an-radiosender-1live-16281976.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Auszeichnungen sandra huller doppelt fur europaischen filmpreis nominiert",
+   "is_pick": false,
+   "match": "kultur dpa auszeichnungen sandra huller doppelt fur europaischen filmpreis nominiert 16284457 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/dpa-auszeichnungen-sandra-huller-doppelt-fur-europaischen-filmpreis-nominiert-16284457.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Dokumentarfilm uber helene weigel berlins larmendste schauspielerin gewinnt ihre stimme zuruck",
+   "is_pick": false,
+   "match": "kultur dokumentarfilm uber helene weigel berlins larmendste schauspielerin gewinnt ihre stimme zuruck 16278755 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/dokumentarfilm-uber-helene-weigel-berlins-larmendste-schauspielerin-gewinnt-ihre-stimme-zuruck-16278755.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Der autor hendrik bolz uber rohe mannlichkeit ich musste mir diesen panzer zulegen denn mein grundgefuhl war angst",
+   "is_pick": false,
+   "match": "kultur der autor hendrik bolz uber rohe mannlichkeit ich musste mir diesen panzer zulegen denn mein grundgefuhl war angst 16246769 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/der-autor-hendrik-bolz-uber-rohe-mannlichkeit-ich-musste-mir-diesen-panzer-zulegen-denn-mein-grundgefuhl-war-angst-16246769.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Band meldet sich mit carnaval de luz zuruck auf ihrem 16 studioalbum klingen u2 knackfrisch",
+   "is_pick": false,
+   "match": "kultur band meldet sich mit carnaval de luz zuruck auf ihrem 16 studioalbum klingen u2 knackfrisch 16276884 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/band-meldet-sich-mit-carnaval-de-luz-zuruck-auf-ihrem-16-studioalbum-klingen-u2-knackfrisch-16276884.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Am dog donnerstag darf waldi mit ins museum kunstausstellungen uber tiere haben konjunktur",
+   "is_pick": false,
+   "match": "kultur am dog donnerstag darf waldi mit ins museum kunstausstellungen uber tiere haben konjunktur 16276630 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/am-dog-donnerstag-darf-waldi-mit-ins-museum-kunstausstellungen-uber-tiere-haben-konjunktur-16276630.html",
+   "venues": []
+  },
+  {
    "date": "2026-11-13",
    "dek": "",
    "entries": [],
@@ -18550,6 +19556,36 @@
    "date": "2026-11-13",
    "dek": "",
    "entries": [],
+   "headline": "Emporung uber jensen huangs affare die problem penisse hangen anderswo",
+   "is_pick": false,
+   "match": "kultur emporung uber jensen huangs affare die problem penisse hangen anderswo 16281899 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/emporung-uber-jensen-huangs-affare-die-problem-penisse-hangen-anderswo-16281899.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "",
+   "entries": [],
+   "headline": "Ein verbrecher wird zum star iris wameling schreibt uber absurditaten im kunstbetrieb",
+   "is_pick": false,
+   "match": "kultur ein verbrecher wird zum star iris wameling schreibt uber absurditaten im kunstbetrieb 16280692 html",
+   "origin": "sitemap",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/kultur/ein-verbrecher-wird-zum-star-iris-wameling-schreibt-uber-absurditaten-im-kunstbetrieb-16280692.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "",
+   "entries": [],
    "headline": "Zum 50 kinostart jubilaum star wars originalfassung von 1977 kommt zuruck ins kino",
    "is_pick": false,
    "match": "kultur dpa zum 50 kinostart jubilaum star wars originalfassung von 1977 kommt zuruck ins kino 16279780 html",
@@ -18565,30 +19601,15 @@
    "date": "2026-11-13",
    "dek": "",
    "entries": [],
-   "headline": "Dokumentarfilm uber helene weigel berlins larmendste schauspielerin gewinnt ihre stimme zuruck",
+   "headline": "Der sudafrikanische komponist njabulo phungula im gesprach ich habe das chaos im kompositionsprozess zugelassen",
    "is_pick": false,
-   "match": "kultur dokumentarfilm uber helene weigel berlins larmendste schauspielerin gewinnt ihre stimme zuruck 16278755 html",
+   "match": "kultur der sudafrikanische komponist njabulo phungula im gesprach ich habe das chaos im kompositionsprozess zugelassen 16280560 html",
    "origin": "sitemap",
    "outlet": "Tagesspiegel",
    "section": "",
    "stars": null,
    "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/dokumentarfilm-uber-helene-weigel-berlins-larmendste-schauspielerin-gewinnt-ihre-stimme-zuruck-16278755.html",
-   "venues": []
-  },
-  {
-   "date": "2026-11-13",
-   "dek": "",
-   "entries": [],
-   "headline": "Band meldet sich mit carnaval de luz zuruck auf ihrem 16 studioalbum klingen u2 knackfrisch",
-   "is_pick": false,
-   "match": "kultur band meldet sich mit carnaval de luz zuruck auf ihrem 16 studioalbum klingen u2 knackfrisch 16276884 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/band-meldet-sich-mit-carnaval-de-luz-zuruck-auf-ihrem-16-studioalbum-klingen-u2-knackfrisch-16276884.html",
+   "url": "https://www.tagesspiegel.de/kultur/der-sudafrikanische-komponist-njabulo-phungula-im-gesprach-ich-habe-das-chaos-im-kompositionsprozess-zugelassen-16280560.html",
    "venues": []
   },
   {
@@ -18802,6 +19823,21 @@
    "venues": [
     "Hamburger Bahnhof"
    ]
+  },
+  {
+   "date": "2026-11-12",
+   "dek": "Dass ein schwuler trans Mann seine Erfahrungen auf Datingplattformen teilt, ist selten. João d’Orey hat darüber ein Theaterstück geschrieben, das in Berlin läuft. Hier spricht er über sein Begehren und diverse Männlichkeitsbilder.",
+   "entries": [],
+   "headline": "„Du bist der schönste Boy im Raum, aber ich brauche jetzt Sex“: Wenn ein junger trans Mann offen übers Daten spricht",
+   "is_pick": false,
+   "match": "gesellschaft queerspiegel du bist der schonste boy im raum aber ich brauche jetzt sex wenn ein junger trans mann offen ubers daten spricht 16273764 html",
+   "origin": "feed",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/gesellschaft/queerspiegel/du-bist-der-schonste-boy-im-raum-aber-ich-brauche-jetzt-sex-wenn-ein-junger-trans-mann-offen-ubers-daten-spricht-16273764.html",
+   "venues": []
   },
   {
    "date": "2026-11-11",
@@ -19073,21 +20109,6 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.tagesspiegel.de/kultur/ein-architekturvorschlag-fur-berlin-bunker-bauen-als-friedensmassnahme-16258221.html",
-   "venues": []
-  },
-  {
-   "date": "2026-11-08",
-   "dek": "",
-   "entries": [],
-   "headline": "Der autor hendrik bolz uber rohe mannlichkeit ich musste mir diesen panzer zulegen denn mein grundgefuhl war angst",
-   "is_pick": false,
-   "match": "kultur der autor hendrik bolz uber rohe mannlichkeit ich musste mir diesen panzer zulegen denn mein grundgefuhl war angst 16246769 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/der-autor-hendrik-bolz-uber-rohe-mannlichkeit-ich-musste-mir-diesen-panzer-zulegen-denn-mein-grundgefuhl-war-angst-16246769.html",
    "venues": []
   },
   {
@@ -24270,6 +25291,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.tagesspiegel.de/berlin/liveblog/linke-will-abgeordnete-aus-der-fraktion-werfen-abstimmung-uber-emde-ausschluss-fruhestens-in-zwei-wochen-16053722.html",
+   "venues": []
+  },
+  {
+   "date": "2026-09-16",
+   "dek": "Abstimmung über Emde-Ausschluss aus der Fraktion frühestens in zwei Wochen + Altkanzlerin Merkel gegen Rot-Grün-Rot + Alle Entwicklungen im Liveblog.",
+   "entries": [],
+   "headline": "Linken-Chef Pantisano über Vanessa Emde: „Sind nicht in einem autoritären Regime, wo man gewählte Abgeordnete vor die Tür setzt“",
+   "is_pick": false,
+   "match": "berlin liveblog angela merkel uber mogliches linksbundnis in berlin also ich wurde das nicht machen 16053722 html",
+   "origin": "feed",
+   "outlet": "Tagesspiegel",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.tagesspiegel.de/berlin/liveblog/angela-merkel-uber-mogliches-linksbundnis-in-berlin-also-ich-wurde-das-nicht-machen-16053722.html",
    "venues": []
   },
   {
@@ -36681,108 +37717,18 @@
    "venues": []
   },
   {
-   "date": "2026-05-14",
-   "dek": "",
+   "date": "2026-11-13",
+   "dek": "„Den sie ausgebootet hatten, ausgebürgert“: ein Gedicht für Wolf Biermann zu seinem 90. Geburtstag.",
    "entries": [],
-   "headline": "Mitsuko uchida im boulez saal man mochte niederknien und ihr die hande kussen",
+   "headline": "Wolf Biermann: Der Liedermacher",
    "is_pick": false,
-   "match": "kultur mitsuko uchida im boulez saal man mochte niederknien und ihr die hande kussen 15598232 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
+   "match": "projekte artikel kultur durs gruenbein gedicht wolf biermann 90 geburtstag e696294",
+   "origin": "feed",
+   "outlet": "SZ",
    "section": "",
    "stars": null,
    "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/mitsuko-uchida-im-boulez-saal-man-mochte-niederknien-und-ihr-die-hande-kussen-15598232.html",
-   "venues": []
-  },
-  {
-   "date": "2026-05-14",
-   "dek": "",
-   "entries": [],
-   "headline": "Kinostarts der woche wer hat den schafer auf dem gewissen",
-   "is_pick": false,
-   "match": "kultur kinostarts der woche wer hat den schafer auf dem gewissen 15591288 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/kinostarts-der-woche-wer-hat-den-schafer-auf-dem-gewissen-15591288.html",
-   "venues": []
-  },
-  {
-   "date": "2026-05-14",
-   "dek": "",
-   "entries": [],
-   "headline": "Ikkimel rostam dua saleh kevin morby die alben der woche im soundcheck",
-   "is_pick": false,
-   "match": "kultur ikkimel rostam dua saleh kevin morby die alben der woche im soundcheck 15593244 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/ikkimel-rostam-dua-saleh-kevin-morby-die-alben-der-woche-im-soundcheck-15593244.html",
-   "venues": []
-  },
-  {
-   "date": "2026-05-14",
-   "dek": "",
-   "entries": [],
-   "headline": "Dieter hallervorden im schlosspark theater palim palim eine flasche reformen bitte",
-   "is_pick": false,
-   "match": "kultur dieter hallervorden im schlosspark theater palim palim eine flasche reformen bitte 15597379 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/dieter-hallervorden-im-schlosspark-theater-palim-palim-eine-flasche-reformen-bitte-15597379.html",
-   "venues": []
-  },
-  {
-   "date": "2026-05-14",
-   "dek": "",
-   "entries": [],
-   "headline": "Die klassik tipps der woche in berlin back together thielemann und levit mit selten gespielten werken",
-   "is_pick": false,
-   "match": "kultur die klassik tipps der woche in berlin back together thielemann und levit mit selten gespielten werken 15588609 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/die-klassik-tipps-der-woche-in-berlin-back-together-thielemann-und-levit-mit-selten-gespielten-werken-15588609.html",
-   "venues": []
-  },
-  {
-   "date": "2026-05-14",
-   "dek": "",
-   "entries": [],
-   "headline": "Dadurch entstehen ganz neue perspektiven metropolitan museum und neue galerie in new york fusionieren",
-   "is_pick": false,
-   "match": "kultur dadurch entstehen ganz neue perspektiven metropolitan museum und neue galerie in new york fusionieren 15598636 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/dadurch-entstehen-ganz-neue-perspektiven-metropolitan-museum-und-neue-galerie-in-new-york-fusionieren-15598636.html",
-   "venues": []
-  },
-  {
-   "date": "2026-05-14",
-   "dek": "",
-   "entries": [],
-   "headline": "15 jahre games festival a maze bitte einmal streicheln und die herzfrequenz verandern",
-   "is_pick": false,
-   "match": "kultur 15 jahre games festival a maze bitte einmal streicheln und die herzfrequenz verandern 15597992 html",
-   "origin": "sitemap",
-   "outlet": "Tagesspiegel",
-   "section": "",
-   "stars": null,
-   "subjects": [],
-   "url": "https://www.tagesspiegel.de/kultur/15-jahre-games-festival-a-maze-bitte-einmal-streicheln-und-die-herzfrequenz-verandern-15597992.html",
+   "url": "https://www.sueddeutsche.de/projekte/artikel/kultur/durs-gruenbein-gedicht-wolf-biermann-90-geburtstag-e696294/",
    "venues": []
   },
   {
@@ -36817,6 +37763,36 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Unbedingt, findet Nele Pollatschek – und versucht, das Problem mit einem alten Ansatz in neuem Gewand zu lösen: sanftem Ragebait.",
+   "entries": [],
+   "headline": "Sachbuch: Kann man Glücklichsein lernen?",
+   "is_pick": false,
+   "match": "kultur nele pollatschek wie ich so gluecklich wurde kritik li 3577926",
+   "origin": "feed",
+   "outlet": "SZ",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.sueddeutsche.de/kultur/nele-pollatschek-wie-ich-so-gluecklich-wurde-kritik-li.3577926",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "„Er öffnete die Türen für ein neues Theater des 20. Jahrhunderts“: Nachruf auf den Frankfurter Kritiker und Kulturermöglicher Peter Iden.",
+   "entries": [],
+   "headline": "Theater: Ein Mann mit Leidenschaft und Grundsätzen",
+   "is_pick": false,
+   "match": "kultur nachruf peter iden kritiker theater frankfurt li 3580273",
+   "origin": "feed",
+   "outlet": "SZ",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.sueddeutsche.de/kultur/nachruf-peter-iden-kritiker-theater-frankfurt-li.3580273",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Mehrere Verlage lehnten Mathieu Belezis Roman über die Kolonialisierung Algeriens ab. Ein Glück – und eine dringend nötige seelische Zumutung –, dass „Erde und Sonne angreifen“ dann doch veröffentlicht wurde.",
    "entries": [],
    "headline": "Literatur: Man erträgt es kaum",
@@ -36829,6 +37805,23 @@
    "subjects": [],
    "url": "https://www.sueddeutsche.de/kultur/mathieu-belezi-erde-und-sonne-angreifen-algerien-frankreich-rezension-li.3574746",
    "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Mario Banushi ehrt bei den Berliner Festspielen die „Mami“ und wirft vor allem die Frage auf, was noch ergreifend und was schon unfreiwillig komisch ist.",
+   "entries": [],
+   "headline": "Theater: Mutti ist die Beste",
+   "is_pick": false,
+   "match": "kultur mario banushi berliner festspiele avignon mami mutterschaft li 3574407",
+   "origin": "feed",
+   "outlet": "SZ",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.sueddeutsche.de/kultur/mario-banushi-berliner-festspiele-avignon-mami-mutterschaft-li.3574407",
+   "venues": [
+    "Berliner Festspiele"
+   ]
   },
   {
    "date": "2026-11-13",
@@ -36873,6 +37866,36 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.sueddeutsche.de/kultur/ddr-brd-mauerfall-dissidenten-wolf-biermann-mikis-theodorakis-ilko-sascha-kowalczuk-walter-ulbricht-li.3578209",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Der 83-jährige Klassik-Maestro Daniel Barenboim eröffnet in Berlin sein neues „West-Eastern Divan“-Festival. Dabei geht es auch um sein Erbe als Friedensaktivist.",
+   "entries": [],
+   "headline": "Klassik: Fortissimo für Freiheit und Gleichheit",
+   "is_pick": false,
+   "match": "kultur daniel barenboim west eastern divan orchestra berlin klassik nahost konflikt li 3577027",
+   "origin": "feed",
+   "outlet": "SZ",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.sueddeutsche.de/kultur/daniel-barenboim-west-eastern-divan-orchestra-berlin-klassik-nahost-konflikt-li.3577027",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Im neuen Bundeswehr-Shop gibt’s Badeenten mit Sturmgewehr. Nach 24 Stunden ist der Fanartikel schon ausverkauft. Hat die Bundeswehr so viele Fans – oder versagt da schon wieder das Beschaffungswesen?",
+   "entries": [],
+   "headline": "Bundeswehr: Bedingt badebereit",
+   "is_pick": false,
+   "match": "kultur bundeswehr shop badeente ausverkauft li 3579887",
+   "origin": "feed",
+   "outlet": "SZ",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.sueddeutsche.de/kultur/bundeswehr-shop-badeente-ausverkauft-li.3579887",
    "venues": []
   },
   {
@@ -37631,6 +38654,96 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.sueddeutsche.de/kultur/annika-lau-adhs-ihr-kind-ist-anders-kritik-instagram-li.3573466",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Wohin am Wochenende? Redaktion2 Fri, 11/13/2026 - 15:58",
+   "entries": [],
+   "headline": "Wohin am Wochenende?",
+   "is_pick": false,
+   "match": "wohin am wochenende 663",
+   "origin": "feed",
+   "outlet": "Monopol",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.monopol-magazin.de/wohin-am-wochenende-663",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "\"Es spielt keine Rolle, ob Sie Künstler sind\" Daniel Völzke Fri, 11/13/2026 - 14:13",
+   "entries": [],
+   "headline": "\"Es spielt keine Rolle, ob Sie Künstler sind\"",
+   "is_pick": false,
+   "match": "medienschau 13112026",
+   "origin": "feed",
+   "outlet": "Monopol",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.monopol-magazin.de/medienschau-13112026",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Lorna Simpson erhält Wolfgang-Hahn-Preis 2027 Daniel Völzke Fri, 11/13/2026 - 16:16",
+   "entries": [],
+   "headline": "Lorna Simpson erhält Wolfgang-Hahn-Preis 2027",
+   "is_pick": false,
+   "match": "lorna simpson erhaelt wolfgang hahn preis 2027",
+   "origin": "feed",
+   "outlet": "Monopol",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.monopol-magazin.de/lorna-simpson-erhaelt-wolfgang-hahn-preis-2027",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Kultur- und Medienetat steigt auf 2,58 Milliarden Euro Daniel Völzke Fri, 11/13/2026 - 14:18",
+   "entries": [],
+   "headline": "Kultur- und Medienetat steigt auf 2,58 Milliarden Euro",
+   "is_pick": false,
+   "match": "kultur und medienetat steigt auf 258 milliarden euro",
+   "origin": "feed",
+   "outlet": "Monopol",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.monopol-magazin.de/kultur-und-medienetat-steigt-auf-258-milliarden-euro",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Opfer als Kollateralschaden Saskia Trebing Fri, 11/13/2026 - 14:11",
+   "entries": [],
+   "headline": "Opfer als Kollateralschaden",
+   "is_pick": false,
+   "match": "kommentar otto muehl wiener aktionismus museum opfer als kollateralschaden",
+   "origin": "feed",
+   "outlet": "Monopol",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.monopol-magazin.de/kommentar-otto-muehl-wiener-aktionismus-museum-opfer-als-kollateralschaden",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Weinen gegen Kunstterror Daniel Völzke Fri, 11/13/2026 - 13:36",
+   "entries": [],
+   "headline": "Weinen gegen Kunstterror",
+   "is_pick": false,
+   "match": "julia james davis war beauty",
+   "origin": "feed",
+   "outlet": "Monopol",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.monopol-magazin.de/julia-james-davis-war-beauty",
    "venues": []
   },
   {
@@ -53279,6 +54392,21 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Immer wieder kommt eine aus den 30er-Jahren stammende animierte Straßenkarte von Los Angeles ins Bild. Symbole und Kürzel markieren zentrale Orte. Klassische Filmkameras weisen auf die zahlreichen Studios in Hollywood hin, und eine Abkürzung wie »PCA« zeigt an, wo die »Production Code Administration",
+   "entries": [],
+   "headline": "Der Film, den Hollywood nicht wollte",
+   "is_pick": false,
+   "match": "kultur der film den hollywood nicht wollte",
+   "origin": "feed",
+   "outlet": "Jüdische Allgemeine",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.juedische-allgemeine.de/kultur/der-film-den-hollywood-nicht-wollte/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Der arabische Königmacher könnte eine Kehrwende machen. Mansour Abbas, Chef der Partei Ra’am, hat signalisiert, dass er bereit sei, die Hamas als terroristische Organisation anzuerkennen. Allerdings habe es einen Preis: Abbas fordert im Gegenzug, dass der politische Block von Gadi Eisenkot zu einer ",
    "entries": [],
    "headline": "Kehrtwende des arabischen Königsmachers?",
@@ -53290,6 +54418,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.juedische-allgemeine.de/israel/kehrtwende-des-arabischen-koenigsmachers/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Dass sich die amtierende israelische Regierung und die Partei des französischen Linkspopulisten Jean-Luc Mélenchon spinnefeind sind, ist nichts Neues. Jetzt hat Israel dem Präsidentschaftskandidaten der Bewegung La France Insoumise (LFI) sowie der LFI-Fraktionsvorsitzenden in der Nationalversammlung",
+   "entries": [],
+   "headline": "Israels Regierung verhängt Einreiseverbot für Mélenchon",
+   "is_pick": false,
+   "match": "israel israels regierung verhaengt einreiseverbot fuer melenchon",
+   "origin": "feed",
+   "outlet": "Jüdische Allgemeine",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.juedische-allgemeine.de/israel/israels-regierung-verhaengt-einreiseverbot-fuer-melenchon/",
    "venues": []
   },
   {
@@ -55566,18 +56709,18 @@
    "venues": []
   },
   {
-   "date": "2025-11-13",
-   "dek": "Vier Jahre hat er davon geträumt. Jetzt hat Avi Toubiana, Intendant der Jüdischen Kulturtage, das Eröffnungskonzert selbst produziert: »Es ist alles dabei: Tanz, Filmmusik, Gesang – wie eine Broadway-Show. Wir erzählen die jüdische Geschichte durch Hollywood«, schwärmt der Kulturmanager. Traditionel",
+   "date": "2026-11-14",
+   "dek": "In den Bildern von Dana Schutz sind menschliche Körper Seismographen von Taten und Gefühlen. Die Jahre unter Trump scheinen in sie eingeschrieben. In Berlin sind jetzt einige der jüngsten Werke der Malerin zu sehen.",
    "entries": [],
-   "headline": "Broadway am Prenzlauer Berg",
+   "headline": "Künstlerin Dana Schutz: Was macht Trump mit der Malerei?",
    "is_pick": false,
-   "match": "unsere woche broadway am prenzlauer berg",
-   "origin": "search",
-   "outlet": "Jüdische Allgemeine",
+   "match": "aktuell feuilleton kunst und architektur ausstellung dana schutz in berlin koerper in amerikas gegenwart 201663999 html",
+   "origin": "feed",
+   "outlet": "FAZ",
    "section": "",
    "stars": null,
    "subjects": [],
-   "url": "https://www.juedische-allgemeine.de/unsere-woche/broadway-am-prenzlauer-berg/",
+   "url": "https://www.faz.net/aktuell/feuilleton/kunst-und-architektur/ausstellung/dana-schutz-in-berlin-koerper-in-amerikas-gegenwart-201663999.html",
    "venues": []
   },
   {
@@ -55593,6 +56736,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.faz.net/aktuell/feuilleton/kunst-und-architektur/ausstellung/wie-hamburg-sein-hafenmuseum-doch-noch-verwirklichen-will-accg-201665068.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Amerikas Techbosse und Politiker inszenieren sich wie antike Herrscher und träumen von einem neuen Rom. In Mailand korrigiert eine Ausstellung das Bild, das wir von den „Wurzeln der abendländischen Kultur“ haben.",
+   "entries": [],
+   "headline": "„Global Antiquity“-Ausstellung: Die Rettung der Antike vor Trump und seinen Freunden",
+   "is_pick": false,
+   "match": "aktuell feuilleton kunst und architektur ausstellung hochpolitisch global antiquity in der fondazione prada 201677801 html",
+   "origin": "feed",
+   "outlet": "FAZ",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.faz.net/aktuell/feuilleton/kunst-und-architektur/ausstellung/hochpolitisch-global-antiquity-in-der-fondazione-prada-201677801.html",
    "venues": []
   },
   {
@@ -56034,6 +57192,246 @@
    "venues": []
   },
   {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "\"Zirkuskind\" erhält den Deutschen Dokumentarfilmpreis",
+   "is_pick": false,
+   "match": "zirkuskind erhaelt den deutschen dokumentarfilmpreis 104 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/zirkuskind-erhaelt-den-deutschen-dokumentarfilmpreis-104.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Weimer begrüßt Etat von 2,6 Milliarden Euro für Kultur und Medien",
+   "is_pick": false,
+   "match": "weimer begruesst etat von 2 6 milliarden euro fuer kultur und medien 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/weimer-begruesst-etat-von-2-6-milliarden-euro-fuer-kultur-und-medien-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Russell Brands Social-Media-Konten deaktiviert",
+   "is_pick": false,
+   "match": "russell brands social media konten deaktiviert 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/russell-brands-social-media-konten-deaktiviert-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Rowohlt-Verlag wird Roman von Thélyson Orélien nicht auf Deutsch veröffentlichen",
+   "is_pick": false,
+   "match": "rowohlt verlag wird roman von th lyson or lien nicht auf deutsch veroeffentlichen 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/rowohlt-verlag-wird-roman-von-th-lyson-or-lien-nicht-auf-deutsch-veroeffentlichen-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Rosalía gewinnt Latin Grammy für das Album des Jahres",
+   "is_pick": false,
+   "match": "rosal a gewinnt latin grammy fuer das album des jahres 106 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/rosal-a-gewinnt-latin-grammy-fuer-das-album-des-jahres-106.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Erstes Welterbe-Besucherzentrum im Erzgebirge eröffnet",
+   "is_pick": false,
+   "match": "erstes welterbe besucherzentrum im erzgebirge eroeffnet 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/erstes-welterbe-besucherzentrum-im-erzgebirge-eroeffnet-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Die Asche des Literaturnobelpreisträgers Asturias ist jetzt in seiner Heimat Guatemala",
+   "is_pick": false,
+   "match": "die asche des literaturnobelpreistraegers asturias ist jetzt in seiner heimat guatemala 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/die-asche-des-literaturnobelpreistraegers-asturias-ist-jetzt-in-seiner-heimat-guatemala-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Das Jüdische Museum ehrt Düzen Tekkal und Michael Moritz",
+   "is_pick": false,
+   "match": "das juedische museum ehrt duezen tekkal und michael moritz 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/das-juedische-museum-ehrt-duezen-tekkal-und-michael-moritz-100.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Wolf Biermann hat penibel Tagebuch geführt. Im Rückblick werden die Notizen auch zum Zeitdokument. Daraus ergibt sich ein \"widersprüchliches Konglomerat von Selbstfixierung, interessiert an Selbstkritik\", meint der Biermann-Vertraute Lutz Rathenow. Rathenow, Lutz",
+   "entries": [],
+   "headline": "Wolf Biermanns Tagebücher: \"Ihr löscht das Feuer mit Benzin\"",
+   "is_pick": false,
+   "match": "buchkritik ihr loescht das feuer mit benzin von wolf biermann 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/buchkritik-ihr-loescht-das-feuer-mit-benzin-von-wolf-biermann-100.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Bewährungsstrafe gegen Schauspieler Depardieu wird rechtskräftig",
+   "is_pick": false,
+   "match": "bewaehrungsstrafe gegen schauspieler depardieu wird rechtskraeftig 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/bewaehrungsstrafe-gegen-schauspieler-depardieu-wird-rechtskraeftig-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "",
+   "entries": [],
+   "headline": "Asiatische ESC-Variante feiert in Thailand Premiere",
+   "is_pick": false,
+   "match": "asiatische esc variante feiert in thailand premiere 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/asiatische-esc-variante-feiert-in-thailand-premiere-100.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Sandra Hüller ist gleich zweimal als beste Schauspielerin für den Europäischen Filmpreis nominiert worden. Die 48-Jährige wurde für ihre Rollen in den Dramen \"Vaterland\" und \"Rose\" vorgeschlagen.",
+   "entries": [],
+   "headline": "Internationale Auszeichnung - Sandra Hüller ist doppelt für den Europäischen Filmpreis nominiert",
+   "is_pick": false,
+   "match": "sandra hueller ist doppelt fuer den europaeischen filmpreis nominiert 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/sandra-hueller-ist-doppelt-fuer-den-europaeischen-filmpreis-nominiert-100.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Die spanische Sängerin Rosalía hat bei den 27. Latin Grammy Awards in Las Vegas die wichtigste Auszeichnung des Abends gewonnen: Ihr 2025 veröffentlichtes Album \"Lux\" wurde zum Album des Jahres gekürt.",
+   "entries": [],
+   "headline": "\"Lux\" - Rosalía gewinnt Latin Grammy für das Album des Jahres",
+   "is_pick": false,
+   "match": "rosal a gewinnt latin grammy fuer das album des jahres 108 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/rosal-a-gewinnt-latin-grammy-fuer-das-album-des-jahres-108.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Die Londoner Polizei ermittelt gegen den Comedian und Kinderbuchautor David Walliams wegen Vorwürfen schwerer sexueller Übergriffe. Das geht aus einer Mitteilung der Metropolitan Police hervor.",
+   "entries": [],
+   "headline": "Großbritannien - Polizei ermittelt gegen Autor und Komiker David Walliams",
+   "is_pick": false,
+   "match": "polizei ermittelt gegen autor und komiker david walliams 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/polizei-ermittelt-gegen-autor-und-komiker-david-walliams-100.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Die Musikproduzenten-Gruppe Kitschkrieg setzt sich für eine feste Quote für deutschsprachige Musik im Radio ein. Kitschkrieg verwies in einem Social-Media-Beitrag auf eine bereits bestehende Regelung in Frankreich. Die Gruppe kritisierte zudem den WDR-Sender 1Live für dessen internationale Musikausw",
+   "entries": [],
+   "headline": "Kritik an \"1Live\" - Kitschkrieg fordert feste Quote für deutschsprachige Musik im Radio",
+   "is_pick": false,
+   "match": "kitschkrieg fordert feste quote fuer deutschsprachige musik im radio 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/kitschkrieg-fordert-feste-quote-fuer-deutschsprachige-musik-im-radio-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Das Deutsche Fotoinstitut (DFI) in Düsseldorf soll künftig als nationales Kompetenzzentrum das fotografische Erbe in Deutschland bewahren, erforschen und vermitteln. Doch lange Zeit stand die Finanzierung auf der Kippe. Im kommenden Haushalt sollen Gelder dafür bereitgestellt werden.",
+   "entries": [],
+   "headline": "Düsseldorf - Finanzierung für Deutsches Fotoinstitut vorerst gesichert",
+   "is_pick": false,
+   "match": "finanzierung fuer deutsches fotoinstitut vorerst gesichert 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/finanzierung-fuer-deutsches-fotoinstitut-vorerst-gesichert-102.html",
+   "venues": []
+  },
+  {
    "date": "2026-11-13",
    "dek": "",
    "entries": [],
@@ -56061,6 +57459,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.deutschlandfunkkultur.de/zirkuskind-erhaelt-den-deutschen-dokumentarfilmpreis-100.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Immer öfter scheint es Schauspielerinnen von der Bühne an den Schreibtisch zu ziehen. Doch statt Memoiren entstehen dabei eher autofiktionale Romane. Was treibt die Bühnenkünstler zur einsamen Arbeit? Einblick in zwei Arbeitsweisen. Burkhardt, Susanne; Peters, Caroline; Philipp, Elena, Ruckpaul, Lea",
+   "entries": [],
+   "headline": "Schreibende Schauspielerinnen",
+   "is_pick": false,
+   "match": "schreibende schauspielerinnen 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunkkultur.de/schreibende-schauspielerinnen-100.html",
    "venues": []
   },
   {
@@ -56200,6 +57613,51 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Der Rowohlt Verlag wird den Roman des haitianisch-kanadischen Schriftstellers Thélyson Orélien \"Es war das oder sterben\" nicht in deutscher Übersetzung veröffentlichen. Das Erscheinen war ursprünglich im Frühjahrsprogramm 2027 geplant.",
+   "entries": [],
+   "headline": "KI-Vorwürfe - Rowohlt-Verlag wird Roman von Thélyson Orélien nicht veröffentlichen",
+   "is_pick": false,
+   "match": "rowohlt verlag wird roman von th lyson or lien nicht veroeffentlichen 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/rowohlt-verlag-wird-roman-von-th-lyson-or-lien-nicht-veroeffentlichen-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Der Rowohlt Verlag wird den Roman des haitianisch-kanadischen Schriftstellers Thélyson Orélien \"Es war das oder sterben\" nicht in deutscher Übersetzung veröffentlichen. Das Erscheinen war ursprünglich im Frühjahrsprogramm 2027 geplant.",
+   "entries": [],
+   "headline": "KI-Vorwürfe - Rowohlt-Verlag wird Roman von Thélyson Orélien nicht veröffentlichen",
+   "is_pick": false,
+   "match": "rowohlt verlag wird roman von th lyson or lien nicht veroeffentlichen 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/rowohlt-verlag-wird-roman-von-th-lyson-or-lien-nicht-veroeffentlichen-100.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Die spanische Sängerin Rosalía hat bei den 27. Latin Grammy Awards in Las Vegas die wichtigste Auszeichnung des Abends gewonnen: Ihr 2025 veröffentlichtes Album \"Lux\" wurde zum Album des Jahres gekürt.",
+   "entries": [],
+   "headline": "\"Lux\" - Rosalía gewinnt Latin Grammy für das Album des Jahres",
+   "is_pick": false,
+   "match": "rosal a gewinnt latin grammy fuer das album des jahres 102 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/rosal-a-gewinnt-latin-grammy-fuer-das-album-des-jahres-102.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Mit einem Konzert der israelischen Sängerin Marina Maximilian in der Synagoge Rykestraße sind die 39. Jüdischen Kulturtage Berlin eröffnet worden. Das Festival steht in diesem Jahr unter dem Motto \"Zadikim - Zeit für Gerechte\", wie die Organisatoren um die Jüdische Gemeinde zu Berlin mitteilten.",
    "entries": [],
    "headline": "Berlin - Jüdische Kulturtage mit Konzert eröffnet",
@@ -56241,6 +57699,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.deutschlandfunk.de/hochschulleitungen-der-frauenanteil-waechst-106.html",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Das Deutsche Fotoinstitut (DFI) in Düsseldorf soll künftig als nationales Kompetenzzentrum das fotografische Erbe in Deutschland bewahren, erforschen und vermitteln. Doch lange Zeit stand die Finanzierung auf der Kippe. Im kommenden Haushalt sollen Gelder dafür bereitgestellt werden.",
+   "entries": [],
+   "headline": "Düsseldorf - Finanzierung für Deutsches Fotoinstitut vorerst gesichert",
+   "is_pick": false,
+   "match": "finanzierung fuer deutsches fotoinstitut vorerst gesichert 100 html",
+   "origin": "feed",
+   "outlet": "Deutschlandfunk Kultur",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.deutschlandfunk.de/finanzierung-fuer-deutsches-fotoinstitut-vorerst-gesichert-100.html",
    "venues": []
   },
   {
@@ -58779,6 +60252,246 @@
    "venues": []
   },
   {
+   "date": "2026-11-14",
+   "dek": "Die Bundesregierung verbucht die niedrigsten Asylzahlen seit 2011 als Erfolg. Doch welcher Anteil tatsächlich auf die eigene Politik entfällt, kann es auf Nachfrage nicht beziffern.",
+   "entries": [],
+   "headline": "Wie viel vom Asyl-Rückgang ist Regierungspolitik? Innenministerium kann „den Kuchen“ nicht aufteilen",
+   "is_pick": false,
+   "match": "article wie viel vom asyl rueckgang ist regierungspolitik innenministerium kann den kuchen nicht aufteilen 10597300",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/wie-viel-vom-asyl-rueckgang-ist-regierungspolitik-innenministerium-kann-den-kuchen-nicht-aufteilen-10597300",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Wegen technischer Probleme stoppt die US-Luftfahrtbehörde massenweise Starts an Flughäfen im Land. Die Beschränkung gilt nur wenige Stunden – doch die Folgen sind erheblich. Auch Europa ist betroffen.",
+   "entries": [],
+   "headline": "Technik-Panne sorgt für Tausende Flugausfälle in den USA",
+   "is_pick": false,
+   "match": "article technik panne sorgt fuer tausende flugausfaelle in den usa 10596772",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/technik-panne-sorgt-fuer-tausende-flugausfaelle-in-den-usa-10596772",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Was hat das Taxifahren in Berlin mit dem Römischen Reich zu tun? Unser Autor entdeckt frappierende Parallelen.",
+   "entries": [],
+   "headline": "Taxifahren in Berlin ist nicht mehr – außer, man ist Millionär",
+   "is_pick": false,
+   "match": "article taxifahren in berlin ist nicht mehr ausser man ist millionaer 10570222",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/taxifahren-in-berlin-ist-nicht-mehr-ausser-man-ist-millionaer-10570222",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Er klebe nicht an seinem Stuhl, sagt Lars Klingbeil. Ein breites Bündnis in der SPD will ihn beim Wort nehmen – mit zwei präzise zugeschnittenen Anträgen.",
+   "entries": [],
+   "headline": "Lex Klingbeil: Wie ein breites Bündnis in der SPD den Vizekanzler aus dem Parteivorsitz drängen will",
+   "is_pick": false,
+   "match": "article spd vorsitz buendnis will klingbeil verhindern warum jetzt alle auf manuela schwesig schauen 10597035",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/spd-vorsitz-buendnis-will-klingbeil-verhindern-warum-jetzt-alle-auf-manuela-schwesig-schauen--10597035",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Zehn Jahre nach dem Ende von Mongrels in Common legen Christine Pluess und Livia Ximenez-Carrillo ihr Berliner Modelabel neu auf.",
+   "entries": [],
+   "headline": "Modelabel Mongrels in Common, zehn Jahre danach: Rückkehr mit 100 Blusen",
+   "is_pick": false,
+   "match": "article modelabel mongrels in common zehn jahre danach rueckkehr mit 100 blusen 10557594",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/modelabel-mongrels-in-common-zehn-jahre-danach-rueckkehr-mit-100-blusen-10557594",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Von deutschen Flüchtlingen in Frankreich 1933 bis zur Migration heute: Ein Essay über Abschottung, Menschlichkeit und politische Verantwortung.",
+   "entries": [],
+   "headline": "Flüchtlingspolitik: Gesellschaften und Staaten scheitern, wenn sie sich verschanzen",
+   "is_pick": false,
+   "match": "article fluechtlingspolitik gesellschaften und staaten scheitern wenn sie sich verschanzen 10573256",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/fluechtlingspolitik-gesellschaften-und-staaten-scheitern-wenn-sie-sich-verschanzen-10573256",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Hohe Mieten, teure Energie, mehr Geld für Rüstung: Europas Proteste treffen auch Brüssel. Die US-Midterms zeigen, wie politisch steigende Preise werden können.",
+   "entries": [],
+   "headline": "Gegen hohe Preise, Sozialabbau und Aufrüstung – wie Brüssel Europas Protestwelle mitverschuldet hat",
+   "is_pick": false,
+   "match": "article eu protestwelle bruessel energiepreise aufruestung 10582000",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/eu-protestwelle-bruessel-energiepreise-aufruestung-10582000",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Als die DDR sich in den 1960er-Jahren anschickte, dem brennenden Wohnungsproblem anzunehmen, entstanden große Plattenbaugebiete. Heute gilt die „Platte“ oft als sozialer Brennpunkt.",
+   "entries": [],
+   "headline": "DDR-Plattenbau: Eine Geschichte von Hanghühnern, Hallunken und Schlammhausenern",
+   "is_pick": false,
+   "match": "article eine geschichte von hanghuehnern hallunken und schlammhausenern 10587335",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/eine-geschichte-von-hanghuehnern-hallunken-und-schlammhausenern-10587335",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Vadym Novynskyi sieht eine Chance für Frieden in der Ukraine – und fordert Selenskyjs Rücktritt zugunsten einer neuen politischen Führung. Ein Gastkommentar.",
+   "entries": [],
+   "headline": "Die Tür zum Frieden ist offen: Welche Zukunft die Ukraine jetzt wählen muss",
+   "is_pick": false,
+   "match": "article die tuer zum frieden ist offen welche zukunft die ukraine jetzt waehlen muss 10596049",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/die-tuer-zum-frieden-ist-offen-welche-zukunft-die-ukraine-jetzt-waehlen-muss-10596049",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Nach dem 3:1 in Serbien reicht Deutschland ein Sieg gegen die Niederlande fürs Nations-League-Viertelfinale. Alle Szenarien, Tabelle und Preisgeld.",
+   "entries": [],
+   "headline": "Nations League: So wird Deutschland noch Gruppensieger",
+   "is_pick": false,
+   "match": "article deutschland niederlande nations league szenarien viertelfinale preisgeld 10594157",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/deutschland-niederlande-nations-league-szenarien-viertelfinale-preisgeld-10594157",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Was bedeutet KI für menschliche Arbeit? Welche Arbeit ist noch sinnvoll, wenn bald alles Wissen für Maschinen codiert und auswertbar ist?",
+   "entries": [],
+   "headline": "Die Arbeitswelt in Zeiten von KI: Das Ende der Verwalter",
+   "is_pick": false,
+   "match": "article das ende der verwalter 10578337",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/das-ende-der-verwalter-10578337",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Die Linke in MV hat über den rot-rot-grünen Koalitionsvertrag abgestimmt. Im Saal geht es auch um die Frage, wie viel Berlin auf Güstrow abfärbt.",
+   "entries": [],
+   "headline": "„Die haben alle Schiss“: Was eine Basis-Linke aus MV über den Streit in Berlin zu sagen hat",
+   "is_pick": false,
+   "match": "article boesartig antisemitisch eine linke rechnet mit teilen der partei ab 10596974",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/boesartig-antisemitisch-eine-linke-rechnet-mit-teilen-der-partei-ab-10596974",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Lastenräder können Autofahrten ersetzen und Mobilitätskosten senken. Studien der TU Berlin zeigen, wie groß die Vorteile sind. Auch ein Kreuzberger Start-up setzt auf die Transport-Velos.",
+   "entries": [],
+   "headline": "Bis zu 87 Prozent günstiger als das Auto: Lohnt sich ein Lastenrad in Berlin?",
+   "is_pick": false,
+   "match": "article bis zu 87 prozent guenstiger als das auto lohnt sich ein lastenrad in berlin 10583685",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/bis-zu-87-prozent-guenstiger-als-das-auto-lohnt-sich-ein-lastenrad-in-berlin-10583685",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Die Erneuerung der Uferwege am Kreuzberger Urbanhafen nimmt Fahrt auf. Mit dem Abschleifen des Kopfsteinpflasters am Planufer hat der erste Bauabschnitt begonnen.",
+   "entries": [],
+   "headline": "Barrierefrei und komfortabel: Der große Umbau am Urbahnhafen startet",
+   "is_pick": false,
+   "match": "article barrierefrei und komfortabel der grosse umbau am urbahnhafen startet 10582059",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/barrierefrei-und-komfortabel-der-grosse-umbau-am-urbahnhafen-startet-10582059",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Eine Arbeitspflicht für Migranten ist nicht automatisch Schikane. Ganz im Gegenteil. Sie kann Asylbewerbern Sprache, Kontakte und den Einstieg in einen regulären Job ermöglichen.",
+   "entries": [],
+   "headline": "Arbeitspflicht für Asylbewerber: Es ist nicht unmenschlich, eine Gegenleistung zu verlangen",
+   "is_pick": false,
+   "match": "article arbeitspflicht fuer asylbewerber es ist nicht unmenschlich eine gegenleistung zu verlangen 10555555",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/arbeitspflicht-fuer-asylbewerber-es-ist-nicht-unmenschlich-eine-gegenleistung-zu-verlangen-10555555",
+   "venues": []
+  },
+  {
+   "date": "2026-11-14",
+   "dek": "Neue Grundsteuerdaten zeigen: Unternehmen halten im Osten einen viel größeren Teil des Agrarvermögens als im Westen. Brandenburg liegt an der Spitze.",
+   "entries": [],
+   "headline": "Großkonzerne greifen nach Äckern, Feldern und Wiesen in Brandenburg",
+   "is_pick": false,
+   "match": "article aecker wiesen waelder privatbesitz in brandenburg weit unter westniveau 10597091",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/aecker-wiesen-waelder-privatbesitz-in-brandenburg-weit-unter-westniveau-10597091",
+   "venues": []
+  },
+  {
    "date": "2026-11-13",
    "dek": "Exklusive AOK-Zahlen: Mit dem Alter wächst der Abstand zu den Männern auf das 2,6-Fache. Was eine Berliner Gynäkologin stattdessen rät.",
    "entries": [],
@@ -58825,6 +60538,21 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Einen Tag vor dem HipHop Ball im Roten Rathaus haben die Veranstalter auf einer Pressekonferenz Einblicke in das Programm der Gala gegeben. Dabei wurde das Konzept der „HipHop Class“ vorgestellt.",
+   "entries": [],
+   "headline": "Vom Problemfall zur Spitzenklasse: Wie Hip-Hop Jugendliche in der Schule auf Erfolgskurs bringt",
+   "is_pick": false,
+   "match": "article vom problemfall zur spitzenklasse wie hip hop jugendliche in der schule auf erfolgskurs bringt 10594800",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/vom-problemfall-zur-spitzenklasse-wie-hip-hop-jugendliche-in-der-schule-auf-erfolgskurs-bringt-10594800",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "10,2 Prozent bei Union, 10,8 bei Hertha: Die Berliner Klubs setzen mehr auf Talente als Bayern, Freiburg und Bremen. Doch der Ligaschnitt liegt höher.",
    "entries": [],
    "headline": "Talente-Ranking: Union und Hertha lassen Bayern, Freiburg und Bremen hinter sich",
@@ -58840,6 +60568,21 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Rammstein-Sänger Till Lindemann geht 2027 auf Solo-Welttournee. Für die Stadthalle Rostock hat er jetzt einen zweiten Termin bekanntgegeben. Somit spielt er auch am 13. Oktober.",
+   "entries": [],
+   "headline": "Till Lindemann hängt Tag in Rostock dran: 6600 Fans sind ihm noch nicht genug",
+   "is_pick": false,
+   "match": "article till lindemann haengt einen tag in rostock dran 6600 fans sind ihm nicht genug 10595984",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/till-lindemann-haengt-einen-tag-in-rostock-dran-6600-fans-sind-ihm-nicht-genug-10595984",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Teheran will die Meerenge gemeinsam mit Oman überwachen. Chefunterhändler Ghalibaf stellt Washington sieben Bedingungen für ein Ende des Krieges.",
    "entries": [],
    "headline": "Straße von Hormus: Iran schließt Rückkehr zur freien Fahrt aus",
@@ -58851,6 +60594,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.berliner-zeitung.de/article/strasse-von-hormus-iran-oman-ghalibaf-usa-bedingungen-10591344",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Hohe Kosten, wenig Zuversicht: Ob um Halle oder Magdeburg – die Firmen blicken düster auf die nächsten Monate. Nun wankt auch eine Branche, die lange stützte.",
+   "entries": [],
+   "headline": "Wirtschaft um Halle und Dessau: Stimmung auf tiefstem Stand seit 2022",
+   "is_pick": false,
+   "match": "article sachsen anhalt wirtschaft ihk stimmung dienstleister 10594345",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/sachsen-anhalt-wirtschaft-ihk-stimmung-dienstleister-10594345",
    "venues": []
   },
   {
@@ -58900,6 +60658,21 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Nach München und Wien müssen jetzt auch die Placebo-Shows von diesem Wochenende verschoben werden. Grund ist eine schwere Kehlkopfentzündung.",
+   "entries": [],
+   "headline": "Placebo sagen vier Shows ab: Das ist der Stand zum Berlin-Konzert am Montag",
+   "is_pick": false,
+   "match": "article placebo canceln shows in budapest und prag ist das berlin konzert auch in gefahr 10596078",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/placebo-canceln-shows-in-budapest-und-prag-ist-das-berlin-konzert-auch-in-gefahr-10596078",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Bei ihren Stilvorbildern treffen Iris Berben und Lady Gaga aufeinander. Palina Rojinski über gute Laune aus dem Kleiderschrank, eine besondere Koralle und ihre Schwäche für schöne Hotels.",
    "entries": [],
    "headline": "Palina Rojinski: „Ich liebe es, meine Stimmung mit Kleidung zu beeinflussen“",
@@ -58911,6 +60684,36 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.berliner-zeitung.de/article/palina-rojinski-kleidung-stil-10589724",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Weltweit stehen E-Mail-Postfächer still. Doch während IT-Abteilungen versuchen, die Störung zu beheben, feiern Beschäftigte im Netz: Sie müssen erst einmal nicht arbeiten.",
+   "entries": [],
+   "headline": "Microsoft-Panne: Outlook down, Stimmung up!",
+   "is_pick": false,
+   "match": "article outlook ausfall wird zum feiertag microsoft lasst euch ruhig zeit 10594942",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/outlook-ausfall-wird-zum-feiertag-microsoft-lasst-euch-ruhig-zeit-10594942",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Geheimdienste, Kriminelle und politische Strippenzieher nutzen Liebe und Sex als Waffe: Ein Überblick über spektakuläre Fälle der Geschichte.",
+   "entries": [],
+   "headline": "Vom Nvidia-Chef bis zu den DDR-Romeos: Wie Honigfallen Mächtige zu Fall bringen",
+   "is_pick": false,
+   "match": "article nvidia ceo in der honigfalle wenn die affaere zum sicherheitsrisiko wird 10594132",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/nvidia-ceo-in-der-honigfalle-wenn-die-affaere-zum-sicherheitsrisiko-wird-10594132",
    "venues": []
   },
   {
@@ -58930,6 +60733,21 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Weihnachtsstollen ist nicht gleich Weihnachtsstollen. Dementsprechend gibt es nun erstmals eine besondere Ausbildung für Experten rund um das weihnachtliche Gebäck.",
+   "entries": [],
+   "headline": "Nach Wein, Bier und Brot: Jetzt gibt es auch Sommeliers für Stollen",
+   "is_pick": false,
+   "match": "article nach wein bier und brot jetzt gibt es auch sommeliers fuer stollen 10594461",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/nach-wein-bier-und-brot-jetzt-gibt-es-auch-sommeliers-fuer-stollen-10594461",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Russlands Diesel-Exporte verdoppelten sich im Oktober gegenüber September. Zwei Tanker mit Ziel USA drehten jedoch ab. Ein dritter wartet noch vor der US-Küste.",
    "entries": [],
    "headline": "Nach Trumps Putin-Deal: Russland verdoppelt Diesel-Exporte – USA bekommen nichts",
@@ -58941,6 +60759,51 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.berliner-zeitung.de/article/nach-trumps-putin-deal-russland-verdoppelt-diesel-exporte-usa-bekommen-nichts-10594717",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Anfang Oktober nannte Merz Schröders Besuch bei Putin noch „unmoralisch“. Vier Wochen später will er dem Gespräch mit dem Kremlchef „nicht aus dem Weg gehen“. Ein Kommentar.",
+   "entries": [],
+   "headline": "Mit Russland verhandeln? Friedrich Merz ist jetzt auch ein Putin-Versteher",
+   "is_pick": false,
+   "match": "article merz offen fuer putin gespraech vier wochen nachdem er schroeders geburtstagsbesuch unmoralisch fand 10595855",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/merz-offen-fuer-putin-gespraech-vier-wochen-nachdem-er-schroeders-geburtstagsbesuch-unmoralisch-fand-10595855",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Parallel zur Weltklimakonferenz in der Türkei haben Klimaaktivisten vor dem Bundeskanzleramt in Berlin demonstriert. Besonders auffällig: die Zahl der Teilnehmer.",
+   "entries": [],
+   "headline": "„Man merkt, es nützt nichts“: Frust und Hoffnung bei Fridays for Future vor dem Kanzleramt",
+   "is_pick": false,
+   "match": "article man merkt es nuetzt nichts frust und hoffnung bei fridays for future vor dem kanzleramt 10595703",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/man-merkt-es-nuetzt-nichts-frust-und-hoffnung-bei-fridays-for-future-vor-dem-kanzleramt-10595703",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Ein Licht mehr an jedem Abend: Die jüdische Chabad-Gemeinde lädt ab 4. Dezember alle Berlinerinnen und Berliner herzlich ein, mit ihr Chanukka zu feiern.",
+   "entries": [],
+   "headline": "„Man kann Vorurteile nur durch Begegnungen abbauen“: So feiert Berlin dieses Jahr Chanukka",
+   "is_pick": false,
+   "match": "article man kann vorurteile nur durch begegnungen abbauen so feiert berlin dieses jahr chanukka 10595105",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/man-kann-vorurteile-nur-durch-begegnungen-abbauen-so-feiert-berlin-dieses-jahr-chanukka-10595105",
    "venues": []
   },
   {
@@ -58960,6 +60823,51 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Faschistischer Gruß „Za dom spremni“: Warum der kroatische Sänger in Deutschland auftreten darf, während Österreich Ustascha-Symbole verbietet und Zagreb ihn sperrt.",
+   "entries": [],
+   "headline": "Kroatisches „Sieg Heil“ in Frankfurt: Heute Abend singt Faschist Thompson in der Jahrhunderthalle",
+   "is_pick": false,
+   "match": "article kroatisches sieg heil in frankfurt heute abend singt faschist thompson in der jahrhunderthalle 10595883",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/kroatisches-sieg-heil-in-frankfurt-heute-abend-singt-faschist-thompson-in-der-jahrhunderthalle-10595883",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Hunderte Gemeinden in Mecklenburg-Vorpommern müssen sparen. Schulden wachsen, der Spielraum schrumpft. Wie groß die Finanznot ist, weiß selbst das Land nicht.",
+   "entries": [],
+   "headline": "Kommunen am Limit: Wenn selbst für Sportvereine und Bibliotheken das Geld fehlt",
+   "is_pick": false,
+   "match": "article kommunen am limit wenn selbst fuer sportvereine und bibliotheken das geld fehlt 10590238",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/kommunen-am-limit-wenn-selbst-fuer-sportvereine-und-bibliotheken-das-geld-fehlt-10590238",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Sebastian Lege verlässt das ZDF, Tim Armann übernimmt bei „besseresser“. Doch der Nachfolger kommt nicht bei allen Zuschauern gut an, dabei ist er als Food-Influencer bereits sehr erfolgreich.",
+   "entries": [],
+   "headline": "„Kein Sebastian Lege, keine Show“: Neuer ZDF-„besseresser“ Tim Armann erntet Kritik",
+   "is_pick": false,
+   "match": "article kein sebastian lege keine show neuer zdf besseresser tim armann erntet kritik 10594291",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/kein-sebastian-lege-keine-show-neuer-zdf-besseresser-tim-armann-erntet-kritik-10594291",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Kommentar: Nach dem Aus der Öfen keimt nun neue Hoffnung für Kahla-Porzellan. Doch eine Rettung wird nur gelingen, wenn der Traditionsbetrieb aus der Vergangenheit lernt.",
    "entries": [],
    "headline": "Zukunft von Kahla-Porzellan: Tradition allein füllt keine Auftragsbücher",
@@ -58971,6 +60879,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.berliner-zeitung.de/article/kahla-porzellan-investoren-modernisierung-10592361",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Lina Hausicke kehrt mit Union Berlin zu Werder Bremen zurück. In der Frauen-Bundesliga will sie den Ex-Verein schlagen. Union warb schon vor einem Jahr um sie.",
+   "entries": [],
+   "headline": "„War letztes Jahr schon hier“: Warum Hausicke Werder für Union verließ",
+   "is_pick": false,
+   "match": "article hausicke union berlin werder bremen rueckkehr wechsel frauen bundesliga 10583671",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/hausicke-union-berlin-werder-bremen-rueckkehr-wechsel-frauen-bundesliga-10583671",
    "venues": []
   },
   {
@@ -59020,6 +60943,66 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Jürgen Klopp sagt, Felix Nmecha verzichtet beim DFB auf den Kronenjubel. Zu Ballers in God schweigt der BVB-Profi. Was im Streit offen bleibt.",
+   "entries": [],
+   "headline": "Nmecha verzichtet im DFB-Team auf Kronenjubel – und was ist mit Ballers in God?",
+   "is_pick": false,
+   "match": "article felix nmecha kronenjubel ballers in god klopp 10593250",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/felix-nmecha-kronenjubel-ballers-in-god-klopp-10593250",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Fünf CDU-Abgeordnete lassen ein öffentliches Register für Klima-Desinformation prüfen. Der eigentliche Streit beginnt dort, wo aus Klimaforschung politische Deutungshoheit wird.",
+   "entries": [],
+   "headline": "Klima-Meldestelle in Baden-Württemberg: Der gefährliche Traum vom Wahrheitsregister",
+   "is_pick": false,
+   "match": "article die cdu und das amt fuer klimawahrheit 10595288",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/die-cdu-und-das-amt-fuer-klimawahrheit-10595288",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Florian Wirtz und Debütant Brajan Gruda treffen beim zweiten Klopp-Sieg mit dem DFB. Deutschland dominiert die Partie gegen Serbien von Beginn an.",
+   "entries": [],
+   "headline": "Gruda trifft beim Debüt: Deutschland schlägt Serbien",
+   "is_pick": false,
+   "match": "article deutschland serbien klopp nations league 10593294",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/deutschland-serbien-klopp-nations-league-10593294",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Deutschlands Gasspeicher sind nur zu 58 Prozent gefüllt. Bei Extremkälte droht ab Januar Gasmangel. Reiche bereitet deshalb Kohle- und Ölkraftwerke vor.",
+   "entries": [],
+   "headline": "Deutschland geht das Gas aus: Jetzt sollen Kohle und Öl den Winter retten",
+   "is_pick": false,
+   "match": "article deutschland geht das gas aus jetzt sollen kohle und oel den winter retten 10595160",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/deutschland-geht-das-gas-aus-jetzt-sollen-kohle-und-oel-den-winter-retten-10595160",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Das Lichtschwert aus der „Ich bin dein Vater“-Szene ist die teuerste Star-Wars-Requisite aller Zeiten, laut Heritage Auctions.",
    "entries": [],
    "headline": "Darth Vaders Lichtschwert für 4,875 Millionen Dollar versteigert",
@@ -59035,6 +61018,36 @@
   },
   {
    "date": "2026-11-13",
+   "dek": "Claudia Borchers malte das Bild 1973 in Dresden. Später lag es in Cottbus auf dem Sperrmüll. Wie es dorthin kam, ist unklar.",
+   "entries": [],
+   "headline": "DDR-Diplombild auf dem Sperrmüll: Rätsel um Porträt aus Dresden",
+   "is_pick": false,
+   "match": "article claudia borchers diplomportraet sperrmuell cottbus 10594886",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/claudia-borchers-diplomportraet-sperrmuell-cottbus-10594886",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "",
+   "entries": [],
+   "headline": "Christoph schlingensief kunst aus kreuzberg und migration in berlin",
+   "is_pick": false,
+   "match": "article christoph schlingensief kunst aus kreuzberg und migration in berlin 10555221",
+   "origin": "sitemap",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/christoph-schlingensief-kunst-aus-kreuzberg-und-migration-in-berlin-10555221",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
    "dek": "Kampfdrohnen, Flugabwehr und gepanzerte Fahrzeuge aus China verdrängen zunehmend Frankreich und Großbritannien, besonders in Westafrika.",
    "entries": [],
    "headline": "China steigert Waffenexporte nach Afrika: Der Westen verliert Einfluss",
@@ -59046,6 +61059,21 @@
    "stars": null,
    "subjects": [],
    "url": "https://www.berliner-zeitung.de/article/china-baut-waffenexporte-nach-afrika-aus-westen-verliert-einfluss-10590005",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "Der Chemnitzer Künstler Carsten Nicolai widmet sich in der wichtigen Ost-Galerie Eigen + Art in Berlin-Mitte den Themen Technologie und Töne. Auch die DDR spielt eine wichtige Rolle.",
+   "entries": [],
+   "headline": "Von Karl-Marx-Stadt bis Kyoto: Carsten Nicolai spürt dem Klangzauber der Webereien nach",
+   "is_pick": false,
+   "match": "article carsten nicolai ausstellung berlin eigen art wave weave sono obi 10593524",
+   "origin": "feed",
+   "outlet": "Berliner Zeitung",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://www.berliner-zeitung.de/article/carsten-nicolai-ausstellung-berlin-eigen-art-wave-weave-sono-obi-10593524",
    "venues": []
   },
   {
@@ -64588,6 +66616,51 @@
    "venues": []
   },
   {
+   "date": "2026-11-13",
+   "dek": "Lee Chang-dong’s latest film pits the proletariat against the artist-bourgeoisie, and asks who owes what to eachother",
+   "entries": [],
+   "headline": "‘Possible Love’ Review: The Questions of Class and Cinema",
+   "is_pick": false,
+   "match": "possible love lee chang dong the questions of class and cinema review beatrice loayza",
+   "origin": "feed",
+   "outlet": "ArtReview",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://artreview.com/possible-love-lee-chang-dong-the-questions-of-class-and-cinema-review-beatrice-loayza/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "The photographer will receive €35,000",
+   "entries": [],
+   "headline": "Wolgang Tillmans wins Henri-Cartier Bresson Lifetime Achievement Award",
+   "is_pick": false,
+   "match": "news wolgang tillmans wins henri cartier bresson lifetime achievement award",
+   "origin": "feed",
+   "outlet": "ArtReview",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://artreview.com/news-wolgang-tillmans-wins-henri-cartier-bresson-lifetime-achievement-award/",
+   "venues": []
+  },
+  {
+   "date": "2026-11-13",
+   "dek": "The exhibition will be titled There Are Other Worlds, featuring over 40 artists",
+   "entries": [],
+   "headline": "SITE Santa Fe International announces theme and artists for 13th edition",
+   "is_pick": false,
+   "match": "news site santa fe international announces theme and artists for 13th edition",
+   "origin": "feed",
+   "outlet": "ArtReview",
+   "section": "",
+   "stars": null,
+   "subjects": [],
+   "url": "https://artreview.com/news-site-santa-fe-international-announces-theme-and-artists-for-13th-edition/",
+   "venues": []
+  },
+  {
    "date": "2026-11-12",
    "dek": "Scarier than reality, the widely circulated Mitch McConnell silicone mask captures something of the turning political tides seen in both the US Midterm elections and online life",
    "entries": [],
@@ -65009,21 +67082,22 @@
   }
  ],
  "log": [
+  "robots.txt interdit https://www.berlinartlink.com/?s=%22Berlin+Review+x+Volksb%C3%BChne%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Twelfth+Night+%28Was+ihr+wollt%29%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22The+Picture+of+Dorian+Gray+%28Das+Bildnis+des+Dorian+Gray%29%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Im+Herzen+der+Gewalt+%28History+of+Violence%29%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=Hamlet&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Guided+Tour+of+Volksb%C3%BChne%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22De+Profundis%22&feed=rss2",
-  "robots.txt interdit https://www.berlinartlink.com/?s=%22It%27s+Britney%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22T-Boy+on+Grindr%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=Mononoke&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Die+Blechtrommel+%28The+Tin+Drum%29%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Bad+Kingdom%22&feed=rss2",
+  "robots.txt interdit https://www.berlinartlink.com/?s=%22Die+Dreigroschenoper+%28The+Threepenny+Opera%29%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22SAVE+A+HORSE+RIDE+A+COWGIRL%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Alles+Gl%C3%BCck+der+Welt%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=CURSED&feed=rss2",
-  "robots.txt interdit https://www.berlinartlink.com/?s=%22Die+Dreigroschenoper+%28The+Threepenny+Opera%29%22&feed=rss2",
+  "robots.txt interdit https://www.berlinartlink.com/?s=%22It%27s+Britney%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Spooky+Paradise%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=Antigone&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22The+Arsonists+%28Biedermann+und+die+Brandstifter%29%22&feed=rss2",
@@ -65042,7 +67116,6 @@
   "robots.txt interdit https://www.berlinartlink.com/?s=%22The+Threepenny+Opera%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22The+Arsonists%22&feed=rss2",
   "robots.txt interdit https://www.berlinartlink.com/?s=%22Biedermann+und+die+Brandstifter%22&feed=rss2",
-  "HTTP 503 https://taz.de/!s=%22Gabriele+St%C3%B6tzer%22;rss/",
   "HTTP 404 https://taz.de/!s=%22BPA%2F%2F+Exhibition+2026%22;rss/",
   "HTTP 404 https://taz.de/!s=%22Paint+it+all%21+2%22;rss/",
   "HTTP 403 https://taz.de/!s=%22Tool-Party+%234%22;rss/",
@@ -65050,7 +67123,7 @@
   "HTTP 404 https://taz.de/!s=%22Di%2FSTRAUSS+technique%22;rss/",
   "HTTP 403 https://taz.de/!s=%23Motherfuckinghood;rss/"
  ],
- "refreshed_at": "2026-11-13T12:38:49+00:00",
+ "refreshed_at": "2026-11-14T11:46:40+00:00",
  "searches": {
   "Berlin Art Link|\"14th Berlin Biennale for Contemporary Art\"": {
    "at": 1794147274.116373,
@@ -70457,7 +72530,7 @@
    ]
   },
   "The Berliner|\"14th Berlin Biennale for Contemporary Art\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"2 x Brahms\"": {
@@ -70473,11 +72546,11 @@
    "urls": []
   },
   "The Berliner|\"3hd 2026 Beyond Imagining\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"A Friend in Berlin\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Abbas Akhavan\"": {
@@ -70485,7 +72558,7 @@
    "urls": []
   },
   "The Berliner|\"After Nature Prize 27\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Alan Gilbert and Isabelle Faust\"": {
@@ -70493,7 +72566,7 @@
    "urls": []
   },
   "The Berliner|\"Alles Glück der Welt\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Amin Yousefi\"": {
@@ -70525,7 +72598,7 @@
    "urls": []
   },
   "The Berliner|\"Bad Kingdom\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Banz & Bowinkel\"": {
@@ -70541,7 +72614,7 @@
    "urls": []
   },
   "The Berliner|\"Berlin Review x Volksbühne\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Berliner Philharmoniker Ensembles\"": {
@@ -70565,7 +72638,7 @@
    "urls": []
   },
   "The Berliner|\"Biedermann und die Brandstifter\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"BiennaleHarlem Gospel Singers\"": {
@@ -70573,7 +72646,7 @@
    "urls": []
   },
   "The Berliner|\"Bridget Polk\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"CHANEL Commission\"": {
@@ -70589,7 +72662,7 @@
    "urls": []
   },
   "The Berliner|\"Cemile Sahin\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Christoph Schlingensief\"": {
@@ -70597,7 +72670,7 @@
    "urls": []
   },
   "The Berliner|\"Colectivo Los Ingrávidos\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Così fan tutte\"": {
@@ -70605,19 +72678,19 @@
    "urls": []
   },
   "The Berliner|\"Dana Lixenberg\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Das Bildnis des Dorian Gray\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Dawoud Bey\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"De Profundis\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Der Himmel über Berlin\"": {
@@ -70641,19 +72714,19 @@
    "urls": []
   },
   "The Berliner|\"Die Blechtrommel (The Tin Drum)\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Die Blechtrommel\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Die Dreigroschenoper (The Threepenny Opera)\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Die Dreigroschenoper\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Die Entführung aus dem Serail\"": {
@@ -70661,11 +72734,11 @@
    "urls": []
   },
   "The Berliner|\"Die Seherin (The Seer)\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Die Seherin\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Die Zarenbraut\"": {
@@ -70685,7 +72758,7 @@
    "urls": []
   },
   "The Berliner|\"Disrupt the Default\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Don Carlo\"": {
@@ -70741,7 +72814,7 @@
    "urls": []
   },
   "The Berliner|\"Guided Tour of Volksbühne\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Gustavo Dudamel and Mitsuko Uchida\"": {
@@ -70761,7 +72834,7 @@
    "urls": []
   },
   "The Berliner|\"History of Violence\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Homage to Beethoven\"": {
@@ -70781,11 +72854,11 @@
    "urls": []
   },
   "The Berliner|\"Im Herzen der Gewalt (History of Violence)\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Im Herzen der Gewalt\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"In 80 Tagen um die Welt\"": {
@@ -70793,7 +72866,7 @@
    "urls": []
   },
   "The Berliner|\"It's Britney\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Jakub Hrůša and Yuja Wang\"": {
@@ -70817,15 +72890,15 @@
    "urls": []
   },
   "The Berliner|\"Jeewi Lee\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Josef Kaiser\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"KOO JEONG A\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Katharina Sieverding\"": {
@@ -70857,7 +72930,7 @@
    "urls": []
   },
   "The Berliner|\"Kolonialismus erinnern\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Król Roger\"": {
@@ -70933,7 +73006,7 @@
    "urls": []
   },
   "The Berliner|\"Lovis Corinth\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"L’incoronazione di Poppea\"": {
@@ -70953,7 +73026,7 @@
    "urls": []
   },
   "The Berliner|\"Maria Lassnig\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Markus Poschner and Christian Gerhaher\"": {
@@ -71097,7 +73170,7 @@
    "urls": []
   },
   "The Berliner|\"Rafik Greiss\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Roger Ballen\"": {
@@ -71125,7 +73198,7 @@
    "urls": []
   },
   "The Berliner|\"SAVE A HORSE RIDE A COWGIRL\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Sakari Oramo and Vilde Frang\"": {
@@ -71149,7 +73222,7 @@
    "urls": []
   },
   "The Berliner|\"Spooky Paradise\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"St Matthew Passion\"": {
@@ -71161,7 +73234,7 @@
    "urls": []
   },
   "The Berliner|\"Susan Hiller\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Susanne Kriemann\"": {
@@ -71173,7 +73246,7 @@
    "urls": []
   },
   "The Berliner|\"T-Boy on Grindr\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Ten Thousand Hours\"": {
@@ -71185,11 +73258,11 @@
    "urls": []
   },
   "The Berliner|\"The Arsonists (Biedermann und die Brandstifter)\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"The Arsonists\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"The Ball of the Komische Oper Berlin\"": {
@@ -71217,23 +73290,23 @@
    "urls": []
   },
   "The Berliner|\"The Picture of Dorian Gray (Das Bildnis des Dorian Gray)\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"The Picture of Dorian Gray\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"The Seer\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"The Threepenny Opera\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"The Tin Drum\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Thomas Billhardt\"": {
@@ -71257,11 +73330,11 @@
    "urls": []
   },
   "The Berliner|\"Twelfth Night (Was ihr wollt)\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Twelfth Night\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"Ulay, Ulay & Abramović\"": {
@@ -71269,7 +73342,7 @@
    "urls": []
   },
   "The Berliner|\"Vlassis Caniaris\"": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"War Requiem\"": {
@@ -71277,7 +73350,7 @@
    "urls": []
   },
   "The Berliner|\"Was ihr wollt\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|\"WorldLast Breaths from Aleppo\"": {
@@ -71305,7 +73378,7 @@
    "urls": []
   },
   "The Berliner|#Motherfuckinghood": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|2020": {
@@ -71321,7 +73394,7 @@
    "urls": []
   },
   "The Berliner|Antigone": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|Antikrist": {
@@ -71337,7 +73410,7 @@
    "urls": []
   },
   "The Berliner|CURSED": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|Carmen": {
@@ -71361,7 +73434,7 @@
    "urls": []
   },
   "The Berliner|Hamlet": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|Idomeneo": {
@@ -71401,7 +73474,7 @@
    "urls": []
   },
   "The Berliner|Mononoke": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|Nabucco": {
@@ -71449,7 +73522,7 @@
    "urls": []
   },
   "The Berliner|ZEITFENSTER": {
-   "at": 1794147274.116373,
+   "at": 1794656800.38229,
    "urls": []
   },
   "The Berliner|materialistin": {
@@ -71483,6 +73556,10 @@
   },
   "klassik-begeistert|\"After Nature Prize 27\"": {
    "at": 1794489375.056838,
+   "urls": []
+  },
+  "klassik-begeistert|\"Alles Glück der Welt\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"Amin Yousefi\"": {
@@ -71525,8 +73602,34 @@
    "at": 1794489375.056838,
    "urls": []
   },
+  "klassik-begeistert|\"Beethoven cycle with the Quatuor Ébène\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Berlin Review x Volksbühne\"": {
    "at": 1794573529.402001,
+   "urls": []
+  },
+  "klassik-begeistert|\"Berliner Philharmoniker EnsemblesBerliner Barock Solisten and Daishin Kashimoto with Vivaldi’s “The Four Seasons”\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Berliner Philharmoniker EnsemblesPhilharmonic String Quartet with Beethoven\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Berliner Philharmoniker EnsemblesWind chamber music by Beethoven\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Biedermann und die Brandstifter\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/saisonspielplan-2026-27-theater-luebeck-theater-luebeck-24-april-2026/"
+   ]
+  },
+  "klassik-begeistert|\"BiennaleHarlem Gospel Singers\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"Bridget Polk\"": {
@@ -71563,6 +73666,12 @@
   "klassik-begeistert|\"Colectivo Los Ingrávidos\"": {
    "at": 1794489375.056838,
    "urls": []
+  },
+  "klassik-begeistert|\"Così fan tutte\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/dr-ralf-wegner-zu-seinem-80-geburtstag-klassik-begeistert-5-november-2026/"
+   ]
   },
   "klassik-begeistert|\"Così fan tutte\" Deutsche Oper Berlin": {
    "at": 1794399091.709317,
@@ -71626,6 +73735,16 @@
     "https://klassik-begeistert.de/ensemble-modern-david-bennent-heiner-goebbels-tonkuenstler-orchester-niederoesterreich-yutaka-sado-wiener-festwochen-2021/"
    ]
   },
+  "klassik-begeistert|\"Die Dreigroschenoper (The Threepenny Opera)\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Die Dreigroschenoper\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/die-dreigroschenoper-berthold-brecht-kurt-weill-theater-bonn-opernhaus-6-april-2025/"
+   ]
+  },
   "klassik-begeistert|\"Die Entführung aus dem Serail\"": {
    "at": 1794573529.402001,
    "urls": []
@@ -71677,6 +73796,10 @@
     "https://klassik-begeistert.de/kb-im-gespraech-mit-kady-evanyshyn-und-hubert-kowalczyk-hamburgische-staatsoper-16-oktober-2026/"
    ]
   },
+  "klassik-begeistert|\"Die große Klassenrevue\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Disrupt the Default\"": {
    "at": 1794573529.402001,
    "urls": []
@@ -71695,6 +73818,10 @@
   },
   "klassik-begeistert|\"Drag, Desire and the City — Rolf von Bergmann. Photographs\"": {
    "at": 1794489375.056838,
+   "urls": []
+  },
+  "klassik-begeistert|\"Echnaton (Akhnaten)\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"Echnaton (Akhnaten)\" Komische Oper": {
@@ -71731,12 +73858,23 @@
    "at": 1794489375.056838,
    "urls": []
   },
+  "klassik-begeistert|\"Fiddler on the Roof\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/sommernachtskonzert-wiener-philharmoniker-lorenzo-viotti-schoenbrunn-wien-19-juni-2026/",
+    "https://klassik-begeistert.de/richard-wagner-der-fliegende-hollaender-oper-im-steinbruch-sankt-margarethen-im-burgenland-9-juli-2025/"
+   ]
+  },
   "klassik-begeistert|\"Fiddler on the Roof\" Komische Oper": {
    "at": 1794399091.709317,
    "urls": []
   },
   "klassik-begeistert|\"Fiddler! One Night Only\"": {
    "at": 1794573529.402001,
+   "urls": []
+  },
+  "klassik-begeistert|\"François-Xavier Roth conducts Strauss\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"Gabriele Stötzer\"": {
@@ -71761,6 +73899,14 @@
    "at": 1794573529.402001,
    "urls": []
   },
+  "klassik-begeistert|\"Hansel and Gretel\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-174-wie-entwickeln-sich-saenger-klassik-begeistert-de-13-oktober-2026/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-165-auf-wiederhoeren-klassik-begeistert-de-9-juni-2026/",
+    "https://klassik-begeistert.de/weihnachtsgeschichte-aus-new-york-klassik-begeistert-de-24-dezember-2024/"
+   ]
+  },
   "klassik-begeistert|\"Hansel and Gretel\" Komische Oper": {
    "at": 1794399091.709317,
    "urls": [
@@ -71776,9 +73922,26 @@
    "at": 1794573529.402001,
    "urls": []
   },
+  "klassik-begeistert|\"Homage to Beethoven\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Horse Eats Hat\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Horse Eats Hat\" Komische Oper": {
    "at": 1794399091.709317,
    "urls": []
+  },
+  "klassik-begeistert|\"Hänsel und Gretel\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-176-biographien-von-interpreten-von-kleinrollen-klassik-begeistert-de-10-november-2026/",
+    "https://klassik-begeistert.de/richard-wagner-der-fliegende-hollaender-philipp-stoelzl-musiktheater-an-der-wien-28-oktober-2026/",
+    "https://klassik-begeistert.de/grigori-frid-das-tagebuch-der-anne-frank-a-graphic-opera-nest-neue-staatsoper-im-kuenstlerhaus-18-oktober-2026/",
+    "https://klassik-begeistert.de/kb-im-gespraech-mit-kady-evanyshyn-und-hubert-kowalczyk-hamburgische-staatsoper-16-oktober-2026/"
+   ]
   },
   "klassik-begeistert|\"Hänsel und Gretel\" Deutsche Oper Berlin": {
    "at": 1794399091.709317,
@@ -71820,6 +73983,14 @@
    "at": 1794573529.402001,
    "urls": []
   },
+  "klassik-begeistert|\"Jakub Hrůša and Yuja Wang\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Jazz at Berlin PhilharmonicSoul Train\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Jazz at Berlin Philharmonic“Conversations”\"": {
    "at": 1794573529.402001,
    "urls": []
@@ -71840,13 +74011,32 @@
    "at": 1794489375.056838,
    "urls": []
   },
+  "klassik-begeistert|\"King Roger\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"King Roger\" Komische Oper": {
    "at": 1794399091.709317,
+   "urls": []
+  },
+  "klassik-begeistert|\"Kirill Petrenko conducts Beethoven’s Missa solemnis\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Kirill Petrenko opens the Biennale of the Berliner Philharmoniker\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"Kolonialismus erinnern\"": {
    "at": 1794489375.056838,
    "urls": []
+  },
+  "klassik-begeistert|\"Król Roger\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/berner-symphonieorchester-krzysztof-urbanski-maria-duenas-casino-bern-20-februar-2026/",
+    "https://klassik-begeistert.de/berner-symphonieorchester-krzysztof-urbanski-casino-bern-25-april-2025/"
+   ]
   },
   "klassik-begeistert|\"Król Roger\" Komische Oper": {
    "at": 1794399091.709317,
@@ -71890,6 +74080,13 @@
     "https://klassik-begeistert.de/spielzeitpraesentation-2026-staatsoper-unter-den-linden-klassik-begeistert-de-2-september-2026/"
    ]
   },
+  "klassik-begeistert|\"La bohème\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/dr-ralf-wegner-zu-seinem-80-geburtstag-klassik-begeistert-5-november-2026/",
+    "https://klassik-begeistert.de/liederabend-des-internationalen-opernstudios-staatsoper-unter-den-linden-27-oktober-2026/"
+   ]
+  },
   "klassik-begeistert|\"La bohème\" Deutsche Oper Berlin": {
    "at": 1794399091.709317,
    "urls": [
@@ -71901,6 +74098,14 @@
    "urls": [
     "https://klassik-begeistert.de/die-mittwoch-presse-14-oktober-2026/",
     "https://klassik-begeistert.de/88253-2/"
+   ]
+  },
+  "klassik-begeistert|\"La traviata\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/richard-wagner-der-fliegende-hollaender-inszenierung-philipp-stoelzl-musiktheater-an-der-wien-20-oktober-2026/",
+    "https://klassik-begeistert.de/kb-im-gespraech-mit-kady-evanyshyn-und-hubert-kowalczyk-hamburgische-staatsoper-16-oktober-2026/",
+    "https://klassik-begeistert.de/die-mittwoch-presse-14-oktober-2026/"
    ]
   },
   "klassik-begeistert|\"La traviata\" Deutsche Oper Berlin": {
@@ -71918,15 +74123,39 @@
     "https://klassik-begeistert.de/die-mittwoch-presse-14-oktober-2026/"
    ]
   },
+  "klassik-begeistert|\"Lahav Shani and Martha Argerich\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Lauren Greenfield\"": {
    "at": 1794489375.056838,
    "urls": []
+  },
+  "klassik-begeistert|\"Le nozze di Figaro\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/kb-im-gespraech-mit-andrzej-filonczyk-bariton-hamburgische-staatsoper-20-oktober-2026/",
+    "https://klassik-begeistert.de/kb-im-gespraech-mit-kady-evanyshyn-und-hubert-kowalczyk-hamburgische-staatsoper-16-oktober-2026/",
+    "https://klassik-begeistert.de/die-mittwoch-presse-14-oktober-2026/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-174-wie-entwickeln-sich-saenger-klassik-begeistert-de-13-oktober-2026/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-173-was-bedeutet-etwas-ein-wenig-ein-bisschen-in-kritiken-klassik-begeistert-de-29-september-2026/"
+   ]
   },
   "klassik-begeistert|\"Le nozze di Figaro\" Deutsche Oper Berlin": {
    "at": 1794399091.709317,
    "urls": [
     "https://klassik-begeistert.de/kb-im-gespraech-mit-kady-evanyshyn-und-hubert-kowalczyk-hamburgische-staatsoper-16-oktober-2026/",
     "https://klassik-begeistert.de/die-mittwoch-presse-14-oktober-2026/"
+   ]
+  },
+  "klassik-begeistert|\"Les Contes d’Hoffmann\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-175-und-immer-wieder-britten-klassik-begeistert-de-27-oktober-2026/",
+    "https://klassik-begeistert.de/ferdinand-herold-zampa-ou-la-fiancee-de-marbre-bru-zane-klassik-begeistert-de-6-september-2026/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-167-liebe-auf-den-ersten-ton-klassik-begeistert-de-7-juli-2026/",
+    "https://klassik-begeistert.de/jacques-offenbach-hoffmanns-erzaehlungen-theater-luebeck-18-juni-2026/",
+    "https://klassik-begeistert.de/solistinnen-des-luebecker-opernstudios-theater-luebeck-10-mai-2026/"
    ]
   },
   "klassik-begeistert|\"Les Contes d’Hoffmann\" Staatsoper Linden": {
@@ -71941,6 +74170,13 @@
    "at": 1794399091.709317,
    "urls": [
     "https://klassik-begeistert.de/georges-bizet-les-pecheurs-de-perles-chor-der-oper-koeln-guerzenich-orchester-koeln-oper-koeln-9-juni-2024/"
+   ]
+  },
+  "klassik-begeistert|\"Lisa Batiashvili\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/lisa-batiashvili-und-dresdner-philharmonie-beethovenfest-2026-beethovenhalle-bonn-25-september-2026/",
+    "https://klassik-begeistert.de/oslo-philharmonic-lisa-batiashvili-klaus-maekelae-dirigent-philharmonie-essen-24-januar-2026/"
    ]
   },
   "klassik-begeistert|\"Lovis Corinth\"": {
@@ -71982,11 +74218,19 @@
     "https://klassik-begeistert.de/spielzeitpraesentation-2026-staatsoper-unter-den-linden-klassik-begeistert-de-2-september-2026/"
    ]
   },
+  "klassik-begeistert|\"Marek Janowski conducts Bruckner’s Eighth\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Maria Lassnig\"": {
    "at": 1794489375.056838,
    "urls": [
     "https://klassik-begeistert.de/die-presseschau-freitag-4-jaenner-januar-2019/"
    ]
+  },
+  "klassik-begeistert|\"Markus Poschner and Christian Gerhaher\"": {
+   "at": 1794656800.38229,
+   "urls": []
   },
   "klassik-begeistert|\"Maurizio Cattelan\"": {
    "at": 1794489375.056838,
@@ -71994,6 +74238,10 @@
   },
   "klassik-begeistert|\"Maxim Emelyanychev conducts Mendelssohn\"": {
    "at": 1794573529.402001,
+   "urls": []
+  },
+  "klassik-begeistert|\"Maxime Pascal makes his debut with Berlioz’s “L’Enfance du Christ”\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"May Fall\"": {
@@ -72004,11 +74252,21 @@
    "at": 1794489375.056838,
    "urls": []
   },
+  "klassik-begeistert|\"Music of Changes\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/programmvorschau-2026-27-deutsche-oper-berlin-klassik-begeistert-de-6-september-2026/"
+   ]
+  },
   "klassik-begeistert|\"Music of Changes\" Deutsche Oper Berlin": {
    "at": 1794399091.709317,
    "urls": [
     "https://klassik-begeistert.de/programmvorschau-2026-27-deutsche-oper-berlin-klassik-begeistert-de-6-september-2026/"
    ]
+  },
+  "klassik-begeistert|\"New Year’s Eve at Chamäleon\"": {
+   "at": 1794656800.38229,
+   "urls": []
   },
   "klassik-begeistert|\"Next Door\"": {
    "at": 1794489375.056838,
@@ -72030,6 +74288,10 @@
    "at": 1794489375.056838,
    "urls": []
   },
+  "klassik-begeistert|\"North of Now\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Once around the world\" Komische Oper": {
    "at": 1794489375.056838,
    "urls": []
@@ -72042,6 +74304,14 @@
   },
   "klassik-begeistert|\"Orfeo ed Euridice\" Staatsoper Linden": {
    "at": 1794399091.709317,
+   "urls": []
+  },
+  "klassik-begeistert|\"Organ matinee with Wayne Marshall\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"OriginalklangBaroque Christmas music with Les Accents\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"OriginalklangIl pomo d’oro & Jakub Józef Orliński\"": {
@@ -72079,6 +74349,14 @@
    "at": 1794489375.056838,
    "urls": []
   },
+  "klassik-begeistert|\"Piano Recital with Mitsuko Uchida\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"Piano recital with Bertrand Chamayou\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Pique Dame\"": {
    "at": 1794573529.402001,
    "urls": [
@@ -72093,6 +74371,10 @@
   },
   "klassik-begeistert|\"Porgy and Bess\" Komische Oper": {
    "at": 1794399091.709317,
+   "urls": []
+  },
+  "klassik-begeistert|\"QuartetBeethoven cycle with the Quatuor Ébène\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"Queen of Spades\"": {
@@ -72134,6 +74416,10 @@
    "at": 1794573529.402001,
    "urls": []
   },
+  "klassik-begeistert|\"Sakari Oramo and Vilde Frang\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Schatten Reich\"": {
    "at": 1794489375.056838,
    "urls": [
@@ -72146,6 +74432,10 @@
   },
   "klassik-begeistert|\"Sophie Calle\"": {
    "at": 1794489375.056838,
+   "urls": []
+  },
+  "klassik-begeistert|\"Spooky Paradise\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"St Matthew Passion\" Deutsche Oper Berlin": {
@@ -72182,6 +74472,18 @@
   },
   "klassik-begeistert|\"The Abduction from the Seraglio\" Deutsche Oper Berlin": {
    "at": 1794399091.709317,
+   "urls": []
+  },
+  "klassik-begeistert|\"The Arsonists (Biedermann und die Brandstifter)\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"The Arsonists\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|\"The Ball of the Komische Oper Berlin\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"The Ball of the Komische Oper Berlin\" Komische Oper": {
@@ -72228,6 +74530,10 @@
    "at": 1794573529.402001,
    "urls": []
   },
+  "klassik-begeistert|\"The Threepenny Opera\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"The Tin Drum\"": {
    "at": 1794573529.402001,
    "urls": []
@@ -72242,6 +74548,10 @@
   },
   "klassik-begeistert|\"Tool-Party #4\"": {
    "at": 1794573529.402001,
+   "urls": []
+  },
+  "klassik-begeistert|\"Treading the boards\"": {
+   "at": 1794656800.38229,
    "urls": []
   },
   "klassik-begeistert|\"Treading the boards\" Komische Oper": {
@@ -72276,6 +74586,10 @@
     "https://klassik-begeistert.de/the-woods-so-wild-ensemble-phoenix-munich-bayerisches-nationalmuseum-muenchen-15-mai-2025/"
    ]
   },
+  "klassik-begeistert|\"WorldLast Breaths from Aleppo\"": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|\"Zubin Mehta and Pinchas Zukerman with Bruch’s First Violin Concerto\"": {
    "at": 1794573529.402001,
    "urls": []
@@ -72294,9 +74608,30 @@
    "at": 1794489375.056838,
    "urls": []
   },
+  "klassik-begeistert|#Motherfuckinghood": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|2020": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/cecilia-bartoli-glucks-orfeo-ed-euridice-staatsoper-unter-den-linden-berlin-12-november-2026/",
+    "https://klassik-begeistert.de/dr-ralf-wegner-zu-seinem-80-geburtstag-klassik-begeistert-5-november-2026/"
+   ]
+  },
+  "klassik-begeistert|Akhnaten": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|Akhnaten Komische Oper": {
    "at": 1794399091.709317,
    "urls": []
+  },
+  "klassik-begeistert|Anatevka": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/richard-wagner-die-meistersinger-von-nuernberg-bayreuther-festspiele-5-august-2025/"
+   ]
   },
   "klassik-begeistert|Anatevka Komische Oper": {
    "at": 1794399091.709317,
@@ -72304,9 +74639,35 @@
     "https://klassik-begeistert.de/richard-wagner-die-meistersinger-von-nuernberg-bayreuther-festspiele-5-august-2025/"
    ]
   },
+  "klassik-begeistert|Antigone": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|Antikrist Deutsche Oper Berlin": {
    "at": 1794489375.056838,
    "urls": []
+  },
+  "klassik-begeistert|BODEN": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/l-orfeo-claudio-monteverdi-rolando-villazon-wiener-staatsoper-3-november-2026/",
+    "https://klassik-begeistert.de/giacomo-puccini-tosca-grigor-palikarov-sofia-opera-and-ballett-28-oktober-2026/",
+    "https://klassik-begeistert.de/rundfunkchor-berlin-gijs-leenaars-rundfunkchorlounge-heimathafen-neukoelln-22-oktober-2026/",
+    "https://klassik-begeistert.de/die-kameliendame-ballett-von-john-neumeier-hamburgische-staatsoper-hamburg-ballett-21-oktober-2026/",
+    "https://klassik-begeistert.de/gustav-mahler-sinfonie-nr-10-fis-dur-staatskapelle-dresden-daniele-gatti-semperoper-dresden-19-oktber-2026/"
+   ]
+  },
+  "klassik-begeistert|Bretter": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/giuseppe-verdi-macbeth-grigor-palikarov-sofia-opera-and-ballett-house-24-25-oktober-2026/",
+    "https://klassik-begeistert.de/jacques-offenbach-hoffmanns-erzaehlungen-paul-taubitz-hessisches-staatstheater-wiesbaden-18-oktober-2026/",
+    "https://klassik-begeistert.de/richard-strauss-ariadne-auf-naxos-bayerische-staatsoper-nationaltheater-16-oktober-2026/",
+    "https://klassik-begeistert.de/giacomo-puccini-tosca-leonardo-sini-musikalische-leitung-deutsche-oper-berlin-29-september-2026/",
+    "https://klassik-begeistert.de/mittwoch-aus-licht-von-karlheinz-stockhausen-maxime-pascal-deutsche-oper-berlin-27-september-2026/",
+    "https://klassik-begeistert.de/130-jahre-theater-des-westens-theater-des-westens-23-september-2026/",
+    "https://klassik-begeistert.de/zwischen-den-saetzen-4-programmgestaltung-fuer-nerds-laeiszhalle-hamburg-20-september-2026/"
+   ]
   },
   "klassik-begeistert|Bretter Komische Oper": {
    "at": 1794399091.709317,
@@ -72316,6 +74677,16 @@
     "https://klassik-begeistert.de/wolfgang-amadeus-mozart-le-nozze-di-figaro-deutsche-oper-berlin-4-januar-2026/",
     "https://klassik-begeistert.de/jacques-offenbach-les-contes-dhoffmann-staatsoper-unter-den-linden-berlin-premiere-16-november-2025/",
     "https://klassik-begeistert.de/jesus-christ-superstar-rockoper-von-andrew-lloyd-webber-komische-oper-berlin-premiere-am-19-september-2025/"
+   ]
+  },
+  "klassik-begeistert|CURSED": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
+  "klassik-begeistert|Carmen": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/liederabend-des-internationalen-opernstudios-staatsoper-unter-den-linden-27-oktober-2026/"
    ]
   },
   "klassik-begeistert|Carmen Deutsche Oper Berlin": {
@@ -72335,6 +74706,12 @@
     "https://klassik-begeistert.de/schammis-klassikwelt-15-bekannte-melodien-unbekannter-amerikanischer-komponisten-teil-1-klassik-begeistert-de/",
     "https://klassik-begeistert.de/saverio-mercadante-francesca-da-rimini-frankfurt-oper-26-februar-2023/",
     "https://klassik-begeistert.de/schammis-klassikwelt-7-leise-rieselt-die-weihnachtsmusik-in-unsere-ohren-und-herzen-klassik-begeistert-de-3-dezember-2022/"
+   ]
+  },
+  "klassik-begeistert|Echnaton": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/opera-incognita-akhnaten-von-philip-glass-staatliches-museum-aegyptischer-kunst-muenchen-16-september-2022/"
    ]
   },
   "klassik-begeistert|Echnaton Komische Oper": {
@@ -72401,6 +74778,13 @@
     "https://klassik-begeistert.de/giuseppe-verdi-la-traviata-opera-national-du-rhin-strasbourg-2-april-2025/"
    ]
   },
+  "klassik-begeistert|Lohengrin": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/kommentar-vertragsverlaengerung-von-thielemann-und-sobotka-staatsoper-unter-den-linden-16-oktober-2026/",
+    "https://klassik-begeistert.de/lohengrin-richard-wagner-premiere-musiktheater-linz-10-oktober-2026/"
+   ]
+  },
   "klassik-begeistert|Lohengrin Deutsche Oper Berlin": {
    "at": 1794399091.709317,
    "urls": [
@@ -72431,6 +74815,16 @@
     "https://klassik-begeistert.de/duesseldorfer-symphoniker-unter-gordon-hamilton-duesseldorfer-symphoniker-tonhalle-duesseldorf-3-november-2022/"
    ]
   },
+  "klassik-begeistert|Nabucco": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/sommereggers-klassikwelt-298-zum-100-geburtstag-von-leonie-rysanek-klassik-begeistert-de/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-176-biographien-von-interpreten-von-kleinrollen-klassik-begeistert-de-10-november-2026/",
+    "https://klassik-begeistert.de/meistersinger-von-nuernberg-richard-wagner-premiere-deutsche-oper-am-rhein-opernhaus-duesseldorf-17-oktober-2026/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-174-wie-entwickeln-sich-saenger-klassik-begeistert-de-13-oktober-2026/",
+    "https://klassik-begeistert.de/interview-kb-im-gespraech-mit-etienne-dupuis-bariton-klassik-begeistert-de-9-oktober-2026/"
+   ]
+  },
   "klassik-begeistert|Nabucco Deutsche Oper Berlin": {
    "at": 1794399091.709317,
    "urls": [
@@ -72452,6 +74846,14 @@
     "https://klassik-begeistert.de/spielzeitpraesentation-2026-staatsoper-unter-den-linden-klassik-begeistert-de-2-september-2026/"
    ]
   },
+  "klassik-begeistert|Rigoletto": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/kb-im-gespraech-mit-kady-evanyshyn-und-hubert-kowalczyk-hamburgische-staatsoper-16-oktober-2026/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-174-wie-entwickeln-sich-saenger-klassik-begeistert-de-13-oktober-2026/",
+    "https://klassik-begeistert.de/interview-kb-im-gespraech-mit-etienne-dupuis-bariton-klassik-begeistert-de-9-oktober-2026/"
+   ]
+  },
   "klassik-begeistert|Rigoletto Deutsche Oper Berlin": {
    "at": 1794399091.709317,
    "urls": [
@@ -72464,6 +74866,17 @@
    "urls": [
     "https://klassik-begeistert.de/kb-im-gespraech-mit-kady-evanyshyn-und-hubert-kowalczyk-hamburgische-staatsoper-16-oktober-2026/",
     "https://klassik-begeistert.de/interview-kb-im-gespraech-mit-mezzosopranistin-natalia-skrycka-klassik-begeistert-de-5-august-2026/"
+   ]
+  },
+  "klassik-begeistert|Salome": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://klassik-begeistert.de/sommereggers-klassikwelt-298-zum-100-geburtstag-von-leonie-rysanek-klassik-begeistert-de/",
+    "https://klassik-begeistert.de/geboren-fuer-die-buehne-drei-ausnahmestimmen-des-jahres-1926-klassik-begeistert-de-10-november-2026/",
+    "https://klassik-begeistert.de/dr-ralf-wegner-zu-seinem-80-geburtstag-klassik-begeistert-5-november-2026/",
+    "https://klassik-begeistert.de/schweitzers-klassikwelt-175-und-immer-wieder-britten-klassik-begeistert-de-27-oktober-2026/",
+    "https://klassik-begeistert.de/sinfonieorchester-biel-solothurn-tobs-stadttheater-solothurn-18-oktober-2026/",
+    "https://klassik-begeistert.de/kb-im-gespraech-mit-maestro-david-afkham-dirigent-klassik-begeistert-de-20-oktober-2026/"
    ]
   },
   "klassik-begeistert|Salome Deutsche Oper Berlin": {
@@ -72529,6 +74942,10 @@
    "at": 1794399091.709317,
    "urls": []
   },
+  "klassik-begeistert|WorldVärttinä": {
+   "at": 1794656800.38229,
+   "urls": []
+  },
   "klassik-begeistert|ZEITFENSTER": {
    "at": 1794489375.056838,
    "urls": [
@@ -72542,7 +74959,7 @@
    "urls": []
   },
   "taz|\"14th Berlin Biennale for Contemporary Art\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"2 x Brahms\"": {
@@ -72580,15 +74997,15 @@
    ]
   },
   "taz|\"3hd 2026 Beyond Imagining\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"A Friend in Berlin\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Abbas Akhavan\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Kontroverse-Kunstbiennale-in-Venedig/!6173819/",
     "https://taz.de/Hamburger-Deichtorhallen/!6032020/",
@@ -72596,7 +75013,7 @@
    ]
   },
   "taz|\"After Nature Prize 27\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Alan Gilbert and Isabelle Faust\"": {
@@ -72604,8 +75021,9 @@
    "urls": []
   },
   "taz|\"Alles Glück der Welt\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
+    "https://taz.de/wortwechsel/!6224424/",
     "https://taz.de/Neues-Album-der-Band-Traenen/!5968896/",
     "https://taz.de/Modernes-Fussballmaerchen-in-Muenchen/!5837086/",
     "https://taz.de/donnerstag-26-september-2019/!5628639/",
@@ -72614,16 +75032,15 @@
     "https://taz.de/filme-in-originalfassung/!5465659/",
     "https://taz.de/!5465660/",
     "https://taz.de/Afrika-liegt-im-Kinzigtal/!5425003/",
-    "https://taz.de/kinos-in-berlin-und-potsdam-0405--1005-2017/!5406837/",
-    "https://taz.de/!5406835/"
+    "https://taz.de/kinos-in-berlin-und-potsdam-0405--1005-2017/!5406837/"
    ]
   },
   "taz|\"Amin Yousefi\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Anna Boghiguian\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/unterm-strich/!5963081/",
     "https://taz.de/Indie-Kunstmesse-Paris-Internationale/!5886011/",
@@ -72638,7 +75055,7 @@
    ]
   },
   "taz|\"Anna-Eva Bergman\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Halt-im-Rueckgriff-auf-die-Moderne/!6087576/",
     "https://taz.de/Doku-Verwandlung--des-Lichts-auf-Arte/!5929987/",
@@ -72646,7 +75063,7 @@
    ]
   },
   "taz|\"Anne Duk Hee Jordan\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/verweis/!5800495/",
     "https://taz.de/Wurm-von-Kuensterlin-Anne-Duk-Hee-Jordan/!5781748/",
@@ -72674,7 +75091,7 @@
    ]
   },
   "taz|\"Bad Kingdom\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Falk-Richter-ueber-queeres-Empowerment/!5988606/",
     "https://taz.de/Die-Spannung-der-Stille/!5407563/",
@@ -72717,7 +75134,7 @@
    "urls": []
   },
   "taz|\"Berlin Review x Volksbühne\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Berliner Philharmoniker Ensembles\"": {
@@ -72741,7 +75158,7 @@
    "urls": []
   },
   "taz|\"Biedermann und die Brandstifter\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/wortwechsel/!5946310/",
     "https://taz.de/tazde/!5899094/",
@@ -72760,7 +75177,7 @@
    "urls": []
   },
   "taz|\"Bridget Polk\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"CHANEL Commission\"": {
@@ -72768,7 +75185,7 @@
    "urls": []
   },
   "taz|\"Carrie Mae Weems\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Schnell-noch-hin/!6103756/",
     "https://taz.de/sieben-sachen/!6099113/",
@@ -72787,7 +75204,7 @@
    "urls": []
   },
   "taz|\"Cemile Sahin\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Portraet-der-HipHop-Saengerin-Ceren/!6107396/",
     "https://taz.de/Leipziger-Buchpreis-fuer-Kristina-Bilkau/!6078786/",
@@ -72817,7 +75234,7 @@
    ]
   },
   "taz|\"Colectivo Los Ingrávidos\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Internationale-Kurzfilmtage-Oberhausen/!5928740/",
     "https://taz.de/Die-Erotik-des-Blicks/!5830742/"
@@ -72839,11 +75256,11 @@
    ]
   },
   "taz|\"Dana Lixenberg\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Das Bildnis des Dorian Gray\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Dorian-Gray-am-Berliner-Ensemble/!6165024/",
     "https://taz.de/Filmfestspiele-in-Cannes/!6008918/",
@@ -72858,11 +75275,11 @@
    ]
   },
   "taz|\"Dawoud Bey\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"De Profundis\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Jan-Paul-Koopmann/!5638470/",
     "https://taz.de/!5585406/",
@@ -72929,11 +75346,11 @@
    ]
   },
   "taz|\"Die Blechtrommel (The Tin Drum)\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Die Blechtrommel\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Nachruf-auf-Schauspieler-Mario-Adorf/!6169469/",
     "https://taz.de/Bremer-Literaturpreis-fuer-Heinz-Strunk/!6130623/",
@@ -72948,11 +75365,11 @@
    ]
   },
   "taz|\"Die Dreigroschenoper (The Threepenny Opera)\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Die Dreigroschenoper\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Widerstandskaempferin-bekommt-Platz/!6221122/",
     "https://taz.de/Tag-der-Deutschen-Einheit/!6218470/",
@@ -72982,11 +75399,11 @@
    ]
   },
   "taz|\"Die Seherin (The Seer)\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Die Seherin\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/meinungsstark/!6221048/",
     "https://taz.de/Berliner-Krisentheater/!6172070/",
@@ -73043,7 +75460,7 @@
    "urls": []
   },
   "taz|\"Disrupt the Default\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Don Carlo\"": {
@@ -73077,7 +75494,7 @@
    ]
   },
   "taz|\"Drag, Desire and the City — Rolf von Bergmann. Photographs\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Junge-Kulturszene-in-Jerewan/!6223157/",
     "https://taz.de/Berlin-Science-Week/!6223325/",
@@ -73152,6 +75569,21 @@
    "at": 1794573529.402001,
    "urls": []
   },
+  "taz|\"Gabriele Stötzer\"": {
+   "at": 1794656800.38229,
+   "urls": [
+    "https://taz.de/Dissidentische-Kunst-Gabriele-Stoetzers/!6208507/",
+    "https://taz.de/Widerstaendiges-Frauenfimlfestival/!6174343/",
+    "https://taz.de/Ehrung-fuer-Kuenstlerin-Gabriele-Stoetzer/!6148639/",
+    "https://taz.de/verweis/!6106175/",
+    "https://taz.de/verweis/!6084714/",
+    "https://taz.de/Potsdamer-Ausstellung-ueber-DDR-Kunst/!6069118/",
+    "https://taz.de/DDR-Geschichte-als-Theaterstoff/!6052221/",
+    "https://taz.de/unterm-strich/!6034362/",
+    "https://taz.de/Textilkunst-und-Eigensinn/!5996238/",
+    "https://taz.de/Jahresrueckblick-Literatur-von-Sophie-Jung/!5976602/"
+   ]
+  },
   "taz|\"Good Vibes Only\"": {
    "at": 1794399091.709317,
    "urls": [
@@ -73163,7 +75595,7 @@
    ]
   },
   "taz|\"Guided Tour of Volksbühne\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Gustavo Dudamel and Mitsuko Uchida\"": {
@@ -73190,7 +75622,7 @@
    ]
   },
   "taz|\"Helen Levitt\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Buch-ueber-das-Leben-Vivian-Maiers/!5985313/",
     "https://taz.de/berichtigung/!5541247/",
@@ -73205,7 +75637,7 @@
    ]
   },
   "taz|\"History of Violence\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Chris-Brown-erneut-verurteilt/!6225093/",
     "https://taz.de/sieben-sachen/!5868221/",
@@ -73258,11 +75690,11 @@
    ]
   },
   "taz|\"Im Herzen der Gewalt (History of Violence)\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Im Herzen der Gewalt\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Diskussion-mit-queeren-linken-Autoren/!6199166/",
     "https://taz.de/Theatertipps-der-Woche/!5805282/",
@@ -73292,7 +75724,7 @@
    ]
   },
   "taz|\"It's Britney\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Maedchen-die-Tic-Tac-Toe-hoerten/!6128160/",
     "https://taz.de/Nach-Vorwuerfen-am-Berliner-Ensemble/!6072617/",
@@ -73324,7 +75756,7 @@
    "urls": []
   },
   "taz|\"Jeewi Lee\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Kunstfestival-Hallen-07/!6211334/",
     "https://taz.de/Ausstellung-von-Jeewi-Lee/!6057718/",
@@ -73339,7 +75771,7 @@
    ]
   },
   "taz|\"Josef Kaiser\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Architektur-in-Berlin/!6211261/",
     "https://taz.de/Buch-111-Bauwerke-in-Berlin/!5727353/",
@@ -73354,7 +75786,7 @@
    ]
   },
   "taz|\"KOO JEONG A\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/freitag-11-oktober-2019/!5631451/",
     "https://taz.de/In-der-Hyper-Factory/!1174148/",
@@ -73416,8 +75848,9 @@
    "urls": []
   },
   "taz|\"Kolonialismus erinnern\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
+    "https://taz.de/Kolonialismus-erinnern/!6227044/",
     "https://taz.de/Gedenken-an-deutschen-Kolonialismus/!6119542/",
     "https://taz.de/Hamburg-benennt-Strassen-um/!6057757/",
     "https://taz.de/Modellprojekt-Dekoloniale-wird-beendet/!6054212/",
@@ -73426,8 +75859,7 @@
     "https://taz.de/Postkoloniales-Berlin/!5918562/",
     "https://taz.de/Erst-sanieren-dann-reden/!5709420/",
     "https://taz.de/Ausstellung-zu-Kolonialismus/!5548362/",
-    "https://taz.de/Historiker-ueber-Kolonialverbrechen/!5059324/",
-    "https://taz.de/-DAS-KADEWE/!511760/"
+    "https://taz.de/Historiker-ueber-Kolonialverbrechen/!5059324/"
    ]
   },
   "taz|\"Król Roger\"": {
@@ -73544,7 +75976,7 @@
    "urls": []
   },
   "taz|\"Lauren Greenfield\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Soziales-Experiment-als-Ausstellung/!6226036/",
     "https://taz.de/Fotografie-aus-den-USA/!5713064/",
@@ -73638,7 +76070,7 @@
    ]
   },
   "taz|\"Lovis Corinth\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Ausstellung-ueber-juedische-Kunstsammler/!6207373/",
     "https://taz.de/Paul-Cassirer-und-der-Impressionismus/!6177917/",
@@ -73702,7 +76134,7 @@
    "urls": []
   },
   "taz|\"Maria Lassnig\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Doppelausstellung-in-Hamburg/!6167563/",
     "https://taz.de/Der-Hausbesuch/!6149434/",
@@ -73753,7 +76185,7 @@
    ]
   },
   "taz|\"Miji Ih\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/sieben-sachen/!5876727/"
    ]
@@ -73770,7 +76202,7 @@
    "urls": []
   },
   "taz|\"Next Door\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Kunst-der-Woche/!6221103/",
     "https://taz.de/Berlinale-antwortet-auf-Gaza-Vorwuerfe/!6155973/",
@@ -73785,7 +76217,7 @@
    ]
   },
   "taz|\"Nicolas Polli\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Nixon in China\"": {
@@ -73944,11 +76376,11 @@
    ]
   },
   "taz|\"Rafik Greiss\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Roger Ballen\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Theaterstueck-Die-Abweichlerin/!6075883/",
     "https://taz.de/sieben-sachen/!5747535/",
@@ -73981,7 +76413,7 @@
    "urls": []
   },
   "taz|\"Ryuichi Sakamoto\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Ryuichi-Sakamoto-in-Berlin/!6211637/",
     "https://taz.de/Indieband-Tops/!6109399/",
@@ -73996,7 +76428,7 @@
    ]
   },
   "taz|\"SAVE A HORSE RIDE A COWGIRL\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Sakari Oramo and Vilde Frang\"": {
@@ -74041,8 +76473,9 @@
    ]
   },
   "taz|\"Sophie Calle\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
+    "https://taz.de/Sophie-Calle-Ausstellung-in-Berlin/!6224514/",
     "https://taz.de/Frida-Orupabos-Fotocollagen-in-Hannover/!6080890/",
     "https://taz.de/Die-Kunst-der-Scharlatanerie/!5808928/",
     "https://taz.de/Roman-ueber-Berlin-in-den-2000ern/!5798539/",
@@ -74051,12 +76484,11 @@
     "https://taz.de/Das-Adressbuch-von-Sophie-Calle/!5653146/",
     "https://taz.de/Jahresrueckblick-Literatur-von-Tania-Martini/!5645609/",
     "https://taz.de/Historikerin-ueber-vergesellschaftete-Nachtruhe/!5545455/",
-    "https://taz.de/Zwischen-Scham-Neid-und-Solidaritaet/!5536758/",
-    "https://taz.de/Ausstellung-Control-No-Control/!5517982/"
+    "https://taz.de/Zwischen-Scham-Neid-und-Solidaritaet/!5536758/"
    ]
   },
   "taz|\"Spooky Paradise\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"St Matthew Passion\"": {
@@ -74064,13 +76496,13 @@
    "urls": []
   },
   "taz|\"Stelios Kallinikou\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/donnerstag-23-mai-2019/!5596840/"
    ]
   },
   "taz|\"Susan Hiller\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Lebensraum-der-Liebe-zur-Welt/!5790703/",
     "https://taz.de/dvdesk/!5708583/",
@@ -74085,7 +76517,7 @@
    ]
   },
   "taz|\"Susanne Kriemann\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/40-Jahre-Ausstellung-Chambres-dAmis/!6198811/",
     "https://taz.de/Kuenstlerin-Susanne-Kriemann-in-Leipzig/!6113983/",
@@ -74115,7 +76547,7 @@
    ]
   },
   "taz|\"T-Boy on Grindr\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Ten Thousand Hours\"": {
@@ -74127,11 +76559,11 @@
    "urls": []
   },
   "taz|\"The Arsonists (Biedermann und die Brandstifter)\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"The Arsonists\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"The Ball of the Komische Oper Berlin\"": {
@@ -74182,11 +76614,11 @@
    ]
   },
   "taz|\"The Picture of Dorian Gray (Das Bildnis des Dorian Gray)\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"The Picture of Dorian Gray\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/!5663316/",
     "https://taz.de/filme-in-originalfassung/!5659945/",
@@ -74201,7 +76633,7 @@
    ]
   },
   "taz|\"The Seer\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Fruehjahrsoffensive-im-House-Sektor/!5016991/",
     "https://taz.de/Laerm-Legenden-in-Hamburg/!5031834/",
@@ -74212,13 +76644,13 @@
    ]
   },
   "taz|\"The Threepenny Opera\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/village-voice/!1079836/"
    ]
   },
   "taz|\"The Tin Drum\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/!5512818/"
    ]
@@ -74239,7 +76671,7 @@
    ]
   },
   "taz|\"Tiffany Sia\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Treading the boards\"": {
@@ -74251,11 +76683,11 @@
    "urls": []
   },
   "taz|\"Twelfth Night (Was ihr wollt)\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": []
   },
   "taz|\"Twelfth Night\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/kinos-in-berlin-und-potsdam-0604--1204-2017/!5399146/",
     "https://taz.de/Shakespeare-Sex-und-Talkshows/!608705/",
@@ -74283,7 +76715,7 @@
    ]
   },
   "taz|\"Vlassis Caniaris\"": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Kurator-ueber-Kunst-aus-Berlin-Kreuzberg/!6214650/",
     "https://taz.de/Kunst-und-Einwanderung/!6008419/",
@@ -74311,8 +76743,9 @@
    ]
   },
   "taz|\"Was ihr wollt\"": {
-   "at": 1794230614.655636,
+   "at": 1794656800.38229,
    "urls": [
+    "https://taz.de/Weltklimakonferenz-2026/!6229256/",
     "https://taz.de/Kreativitaet-bei-Protesten/!6224151/",
     "https://taz.de/IG-Metall-Warnstreiks/!6226632/",
     "https://taz.de/20-Jahre-taz-Salon-fuer-den-Norden/!6223177/",
@@ -74321,8 +76754,7 @@
     "https://taz.de/Museum-fuer-NS-Geschichte-in-Flensburg/!6207101/",
     "https://taz.de/tv-programm/!6222837/",
     "https://taz.de/Sondierungsstopp-in-Berlin/!6221494/",
-    "https://taz.de/Maricarmen-im-Krankenhaus-gestorben/!6219930/",
-    "https://taz.de/Frieden-im-Nahen-Osten/!6219336/"
+    "https://taz.de/Maricarmen-im-Krankenhaus-gestorben/!6219930/"
    ]
   },
   "taz|\"WorldLast Breaths from Aleppo\"": {
@@ -74398,7 +76830,7 @@
    ]
   },
   "taz|Antigone": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Regisseurin-ueber-ihren-Film-Glaube/!6221045/",
     "https://taz.de/Wohnen-fuer-Menschen-mit-Behinderung/!6203545/",
@@ -74456,7 +76888,7 @@
    ]
   },
   "taz|CURSED": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Album-Full-Moon-von-Moonchild-Sanelly/!6062436/",
     "https://taz.de/Nachruf-auf-Pogues-Saenger-Shane-MacGowan/!5976795/",
@@ -74535,7 +76967,7 @@
    ]
   },
   "taz|Hamlet": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Hamlet-Premiere-im-Berliner-Ensemble/!6228339/",
     "https://taz.de/Labour-Parteitag-in-Grossbritannien/!6217253/",
@@ -74685,7 +77117,7 @@
    ]
   },
   "taz|Mononoke": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
     "https://taz.de/Spielzeiteroeffnung-an-der-Volksbuehne/!6218572/",
     "https://taz.de/Neue-Intendanz-an-Berliner-Volksbuehne/!6184038/",
@@ -74839,8 +77271,10 @@
    "urls": []
   },
   "taz|ZEITFENSTER": {
-   "at": 1794148240.521394,
+   "at": 1794656800.38229,
    "urls": [
+    "https://taz.de/Glitzerwelt-im-Botanischen-Garten/!6229440/",
+    "https://taz.de/Abstimmung-ueber-Pete-Hegseth/!6229167/",
     "https://taz.de/Merz-bei-der-CSU/!6224709/",
     "https://taz.de/US-Sanktionen-gegen-Strafgerichtshof/!6220566/",
     "https://taz.de/Uebernachtung-in-der-Sacre-Cur/!6198329/",
@@ -74848,9 +77282,7 @@
     "https://taz.de/Neue-Bluete-im-deutschen-Tennis/!6215010/",
     "https://taz.de/Die-Wahrheit/!6214707/",
     "https://taz.de/-Nachrichten-im-Irankrieg-/!6212652/",
-    "https://taz.de/Berichterstattung/!6208013/",
-    "https://taz.de/Psychisch-Kranke-in-der-Nachbarschaft/!6203125/",
-    "https://taz.de/Friedensbemuehungen-in-Moskau/!6207346/"
+    "https://taz.de/Berichterstattung/!6208013/"
    ]
   },
   "taz|materialistin": {
@@ -74875,124 +77307,124 @@
  },
  "sources": {
   "ArtReview (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 20,
    "ok": true,
-   "seconds": 1.5
+   "seconds": 1.4
   },
   "Berlin Art Link (RSS)": {
    "at": "2026-11-12T13:16:15+00:00",
    "count": 12,
-   "last_try": "2026-11-13T12:38:49+00:00",
+   "last_try": "2026-11-14T11:46:40+00:00",
    "ok": false,
    "seconds": 2.3
   },
   "Berliner Zeitung (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 100,
    "ok": true,
-   "seconds": 2.2
+   "seconds": 2.0
   },
   "Berliner Zeitung (sitemap)": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 17,
    "ok": true,
-   "seconds": 40.9
+   "seconds": 64.1
   },
   "Deutschlandfunk Kultur (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 170,
    "ok": true,
-   "seconds": 6.0
+   "seconds": 6.1
   },
   "FAZ (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 18,
-   "ok": true,
-   "seconds": 2.7
-  },
-  "Jüdische Allgemeine (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 20,
-   "ok": true,
-   "seconds": 4.4
-  },
-  "Monopol (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 13,
-   "ok": true,
-   "seconds": 1.7
-  },
-  "SZ (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 15,
-   "ok": true,
-   "seconds": 1.4
-  },
-  "Tagesspiegel (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 100,
    "ok": true,
    "seconds": 1.9
   },
-  "Tagesspiegel (sitemap)": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 278,
+  "Jüdische Allgemeine (RSS)": {
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 20,
    "ok": true,
-   "seconds": 4.9
+   "seconds": 5.0
   },
-  "The Berliner": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 55,
+  "Monopol (RSS)": {
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 13,
    "ok": true,
-   "seconds": 13.4
+   "seconds": 1.9
   },
-  "Welt (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 30,
-   "ok": true,
-   "seconds": 1.2
-  },
-  "Zeit (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
+  "SZ (RSS)": {
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 15,
    "ok": true,
-   "seconds": 1.2
+   "seconds": 1.3
+  },
+  "Tagesspiegel (RSS)": {
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 100,
+   "ok": true,
+   "seconds": 1.7
+  },
+  "Tagesspiegel (sitemap)": {
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 285,
+   "ok": true,
+   "seconds": 9.2
+  },
+  "The Berliner": {
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 55,
+   "ok": true,
+   "seconds": 14.3
+  },
+  "Welt (RSS)": {
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 30,
+   "ok": true,
+   "seconds": 1.9
+  },
+  "Zeit (RSS)": {
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 15,
+   "ok": true,
+   "seconds": 1.0
   },
   "enrich": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "ok": true,
    "pages": 0
   },
   "klassik-begeistert (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 23,
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 24,
    "ok": true,
-   "seconds": 7.5
+   "seconds": 6.2
   },
   "rbb24 (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 112,
    "ok": true,
-   "seconds": 1.9
+   "seconds": 2.1
   },
   "search": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "ok": true,
-   "queries": 1431,
-   "results": 859
+   "queries": 1496,
+   "results": 464
   },
   "taz (RSS)": {
-   "at": "2026-11-13T12:38:49+00:00",
+   "at": "2026-11-14T11:46:40+00:00",
    "count": 50,
    "ok": true,
-   "seconds": 2.2
+   "seconds": 2.3
   },
   "tip Berlin": {
-   "at": "2026-11-13T12:38:49+00:00",
-   "count": 319,
+   "at": "2026-11-14T11:46:40+00:00",
+   "count": 320,
    "ok": true,
-   "seconds": 5.3
+   "seconds": 11.7
   }
  },
  "version": 3,
