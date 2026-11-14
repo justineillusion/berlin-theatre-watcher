@@ -120,3 +120,15 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
   (Volksbühne) : à 09:00, « 🎟 Ventes Volksbühne pour janvier : ouverture aujourd'hui (heure non publiée) » +
   mes ⭐ — jamais « C'est ouvert », qui ne serait peut-être pas encore vrai.
 - Abonné·es au lieu uniquement ; une seule fois par lieu et par ouverture (cron Worker toutes les 15 min).
+
+## 🗳 Proposer une sortie (2026-11-14)
+
+- Fiche → **Proposer** : amis (groupes privés en premier, 🙋 intéressés pré-cochés) + 1 à 3 créneaux
+  (séances à venir ; expo : prochains week-ends + « Autre date ») + un mot optionnel.
+- Les invités se voient entre eux et voient toutes les réponses (grille personne × créneau). Pas de chat.
+- **C'est calé** (seulement la personne qui propose) → 🎟 réservé pour chaque compte qui a dit oui à ce créneau.
+- Lien `/app?p=<id>` (WhatsApp, copier) : on répond sans compte, prénom + clé de l'appareil.
+- Groupes = raccourcis **privés** : proposés après un envoi à ≥ 2 personnes, jamais montrés aux invités ;
+  gérés dans Réglages → Amis.
+- Rafraîchissement en direct : empreinte `/app/api/ping` toutes les 15 s (app visible), au retour dans l'app,
+  et à chaque notification push (le service worker prévient la page). Jamais pendant une saisie.

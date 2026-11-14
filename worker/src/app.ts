@@ -29,6 +29,7 @@ import { DISTRICT } from "./districts";
 import { pushCount, pushTo, subscribe, unsubscribe } from "./push";
 import { listPasskeys, loginOptions, loginVerify, registerOptions, registerVerify, removePasskey } from "./passkeys";
 import { LOGOS } from "./web/logos";
+import { PROP_RE, answerProposal, cancelProposal, createProposal, deleteGroup, getProposal, guestAnswer, myGroups, myProposals, pingStamp, publicProposal, saveGroup, setProposal } from "./proposals";
 
 const enc = new TextEncoder();
 // Empreinte de la page (change à chaque déploiement qui la modifie) : la page compare et se recharge.
@@ -449,6 +450,19 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
   }
   const pre = (await emailLogin(env, url.pathname, body, ip)) ?? (await login(env, url.pathname, body));
   if (pre) return pre;
+  // 🗳 Proposition ouverte par son lien, sans compte : la voir, y répondre (prénom + clé de l'appareil).
+  if (url.pathname === "/app/api/proposal/public" || url.pathname === "/app/api/proposal/guest") {
+    const pid = String(body.id ?? ""), key = String(body.key ?? "");
+    if (!PROP_RE.test(pid)) return Response.json({ error: "bad_request" }, { status: 400 });
+    if (url.pathname === "/app/api/proposal/guest") {
+      if (looksBot(body)) return Response.json({ error: "bad_request" }, { status: 400 });
+      if (await tooMany(env, "propg:" + ip, 30, 60)) return slowDown();
+      const err = await guestAnswer(env, pid, key, body.name, body.answers, body.note);
+      if (err) return Response.json({ error: err }, { status: err === "not_found" ? 404 : 400 });
+    }
+    const p = await publicProposal(env, pid, key, asLang(body.lang));
+    return p ? Response.json({ proposal: p }) : Response.json({ error: "not_found" }, { status: 404 });
+  }
   // Qui parle : Telegram (initData signé) ou l'app web (jeton de session).
   let uid: number | null = null, tgUser: AppUser | null = null;
   if (body.initData) {
@@ -494,6 +508,32 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
   if (url.pathname === "/app/api/state") {
     const recent = await env.DB.prepare("SELECT 1 FROM events WHERE chat_id = ? AND name = 'open' AND at > datetime('now', '-30 minutes')").bind(me.chat_id).first();
     if (!recent) track(env, ctx, me.chat_id, "open", null, tgUser ? "telegram" : "web");
+    return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
+  }
+  // Rafraîchissement en direct : la page demande l'empreinte toutes les 15 s (et au retour dans l'app), recharge si elle change.
+  if (url.pathname === "/app/api/ping") return Response.json({ v: await pingStamp(env, me.chat_id) });
+  if (url.pathname.startsWith("/app/api/proposal/")) {
+    const what = url.pathname.slice("/app/api/proposal/".length), pid = String(body.pid ?? "");
+    const lang = asLang(me.lang);
+    let err: string | null = null, created: string | null = null;
+    if (what === "create") {
+      const r = await createProposal(env, me, body);
+      if ("error" in r) err = r.error; else created = r.id;
+      track(env, ctx, me.chat_id, "proposal", String(body.id ?? "") || null, `to:${Array.isArray(body.to) ? body.to.length : 0}`);
+    } else if (!PROP_RE.test(pid)) err = "bad_request";
+    else if (what === "answer") { err = await answerProposal(env, me, pid, body.answers, body.note); track(env, ctx, me.chat_id, "proposal_answer", null, null); }
+    else if (what === "set") { err = await setProposal(env, me, pid, String(body.slot ?? "")); track(env, ctx, me.chat_id, "proposal_set", null, null); }
+    else if (what === "cancel") err = await cancelProposal(env, me, pid);
+    else if (what !== "get") return new Response("not found", { status: 404 });
+    if (err) return Response.json({ error: err }, { status: err === "not_found" ? 404 : err === "forbidden" ? 403 : 400 });
+    const id = created ?? pid;
+    return Response.json({ ...(await state(env, me.chat_id, lang, focus)), proposal: await getProposal(env, me.chat_id, id, lang) });
+  }
+  if (url.pathname === "/app/api/group/save" || url.pathname === "/app/api/group/delete") {
+    if (url.pathname.endsWith("save")) {
+      const err = await saveGroup(env, me.chat_id, body.name, body.members);
+      if (err) return Response.json({ error: err }, { status: 400 });
+    } else await deleteGroup(env, me.chat_id, Number(body.gid));
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   if (url.pathname === "/app/api/track") {
@@ -770,7 +810,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
   ).bind(JSON.stringify([chat, ...circle.friends.map((f: any) => f.id)])).all<{ chat_id: number; photo: string }>();
   const myEmail = meRow?.email ?? null;
   const { results: notes } = await env.DB.prepare(
-    `SELECT n.id, n.kind, n.from_id, u.first_name AS from_name, n.item_id, i.title, n.note, n.at, n.created_at, n.read_at
+    `SELECT n.id, n.kind, n.from_id, u.first_name AS from_name, n.item_id, i.title, n.note, n.at, n.ref, n.created_at, n.read_at
      FROM notifications n LEFT JOIN users u ON u.chat_id = n.from_id LEFT JOIN items i ON i.id = n.item_id
      WHERE n.chat_id = ? ORDER BY n.id DESC LIMIT 40`).bind(chat).all<any>();
   return {
@@ -789,18 +829,23 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     people,
     circle,
     invite: (invite.match(/https:\/\/\S+/) || [""])[0],   // le lien seul (le message autour est pour le chat)
+    proposals: await myProposals(env, chat, lang),
+    groups: await myGroups(env, chat),
     items: items.map((i) => shapeItem(i, mine.get(i.id), friends.get(i.id) ?? [], lang)),
   };
 }
 
 /** Une fiche telle que la page l'affiche (programme, Mes sorties, page d'un ami). */
 function shapeItem(i: any, r: any, friends: any[], lang: Lang) {
+  const dates: string[] = JSON.parse(i.dates || "[]");
+  // Réservation à une heure qui n'existe plus au programme (horaire changé, saisie à la main) : rattachée à la séance du même jour.
+  const fix = (b: string | null) => b && b.length > 10 && !dates.includes(b) ? (dates.find((d) => d.slice(0, 10) === b.slice(0, 10)) ?? b) : b;
   return {
     id: i.id, kind: i.kind, title: i.title, url: i.url, venue: i.venue, venue_id: i.venue_id,
-    dates: JSON.parse(i.dates || "[]"), sold: JSON.parse(i.sold || "[]"), start: i.start_date, end: i.end_date, starred: i.starred,
+    dates, sold: JSON.parse(i.sold || "[]"), start: i.start_date, end: i.end_date, starred: i.starred,
     text: itemText(i, lang),
-    me: r ? { star: r.interested, status: r.status, rating: r.rating, comment: r.comment, booked: r.booked_at, at: r.updated_at } : null,
-    friends,
+    me: r ? { star: r.interested, status: r.status, rating: r.rating, comment: r.comment, booked: fix(r.booked_at), at: r.updated_at } : null,
+    friends: friends.map((f) => f.booked ? { ...f, booked: fix(f.booked) } : f),
   };
 }
 
