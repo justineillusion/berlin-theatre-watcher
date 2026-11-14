@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1794572923.4078565,
+    "at": 1794656495.4819305,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1794572935.120593,
+    "at": 1794656507.4241457,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1794572916.3683114,
+    "at": 1794656488.165575,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -1800,7 +1800,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1794572930.072474,
+    "at": 1794656502.5084429,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -2643,7 +2643,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/hamlet-berliner-ensemble": {
-   "at": 1794572939.5851908,
+   "at": 1794656511.9254117,
    "published": 1793957711.0,
    "scores": [
     0.0,
@@ -2691,7 +2691,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/antigone-der-abschied-alexander-zeldins-familiendrama-um-abschied-trauer-und-verdraengung": {
-   "at": 1794572939.4813895,
+   "at": 1794656511.9780781,
    "published": 1793025056.0,
    "scores": [
     -0.8462,
@@ -2800,8 +2800,38 @@
  },
  "searches": {
   "20 Minuten": {
-   "at": 1794315119.7600298,
+   "at": 1794656533.2121675,
    "results": [
+    [
+     "Schubert in Paradise – Münchner Kammerspiele – Katharina Bach, Jelena Kuljić, Lucy Wilke und die Band Bitchboy laden zu einer Reise in die Nacht",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/muenchner-kammerspiele/schubert-in-paradise-muenchner-kammerspiele-katharina-bach-jelena-kuljic-lucy-wilke-und-die-band-bitchboy-laden-zu-einer-reise-in-die-nacht",
+     "2026-11-14T09:51:31+01:00"
+    ],
+    [
+     "Ich möchte lieber nicht – Staatsschauspiel Dresden – Katrin Plötner schickt Hermann Melvilles großen Verweigerer Bartleby durch die Bürohölle",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/dresden/staatsschauspiel-dresden/ich-moechte-lieber-nicht-staatsschauspiel-dresden-katrin-ploetner-schickt-hermann-melvilles-grossen-verweigerer-bartleby-durch-die-buerohoelle",
+     "2026-11-14T09:48:06+01:00"
+    ],
+    [
+     "Gym – Stadttheater Ingolstadt – Jessica Weisskirchens grandiose Adaption des Erfolgsromans von Verena Keßler",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/ingolstadt/theater-ingolstadt/gym-stadttheater-ingolstadt-verena-kessler-jessica-weisskirchen",
+     "2026-11-14T09:25:48+01:00"
+    ],
+    [
+     "Das Orakel spricht – Staatstheater Mainz – Katharina Stoll bringt Liv Strömquists Comic über die Lügen der Lebensoptimierung auf die Bühne",
+     "https://nachtkritik.de/nachtkritiken/deutschland/rheinland-pfalz/mainz/staatstheater-mainz/das-orakel-spricht-staatstheater-mainz-katharina-stoll-bringt-liv-stroemquists-comic-ueber-die-luegen-der-lebensoptimierung-auf-die-buehne",
+     "2026-11-14T08:56:05+01:00"
+    ],
+    [
+     "MAMI – Berliner Festspiele – Mario Banushi sucht in seinem wortlosen Theater nach archetypischen Motiven des Weiblichen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele/mami-berliner-festspiele",
+     "2026-11-13T09:49:27+01:00"
+    ],
+    [
+     "Der blinde Passagier – Schauspielhaus Salzburg – Fanny Brunner inszeniert Maria Lazars Stück als Schule der Empathie",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/salzburg-region/salzburg/schauspielhaus-salzburg-2/der-blinde-passagier-schauspielhaus-salzburg",
+     "2026-11-13T09:13:53+01:00"
+    ],
     [
      "Weil der Frieden Zucker ist! – Deutsches Schauspielhaus Hamburg – Anita Vulesica bringt eine Antikriegserzählung von Georges Perec auf die Bühne",
      "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/deutsches-schauspielhaus-hamburg/weil-der-frieden-zucker-ist-deutsches-schauspielhaus-hamburg-anita-vulesica-bringt-eine-antikriegserzaehlung-von-georges-perec-auf-die-buehne",
@@ -3246,46 +3276,11 @@
      "Der Abend vor dem Danach – Schauspiel Frankfurt – Susanne Frieling inszeniert Lisa Wentz' Stück über sexuelle Gewalt",
      "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/der-abend-vor-dem-danach-schauspiel-frankfurt-susanne-frieling-inszeniert-lisa-wentz-stueck-ueber-sexuelle-gewalt",
      "2026-09-13T08:39:41+02:00"
-    ],
-    [
-     "Egal – Luzerner Theater – Florian Fiedler inszeniert Marius von Mayenburgs Beziehungskomödie",
-     "https://nachtkritik.de/nachtkritiken/schweiz/zentralschweiz/luzern/theater-luzern/egal-luzerner-theater-florian-fiedler-inszeniert-marius-von-mayenburgs-beziehungskomoedie",
-     "2026-09-13T08:38:41+02:00"
-    ],
-    [
-     "Romeo und Julia – Schauspiel Hannover – Lena Brasch wendet den Liebesklassiker zur Abrechnung mit dem \"Dreckssystem\"",
-     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/hannover/schauspiel-hannover/romeo-und-julia-lena-brasch-wendet-den-liebesklassiker-zur-abrechnung-mit-dem-dreckssystem",
-     "2026-09-12T09:34:03+02:00"
-    ],
-    [
-     "Die Abenteuer des braven Soldaten Schwejk – Schauspiel Frankfurt – Jan-Christoph Gockel lässt Soldaten gegen die Maschinerie des Krieges antreten",
-     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/die-abenteuer-des-braven-soldaten-schwejk-jan-christoph-gockel-laesst-soldaten-gegen-die-kriegsmaschine-antreten",
-     "2026-09-12T08:39:31+02:00"
-    ],
-    [
-     "Deutsches Haus – Thalia Theater Hamburg – Jorinde Dröse inszeniert die Uraufführung des Romans von Annette Hess",
-     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/deutsches-haus-thalia-theater-hamburg-jorinde-droese-inszeniert-die-urauffuehrung-des-romans-von-annette-hess",
-     "2026-09-12T07:51:50+02:00"
-    ],
-    [
-     "Macbeth – Volkstheater Wien – Rieke Süßkow zeigt Shakespeares blutgetränkten Klassiker als Videospiel mit Rahmenhandlung",
-     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/volkstheater-wien/macbeth-volkstheater-wien-rieke-suesskow-zeigt-shakespeares-blutgetraenkten-klassiker-als-videospiel-mit-rahmenhandlung",
-     "2026-09-11T08:32:45+02:00"
-    ],
-    [
-     "Gespenster – Theater Basel – Anna Bergmann wendet Ibsens Drama in eine Emanzipationsgeschichte",
-     "https://nachtkritik.de/nachtkritiken/schweiz/nordwestschweiz/basel/theater-basel/gespenster",
-     "2026-09-11T07:44:55+02:00"
-    ],
-    [
-     "Love, Death & Shadows – Staatsschauspiel Dresden – Christian Friedel inszeniert Shakespeares Sonette als Nummernrevue mit Popkonzert-Vibes",
-     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/dresden/staatsschauspiel-dresden/love-death-shadows-staatsschauspiel-dresden",
-     "2026-09-06T10:54:02+02:00"
     ]
    ]
   },
   "20 Minuten Volksbühne": {
-   "at": 1794315146.4166903,
+   "at": 1794656560.0478468,
    "results": [
     [
      "Mata Leão – Volksbühne am Rosa-Luxemburg-Platz Berlin – Davi Pontes und Wallace Ferreira zelebrieren Tanz als Selbstverteidigung",
@@ -6071,7 +6066,7 @@
    "results": []
   },
   "The Picture of Dorian Gray": {
-   "at": 1794315153.929891,
+   "at": 1794656563.498584,
    "results": [
     [
      "Love Me More – Schauspiel Köln – Saar Magal choreografiert Oscar Wildes \"Dorian Gray\" als turbokapitalistischen Narziss",
