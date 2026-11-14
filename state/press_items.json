@@ -386,14 +386,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "T-Boy on Grindr",
-  "url": "https://www.berliner-ensemble.de/en/production/t-boy-grindr",
-  "opens": "2026-11-15",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Around the World in 80 Days",
   "url": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
@@ -684,13 +676,11 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Treading the boards",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
+  "venue": "Berliner Ensemble",
+  "title": "T-Boy on Grindr",
+  "url": "https://www.berliner-ensemble.de/en/production/t-boy-grindr",
   "opens": "2026-12-20",
-  "aliases": [
-   "Bretter, die die Welt bedeuten"
-  ]
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -715,6 +705,16 @@
   "url": "https://deutscheoperberlin.de/en_EN/production/la-traviata.1385739",
   "opens": "2026-12-26",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Treading the boards",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
+  "opens": "2026-12-26",
+  "aliases": [
+   "Bretter, die die Welt bedeuten"
+  ]
  },
  {
   "kind": "theatre",
