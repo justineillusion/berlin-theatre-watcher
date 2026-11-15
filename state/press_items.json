@@ -9,17 +9,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Maxim Gorki Theater",
-  "title": "Çağla Ilk in conversation with Marco Fusinato (in English)",
-  "url": "https://www.gorki.de/en/in-the-corpse-of-the-present-prinz-friedrich-von-homburg-2",
-  "opens": "2026-11-14",
-  "aliases": [
-   "Çağla Ilk in conversation with Marco Fusinato",
-   "in English"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "A Friend in Berlin",
   "url": "https://www.volksbuehne-berlin.de/en/productions/a-friend-in-berlin/20261119-1800/",
@@ -200,14 +189,6 @@
  },
  {
   "kind": "expo",
-  "venue": "Hamburger Bahnhof",
-  "title": "Shilpa Gupta",
-  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/shilpa-gupta/",
-  "opens": "2026-03-27",
-  "aliases": []
- },
- {
-  "kind": "expo",
   "venue": "Neue Nationalgalerie",
   "title": "Ruin and Rush",
   "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ruin-and-rush/",
@@ -216,26 +197,10 @@
  },
  {
   "kind": "expo",
-  "venue": "Hamburger Bahnhof",
-  "title": "CHANEL Commission: Lina Lapelytė. We Make Years Out of Hours",
-  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/chanel-commission-lina-lapelyte-we-make-years-out-of-hours/",
-  "opens": "2026-05-01",
-  "aliases": []
- },
- {
-  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Gabriele Stötzer: Dabei sein und nicht schweigen",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/gabriele-stoetzer",
   "opens": "2026-06-19",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Hamburger Bahnhof",
-  "title": "[ materialistin ]",
-  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/materialistin/",
-  "opens": "2026-07-03",
   "aliases": []
  },
  {
@@ -272,14 +237,6 @@
  },
  {
   "kind": "expo",
-  "venue": "Hamburger Bahnhof",
-  "title": "Ryuichi Sakamoto",
-  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/ryuichi-sakamoto/",
-  "opens": "2026-09-11",
-  "aliases": []
- },
- {
-  "kind": "expo",
   "venue": "C/O Berlin",
   "title": "Carrie Mae Weems — The Heart of the Matter",
   "url": "https://co-berlin.org/en/programm/ausstellungen/carrie-mae-weems",
@@ -312,14 +269,6 @@
  },
  {
   "kind": "expo",
-  "venue": "Hamburger Bahnhof",
-  "title": "Next Door",
-  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/next-door/",
-  "opens": "2026-10-09",
-  "aliases": []
- },
- {
-  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Christoph Schlingensief",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/christoph-schlingensief",
@@ -344,45 +293,11 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Philharmoniker",
-  "title": "Zubin Mehta and Pinchas Zukerman with Bruch’s First Violin Concerto",
-  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57056/",
-  "opens": "2026-11-12",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Hamburger Bahnhof",
-  "title": "Sophie Calle",
-  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/sophie-calle/",
-  "opens": "2026-11-13",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Chamäleon Berlin",
   "title": "Kintsugi",
   "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
-  "opens": "2026-11-14",
+  "opens": "2026-11-15",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Deutsche Oper Berlin",
-  "title": "Elektra",
-  "url": "https://deutscheoperberlin.de/en_EN/production/elektra.1385724",
-  "opens": "2026-11-14",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Eugene Onegin",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/eugene-onegin/",
-  "opens": "2026-11-14",
-  "aliases": [
-   "Eugen Onegin"
-  ]
  },
  {
   "kind": "theatre",
@@ -432,6 +347,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Elektra",
+  "url": "https://deutscheoperberlin.de/en_EN/production/elektra.1385724",
+  "opens": "2026-11-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Maxim Emelyanychev conducts Mendelssohn, Mozart and Haydn",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57060/",
@@ -449,16 +372,6 @@
  {
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
-  "title": "Orpheus in the Underworld",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
-  "opens": "2026-11-20",
-  "aliases": [
-   "Orpheus in der Unterwelt"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
   "title": "Madama Butterfly",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
   "opens": "2026-11-21",
@@ -471,6 +384,16 @@
   "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261122-1700/",
   "opens": "2026-11-22",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Eugene Onegin",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/eugene-onegin/",
+  "opens": "2026-11-22",
+  "aliases": [
+   "Eugen Onegin"
+  ]
  },
  {
   "kind": "theatre",
@@ -517,14 +440,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Die Zauberflöte",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
-  "opens": "2026-11-29",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Schaubühne",
   "title": "Bad Kingdom",
   "url": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
@@ -541,6 +456,14 @@
    "Die Dreigroschenoper",
    "The Threepenny Opera"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Die Zauberflöte",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
+  "opens": "2026-12-03",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -689,6 +612,16 @@
   "url": "https://deutscheoperberlin.de/en_EN/production/haensel-und-gretel.1385736",
   "opens": "2026-12-23",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Orpheus in the Underworld",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
+  "opens": "2026-12-23",
+  "aliases": [
+   "Orpheus in der Unterwelt"
+  ]
  },
  {
   "kind": "theatre",
