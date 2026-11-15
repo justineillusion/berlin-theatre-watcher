@@ -165,38 +165,6 @@
  },
  {
   "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "The International Abstraction",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/the-international-abstraction/",
-  "opens": "2027-06-06",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Extreme Tension. Art between Politics and Society",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/extreme-tension-art-between-politics-and-society/",
-  "opens": "2023-11-18",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Christoph Schlingensief. Deutschlandsuche ’99",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/christoph-schlingensief-deutschlandsuche-99/",
-  "opens": "2025-05-02",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Ruin and Rush",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ruin-and-rush/",
-  "opens": "2026-04-25",
-  "aliases": []
- },
- {
-  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Gabriele Stötzer: Dabei sein und nicht schweigen",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/gabriele-stoetzer",
@@ -217,14 +185,6 @@
   "title": "Thomas Billhardt — Die Augen weit offen",
   "url": "https://berlin.fotografiska.com/en/exhibitions/thomas-billhardt",
   "opens": "2026-08-28",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Maurizio Cattelan. NIGHT",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/maurizio-cattelan-night/",
-  "opens": "2026-09-10",
   "aliases": []
  },
  {
@@ -355,6 +315,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Calisto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
+  "opens": "2026-11-18",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Maxim Emelyanychev conducts Mendelssohn, Mozart and Haydn",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57060/",
@@ -368,6 +336,16 @@
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
   "opens": "2026-11-20",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Orpheus in the Underworld",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
+  "opens": "2026-11-20",
+  "aliases": [
+   "Orpheus in der Unterwelt"
+  ]
  },
  {
   "kind": "theatre",
@@ -427,14 +405,6 @@
   "venue": "Staatsoper Unter den Linden",
   "title": "Tosca",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
-  "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Ulay, Ulay & Abramović",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ulay-ulay-abramovic/",
   "opens": "2026-11-28",
   "aliases": []
  },
@@ -612,16 +582,6 @@
   "url": "https://deutscheoperberlin.de/en_EN/production/haensel-und-gretel.1385736",
   "opens": "2026-12-23",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Orpheus in the Underworld",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
-  "opens": "2026-12-23",
-  "aliases": [
-   "Orpheus in der Unterwelt"
-  ]
  },
  {
   "kind": "theatre",
@@ -836,14 +796,6 @@
   "venue": "Deutsche Oper Berlin",
   "title": "Rigoletto",
   "url": "https://deutscheoperberlin.de/en_EN/production/rigoletto.1385794",
-  "opens": "2027-01-29",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Schatten Reich",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/schatten-reich/",
   "opens": "2027-01-29",
   "aliases": []
  },
@@ -1220,14 +1172,6 @@
   "venue": "Deutsche Oper Berlin",
   "title": "Nabucco",
   "url": "https://deutscheoperberlin.de/en_EN/production/nabucco.1385815",
-  "opens": "2027-04-24",
-  "aliases": []
- },
- {
-  "kind": "expo",
-  "venue": "Neue Nationalgalerie",
-  "title": "Katharina Sieverding",
-  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/katharina-sieverding/",
   "opens": "2027-04-24",
   "aliases": []
  },
