@@ -304,7 +304,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .pgroup p{margin:4px 0 10px;font-size:14px;color:var(--muted)}
 .pdate{align-items:center;flex-wrap:nowrap}.pdate input{font:600 14px var(--sans);padding:8px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:0}
 .act.grp{border-style:dashed}
-.who .act .av{width:20px;height:20px;vertical-align:-5px;margin-right:4px}
+.who .act:has(.av){display:inline-flex;align-items:center;gap:6px}.who .act .av{width:20px;height:20px;margin:0}
 .lnk[disabled]{opacity:.4}
 </style>
 </head>
@@ -398,7 +398,7 @@ const L = {
         emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
 // 🗳 Propositions + groupes (ajoutés à part pour garder les lignes ci-dessus lisibles).
-Object.assign(L.fr, { propose:"🗳 Proposer", propT:"Proposer une sortie", withWho:"Avec qui ?", whenQ:"Quand ? · 1 à 3 créneaux", otherDate:"Autre date", addDate:"Ajouter",
+Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", withWho:"Avec qui ?", whenQ:"Quand ? · optionnel, 1 à 3 créneaux", whenHint:"Avec des créneaux, chacun répond et tu cales la date. Sans, c'est un simple « ça te dit ? ».", proposeTo:(n) => `Proposer à ${n}`, otherDate:"Autre date", addDate:"Ajouter",
   noteQ:"Un mot ? · optionnel", propNotePh:"Ça vous tente ?", sendTo:(n) => `Envoyer à ${n}`, linkOnly:"Ou juste un lien à partager (WhatsApp…)", interestedHint:"🙋 Pré-cochés : intéressés.",
   propHead:"Proposition", proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
   answerSend:"Envoyer ma réponse", answerUpdate:"Mettre à jour", answerHint:"Tout le monde voit les réponses. Tu peux changer d'avis tant que ce n'est pas calé.", yourName:"Ton prénom",
@@ -408,7 +408,7 @@ Object.assign(L.fr, { propose:"🗳 Proposer", propT:"Proposer une sortie", with
   nProp:(n, t) => `${n} te propose ${t}`, nPropAns:(n, t) => `${n} a répondu pour ${t}`, nPropSet:(n, t, w) => `C'est calé : ${t}, ${w}`, needAccount:"Créer un compte pour la retrouver dans tes sorties",
   noSlots:"Choisis 1 à 3 créneaux.", groupsT:"Mes groupes", groupsP:"Privés : tes amis ne voient jamais leurs noms.", gdel:"Retirer", propGone:"Cette proposition n'existe plus.",
   waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
-Object.assign(L.en, { propose:"🗳 Suggest", propT:"Suggest an outing", withWho:"With whom?", whenQ:"When? · 1 to 3 options", otherDate:"Other date", addDate:"Add",
+Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWho:"With whom?", whenQ:"When? · optional, 1 to 3 options", whenHint:"With options, everyone answers and you set the date. Without, it's a simple “fancy it?”.", proposeTo:(n) => `Suggest to ${n}`, otherDate:"Other date", addDate:"Add",
   noteQ:"A word? · optional", propNotePh:"Fancy it?", sendTo:(n) => `Send to ${n}`, linkOnly:"Or just a link to share (WhatsApp…)", interestedHint:"🙋 Pre-selected: interested.",
   propHead:"Suggestion", proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
   answerSend:"Send my answer", answerUpdate:"Update", answerHint:"Everyone sees the answers. You can change your mind until it's set.", yourName:"Your first name",
@@ -944,8 +944,7 @@ function item(x) {
       ${x.kind !== "expo" && upcoming.length ? `<button class="act ${me.booked ? "on" : ""}" data-pick="${x.id}">${T.book}</button>` : ""}
       <button class="act" data-act="v" data-id="${x.id}">${T.seen}</button>
       ${s === "ignored" ? `<button class="act on" data-act="u" data-id="${x.id}">${T.unignore}</button>` : `<button class="act" data-act="x" data-id="${x.id}">${T.ignore}</button>`}
-      ${(S.people || []).length ? `<button class="act" data-sharing="${x.id}">${T.send}</button>` : ""}
-      ${(S.people || []).length && slotChoices(x).length ? `<button class="act" data-propose="${x.id}">${esc(T.propose)}</button>` : ""}
+      ${(S.people || []).length ? `<button class="act" data-propose="${x.id}">${esc(T.propose)}</button>` : ""}
       ${x.url ? `<a class="act" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a>` : ""}</div>`;
   } else if (x.url) {
     h += `<div class="acts"><a class="act" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a></div>`;
@@ -1350,8 +1349,8 @@ document.addEventListener("click", (e) => {
     if (fc.dataset.face === "me") { st.friend = null; st.setTab = "account"; window.scrollTo?.(0, 0); return void render(); }
     st.setTab = "friends"; return void openFriend(+fc.dataset.face); }
   const pl = e.target.closest("[data-plan]");
-  if (pl) { e.preventDefault(); e.stopPropagation(); st.open = pl.dataset.plan; st.sharing = pl.dataset.plan; st.picking = null;
-    st.sel = new Set(pl.dataset.ids.split(",").map(Number)); st.note = T.planNote; return void render(); }
+  if (pl) { e.preventDefault(); e.stopPropagation(); st.open = pl.dataset.plan; const x = S.items.find((y) => y.id === pl.dataset.plan); if (x) openProposer(x);
+    st.sel = new Set(pl.dataset.ids.split(",").map(Number)); st.pnote = T.planNote; return void render(); }
   const rs = e.target.closest("[data-rescue]");
   if (rs) { e.preventDefault(); e.stopPropagation(); return void act("u", rs.dataset.rescue); }
   const sc = e.target.closest("[data-href]");
@@ -1543,23 +1542,27 @@ function proposer(x) {
     <div class="lbl">${esc(T.withWho)}</div>
     <div class="who">${groups.map((g) => `<button class="act grp${same(g) ? " on" : ""}" data-pgroup="${g.id}">${esc(g.name)}</button>`).join("")}${people.map((p) =>
       `<button class="act ${st.sel.has(p.id) ? "on" : ""}" data-sel="${p.id}">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)} ${esc(p.name)}</button>`).join("")}</div>${hint}
-    <div class="lbl">${esc(T.whenQ)}</div>
+    <div class="lbl">${esc(T.whenQ)}</div><p class="hint">${esc(T.whenHint)}</p>
     <div class="who">${slots.map((d) => `<button class="act ${st.pslots.has(d) ? "on" : ""}" data-pslot="${d}">${esc(slotText(d))}</button>`).join("")}</div>
     ${x.kind === "expo" ? `<div class="acts pdate"><label class="lbl" for="pdate">${esc(T.otherDate)}</label><input id="pdate" type="date" min="${TODAY}"${x.end ? ` max="${esc(x.end.slice(0, 10))}"` : ""}><button class="act" data-paddslot="1">${esc(T.addDate)}</button></div>` : ""}
     <div class="lbl">${esc(T.noteQ)}</div>
     <input id="pnote" class="note" maxlength="200" placeholder="${esc(T.propNotePh)}" value="${esc(st.pnote)}">
-    <div class="acts"><button class="act on" data-psend="${x.id}" ${st.sel.size && st.pslots.size ? "" : "disabled"}>${esc(names.length ? T.sendTo(joinNames(names)) : T.propT)}</button>
+    <div class="acts"><button class="act on" data-psend="${x.id}" ${st.sel.size ? "" : "disabled"}>${esc(!names.length ? T.propT : st.pslots.size ? T.proposeTo(joinNames(names)) : T.sendTo(joinNames(names)))}</button>
       <button class="act" data-proposing="">${esc(T.cancel)}</button></div>
     <button class="lnk" data-plinkonly="${x.id}" ${st.pslots.size ? "" : "disabled"}>${esc(T.linkOnly)}</button>`;
 }
 function openProposer(x) {
   st.proposing = x.id; st.sharing = null; st.picking = null; st.pnote = "";
   st.sel = new Set((x.friends || []).filter((p) => p.star && !p.seen && (S.people || []).some((q) => q.id === p.id)).map((p) => p.id));
-  const c = slotChoices(x); st.pslots = new Set(x.kind === "expo" ? c.slice(0, 2) : []);
+  st.pslots = new Set();   // sans créneau = simple envoi (« ça te dit ? »)
 }
 async function sendProposal(id, linkOnly) {
   if (st.busy) return;
-  if (!st.pslots.size) return notify(T.noSlots);
+  if (!st.pslots.size && linkOnly) return notify(T.noSlots);
+  if (!st.pslots.size) {   // pas de créneau : l'envoi « 💌 ça te dit ? » de toujours
+    const n = st.pnote; st.proposing = null; st.pnote = "";
+    return void act("share", id, "", { path: "share", body: { to: [...st.sel], note: n } });
+  }
   const to = linkOnly ? [] : [...st.sel];
   st.busy = true;
   try {
