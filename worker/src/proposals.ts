@@ -24,11 +24,13 @@ const T = {
     invite: (who: string, title: string, others: string, slots: string) => `💌 <b>${who}</b> te propose <b>${title}</b>${others ? `, avec ${others}` : ""} : ${slots} ?`,
     set: (title: string, when: string, who: string) => `✓ C'est calé : <b>${title}</b>, ${when}, avec ${who}. C'est dans Mes sorties.`,
     answer: "Répondre", or: " ou ", and: " et ",
+    cancel: (who: string, title: string) => `✕ <b>${who}</b> a annulé la proposition : <b>${title}</b>.`,
   },
   en: {
     invite: (who: string, title: string, others: string, slots: string) => `💌 <b>${who}</b> suggests <b>${title}</b>${others ? `, with ${others}` : ""}: ${slots}?`,
     set: (title: string, when: string, who: string) => `✓ It's on: <b>${title}</b>, ${when}, with ${who}. It's in My outings.`,
     answer: "Answer", or: " or ", and: " and ",
+    cancel: (who: string, title: string) => `✕ <b>${who}</b> cancelled the suggestion: <b>${title}</b>.`,
   },
 };
 const DOW = { fr: ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] };
@@ -198,8 +200,30 @@ export async function setProposal(env: Env, me: Me, id: string, slot: string): P
 }
 
 export async function cancelProposal(env: Env, me: Me, id: string): Promise<string | null> {
-  const r = await env.DB.prepare("UPDATE proposals SET status = 'cancelled', updated_at = datetime('now') WHERE id = ? AND from_id = ?").bind(id, me.chat_id).run();
-  return r.meta.changes ? null : "forbidden";
+  const p = await env.DB.prepare("SELECT * FROM proposals WHERE id = ?").bind(id).first<any>();
+  if (!p) return "not_found";
+  if (p.from_id !== me.chat_id) return "forbidden";
+  if (p.status === "cancelled") return null;
+  const { results } = await env.DB.prepare("SELECT * FROM proposal_people WHERE proposal_id = ?").bind(id).all<Row>();
+  const accounts = results.filter((r) => r.chat_id != null);
+  await env.DB.batch([
+    env.DB.prepare("UPDATE proposals SET status = 'cancelled', updated_at = datetime('now') WHERE id = ?").bind(id),
+    // Déjà calé : on retire le 🎟 posé par « C'est calé » (seulement s'il est encore sur ce créneau), l'envie reste.
+    ...(p.status === "set" && p.chosen ? accounts.map((r) => env.DB.prepare(
+      "UPDATE reactions SET booked_at = NULL, booked_on = NULL, updated_at = datetime('now') WHERE chat_id = ? AND item_id = ? AND booked_at = ?",
+    ).bind(r.chat_id, p.item_id, p.chosen)) : []),
+  ]);
+  const item = await itemInfo(env, p.item_id);
+  const { results: langs } = await env.DB.prepare("SELECT chat_id, lang FROM users WHERE chat_id IN (SELECT value FROM json_each(?))")
+    .bind(JSON.stringify(accounts.map((r) => r.chat_id))).all<{ chat_id: number; lang: string | null }>();
+  const langOf = new Map(langs.map((u) => [u.chat_id, asLang(u.lang)]));
+  for (const r of accounts) {
+    if (r.chat_id === me.chat_id) continue;
+    const L = T[langOf.get(r.chat_id!) ?? "fr"];
+    await inbox(env, r.chat_id!, "prop_cancel", me.chat_id, p.item_id, null, null, id);
+    await send(env, r.chat_id!, L.cancel(esc(me.first_name), esc(item?.title ?? "?")));
+  }
+  return null;
 }
 
 // --- Groupes privés -----------------------------------------------------------

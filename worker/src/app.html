@@ -299,7 +299,8 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .pnotes{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--muted);margin:4px 0 12px}.pnotes b{color:var(--ink)}
 .pgo{background:var(--velvet)!important;border-color:var(--velvet)!important;color:#fff!important}
 .pok{color:var(--ok)!important}
-.pshare{margin-top:14px}.pcancel{display:block;margin-top:10px;color:var(--muted)}
+.pshare{margin-top:14px}.pcancel{display:block;margin-top:16px;color:var(--muted)}
+.pconfirm{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}.pconfirm p{margin:0 0 8px;font-weight:700}
 .pgroup{margin-top:20px;padding:14px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink)}
 .pgroup p{margin:4px 0 10px;font-size:14px;color:var(--muted)}
 .pdate{align-items:center;flex-wrap:nowrap}.pdate input{font:600 14px var(--sans);padding:8px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:0}
@@ -405,7 +406,7 @@ Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", wit
   setBtn:(w) => `C'est calé · ${w}`, setOther:(w) => `ou caler ${w}`, allYes:"marche pour tout le monde", cancelProp:"Annuler la proposition", shareWa:"WhatsApp", copyLink:"Copier le lien",
   saveGroupT:"Enregistrer comme groupe ?", saveGroupP:"La prochaine fois, un appui suffit pour les inviter ensemble.", groupName:"Nom du groupe", onlyYou:"Visible seulement par toi", noThanks:"Non merci",
   groupSaved:"Groupe enregistré ✓", propsT:"Propositions", yourTurn:"à toi de répondre", answeredN:(a, n) => `${a}/${n} ont répondu`, propBy:(w) => `Proposé par ${w}`, orW:" ou ", andW:" et ",
-  nProp:(n, t) => `${n} te propose ${t}`, nPropAns:(n, t) => `${n} a répondu pour ${t}`, nPropSet:(n, t, w) => `C'est calé : ${t}, ${w}`, needAccount:"Créer un compte pour la retrouver dans tes sorties",
+  nProp:(n, t) => `${n} te propose ${t}`, nPropAns:(n, t) => `${n} a répondu pour ${t}`, nPropSet:(n, t, w) => `C'est calé : ${t}, ${w}`, nPropCancel:(n, t) => `${n} a annulé : ${t}`, cancelQ:"Annuler pour tout le monde ?", cancelQSet:"Annuler pour tout le monde ? Le 🎟 sera retiré de leurs sorties.", cancelYes:"Oui, annuler", cancelNo:"Non", needAccount:"Créer un compte pour la retrouver dans tes sorties",
   noSlots:"Choisis 1 à 3 créneaux.", groupsT:"Mes groupes", groupsP:"Privés : tes amis ne voient jamais leurs noms.", gdel:"Retirer", propGone:"Cette proposition n'existe plus.",
   waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
 Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWho:"With whom?", whenQ:"When? · optional, 1 to 3 options", whenHint:"With options, everyone answers and you set the date. Without, it's a simple “fancy it?”.", proposeTo:(n) => `Suggest to ${n}`, otherDate:"Other date", addDate:"Add",
@@ -415,7 +416,7 @@ Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWh
   setBtn:(w) => `It's on · ${w}`, setOther:(w) => `or set ${w}`, allYes:"works for everyone", cancelProp:"Cancel the suggestion", shareWa:"WhatsApp", copyLink:"Copy link",
   saveGroupT:"Save as a group?", saveGroupP:"Next time, one tap invites them together.", groupName:"Group name", onlyYou:"Only you can see it", noThanks:"No thanks",
   groupSaved:"Group saved ✓", propsT:"Suggestions", yourTurn:"your turn to answer", answeredN:(a, n) => `${a}/${n} answered`, propBy:(w) => `Suggested by ${w}`, orW:" or ", andW:" and ",
-  nProp:(n, t) => `${n} suggests ${t}`, nPropAns:(n, t) => `${n} answered for ${t}`, nPropSet:(n, t, w) => `It's on: ${t}, ${w}`, needAccount:"Create an account to find it in your outings",
+  nProp:(n, t) => `${n} suggests ${t}`, nPropAns:(n, t) => `${n} answered for ${t}`, nPropSet:(n, t, w) => `It's on: ${t}, ${w}`, nPropCancel:(n, t) => `${n} cancelled: ${t}`, cancelQ:"Cancel for everyone?", cancelQSet:"Cancel for everyone? The 🎟 will be removed from their outings.", cancelYes:"Yes, cancel", cancelNo:"No", needAccount:"Create an account to find it in your outings",
   noSlots:"Pick 1 to 3 options.", groupsT:"My groups", groupsP:"Private: your friends never see their names.", gdel:"Remove", propGone:"This suggestion no longer exists.",
   waText:(t) => `Shall we? ${t} 👉`, pTitle:"Which day works for you?", answers:"Answers", byLink:"via the link" });
 let T = L[new URLSearchParams(location.search).get("lang")] || L[(() => { try { return localStorage.getItem("lang"); } catch { return ""; } })()]
@@ -1071,7 +1072,7 @@ function inboxSection() {
     const guestAns = n.kind === "prop_answer" && !n.from_id;   // réponse par le lien, sans compte : le prénom est dans note
     const p = { id: n.from_id, name: n.from_name || (guestAns ? n.note : "") || "?" }, name = `<b>${esc(p.name)}</b>`, title = n.title ? `<b>${esc(n.title)}</b>` : "";
     const line = n.kind === "share" ? T.nShare(name, title) : n.kind === "booked" ? T.nBooked(name, title, n.at ? `${dayLabel(n.at)} ${n.at.slice(11)}` : "")
-      : n.kind === "proposal" ? T.nProp(name, title) : n.kind === "prop_answer" ? T.nPropAns(name, title) : n.kind === "prop_set" ? T.nPropSet(name, title, n.at ? slotText(n.at) : "")
+      : n.kind === "proposal" ? T.nProp(name, title) : n.kind === "prop_answer" ? T.nPropAns(name, title) : n.kind === "prop_set" ? T.nPropSet(name, title, n.at ? slotText(n.at) : "") : n.kind === "prop_cancel" ? T.nPropCancel(name, title)
       : n.kind === "friend_ok" ? T.nOk(name) : esc(n.kind);
     if (guestAns) n = { ...n, note: null };
     const open = n.ref ? ` data-openprop="${esc(n.ref)}"` : n.item_id && n.title ? ` data-openitem="${esc(n.item_id)}"` : n.kind === "friend_ok" ? ` data-friendview="${n.from_id}"` : "";
@@ -1357,7 +1358,7 @@ document.addEventListener("click", (e) => {
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
   if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
-  if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") { st.setTab = null; st.friend = null; } window.scrollTo?.(0, 0); }
+  if (t.dataset.tab) { if (st.prop) closeProp(); st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") { st.setTab = null; st.friend = null; } window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
   else if (t.dataset.area !== undefined) st.setArea = t.dataset.area;
   else if (t.dataset.sk) return void act("sk", t.dataset.sk, t.dataset.arg, { body: { area: st.setArea } });
@@ -1587,7 +1588,7 @@ function draftFrom(p) {
   st.pa = me && me.answers ? { ...me.answers } : {}; st.pnote = (me && me.note) || "";
 }
 async function openProp(id, data) {
-  st.prop = id; st.open = null; st.proposing = null;
+  st.prop = id; st.open = null; st.proposing = null; st.pconfirm = false;
   if (data) st.propData = data;
   let p = propOf(id);
   draftFrom(p); render(); window.scrollTo?.(0, 0);
@@ -1604,7 +1605,7 @@ async function fetchProp(id) {
   if (st.prop === id) render();
 }
 function closeProp() {
-  st.prop = null; st.propData = null; st.askGroup = null; st.pa = {};
+  st.prop = null; st.propData = null; st.askGroup = null; st.pa = {}; st.pconfirm = false;
   const q = new URLSearchParams(location.search); if (q.has("p")) { q.delete("p"); history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "") + location.hash); }
 }
 const propLink = (p) => `${API_BASE || location.origin}/app?p=${p.id}`;
@@ -1665,8 +1666,11 @@ function propPage() {
         ${p.mine && st.pa && Object.keys(st.pa).length && JSON.stringify(st.pa) !== JSON.stringify(meRow && meRow.answers || {}) ? `<div class="acts"><button class="act" data-psubmit="1">${esc(T.answerUpdate)}</button></div>` : ""}`;
     }
     h += `<div class="acts pshare"><button class="act" data-pwa="1">${esc(T.shareWa)}</button><button class="act" data-pcopy="1">${esc(T.copyLink)}</button></div>`;
-    if (p.mine) h += `<button class="lnk pcancel" data-pcancel="1">${esc(T.cancelProp)}</button>`;
   }
+  // Annuler : la personne qui propose, tant que ce n'est pas déjà annulé (même après « C'est calé »), avec confirmation sur place.
+  if (p.mine && p.status !== "cancelled") h += st.pconfirm
+    ? `<div class="pconfirm"><p>${esc(p.status === "set" ? T.cancelQSet : T.cancelQ)}</p><div class="acts"><button class="act" data-pcancelno="1">${esc(T.cancelNo)}</button><button class="act on" data-pcancelok="1">${esc(T.cancelYes)}</button></div></div>`
+    : `<button class="lnk pcancel" data-pcancel="1">${esc(T.cancelProp)}</button>`;
   if (st.askGroup && p.mine) h += `<div class="pgroup"><b class="ftitle">${esc(T.saveGroupT)}</b><p>${esc(T.saveGroupP)}</p>
     <label class="lbl" for="gname">${esc(T.groupName)}</label><input id="gname" class="note" maxlength="40" value="${esc(st.askGroup.name)}">
     <p class="hint">🔒 ${esc(T.onlyYou)}</p>
@@ -1743,7 +1747,9 @@ document.addEventListener("click", (e) => {
   if (d.pans) { stop(); st.pa[d.pans] = st.pa[d.pans] === 1 ? 0 : 1; return void render(); }
   if (d.psubmit) { stop(); return void submitAnswer(); }
   if (d.pset) { stop(); return void propAct("proposal/set", { slot: d.pset }); }
-  if (d.pcancel) { stop(); return void propAct("proposal/cancel", {}); }
+  if (d.pcancel) { stop(); st.pconfirm = true; return void render(); }
+  if (d.pcancelno) { stop(); st.pconfirm = false; return void render(); }
+  if (d.pcancelok) { stop(); st.pconfirm = false; return void propAct("proposal/cancel", {}); }
   if (d.pwa) { stop(); const p = propOf(st.prop); if (p) shareProp(p); return; }
   if (d.pcopy) { stop(); const p = propOf(st.prop); if (p) navigator.clipboard?.writeText(propLink(p)).then(() => notify(T.copied), () => {}); return; }
   if (d.pacct) { closeProp(); return; }   // puis le gestionnaire général ouvre Réglages (connexion)

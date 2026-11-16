@@ -537,6 +537,17 @@ await step("🗳 proposer : invités prévenus (app + Telegram), réponses visib
   assert.ok(!calls.some((c) => c.chat_id === 666));
   assert.ok(!item((await post("/app/api/state", { initData: lyna })).json, "e1")?.me?.booked);
   assert.equal((await post("/app/api/proposal/answer", { initData: joss, pid, answers: {} })).status, 400);   // calé : fermé
+  // Annulée après coup : seule la personne qui propose ; le 🎟 posé par « C'est calé » disparaît, les autres sont prévenus.
+  assert.equal((await post("/app/api/proposal/cancel", { initData: joss, pid })).status, 403);
+  calls = [];
+  r = await post("/app/api/proposal/cancel", { initData: me, pid });
+  assert.equal(r.status, 200); assert.equal(r.json.proposal.status, "cancelled");
+  assert.ok(!item(r.json, "e1").me.booked);
+  js = (await post("/app/api/state", { initData: joss })).json;
+  assert.ok(!item(js, "e1").me.booked);
+  assert.ok(js.inbox.some((n) => n.kind === "prop_cancel" && n.ref === pid));
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id === 555 && /cancelled/.test(c.text)));
+  assert.equal((await post("/app/api/proposal/set", { initData: me, pid, slot: s1 })).status, 400);
 });
 await step("groupes privés : enregistrés, ≥ 2 connexions, jamais visibles par les membres ; retirés", async () => {
   assert.equal((await post("/app/api/group/save", { initData: me, name: "Solo", members: [555] })).status, 400);
