@@ -21,12 +21,12 @@ type Row = { proposal_id: string; pid: string; chat_id: number | null; name: str
 
 const T = {
   fr: {
-    invite: (who: string, title: string, others: string, slots: string) => `🗳 <b>${who}</b> te propose <b>${title}</b>${others ? `, avec ${others}` : ""} : ${slots} ?`,
+    invite: (who: string, title: string, others: string, slots: string) => `💌 <b>${who}</b> te propose <b>${title}</b>${others ? `, avec ${others}` : ""} : ${slots} ?`,
     set: (title: string, when: string, who: string) => `✓ C'est calé : <b>${title}</b>, ${when}, avec ${who}. C'est dans Mes sorties.`,
     answer: "Répondre", or: " ou ", and: " et ",
   },
   en: {
-    invite: (who: string, title: string, others: string, slots: string) => `🗳 <b>${who}</b> suggests <b>${title}</b>${others ? `, with ${others}` : ""}: ${slots}?`,
+    invite: (who: string, title: string, others: string, slots: string) => `💌 <b>${who}</b> suggests <b>${title}</b>${others ? `, with ${others}` : ""}: ${slots}?`,
     set: (title: string, when: string, who: string) => `✓ It's on: <b>${title}</b>, ${when}, with ${who}. It's in My outings.`,
     answer: "Answer", or: " or ", and: " and ",
   },
@@ -71,7 +71,7 @@ export async function createProposal(env: Env, me: Me, body: any): Promise<{ id:
     const others = to.filter((o) => o.chat_id !== u.chat_id).map((o) => esc(o.first_name));
     await inbox(env, u.chat_id, "proposal", me.chat_id, item.id, note, null, id);
     await send(env, u.chat_id, L.invite(esc(me.first_name), esc(item.title), list(others, L), slots.map((s: string) => slotLabel(s, lang)).join(L.or))
-      + (note ? `\n💬 « ${esc(note)} »` : ""), { inline_keyboard: [[{ text: `🗳 ${L.answer}`, url: appLink(env, `p_${id}`) }]] });
+      + (note ? `\n💬 « ${esc(note)} »` : ""), { inline_keyboard: [[{ text: `💌 ${L.answer}`, url: appLink(env, `p_${id}`) }]] });
   }
   return { id };
 }
