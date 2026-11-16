@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1794744517.189051,
+    "at": 1794834102.0209315,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1794744528.7272983,
+    "at": 1794834116.8834546,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1794744510.1618938,
+    "at": 1794834092.9047253,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -1800,7 +1800,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1794744523.813562,
+    "at": 1794834111.0878947,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -2643,7 +2643,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/hamlet-berliner-ensemble": {
-   "at": 1794744533.1744428,
+   "at": 1794834122.071507,
    "published": 1793957711.0,
    "scores": [
     0.0,
@@ -2691,7 +2691,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/antigone-der-abschied-alexander-zeldins-familiendrama-um-abschied-trauer-und-verdraengung": {
-   "at": 1794744533.0633574,
+   "at": 1794834121.9511855,
    "published": 1793025056.0,
    "scores": [
     -0.8462,
@@ -4123,7 +4123,7 @@
    ]
   },
   "Berlin Review x Volksbühne": {
-   "at": 1794488688.4117153,
+   "at": 1794834158.5326505,
    "results": []
   },
   "Berlin Review x Volksbühne Volksbühne": {
@@ -4234,7 +4234,7 @@
    ]
   },
   "Die Seherin": {
-   "at": 1794488642.2425413,
+   "at": 1794834155.5488513,
    "results": [
     [
      "Circus Oresteia – Theater an der Ruhr Mülheim – Thomas Köcks Aischylos-Überschreibung von Philipp Preuss uraufgeführt",
@@ -4613,7 +4613,7 @@
    ]
   },
   "Disrupt the Default": {
-   "at": 1794572975.6187153,
+   "at": 1794834167.2353663,
    "results": []
   },
   "Disrupt the Default Volksbühne": {
@@ -4993,7 +4993,7 @@
    ]
   },
   "Guided Tour of Volksbühne": {
-   "at": 1794488692.8438017,
+   "at": 1794834221.5070922,
    "results": []
   },
   "Guided Tour of Volksbühne Volksbühne": {
@@ -5774,7 +5774,7 @@
    "results": []
   },
   "La Calisto": {
-   "at": 1794488699.5158074,
+   "at": 1794834227.7997675,
    "results": []
   },
   "L’incoronazione di Poppea": {
@@ -6488,7 +6488,7 @@
    ]
   },
   "The Abduction from the Seraglio": {
-   "at": 1794488822.181871,
+   "at": 1794834301.378575,
    "results": []
   },
   "The Flying Dutchman": {
@@ -6754,7 +6754,7 @@
    "results": []
   },
   "Tosca": {
-   "at": 1794488784.258302,
+   "at": 1794834278.5954978,
    "results": [
     [
      "Glücklich die Glücklichen – Berliner Ensemble – Oliver Reese adaptiert Yasmina Rezas Roman von 2013",
