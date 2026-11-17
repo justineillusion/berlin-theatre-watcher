@@ -37,6 +37,9 @@ _BRACKETS = re.compile(r"\s*[\[(]\s*([^\])]+?)\s*[\])]")
 _VERSIONISH = re.compile(r"^(om\s*e?\s*u|omdu|omu|ov.*|.*engl.*|english.*|original.*|.*\bUT\b.*|tamil|hindi|stummfilm)$", re.I)
 _SUFFIXES = re.compile(
     r"\s*(?::|–|-)\s*(premiere.*|live shadow cast|preview.*|with guests.*|mit gästen.*|\+ ?q&a.*)$", re.I)
+# Ciné-concerts : « Metropolis LIVE Babylon Orchester Berlin », « The Gold Rush with LIVE Orchestra »,
+# « Nosferatu Live mit Babylon Orchester Berlin » -> le film seul (le « live » est dans la ligne de séance).
+_LIVE_SUFFIX = re.compile(r"\s+(?:with\s+|mit\s+)?live\b.*$", re.I)
 
 
 def _norm(s: str) -> str:
@@ -56,6 +59,7 @@ def _clean_title(raw: str, category: str, series: List[str]) -> tuple[str, List[
     alts = [b for b in _BRACKETS.findall(title) if not _VERSIONISH.match(b.strip())]
     title = _BRACKETS.sub("", title)
     title = _SUFFIXES.sub("", title).strip(" ,:–-")
+    title = _LIVE_SUFFIX.sub("", title).strip(" ,:–-") or title
     return title, alts
 
 

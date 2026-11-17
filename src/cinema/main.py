@@ -87,9 +87,12 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
             errors.append(f"{cin.get('name')}: source inconnue {cin.get('source')!r}")
             continue
         limit = float(cfg.get("cinema_timeout_s", 90))
+        # Ciné-concerts (orchestre live) : vus plus tôt, ça se réserve longtemps à l'avance.
+        ahead = int(cfg.get("live_music_days", 0)) if cin.get("live_music_ahead") else 0
+        days = max(win["fetch_days"], ahead)
         try:
             ok, got = call_with_timeout(
-                lambda: fetch({**cin, "_evening_from": evening_from}, win["start"], win["fetch_days"]), limit)
+                lambda: fetch({**cin, "_evening_from": evening_from}, win["start"], days), limit)
         except Exception as exc:  # noqa: BLE001 — un cinéma en panne ne bloque pas les autres
             errors.append(f"{cin.get('name')}: {exc}")
             traceback.print_exc(file=sys.stderr)
@@ -98,8 +101,11 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
             errors.append(f"{cin.get('name')}: pas de réponse en {limit:.0f} s, cinéma sauté")
             print(f"⏱  {cin.get('name')} : pas de réponse en {limit:.0f} s, cinéma sauté.", file=sys.stderr)
             continue
+        later = [s for s in got if evening_day(s) > win["last"]]
+        got = [s for s in got if evening_day(s) <= win["last"]]
         known_until[cin["name"]] = max((evening_day(s) for s in got), default=None)
         screenings += [s for s in got if is_evening(s, evening_from) and not_too_late(s, cfg)]
+        screenings += [s for s in later if s.live_music]   # au-delà de la semaine : ciné-concerts seulement, toute heure
         dubbed |= {norm_title(s.original_title or s.title) for s in got if s.version == "DF"}
     return screenings, errors, dubbed, known_until
 
@@ -292,8 +298,11 @@ def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]]
     names = None if cinemas is None else set(cinemas)
     shown = all_names if names is None else [n for n in all_names if n in names]
 
-    kept, overflow = select(_restrict(analysis["passed"], names), cfg, today.year)
-    unrated = _restrict(analysis["unrated"], names)
+    # Le récap Telegram ne parle que de la semaine : un ciné-concert lointain n'est que dans l'app.
+    last = analysis["window"]["last"]
+    this_week = lambda fs: [f for f in fs if any(evening_day(x) <= last for x in f.screenings)]
+    kept, overflow = select(this_week(_restrict(analysis["passed"], names)), cfg, today.year)
+    unrated = this_week(_restrict(analysis["unrated"], names))
     rejected = [f for f in analysis["rejected"] if _touches(f, names)]
     by_key = {f.key: f for f in analysis["passed"]}
     for f in kept:
