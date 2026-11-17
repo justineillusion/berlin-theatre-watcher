@@ -90,9 +90,11 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
         # Ciné-concerts (orchestre live) : vus plus tôt, ça se réserve longtemps à l'avance.
         ahead = int(cfg.get("live_music_days", 0)) if cin.get("live_music_ahead") else 0
         days = max(win["fetch_days"], ahead)
+        event_days = int(cfg.get("event_days", 0))
         try:
             ok, got = call_with_timeout(
-                lambda: fetch({**cin, "_evening_from": evening_from}, win["start"], days), limit)
+                lambda: fetch({**cin, "_evening_from": evening_from, "_event_days": event_days},
+                              win["start"], days), limit)
         except Exception as exc:  # noqa: BLE001 — un cinéma en panne ne bloque pas les autres
             errors.append(f"{cin.get('name')}: {exc}")
             traceback.print_exc(file=sys.stderr)
@@ -117,6 +119,11 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
         known_until[cin["name"]] = max((evening_day(s) for s in got), default=None)
         screenings += [s for s in got if is_evening(s, evening_from) and not_too_late(s, cfg)]
         screenings += [s for s in later if s.live_music]   # au-delà de la semaine : ciné-concerts seulement, toute heure
+        # Séries / festivals (semaine du ciné français…) : 2 semaines, mêmes règles de soirée. Les films
+        # habituels restent à la semaine. App seulement (le récap Telegram ne garde que la semaine).
+        ev_last = win["first"] + timedelta(days=event_days - 1)
+        screenings += [s for s in later if s.event and not s.live_music and evening_day(s) <= ev_last
+                       and is_evening(s, evening_from) and not_too_late(s, cfg)]
         dubbed |= {norm_title(s.original_title or s.title) for s in got if s.version == "DF"}
     return screenings, errors, dubbed, known_until
 

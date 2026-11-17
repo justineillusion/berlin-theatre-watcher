@@ -81,7 +81,9 @@ def fetch(cfg: dict, start: date, days: int) -> List[Screening]:
     end = start + timedelta(days=days)
     entries = [x.get("fields") or {} for x in (pp.get("filmsSpecials") or []) + (pp.get("presaleFilms") or [])]
     in_window = lambda t: start <= datetime.fromisoformat(t).date() < end + timedelta(days=1)   # +1 : après minuit
-    wanted = []      # (slug du film, titre affiché, rubrique, début, formats)
+    ev_end = start + timedelta(days=max(days, int(cfg.get("_event_days") or 0)))
+    in_event = lambda t: start <= datetime.fromisoformat(t).date() < ev_end + timedelta(days=1)
+    wanted = []      # (slug du film, titre affiché, rubrique, début, formats, série ?)
     for f in entries:
         if "assignedFilms" in f:
             # Une « special » regroupe plusieurs films : on la déplie en séances, chacune avec son film
@@ -90,21 +92,21 @@ def fetch(cfg: dict, start: date, days: int) -> List[Screening]:
                 sf = s.get("fields") or {}
                 film = (sf.get("film") or {}).get("fields") or {}
                 cin = ((sf.get("cinema") or {}).get("fields") or {}).get("name")
-                if sf.get("startTime") and film.get("title") and cin == here and in_window(sf["startTime"]):
+                if sf.get("startTime") and film.get("title") and cin == here and in_event(sf["startTime"]):
                     wanted.append((film.get("slug") or "", film["title"], f.get("title"),
-                                   datetime.fromisoformat(sf["startTime"]), sf.get("formats") or []))
+                                   datetime.fromisoformat(sf["startTime"]), sf.get("formats") or [], True))
             continue
         for s in f.get("sessions") or []:
             sf = s.get("fields") or {}
             if sf.get("startTime") and in_window(sf["startTime"]):
                 wanted.append((f.get("slug") or "", f.get("title") or "", None,
-                               datetime.fromisoformat(sf["startTime"]), sf.get("formats") or []))
+                               datetime.fromisoformat(sf["startTime"]), sf.get("formats") or [], False))
     with ThreadPoolExecutor(max_workers=6) as ex:
         list(ex.map(_film, sorted({w[0] for w in wanted if w[0]})))
 
     out: List[Screening] = []
     dup = set()
-    for slug, title, series, when, formats in wanted:
+    for slug, title, series, when, formats, event in wanted:
         if (slug or title, when) in dup:
             continue
         dup.add((slug or title, when))
@@ -130,5 +132,6 @@ def fetch(cfg: dict, start: date, days: int) -> List[Screening]:
             genres=[g for g in labels if g],
             description=_strip(info.get("about")),
             tags=[x.lower() for x in formats],
+            event=event,
         ))
     return out

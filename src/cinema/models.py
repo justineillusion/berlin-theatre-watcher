@@ -27,6 +27,7 @@ class Screening:
     category: Optional[str] = None   # rubrique du cinéma (Babylon : ORCHESTER, LITERATUR…)
     tags: List[str] = field(default_factory=list)        # flags kinoheld, tags Babylon…
     live_music: bool = False         # ciné-concert (muet + orgue/orchestre)
+    event: bool = False              # séance d'une série / d'un festival (Französische Filmwoche…)
 
 
 @dataclass
