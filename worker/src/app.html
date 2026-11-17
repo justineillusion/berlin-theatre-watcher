@@ -300,7 +300,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .pgo{background:var(--velvet)!important;border-color:var(--velvet)!important;color:#fff!important}
 .pok{color:var(--ok)!important}
 .main3{display:flex;gap:6px}.main3 .act{flex:1 1 0;min-width:0;justify-content:center;padding-left:4px;padding-right:4px;white-space:nowrap}
-.tix{display:inline-block;font:800 15px var(--sans);color:var(--velvet);text-decoration:underline;text-underline-offset:4px;padding:4px 0}
+.tix{display:inline-block;margin-top:12px;font:800 15px var(--sans);color:var(--velvet);text-decoration:underline;text-underline-offset:4px;padding:4px 0}
 .sublinks{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-size:14px;color:var(--muted)}.sublinks .lnk{color:var(--muted);font-size:14px}
 .pshare{margin-top:14px}.pcancel{display:block;margin-top:16px;color:var(--muted)}
 .pconfirm{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}.pconfirm p{margin:0 0 8px;font-weight:700}
@@ -920,7 +920,6 @@ function item(x) {
   if (friends.length) h += `<div class="sect">${esc(T.band)}</div>` + friends.map((p) =>
     `<div class="friend"><b>${esc(p.name)} ${stars(p.rating)}</b>${p.comment ? `<div class="quote">« ${esc(p.comment)} »</div>` : ""}</div>`).join("");
   if (s !== "seen" && dates) h += `<div>🗓 ${x.kind === "expo" ? esc(dates) : dates}</div>`;
-  if (s !== "seen" && x.url) h += `<a class="tix" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tix)} ↗</a>`;
   if (me.booked && s !== "seen") h += `<div>🎟 ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}` +
     (me.booked.length >= 16 && me.booked.slice(0, 10) >= TODAY ? ` · <span class="calrow">${esc(T.addCal)} <a class="cal" href="${gcal(x, me.booked)}" data-link="1" target="_blank" rel="noopener">Google</a> · <a class="cal" href="${API_BASE || location.origin}/app/cal/${x.id}.ics?at=${me.booked.replace(/\D/g, "").slice(0, 12)}" data-link="1" target="_blank" rel="noopener">${esc(T.calOther)}</a></span>` : "") + `</div>`;
   if (f.rating) h += `<div>${scTag(f)}</div>`;
@@ -952,6 +951,7 @@ function item(x) {
       ${me.booked ? "" : `<button class="act ${me.star ? "on" : ""}" data-act="i" data-id="${x.id}">${T.star}</button>`}
       ${x.kind !== "expo" && upcoming.length ? `<button class="act ${me.booked ? "on" : ""}" data-pick="${x.id}">${T.book}</button>` : ""}
       ${(S.people || []).length ? `<button class="act" data-propose="${x.id}">${esc(T.propose)}</button>` : ""}</div>
+      ${x.url ? `<a class="tix" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tix)} ↗</a>` : ""}
       <div class="sublinks">${[
         s === "ignored" ? `<button class="lnk" data-act="u" data-id="${x.id}">${esc(T.unignoreL)}</button>` : `<button class="lnk" data-act="x" data-id="${x.id}">${esc(T.ignoreL)}</button>`,
         `<button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button>`,
