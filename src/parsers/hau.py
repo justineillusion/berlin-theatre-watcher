@@ -43,6 +43,7 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
 from ..fetch import fetch_html, fetch_many
+from ..price import parse_range
 from ..models import Show
 
 _BASE = "https://www.hebbel-am-ufer.de"
@@ -220,6 +221,7 @@ def _parse_item(item, iso: str, lang_ids: Dict[str, str], prices) -> Optional[Sh
 
     sold_out: Optional[bool] = None
     booking = None
+    label = ""
     for btn in item.find_all(class_=re.compile(r"^d-\d+$")):
         key = next(c for c in btn["class"] if re.fullmatch(r"d-\d+", c))
         if key in prices:
@@ -240,4 +242,6 @@ def _parse_item(item, iso: str, lang_ids: Dict[str, str], prices) -> Optional[Sh
         has_english_surtitles=_is_english_friendly(language, title),
         sold_out=sold_out,
         booking_url=booking,
+        price_min=parse_range(label)[0],       # « Admission free » ; sinon un bouton « Tickets » sans prix
+        price_max=parse_range(label)[1],
     )

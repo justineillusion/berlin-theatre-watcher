@@ -8,6 +8,7 @@ from typing import List
 
 import httpx
 
+from . import price
 from .language import is_pure_language_note, strip_language_notes, to_english_labels
 from .models import Show
 
@@ -306,6 +307,9 @@ def format_show(show: Show, lang: str = "fr") -> str:
         more = len(dates) - 5
         shown = " | ".join(dates[:5]) + ((f" (+{more} more)" if en else f" (+{more} autres)") if more > 0 else "")
         lines.append(("🗓 Seats available: " if en else "🗓 Places libres : ") + _esc(shown))
+    cost = price.label(show.price_min, show.price_max, lang, only_min=show.price_from)
+    if cost:
+        lines.append(f"💶 {_esc(cost)}")
     # Disponibilité inconnue : on n'écrit rien (docs/ux.md, zéro remplissage).
     # « In English » en 🎬 = la langue jouée, déjà dite (traduite) par 🗣 : pas de doublon.
     if show.production_type and not is_pure_language_note(show.production_type):
