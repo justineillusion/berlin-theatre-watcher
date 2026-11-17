@@ -201,6 +201,7 @@ def analyse(cfg: dict, start: date) -> dict:
     passed: List[Film] = []
     rejected: List[Film] = []
     unrated: List[Film] = []
+    unrated_all: List[Film] = []          # pas encore notés, quel que soit l'âge : pour l'app
 
     candidates: List[Film] = []
     for f in films:
@@ -244,6 +245,8 @@ def analyse(cfg: dict, start: date) -> dict:
             rejected.append(f)
             # Pas encore noté MAIS récent et passé par tous les autres filtres
             # (version, soirée, goût) : on le signale en une ligne.
+            if f.unrated:
+                unrated_all.append(f)
             if f.unrated and cfg.get("ratings", {}).get("show_unrated") \
                     and (f.is_recent(today.year, max_age) or not f.year):
                 unrated.append(f)
@@ -257,7 +260,7 @@ def analyse(cfg: dict, start: date) -> dict:
             titles = ([sc.original_title] if sc and sc.original_title else []) + taste._titles(f)
             f.letterboxd = taste.R.letterboxd(titles, years[0] if years else None, f.directors)
     map_with_budget(passed, add_lb, float(cfg.get("letterboxd_extra_budget_s", 90)), workers=2, item_timeout=cap)
-    return {"passed": passed, "rejected": rejected, "unrated": unrated, "errors": errors,
+    return {"passed": passed, "rejected": rejected, "unrated": unrated, "unrated_all": unrated_all, "errors": errors,
             "n_screenings": len(screenings), "pitched": set(), "window": win,
             "known_until": known_until}
 
@@ -405,6 +408,10 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False, refresh:
         for res in cache.values():
             for f in res["kept"]:
                 films.setdefault(f.item_id(), by_key.get(f.key, f))
+        # L'app montre tout ce qui passe les filtres (sans le plafond max_films des messages),
+        # plus les films pas encore notés : ils n'envoient aucun message (pas dans `targets`).
+        for f in analysis["passed"] + analysis.get("unrated_all", []):
+            films.setdefault(f.item_id(), f)
         for f in films.values():           # pitch des deux langues sur la fiche complète
             for lang in ({lg for _, lg, _ in plan} | ({"fr", "en"} if rerender_only else set())):
                 if (f.key, lang) not in analysis["pitched"]:

@@ -30,13 +30,8 @@ cinemas:
     unmarked_version: DF
 
   - name: Kino International
-    source: kinoheld                 # Karl-Marx-Allee 33 (Yorck) ; séances via kinoheld
-    kinoheld_cinema_id: 713
-    kinoheld_slug: kino-international
-    film_url: https://www.yorck.de/de/kinos/kino-international
-    # kinoheld ne met aucun flag de langue ici (« La Bola Negra » non marqué) :
-    # non marqué = version non précisée (acceptée), pour ne pas écarter les VO.
-    unmarked_version: null
+    source: yorck                    # Karl-Marx-Allee 33 ; yorck.de donne le format de chaque séance
+    yorck_slug: kino-international   # (kinoheld 713 n'en donnait aucun ; yorck depuis 17/11/2026)
 
   - name: Babylon
     source: babylon                  # page /programm du site (une vignette par séance)
@@ -54,6 +49,32 @@ cinemas:
       - Stummfilm um Mitternacht
       - Lubitsch im Babylon
 
+  # Yorck (yorck.de, depuis 17/11/2026). Le programme n'est publié que jusqu'au
+  # mercredi (semaine Yorck = jeudi → mercredi) : le rafraîchissement de milieu de semaine complète.
+  - name: Delphi LUX
+    source: yorck                    # Kantstr. 10, Charlottenburg
+    yorck_slug: delphi-lux
+
+  - name: FaF
+    source: yorck                    # Filmtheater am Friedrichshain, Bötzowstr. 1-5
+    yorck_slug: filmtheater-am-friedrichshain
+
+  - name: Passage
+    source: yorck                    # Karl-Marx-Str. 131, Neukölln
+    yorck_slug: passage
+
+  - name: Odeon
+    source: yorck                    # Hauptstr. 116, Schöneberg
+    yorck_slug: odeon
+
+  - name: Wolf
+    source: kinoheld                 # Weserstr. 59, Neukölln ; billetterie kinoheld
+    kinoheld_cinema_id: 1856
+    kinoheld_slug: wolf-kino
+    film_url: https://wolfberlin.org/
+    # Les VO sont marquées (OmeU/OmU) ; non marqué = films allemands / pour enfants.
+    unmarked_version: DF
+
 # ---------------------------------------------------------------------------
 # FENÊTRE
 # ---------------------------------------------------------------------------
@@ -66,7 +87,8 @@ evening_from: "18:00"      # séances qui commencent à partir de… (les séanc
 latest_start:
   time: "22:00"
   days: [0, 1, 2, 3, 4]    # lundi → vendredi
-max_films: 15             # liste dépliable : plus de films ≠ plus de messages (15 depuis 11/2026)
+max_films: 15             # messages Telegram du dimanche, par ami (15 depuis 11/2026).
+                           # L'app, elle, reçoit TOUS les films retenus + ceux pas encore notés (depuis 17/11/2026).
 # Garde-fous de durée (secondes, temps réel) : rien ne doit bloquer le job.
 cinema_timeout_s: 90       # programme d'UN cinéma ; au-delà il est sauté (et signalé dans le rapport)
 ratings_budget_s: 300      # toutes les recherches SensCritique + Letterboxd ; film sans note à temps = écarté
@@ -86,9 +108,9 @@ ratings:
   # any      = Letterboxd peut aussi « repêcher » un film sous le seuil SC
   #            (plus généreux : Digger, Primetime, Marie Antoinette passeraient)
   letterboxd_when: fallback
-  senscritique_min: 6.5    # /10
+  senscritique_min: 6.0    # /10 (6.5 jusqu'au 17/11/2026)
   senscritique_min_votes: 50
-  letterboxd_min: 3.4      # /5
+  letterboxd_min: 3.0      # /5 (= 6/10 ; 3.4 jusqu'au 17/11/2026)
   letterboxd_min_votes: 300
   # Films RÉCENTS sans note fiable (premières, festivals, docs) qui passent
   # tous les autres filtres : true = une ligne « 🆕 Pas encore notés » en fin
