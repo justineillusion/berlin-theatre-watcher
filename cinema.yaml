@@ -36,6 +36,7 @@ cinemas:
   - name: Babylon
     source: babylon                  # page /programm du site (une vignette par séance)
     url: https://babylonberlin.eu/programm
+    live_music_ahead: true           # ciné-concerts (Babylon Orchester) jusqu'à live_music_days à l'avance
     # Préfixes de séries retirés du titre (« Clockwork Kubrick: The Shining »)
     series_prefixes:
       - Clockwork Kubrick
@@ -87,6 +88,7 @@ evening_from: "18:00"      # séances qui commencent à partir de… (les séanc
 latest_start:
   time: "22:00"
   days: [0, 1, 2, 3, 4]    # lundi → vendredi
+live_music_days: 42        # ciné-concerts vus 6 semaines à l'avance (app seulement, pas dans le récap)
 max_films: 15             # messages Telegram du dimanche, par ami (15 depuis 11/2026).
                            # L'app, elle, reçoit TOUS les films retenus + ceux pas encore notés (depuis 17/11/2026).
 # Garde-fous de durée (secondes, temps réel) : rien ne doit bloquer le job.
