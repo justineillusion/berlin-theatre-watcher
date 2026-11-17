@@ -4,6 +4,7 @@ from collections import OrderedDict
 from datetime import date
 from typing import List
 
+from . import price
 from .models import Show
 
 
@@ -68,6 +69,9 @@ def select(shows: List[Show], config: dict) -> List[Show]:
         rep.available_iso = [
             f"{m.date} {m.time}".strip() for m in members if m.date
         ]
+        # Fourchette sur toutes les dates (le site seul fait foi : sinon rien)
+        rep.price_min, rep.price_max = price.merge((m.price_min, m.price_max) for m in members)
+        rep.price_from = any(m.price_from for m in members)   # minimums seulement : « dès <le plus bas> »
         reps.append(rep)
 
     # Les correspondances de goût d'abord, puis par date.

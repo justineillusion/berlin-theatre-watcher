@@ -19,6 +19,13 @@ Chaque lien de fiche est testé avant l'envoi (`src/linkcheck.py`, appelé par l
 404 / 410 / site injoignable = mort : on met la page programme du lieu si elle répond, sinon aucun lien.
 Un délai dépassé ou un anti-bot (403, 429) n'est pas une preuve : le lien reste.
 
+## 💶 Prix
+
+Ligne « 💶 » seulement quand le site du lieu affiche le prix (`src/price.py`) : jamais deviné.
+Fourchette sur toutes les dates (« 14–110 € ») ; « dès 23 € » quand le site ne donne que le minimum
+(Deutsche Oper) ; « Entrée libre » quand c'est écrit. Aujourd'hui : Staatsoper, Deutsche Oper,
+Komische Oper, Philharmonie, HAU (entrée libre seulement).
+
 ## 🎟 Réservé !
 
 - **Une fiche = un message qui évolue** (édition sur place, pas de nouveau message) :

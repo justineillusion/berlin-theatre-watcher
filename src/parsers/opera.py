@@ -37,6 +37,7 @@ from urllib.parse import urljoin, urlsplit
 from bs4 import BeautifulSoup
 
 from ..fetch import fetch_html, fetch_many
+from ..price import from_numbers, parse_range
 from ..models import Show
 
 _MONTHS = {
@@ -188,6 +189,9 @@ def parse_staatsoper(html: str, url: str) -> List[Show]:
         if lang:
             lang = re.sub(r"^(?:Language|Sprache)\s*:\s*", "", lang).replace("Englisch ", "English ")
         venue_el = panel.select_one('[itemprop~="location"]')
+        price_el = panel.select_one(".termin__preisinformation")   # « € 115 100 — 62 … » (— = catégorie complète)
+        lo, hi = from_numbers(float(n) for n in re.findall(r"\d+(?:,\d\d)?",
+                              (price_el.get_text(" ").split("Login")[0] if price_el else "").replace(",", ".")))
         shows.append(
             Show(
                 theater="Staatsoper Unter den Linden",
@@ -202,6 +206,8 @@ def parse_staatsoper(html: str, url: str) -> List[Show]:
                 sold_out=True if sold_out_el else (False if ticket else None),
                 booking_url=ticket.get("href") if ticket else None,
                 aliases=press_aliases(title),
+                price_min=lo,
+                price_max=hi,
             )
         )
     return shows
@@ -267,6 +273,7 @@ def parse_deutsche_oper(events: Iterable[dict], langs: Dict[str, Optional[str]],
         # La légende de la photo porte le titre original (« Pique Dame ») ; on
         # ne la garde que si elle ressemble à un titre (pas « Szenenfoto … © »).
         pic = pic if pic and pic != "None" and len(pic.split()) <= 6 and "©" not in pic else ""
+        lo, hi = parse_range(e.get("PriceValueMinMax"))      # « 23,00 € » = prix d'entrée (page : « from € 28 »)
         shows.append(
             Show(
                 theater="Deutsche Oper Berlin",
@@ -281,6 +288,9 @@ def parse_deutsche_oper(events: Iterable[dict], langs: Dict[str, Optional[str]],
                 sold_out=bool(e.get("IsSoldOut")),
                 booking_url=e.get("PriceUrl") or None,
                 aliases=press_aliases(title, pic),
+                price_min=lo,
+                price_max=hi,
+                price_from=lo is not None and lo == hi,
             )
         )
     return [s for s in shows if s.title]
@@ -355,6 +365,7 @@ def parse_komische_oper(html: str, base: str) -> List[Show]:
             continue                       # récitals / formats annexes hors grande salle
         ticket = perf.select_one(".performance__ticketbutton a.ticketbutton[href]")
         sold_out = True if perf.select_one(".performance__soldoutinfo") else (False if ticket else None)
+        lo, hi = parse_range(ticket.get("title") if ticket else None)    # « Tickets: 14 - 110 € »
         shows.append(
             Show(
                 theater="Komische Oper Berlin",
@@ -368,6 +379,8 @@ def parse_komische_oper(html: str, base: str) -> List[Show]:
                 sold_out=sold_out,
                 booking_url=urljoin(base, ticket["href"]) if ticket else None,
                 aliases=press_aliases(title),
+                price_min=lo,
+                price_max=hi,
             )
         )
     return shows

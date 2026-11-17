@@ -34,6 +34,7 @@ from zoneinfo import ZoneInfo
 from bs4 import BeautifulSoup
 
 from ..fetch import fetch_html, fetch_many
+from ..price import parse_range
 from ..models import Show
 
 _BASE = "https://www.berliner-philharmoniker.de"
@@ -131,6 +132,7 @@ def parse_concert(html: str, url: str) -> List[Show]:
             clock = start.strftime("%H:%M")
         if not re.match(r"^\d{4}-\d{2}-\d{2}$", day):
             continue
+        lo, hi = parse_range(re.sub(r"\s+", " ", info.get_text(" ")))   # « Main Auditorium 28 to 89 € »
         shows.append(
             Show(
                 theater="Berliner Philharmoniker",
@@ -144,6 +146,8 @@ def parse_concert(html: str, url: str) -> List[Show]:
                 has_english_surtitles=True,     # pas de filtre de langue pour les concerts
                 sold_out=None,                  # disponibilité chargée en JS : inconnue
                 booking_url=None,               # bouton de prévente en JS : la page du concert fait foi
+                price_min=lo,
+                price_max=hi,
             )
         )
     return shows

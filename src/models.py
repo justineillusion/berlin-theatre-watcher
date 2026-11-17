@@ -36,6 +36,9 @@ class Show:
     venue_id: str = ""                    # slug du lieu dans config.yaml (abonnements)
     venue_name: str = ""                  # nom du lieu tel que dans config.yaml
     aliases: List[str] = field(default_factory=list)  # autres titres (titre original, pour la presse)
+    price_min: Optional[float] = None     # € ; seulement si le site du lieu l'affiche (0 = entrée libre)
+    price_max: Optional[float] = None
+    price_from: bool = False              # le site ne donne que le minimum (« dès 28 € »)
 
     def key(self) -> str:
         """Identité d'une PIÈCE (pour la déduplication : 1 alerte par pièce)."""
