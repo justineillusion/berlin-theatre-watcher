@@ -89,6 +89,7 @@ latest_start:
   time: "22:00"
   days: [0, 1, 2, 3, 4]    # lundi → vendredi
 live_music_days: 42        # ciné-concerts vus 6 semaines à l'avance (app seulement, pas dans le récap)
+event_days: 14             # séries / festivals (Yorck « specials ») vus 2 semaines à l'avance (app seulement)
 max_films: 15             # messages Telegram du dimanche, par ami (15 depuis 11/2026).
                            # L'app, elle, reçoit TOUS les films retenus + ceux pas encore notés (depuis 17/11/2026).
 # Garde-fous de durée (secondes, temps réel) : rien ne doit bloquer le job.
