@@ -81,7 +81,9 @@ def collect_shows(theaters: list) -> List[Show]:
 def _no_dead_links(shows: List[Show]) -> None:
     """Jamais de lien mort : fiche morte -> page programme du lieu (si elle répond), sinon rien."""
     from . import linkcheck
-    linkcheck.check([u for s in shows for u in (s.url, s.booking_url, getattr(s, "_venue_url", None))])
+    # Les liens de fiche d'abord (une poignée, essentiels), puis ceux de réservation (un par date).
+    linkcheck.check([u for s in shows for u in (s.url, getattr(s, "_venue_url", None))])
+    linkcheck.check([s.booking_url for s in shows])
     bad = linkcheck.dead([u for s in shows for u in (s.url, s.booking_url)])
     for s in shows:
         venue = getattr(s, "_venue_url", None)
