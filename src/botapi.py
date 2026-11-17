@@ -65,7 +65,8 @@ def _meta(show: Show) -> dict:
 def _complete(show: Show, need_ids: set) -> bool:
     """Texte complet (écrase l'ancien) : ce qui part, ou ce qui a un résumé / une note.
     Sinon version courte qui ne remplace jamais un texte complet déjà en base."""
-    return show.item_id() in need_ids or bool(show.summary or show.summary_en or show.critics)
+    return show.item_id() in need_ids or bool(show.summary or show.summary_en or show.critics) \
+        or show.price_min is not None          # 💶 : la fiche en base doit prendre le prix
 
 
 HORIZON_THEATRE_DAYS = 14   # config.yaml horizon_theatre_days (fixé par run_multi)
