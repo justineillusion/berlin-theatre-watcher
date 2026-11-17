@@ -35,7 +35,11 @@ self.addEventListener("fetch", (e) => {
 // Web Push : afficher la notif ; un tap ouvre (ou ramène) l'app au bon endroit.
 self.addEventListener("push", (e) => {
   let m = {}; try { m = e.data ? e.data.json() : {}; } catch { m = { title: "Berlin Encore!", body: e.data ? e.data.text() : "" }; }
-  e.waitUntil(self.registration.showNotification(m.title || "Berlin Encore!", { body: m.body || "", tag: m.tag, data: { url: m.url || "/app" }, icon: "/app/icon-180.png" }));
+  // + l'app ouverte se rafraîchit tout de suite (réponse d'un ami, proposition calée…).
+  e.waitUntil(Promise.all([
+    self.registration.showNotification(m.title || "Berlin Encore!", { body: m.body || "", tag: m.tag, data: { url: m.url || "/app" }, icon: "/app/icon-180.png" }),
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((ws) => ws.forEach((w) => w.postMessage({ t: "refresh" }))),
+  ]));
 });
 self.addEventListener("notificationclick", (e) => {
   e.notification.close();

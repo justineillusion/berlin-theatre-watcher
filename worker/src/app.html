@@ -274,6 +274,42 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .cat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;padding:10px 0 4px;border-top:2px solid var(--ink)}
 .cat b{font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}.cat .act{padding:5px 10px;font-size:12px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* 🗳 Propositions */
+.lnk{border:0;background:none;padding:6px 0;font:600 14px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.detail>.lbl,.pbody .lbl{display:block;font:700 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
+.propline{font-size:13px;color:var(--velvet);font-weight:700;margin-top:6px;cursor:pointer}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:12px;width:calc(100% - 32px);margin:0 16px;padding:12px 0;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;font:inherit;color:inherit}
+.prow b{display:block;font:700 15.5px/1.3 var(--sans)}.prow span{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+.prow em{font-style:normal;font:700 12.5px var(--sans);color:var(--muted);white-space:nowrap}.prow em.todo{color:var(--velvet)}
+.phead{padding:10px 12px 4px}.pbody{padding:6px 16px 24px}
+.pfrom{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+.ptitle{font:800 22px/1.15 var(--sans);letter-spacing:-.02em;margin:12px 0 2px}
+.pbody .quote{margin:10px 0}
+.pset{background:#eaf6ef;color:#1f6e3f;font:700 14.5px var(--sans);padding:12px 14px;margin:12px 0}
+.pcan{background:var(--card);color:var(--muted);font:700 14px var(--sans);padding:12px 14px;margin:12px 0}
+.pgrid{display:grid;border-top:2px solid var(--ink);margin:14px 0 8px}
+.pgrid>div{padding:9px 4px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;min-width:0}
+.pgrid .ph{font:700 11.5px var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:center}
+.pgrid .ph:first-child,.pgrid .pn{justify-content:flex-start}
+.pgrid .pn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pgrid .pn small{color:var(--muted);font-size:11.5px}
+.pgrid .best{background:#eaf6ef;color:#1f6e3f}
+.pgrid .pc{font:800 16px var(--sans)}.pgrid .pc.y{color:var(--ok)}.pgrid .pc.n{color:var(--velvet)}.pgrid .pc.w{color:#9aa0a6;font-weight:500}
+.ptog{min-width:56px;min-height:44px;border:1.5px solid var(--ink);background:var(--bg);font:800 16px var(--sans);color:var(--muted);border-radius:0}
+.ptog.y{background:var(--ok);border-color:var(--ok);color:#fff}.ptog.n{border-color:#c3c6cb;color:var(--velvet)}
+.pnotes{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--muted);margin:4px 0 12px}.pnotes b{color:var(--ink)}
+.pgo{background:var(--velvet)!important;border-color:var(--velvet)!important;color:#fff!important}
+.pok{color:var(--ok)!important}
+.main3{display:flex;gap:6px}.main3 .act{flex:1 1 0;min-width:0;justify-content:center;padding-left:4px;padding-right:4px;white-space:nowrap}
+.tix{display:inline-block;margin-top:12px;font:800 15px var(--sans);color:var(--velvet);text-decoration:underline;text-underline-offset:4px;padding:4px 0}
+.sublinks{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-size:14px;color:var(--muted)}.sublinks .lnk{color:var(--muted);font-size:14px}
+.pshare{margin-top:14px}.pcancel{display:block;margin-top:16px;color:var(--muted)}
+.pconfirm{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}.pconfirm p{margin:0 0 8px;font-weight:700}
+.pgroup{margin-top:20px;padding:14px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.pgroup p{margin:4px 0 10px;font-size:14px;color:var(--muted)}
+.pdate{align-items:center;flex-wrap:nowrap}.pdate input{font:600 14px var(--sans);padding:8px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:0}
+.act.grp{border-style:dashed}
+.who .act:has(.av){display:inline-flex;align-items:center;gap:6px}.who .act .av{width:20px;height:20px;margin:0}
+.lnk[disabled]{opacity:.4}
 </style>
 </head>
 <body>
@@ -303,7 +339,10 @@ const API_BASE = window.BE_API_BASE || "";
 const TOKEN_KEY = "be_session";
 let TOKEN = ""; try { TOKEN = localStorage.getItem(TOKEN_KEY) || ""; } catch {}
 // Ouvert depuis une annonce du groupe (…/Programme?startapp=<fiche>) ou un lien web (/app?item=<fiche>) : cette fiche d'abord.
-const FOCUS = (tgApp && tgApp.initDataUnsafe && tgApp.initDataUnsafe.start_param) || new URLSearchParams(location.search).get("item") || "";
+// 🗳 Proposition : …/Programme?startapp=p_<id> (Telegram) ou /app?p=<id> (lien partagé, WhatsApp…).
+const START = (tgApp && tgApp.initDataUnsafe && tgApp.initDataUnsafe.start_param) || "";
+const PROP_IN = /^p_[a-f0-9]{24}$/.test(START) ? START.slice(2) : ((new URLSearchParams(location.search).get("p") || "").match(/^[a-f0-9]{24}$/) || [""])[0];
+const FOCUS = (START.startsWith("p_") ? "" : START) || new URLSearchParams(location.search).get("item") || "";
 if (WEB && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("/app/sw.js", { scope: "/app" }).catch(() => {});
 if (tgApp) {
   tgApp.ready(); tgApp.expand();
@@ -321,7 +360,7 @@ const L = {
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
         reviewInChat:"Le bot t'attend dans le chat : réponds-lui avec ta critique.", reviewPh:"Ce que tu en as pensé…", whyHidden:"Pas affiché ici :", whyIgnored:(n) => `${n} écarté${n > 1 ? "s" : ""} (🙅)`, notForMeN:(n) => `Pas pour moi · ${n}`, soldN:(n) => `Complets · ${n}`, hideD:"Masquer", showD:"Afficher", whySeen:(n) => `${n} déjà vu${n > 1 ? "s" : ""}`, whyLater:(n) => `${n} 🙋/🎟 plus tard`,
-        whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont masquées.", whyCine:"Ciné : films en VO bien notés, séances du soir : à partir de 18 h, jusqu'à 22 h en semaine, sans limite le week-end.", soldShort:"complet", hideSold:"Voir les complets", lastDay:"dernier jour !", daysLeft:(d) => `plus que ${d} jour${d > 1 ? "s" : ""}`, hideSoldOff:"Masquer les complets", moreDates:(n) => `+${n} séance${n > 1 ? "s" : ""}`, whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
+        whyRule:"Théâtre : seulement les dates surtitrées en anglais. Les séances complètes sont masquées.", whyCine:"Ciné : films en VO notés au moins 6/10 sur SensCritique, ou pas encore notés ; séances du soir : à partir de 18 h, jusqu'à 22 h en semaine, sans limite le week-end.", soldShort:"complet", hideSold:"Voir les complets", lastDay:"dernier jour !", daysLeft:(d) => `plus que ${d} jour${d > 1 ? "s" : ""}`, hideSoldOff:"Masquer les complets", moreDates:(n) => `+${n} séance${n > 1 ? "s" : ""}`, whySold:(n) => `${n} complet${n > 1 ? "s" : ""}`, whySales:"Prochaines mises en vente :", monthName:(m) => "programme de " + new Date(m + "-01T12:00Z").toLocaleDateString("fr-FR", { month:"long" }), save:"Enregistrer", cancel:"Annuler", undoSeen:"↩︎ Pas vu", band:"La bande",
         dows:["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], mons:["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
@@ -345,7 +384,7 @@ const L = {
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
         reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, notForMeN:(n) => `Not for me · ${n}`, soldN:(n) => `Sold out · ${n}`, hideD:"Hide", showD:"Show", whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} 🙋/🎟 later on`,
-        whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", whyCine:"Cinema: well-rated films in original version, evening screenings: from 6 pm, until 10 pm on weekdays, no limit at weekends.", soldShort:"sold out", hideSold:"Show sold out", lastDay:"last day!", daysLeft:(d) => `${d} day${d > 1 ? "s" : ""} left`, hideSoldOff:"Hide sold out", moreDates:(n) => `+${n} more date${n > 1 ? "s" : ""}`, whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
+        whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", whyCine:"Cinema: films in original version rated at least 6/10 on SensCritique, or not rated yet; evening screenings: from 6 pm, until 10 pm on weekdays, no limit at weekends.", soldShort:"sold out", hideSold:"Show sold out", lastDay:"last day!", daysLeft:(d) => `${d} day${d > 1 ? "s" : ""} left`, hideSoldOff:"Hide sold out", moreDates:(n) => `+${n} more date${n > 1 ? "s" : ""}`, whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
@@ -362,9 +401,32 @@ const L = {
         fbVenueT:"A venue missing?", fbVenuePh:"Its name, and a link if you have one", fbT:"An idea, a problem?", fbPh:"Tell me everything", fbSend:"Send", fbThanks:"Thanks, it's on its way.", photoT:"My photo", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
 };
+// 🗳 Propositions + groupes (ajoutés à part pour garder les lignes ci-dessus lisibles).
+Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", withWho:"Avec qui ?", whenQ:"Quand ? · optionnel, 1 à 3 créneaux", whenHint:"Avec des créneaux, chacun répond et tu cales la date. Sans, c'est un simple « ça te dit ? ».", proposeTo:(n) => `Proposer à ${n}`, otherDate:"Autre date", addDate:"Ajouter",
+  noteQ:"Un mot ? · optionnel", propNotePh:"Ça vous tente ?", sendTo:(n) => `Envoyer à ${n}`, linkOnly:"Ou juste un lien à partager (WhatsApp…)", interestedHint:"🙋 Pré-cochés : intéressés.",
+  propHead:"Proposition", proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
+  answerSend:"Envoyer ma réponse", answerUpdate:"Mettre à jour", answerHint:"Tout le monde voit les réponses. Tu peux changer d'avis tant que ce n'est pas calé.", yourName:"Ton prénom",
+  setBtn:(w) => `C'est calé · ${w}`, setOther:(w) => `ou caler ${w}`, allYes:"marche pour tout le monde", cancelProp:"Annuler la proposition", shareWa:"WhatsApp", copyLink:"Copier le lien",
+  saveGroupT:"Enregistrer comme groupe ?", saveGroupP:"La prochaine fois, un appui suffit pour les inviter ensemble.", groupName:"Nom du groupe", onlyYou:"Visible seulement par toi", noThanks:"Non merci",
+  groupSaved:"Groupe enregistré ✓", propsT:"Propositions", yourTurn:"à toi de répondre", answeredN:(a, n) => `${a}/${n} ont répondu`, propBy:(w) => `Proposé par ${w}`, orW:" ou ", andW:" et ",
+  ignoreL:"Pas pour moi", unignoreL:"Finalement si", seenL:"Déjà vu", tix:"Billets sur le site", tixExpo:"Infos et billets",
+  nProp:(n, t) => `${n} te propose ${t}`, nPropAns:(n, t) => `${n} a répondu pour ${t}`, nPropSet:(n, t, w) => `C'est calé : ${t}, ${w}`, nPropCancel:(n, t) => `${n} a annulé : ${t}`, cancelQ:"Annuler pour tout le monde ?", cancelQSet:"Annuler pour tout le monde ? Le 🎟 sera retiré de leurs sorties.", cancelYes:"Oui, annuler", cancelNo:"Non", needAccount:"Créer un compte pour la retrouver dans tes sorties",
+  noSlots:"Choisis 1 à 3 créneaux.", groupsT:"Mes groupes", groupsP:"Privés : tes amis ne voient jamais leurs noms.", gdel:"Retirer", propGone:"Cette proposition n'existe plus.",
+  waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
+Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWho:"With whom?", whenQ:"When? · optional, 1 to 3 options", whenHint:"With options, everyone answers and you set the date. Without, it's a simple “fancy it?”.", proposeTo:(n) => `Suggest to ${n}`, otherDate:"Other date", addDate:"Add",
+  noteQ:"A word? · optional", propNotePh:"Fancy it?", sendTo:(n) => `Send to ${n}`, linkOnly:"Or just a link to share (WhatsApp…)", interestedHint:"🙋 Pre-selected: interested.",
+  propHead:"Suggestion", proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
+  answerSend:"Send my answer", answerUpdate:"Update", answerHint:"Everyone sees the answers. You can change your mind until it's set.", yourName:"Your first name",
+  setBtn:(w) => `It's on · ${w}`, setOther:(w) => `or set ${w}`, allYes:"works for everyone", cancelProp:"Cancel the suggestion", shareWa:"WhatsApp", copyLink:"Copy link",
+  saveGroupT:"Save as a group?", saveGroupP:"Next time, one tap invites them together.", groupName:"Group name", onlyYou:"Only you can see it", noThanks:"No thanks",
+  groupSaved:"Group saved ✓", propsT:"Suggestions", yourTurn:"your turn to answer", answeredN:(a, n) => `${a}/${n} answered`, propBy:(w) => `Suggested by ${w}`, orW:" or ", andW:" and ",
+  ignoreL:"Not for me", unignoreL:"Actually yes", seenL:"Already seen", tix:"Tickets on the website", tixExpo:"Info and tickets",
+  nProp:(n, t) => `${n} suggests ${t}`, nPropAns:(n, t) => `${n} answered for ${t}`, nPropSet:(n, t, w) => `It's on: ${t}, ${w}`, nPropCancel:(n, t) => `${n} cancelled: ${t}`, cancelQ:"Cancel for everyone?", cancelQSet:"Cancel for everyone? The 🎟 will be removed from their outings.", cancelYes:"Yes, cancel", cancelNo:"No", needAccount:"Create an account to find it in your outings",
+  noSlots:"Pick 1 to 3 options.", groupsT:"My groups", groupsP:"Private: your friends never see their names.", gdel:"Remove", propGone:"This suggestion no longer exists.",
+  waText:(t) => `Shall we? ${t} 👉`, pTitle:"Which day works for you?", answers:"Answers", byLink:"via the link" });
 let T = L[new URLSearchParams(location.search).get("lang")] || L[(() => { try { return localStorage.getItem("lang"); } catch { return ""; } })()]
   || ((navigator.languages || [navigator.language || ""]).some((l) => /^fr\b/i.test(l)) ? L.fr : L.en), S = null;   // accueil : langue du téléphone (ou choisie) ; connecté·e : celle du compte
-const st = { tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
+const st = { prop:null, propData:null, pa:{}, pnote:"", proposing:null, pslots:new Set(), askGroup:null, tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
 st.setArea = "";
 try { localStorage.removeItem("areas"); } catch {}
@@ -430,7 +492,7 @@ function facts(x) {
 }
 
 async function api(path, extra = {}) {
-  if (S?.guest && !/^(guest|login\/|passkey\/login\/|invite\/info|teaser)/.test(path)) {
+  if (S?.guest && !/^(guest|login\/|passkey\/login\/|invite\/info|teaser|proposal\/public|proposal\/guest)/.test(path)) {
     if (path === "track") return {};
     askSignin(); throw Object.assign(new Error("guest"), { info: { error: "guest" }, status: 0 });
   }
@@ -723,7 +785,10 @@ function socialLine(x) {
   // Moi aussi intéressée : ma tête à côté des leurs + « Organiser › » (Envoyer à… pré-rempli avec eux).
   const meToo = x.me && x.me.star && !x.me.booked && !(x.me.status === "seen");
   if (wantP.length) parts.push(`<span class="ostar">🙋</span>` + stack(wantP, meToo));
-  if (bookP.length) parts.push(`<span class="ostar tk">🎟</span>` + stack(bookP, false));
+  // 🎟 d'un ami : sa date quand ce n'est pas celle de la carte (la carte est à la prochaine séance).
+  const shown = (x._at || next(x) || "").slice(0, 10);
+  const bDays = [...new Set(bookP.map((p) => String(p.booked).slice(0, 10)))].filter((d) => d && d !== shown).sort();
+  if (bookP.length) parts.push(`<span class="ostar tk">🎟</span>` + stack(bookP, false) + (bDays.length ? `<span class="fnames">${esc(bDays.map(shortDay).join(", "))}</span>` : ""));
   // Vu : ✅ en cercle, visages, puis « Joss 4★ » (la note de chacun en valeur).
   const seenP = f.filter((p) => p.seen);
   if (seenP.length) parts.push(`<span class="ostar ok">✅</span>` + (seenP.some((p) => p.rating)
@@ -833,7 +898,7 @@ function item(x) {
   const soldNow = st.tab === "prog" && isSold(x, next(x));
   let h = `<div class="item${open ? " open" : ""}${soldNow ? " soldout" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div>
-    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}${hurry(x)}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
+    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}${hurry(x)}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${s === "seen" ? "" : propLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
     ${badge(x)}</button>`;
   if (!open) return h + "</div>";
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
@@ -864,7 +929,9 @@ function item(x) {
   if (f.syn) h += `<div class="syn">${esc(f.syn)}${f.syn.length >= 420 ? "…" : ""}</div>`;
   const people = S.people || [];
   if (st.sent && st.sent.id === x.id && st.sent.names.length) h += `<div class="sent">✓ ${esc(T.sentTo)} ${esc(st.sent.names.join(", "))}</div>`;
-  if (st.sharing === x.id) {
+  if (st.proposing === x.id) {
+    h += proposer(x);
+  } else if (st.sharing === x.id) {
     h += `<div class="sect">${esc(T.send.replace("…", ""))}</div><div class="who">${people.map((p) =>
       `<button class="act ${st.sel.has(p.id) ? "on" : ""}" data-sel="${p.id}">${esc(p.name)}</button>`).join("")}
       </div>
@@ -878,13 +945,17 @@ function item(x) {
       `<button class="act" data-act="bd" data-id="${x.id}" data-arg="${d.replace(/\D/g, "").slice(0, 12)}">${esc(dayLabel(d))} ${d.slice(11)}</button>`).join("")}
       ${me.booked ? `<button class="act" data-act="bx" data-id="${x.id}">${esc(T.cancelBook)}</button>` : ""}</div>`;
   } else if (s !== "seen") {
-    h += `<div class="acts">
-      <button class="act ${me.star ? "on" : ""}" data-act="i" data-id="${x.id}">${T.star}</button>
+    // Rangée principale : ce qu'on fait en ouvrant une fiche (envie → proposer → réservé). Une fois réservé,
+    // l'envie va de soi : seul 🎟 reste. Le reste en petits liens dessous (rien n'est retiré).
+    h += `<div class="acts main3">
+      ${me.booked ? "" : `<button class="act ${me.star ? "on" : ""}" data-act="i" data-id="${x.id}">${T.star}</button>`}
       ${x.kind !== "expo" && upcoming.length ? `<button class="act ${me.booked ? "on" : ""}" data-pick="${x.id}">${T.book}</button>` : ""}
-      <button class="act" data-act="v" data-id="${x.id}">${T.seen}</button>
-      ${s === "ignored" ? `<button class="act on" data-act="u" data-id="${x.id}">${T.unignore}</button>` : `<button class="act" data-act="x" data-id="${x.id}">${T.ignore}</button>`}
-      ${(S.people || []).length ? `<button class="act" data-sharing="${x.id}">${T.send}</button>` : ""}
-      ${x.url ? `<a class="act" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a>` : ""}</div>`;
+      ${(S.people || []).length ? `<button class="act" data-propose="${x.id}">${esc(T.propose)}</button>` : ""}</div>
+      ${x.url ? `<a class="tix" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tix)} ↗</a>` : ""}
+      <div class="sublinks">${[
+        s === "ignored" ? `<button class="lnk" data-act="u" data-id="${x.id}">${esc(T.unignoreL)}</button>` : `<button class="lnk" data-act="x" data-id="${x.id}">${esc(T.ignoreL)}</button>`,
+        `<button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button>`,
+      ].join("<span>·</span>")}</div>`;
   } else if (x.url) {
     h += `<div class="acts"><a class="act" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a></div>`;
   }
@@ -1007,10 +1078,13 @@ function inboxSection() {
   const ns = (S.inbox || []).filter((n) => n.kind !== "friend_request" && recent(n)).slice(0, 8);
   if (!ns.length) return "";
   return `<div class="ibhead">${dayHead(T.forYou)}${ns.length > 1 ? `<button class="ibclear" data-dismissall="1">${esc(T.dismissAll)}</button>` : ""}</div>` + ns.map((n) => {
-    const p = { id: n.from_id, name: n.from_name || "?" }, name = `<b>${esc(p.name)}</b>`, title = n.title ? `<b>${esc(n.title)}</b>` : "";
+    const guestAns = n.kind === "prop_answer" && !n.from_id;   // réponse par le lien, sans compte : le prénom est dans note
+    const p = { id: n.from_id, name: n.from_name || (guestAns ? n.note : "") || "?" }, name = `<b>${esc(p.name)}</b>`, title = n.title ? `<b>${esc(n.title)}</b>` : "";
     const line = n.kind === "share" ? T.nShare(name, title) : n.kind === "booked" ? T.nBooked(name, title, n.at ? `${dayLabel(n.at)} ${n.at.slice(11)}` : "")
+      : n.kind === "proposal" ? T.nProp(name, title) : n.kind === "prop_answer" ? T.nPropAns(name, title) : n.kind === "prop_set" ? T.nPropSet(name, title, n.at ? slotText(n.at) : "") : n.kind === "prop_cancel" ? T.nPropCancel(name, title)
       : n.kind === "friend_ok" ? T.nOk(name) : esc(n.kind);
-    const open = n.item_id && n.title ? ` data-openitem="${esc(n.item_id)}"` : n.kind === "friend_ok" ? ` data-friendview="${n.from_id}"` : "";
+    if (guestAns) n = { ...n, note: null };
+    const open = n.ref ? ` data-openprop="${esc(n.ref)}"` : n.item_id && n.title ? ` data-openitem="${esc(n.item_id)}"` : n.kind === "friend_ok" ? ` data-friendview="${n.from_id}"` : "";
     const isNew = !n.read_at || st.inboxNew?.has(n.id);
     return `<div class="note-row${isNew ? " unread" : ""}"${open}>${avatar(S.photos && S.photos[p.id], p.name, "avmid", p.id)}
       <div><div>${line}</div>${n.note ? `<div class="quote">« ${esc(n.note)} »</div>` : ""}<small>${esc(ago(n.created_at))}</small></div>
@@ -1134,6 +1208,7 @@ function render() {
   });
   const K = $("kinds"), W = $("whens"), list = $("list");
   if (!S) return;
+  if (st.prop) { K.hidden = true; W.hidden = true; list.innerHTML = propPage(); return; }
   K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog";
   if (S.guest && st.tab !== "prog") {
     K.hidden = true; W.hidden = true;
@@ -1168,7 +1243,7 @@ function render() {
     const sub = ["venues", "friends", "account", ...(S.admin ? ["admin"] : [])].map((k) =>
       `<button class="chip" data-settab="${k}" aria-pressed="${st.setTab === k}">${esc(T.setTabs[k])}${k === "friends" && pending ? `<i>${pending}</i>` : ""}</button>`).join("");
     list.innerHTML = `<div class="set"><div class="subtabs">${sub}</div>${
-      st.setTab === "friends" ? (st.friend ? friendPage() : friendsSection()) : st.setTab === "account" ? accountTab : st.setTab === "admin" && S.admin ? adminTab() : venuesTab + feedbackBox("venue")}</div>`;
+      st.setTab === "friends" ? (st.friend ? friendPage() : friendsSection() + groupsSection()) : st.setTab === "account" ? accountTab : st.setTab === "admin" && S.admin ? adminTab() : venuesTab + feedbackBox("venue")}</div>`;
     return;
   }
   // Types suivis seulement : ne plus suivre aucun cinéma retire « Ciné » du menu.
@@ -1227,7 +1302,7 @@ function render() {
     list.innerHTML = onbHtml + (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + soldHtml + whyNote();
   } else {
     h = mineSections(xs);
-    const forMe = inboxSection();
+    const forMe = inboxSection() + propsSection();
     list.innerHTML = forMe + (h ? weekBar(xs) + h : (forMe ? "" : `<div class="empty">${esc(T.emptyMine)}</div>`));
     markRead();
     // la barre se colle sous l'en-tête (lui aussi collant), jamais dessous
@@ -1284,15 +1359,15 @@ document.addEventListener("click", (e) => {
     if (fc.dataset.face === "me") { st.friend = null; st.setTab = "account"; window.scrollTo?.(0, 0); return void render(); }
     st.setTab = "friends"; return void openFriend(+fc.dataset.face); }
   const pl = e.target.closest("[data-plan]");
-  if (pl) { e.preventDefault(); e.stopPropagation(); st.open = pl.dataset.plan; st.sharing = pl.dataset.plan; st.picking = null;
-    st.sel = new Set(pl.dataset.ids.split(",").map(Number)); st.note = T.planNote; return void render(); }
+  if (pl) { e.preventDefault(); e.stopPropagation(); st.open = pl.dataset.plan; const x = S.items.find((y) => y.id === pl.dataset.plan); if (x) openProposer(x);
+    st.sel = new Set(pl.dataset.ids.split(",").map(Number)); st.pnote = T.planNote; return void render(); }
   const rs = e.target.closest("[data-rescue]");
   if (rs) { e.preventDefault(); e.stopPropagation(); return void act("u", rs.dataset.rescue); }
   const sc = e.target.closest("[data-href]");
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
   if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
-  if (t.dataset.tab) { st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") { st.setTab = null; st.friend = null; } window.scrollTo?.(0, 0); }
+  if (t.dataset.tab) { if (st.prop) closeProp(); st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") { st.setTab = null; st.friend = null; } window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
   else if (t.dataset.area !== undefined) st.setArea = t.dataset.area;
   else if (t.dataset.sk) return void act("sk", t.dataset.sk, t.dataset.arg, { body: { area: st.setArea } });
@@ -1447,6 +1522,281 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("change", (e) => {
   if (e.target.id === "photoin" && e.target.files && e.target.files[0]) return void savePhoto(e.target.files[0]); if (e.target.id === "areasel") { st.setArea = e.target.value; render(); } });
+// --- 🗳 Proposer une sortie ----------------------------------------------------------
+// Fiche → « Proposer » : amis (groupes privés d'abord) + 1 à 3 créneaux + un mot → chacun répond,
+// tout le monde voit les réponses ; la personne qui propose « cale » un créneau → 🎟 pour ceux qui ont dit oui.
+const slotText = (s) => `${cap(T.dows[dt(s).getUTCDay()].slice(0, 3))}. ${+s.slice(8, 10)} ${T.smons[+s.slice(5, 7) - 1]}${s.length > 10 ? " " + s.slice(11, 16) : ""}`;
+const joinNames = (xs) => xs.length <= 1 ? xs.join("") : xs.slice(0, -1).join(", ") + T.andW + xs[xs.length - 1];
+/** Créneaux proposables : les séances à venir (pas complètes) ; une expo : les prochains week-ends avant sa fin. */
+function slotChoices(x) {
+  if (x.kind === "expo") {
+    const out = []; let d = TODAY;
+    for (let i = 0; i < 28 && out.length < 4; i++, d = isoAdd(d, 1)) {
+      if (x.end && d > x.end) break;
+      if (x.start && d < x.start) continue;
+      if ([0, 6].includes(dt(d).getUTCDay())) out.push(d);
+    }
+    return out;
+  }
+  const now = new Date(Date.now() + 3600e3).toISOString().slice(0, 16).replace("T", " ");
+  return (x.dates || []).filter((d) => d >= now && !isSold(x, d)).sort().slice(0, 10);
+}
+function proposer(x) {
+  const people = S.people || [], groups = (S.groups || []).filter((g) => g.members.every((m) => people.some((p) => p.id === m)));
+  const same = (g) => g.members.length === st.sel.size && g.members.every((m) => st.sel.has(m));
+  const extra = [...st.pslots].filter((d) => !slotChoices(x).includes(d));
+  const slots = [...slotChoices(x), ...extra].sort();
+  const names = people.filter((p) => st.sel.has(p.id)).map((p) => p.name);
+  const hint = (x.friends || []).some((p) => p.star && !p.seen) ? `<p class="hint">${esc(T.interestedHint)}</p>` : "";
+  return `<div class="sect">${esc(T.propT)}</div>
+    <div class="lbl">${esc(T.withWho)}</div>
+    <div class="who">${groups.map((g) => `<button class="act grp${same(g) ? " on" : ""}" data-pgroup="${g.id}">${esc(g.name)}</button>`).join("")}${people.map((p) =>
+      `<button class="act ${st.sel.has(p.id) ? "on" : ""}" data-sel="${p.id}">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)} ${esc(p.name)}</button>`).join("")}</div>${hint}
+    <div class="lbl">${esc(T.whenQ)}</div><p class="hint">${esc(T.whenHint)}</p>
+    <div class="who">${slots.map((d) => `<button class="act ${st.pslots.has(d) ? "on" : ""}" data-pslot="${d}">${esc(slotText(d))}</button>`).join("")}</div>
+    ${x.kind === "expo" ? `<div class="acts pdate"><label class="lbl" for="pdate">${esc(T.otherDate)}</label><input id="pdate" type="date" min="${TODAY}"${x.end ? ` max="${esc(x.end.slice(0, 10))}"` : ""}><button class="act" data-paddslot="1">${esc(T.addDate)}</button></div>` : ""}
+    <div class="lbl">${esc(T.noteQ)}</div>
+    <input id="pnote" class="note" maxlength="200" placeholder="${esc(T.propNotePh)}" value="${esc(st.pnote)}">
+    <div class="acts"><button class="act on" data-psend="${x.id}" ${st.sel.size ? "" : "disabled"}>${esc(!names.length ? T.propT : st.pslots.size ? T.proposeTo(joinNames(names)) : T.sendTo(joinNames(names)))}</button>
+      <button class="act" data-proposing="">${esc(T.cancel)}</button></div>
+    <button class="lnk" data-plinkonly="${x.id}" ${st.pslots.size ? "" : "disabled"}>${esc(T.linkOnly)}</button>`;
+}
+function openProposer(x) {
+  st.proposing = x.id; st.sharing = null; st.picking = null; st.pnote = "";
+  st.sel = new Set((x.friends || []).filter((p) => p.star && !p.seen && (S.people || []).some((q) => q.id === p.id)).map((p) => p.id));
+  st.pslots = new Set();   // sans créneau = simple envoi (« ça te dit ? »)
+}
+async function sendProposal(id, linkOnly) {
+  if (st.busy) return;
+  if (!st.pslots.size && linkOnly) return notify(T.noSlots);
+  if (!st.pslots.size) {   // pas de créneau : l'envoi « 💌 ça te dit ? » de toujours
+    const n = st.pnote; st.proposing = null; st.pnote = "";
+    return void act("share", id, "", { path: "share", body: { to: [...st.sel], note: n } });
+  }
+  const to = linkOnly ? [] : [...st.sel];
+  st.busy = true;
+  try {
+    const j = await api("proposal/create", { id, to, slots: [...st.pslots], note: st.pnote });
+    S = j; st.proposing = null; st.pnote = ""; st.pslots = new Set(); st.sel.clear();
+    if (to.length >= 2 && !(S.groups || []).some((g) => g.members.length === to.length && to.every((m) => g.members.includes(m))))
+      st.askGroup = { members: to, name: (S.people || []).filter((p) => to.includes(p.id)).map((p) => p.name).join(" + ").slice(0, 40) };
+    st.busy = false;
+    openProp(j.proposal.id, j.proposal);
+    if (linkOnly) shareProp(j.proposal);
+  } catch (e) { st.busy = false; notify(e.info?.error === "bad_slots" ? T.noSlots : T.error); render(); }
+}
+const propOf = (id) => (S?.proposals || []).find((p) => p.id === id) || (st.propData && st.propData.id === id ? st.propData : null);
+/** Clé de cet appareil pour répondre sans compte (changer d'avis plus tard). */
+function propKey() {
+  let k = lsGet("propkey");
+  if (!k || !/^[a-f0-9]{32}$/.test(k)) { k = [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, "0")).join(""); lsSet("propkey", k); }
+  return k;
+}
+function draftFrom(p) {
+  const me = p && p.people.find((x) => x.me);
+  st.pa = me && me.answers ? { ...me.answers } : {}; st.pnote = (me && me.note) || "";
+}
+async function openProp(id, data) {
+  st.prop = id; st.open = null; st.proposing = null; st.pconfirm = false;
+  if (data) st.propData = data;
+  let p = propOf(id);
+  draftFrom(p); render(); window.scrollTo?.(0, 0);
+  await fetchProp(id);
+}
+async function fetchProp(id) {
+  try {
+    const j = S?.guest ? await api("proposal/public", { id, key: propKey(), lang: T === L.en ? "en" : "fr" }) : await api("proposal/get", { pid: id });
+    if (!S?.guest) { const { proposal, ...rest } = j; S = rest; }
+    const first = !propOf(id);
+    st.propData = j.proposal;
+    if (first || !Object.keys(st.pa).length) draftFrom(j.proposal);
+  } catch (e) { if (st.prop === id && !propOf(id)) { st.prop = null; notify(T.propGone); } }
+  if (st.prop === id) render();
+}
+function closeProp() {
+  st.prop = null; st.propData = null; st.askGroup = null; st.pa = {}; st.pconfirm = false;
+  const q = new URLSearchParams(location.search); if (q.has("p")) { q.delete("p"); history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "") + location.hash); }
+}
+const propLink = (p) => `${API_BASE || location.origin}/app?p=${p.id}`;
+function shareProp(p) {
+  const text = T.waText(p.item ? p.item.title : ""), link = propLink(p);
+  const wa = `https://wa.me/?text=${encodeURIComponent(text + " " + link)}`;
+  if (tgApp?.openLink) tgApp.openLink(wa); else window.open(wa, "_blank");
+}
+/** Le créneau qui réunit le plus de oui (à égalité : le plus tôt). */
+function bestSlot(p) {
+  let best = null, n = -1;
+  for (const s of p.slots) { const k = p.people.filter((x) => x.answers && x.answers[s]).length; if (k > n) { n = k; best = s; } }
+  return { slot: best, yes: n, all: p.people.filter((x) => x.answers).every((x) => x.answers[best]) && p.people.every((x) => x.answers) };
+}
+function propPage() {
+  const p = propOf(st.prop);
+  const back = `<div class="phead"><button class="act" data-pback="1">‹ ${esc(T.propHead)}</button></div>`;
+  if (!p) return back + `<p class="empty">…</p>`;
+  const open = p.status === "open", meRow = p.people.find((x) => x.me), others = p.people.filter((x) => !x.host);
+  const host = p.people.find((x) => x.host) || { name: p.from.name };
+  const who = (x) => x.me ? T.toYou : x.name;
+  const toNames = joinNames(others.map(who));
+  const withNames = joinNames(others.filter((x) => !x.me).map((x) => x.name));
+  const face = (x) => avatar(x.me ? S.photo : x.id && S.photos ? S.photos[x.id] : null, x.name, "av", x.me ? "me" : x.id || "g");
+  const b = bestSlot(p);
+  let h = back + `<div class="pbody">
+    <div class="pfrom">${face(host)}<div>${p.mine ? esc(T.youPropose(toNames || "…")) : esc(T.proposesYou(host.name, withNames))}</div></div>
+    <h2 class="ptitle">${esc(p.item ? p.item.title : "")}</h2>
+    <div class="v">${esc(p.item ? p.item.venue : "")}${p.item && p.item.kind === "expo" && p.item.end ? ` · ${esc(T.until)} ${esc(shortDay(p.item.end))}` : ""}</div>
+    ${p.note ? `<div class="quote">« ${esc(p.note)} »</div>` : ""}
+    ${p.status === "set" ? `<div class="pset">${esc(T.isSet(slotText(p.chosen)))}</div>` : p.status === "cancelled" ? `<div class="pcan">${esc(T.cancelledP)}</div>` : ""}`;
+  // Grille : une ligne par personne, une colonne par créneau. Ma ligne se règle d'un toucher (tant que c'est ouvert).
+  const cols = `grid-template-columns:minmax(0,1fr) repeat(${p.slots.length}, minmax(64px, 84px))`;
+  h += `<div class="pgrid" style="${cols}"><div class="ph">${esc(T.answers)}</div>${p.slots.map((s) =>
+    `<div class="ph${open && s === b.slot && b.yes > 1 ? " best" : ""}${p.chosen === s ? " best" : ""}">${esc(slotText(s))}</div>`).join("")}`;
+  const rows = [...p.people.filter((x) => x.me), ...p.people.filter((x) => !x.me)];
+  if (!meRow && open) rows.unshift({ me: true, name: T.you, draft: true });
+  for (const x of rows) {
+    h += `<div class="pn">${face(x)}<span>${esc(x.me ? T.you : x.name)}${x.guest && !x.me ? ` <small>${esc(T.byLink)}</small>` : ""}</span></div>`;
+    for (const s of p.slots) {
+      if (x.me && open) { const v = st.pa[s]; h += `<div class="pc"><button class="ptog ${v === 1 ? "y" : v === 0 ? "n" : ""}" data-pans="${s}" aria-label="${esc(slotText(s))}">${v === 1 ? "✓" : v === 0 ? "✕" : "?"}</button></div>`; }
+      else { const v = x.answers ? x.answers[s] : undefined; h += `<div class="pc ${v ? "y" : v === 0 ? "n" : "w"}${p.chosen === s ? " best" : ""}">${v ? "✓" : v === 0 ? "✕" : "…"}</div>`; }
+    }
+  }
+  h += `</div>`;
+  const notes = p.people.filter((x) => x.note && !x.me);
+  if (notes.length) h += `<div class="pnotes">${notes.map((x) => `<div><b>${esc(x.name)}</b> · « ${esc(x.note)} »</div>`).join("")}</div>`;
+  if (open) {
+    const answered = meRow && meRow.answers;
+    h += `${S.guest && !meRow ? `<input id="pname" class="note" maxlength="40" autocomplete="given-name" placeholder="${esc(T.yourName)}" value="${esc(lsGet("propname") || "")}"><input id="lweb" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">` : ""}
+      ${p.mine ? "" : `<input id="panote" class="note" maxlength="200" placeholder="${esc(T.noteQ)}" value="${esc(st.pnote)}">`}
+      ${p.mine ? "" : `<div class="acts"><button class="act on" data-psubmit="1">${esc(answered ? T.answerUpdate : T.answerSend)}</button></div><p class="hint">${esc(T.answerHint)}</p>`}`;
+    if (p.mine) {
+      const others = p.slots.filter((s) => s !== b.slot);
+      h += `<div class="acts"><button class="act on pgo" data-pset="${b.slot}">${esc(T.setBtn(slotText(b.slot)))}</button></div>
+        ${b.all && p.people.length > 1 ? `<p class="hint pok">✓ ${esc(slotText(b.slot))} ${esc(T.allYes)}</p>` : ""}
+        ${others.length ? `<div class="who">${others.map((s) => `<button class="lnk" data-pset="${s}">${esc(T.setOther(slotText(s)))}</button>`).join("")}</div>` : ""}
+        ${p.mine && st.pa && Object.keys(st.pa).length && JSON.stringify(st.pa) !== JSON.stringify(meRow && meRow.answers || {}) ? `<div class="acts"><button class="act" data-psubmit="1">${esc(T.answerUpdate)}</button></div>` : ""}`;
+    }
+    h += `<div class="acts pshare"><button class="act" data-pwa="1">${esc(T.shareWa)}</button><button class="act" data-pcopy="1">${esc(T.copyLink)}</button></div>`;
+  }
+  // Annuler : la personne qui propose, tant que ce n'est pas déjà annulé (même après « C'est calé »), avec confirmation sur place.
+  if (p.mine && p.status !== "cancelled") h += st.pconfirm
+    ? `<div class="pconfirm"><p>${esc(p.status === "set" ? T.cancelQSet : T.cancelQ)}</p><div class="acts"><button class="act" data-pcancelno="1">${esc(T.cancelNo)}</button><button class="act on" data-pcancelok="1">${esc(T.cancelYes)}</button></div></div>`
+    : `<button class="lnk pcancel" data-pcancel="1">${esc(T.cancelProp)}</button>`;
+  if (st.askGroup && p.mine) h += `<div class="pgroup"><b class="ftitle">${esc(T.saveGroupT)}</b><p>${esc(T.saveGroupP)}</p>
+    <label class="lbl" for="gname">${esc(T.groupName)}</label><input id="gname" class="note" maxlength="40" value="${esc(st.askGroup.name)}">
+    <p class="hint">🔒 ${esc(T.onlyYou)}</p>
+    <div class="acts"><button class="act" data-gno="1">${esc(T.noThanks)}</button><button class="act on" data-gsave="1">${esc(T.save)}</button></div></div>`;
+  if (S.guest) h += `<p class="hint" style="margin-top:18px"><button class="lnk" data-tab="set" data-pacct="1">${esc(T.needAccount)}</button></p>`;
+  return h + `</div>`;
+}
+async function submitAnswer() {
+  const p = propOf(st.prop); if (!p || st.busy) return;
+  const answers = Object.fromEntries(p.slots.map((s) => [s, st.pa[s] === 1 ? 1 : 0]));
+  const note = $("panote") ? $("panote").value : st.pnote;
+  st.busy = true;
+  try {
+    if (S.guest) {
+      const name = ($("pname")?.value || lsGet("propname") || "").trim();
+      if (!name) { st.busy = false; $("pname")?.focus(); return notify(T.yourName); }
+      lsSet("propname", name);
+      const j = await api("proposal/guest", { id: p.id, key: propKey(), name, answers, note, website: $("lweb")?.value || "", lang: T === L.en ? "en" : "fr" });
+      st.propData = j.proposal;
+    } else {
+      const j = await api("proposal/answer", { pid: p.id, answers, note });
+      const { proposal, ...rest } = j; S = rest; st.propData = proposal;
+    }
+    draftFrom(propOf(p.id)); notify("✓");
+  } catch (e) { notify(e.info?.error === "closed" ? T.cancelledP : T.error); }
+  st.busy = false; render();
+}
+async function propAct(path, body) {
+  if (st.busy) return; st.busy = true;
+  try { const j = await api(path, { pid: st.prop, ...body }); const { proposal, ...rest } = j; S = rest; st.propData = proposal; }
+  catch { notify(T.error); }
+  st.busy = false; render();
+}
+/** Carte du programme : « 🗳 Proposé par Justine · sam. 21 ou dim. 22 » (une proposition ouverte où je suis). */
+function propLine(x) {
+  const p = (S.proposals || []).find((q) => q.item_id === x.id && q.status === "open");
+  if (!p) return "";
+  return `<div class="propline" data-openprop="${p.id}">🗳 ${esc(T.propBy(p.mine ? T.toYou : p.from.name))} · ${esc(p.slots.map(slotText).join(T.orW))}</div>`;
+}
+/** Mes sorties, en haut : les propositions ouvertes (à moi de répondre d'abord). */
+function propsSection() {
+  const ps = (S.proposals || []).filter((p) => p.status === "open");
+  if (!ps.length) return "";
+  const todo = (p) => !p.mine && !(p.people.find((x) => x.me) || {}).answers;
+  ps.sort((a, b) => todo(b) - todo(a));
+  return dayHead(`🗳 ${T.propsT} · ${ps.length}`) + ps.map((p) => {
+    const n = p.people.length, a = p.people.filter((x) => x.answers).length;
+    return `<button class="prow" data-openprop="${p.id}"><div><b>${esc(p.item ? p.item.title : "")}</b><span>${esc(p.mine ? T.you : p.from.name)} · ${esc(p.slots.map(slotText).join(T.orW))}</span></div>
+      <em class="${todo(p) ? "todo" : ""}">${esc(todo(p) ? T.yourTurn : T.answeredN(a, n))}</em></button>`;
+  }).join("");
+}
+/** Réglages → Amis : mes groupes (privés), retirables. */
+function groupsSection() {
+  const gs = S.groups || [];
+  if (!gs.length) return "";
+  const nm = (id) => ((S.people || []).find((p) => p.id === id) || {}).name || "?";
+  return dayHead(T.groupsT) + `<p class="hint">🔒 ${esc(T.groupsP)}</p>` + gs.map((g) =>
+    `<div class="fline"><div><b>${esc(g.name)}</b><span>${esc(g.members.map(nm).join(", "))}</span></div><div class="who"><button class="act" data-gdel="${g.id}">${esc(T.gdel)}</button></div></div>`).join("");
+}
+// Clics des propositions : capturés avant le gestionnaire général (qui ne connaît pas ces boutons).
+document.addEventListener("click", (e) => {
+  const op = e.target.closest("[data-openprop]");
+  if (op && !e.target.closest("[data-dismiss]")) { e.preventDefault(); e.stopPropagation(); return void openProp(op.dataset.openprop); }
+  const t = e.target.closest("button"); if (!t) return;
+  const d = t.dataset, stop = () => { e.preventDefault(); e.stopPropagation(); };
+  if (d.propose) { stop(); if (S.guest) return void act("i", d.propose); const x = S.items.find((y) => y.id === d.propose); if (x) openProposer(x); return void render(); }
+  if (d.proposing !== undefined) { stop(); st.proposing = null; st.sel.clear(); return void render(); }
+  if (d.pgroup) { stop(); const g = (S.groups || []).find((y) => String(y.id) === d.pgroup); if (g) st.sel = new Set(g.members); return void render(); }
+  if (d.pslot) { stop(); st.pslots.has(d.pslot) ? st.pslots.delete(d.pslot) : st.pslots.size < 3 ? st.pslots.add(d.pslot) : notify(T.noSlots); return void render(); }
+  if (d.paddslot) { stop(); const v = $("pdate")?.value; if (v && v >= TODAY && st.pslots.size < 3) st.pslots.add(v); return void render(); }
+  if (d.psend) { stop(); return void sendProposal(d.psend, false); }
+  if (d.plinkonly) { stop(); return void sendProposal(d.plinkonly, true); }
+  if (d.pback) { stop(); closeProp(); return void render(); }
+  if (d.pans) { stop(); st.pa[d.pans] = st.pa[d.pans] === 1 ? 0 : 1; return void render(); }
+  if (d.psubmit) { stop(); return void submitAnswer(); }
+  if (d.pset) { stop(); return void propAct("proposal/set", { slot: d.pset }); }
+  if (d.pcancel) { stop(); st.pconfirm = true; return void render(); }
+  if (d.pcancelno) { stop(); st.pconfirm = false; return void render(); }
+  if (d.pcancelok) { stop(); st.pconfirm = false; return void propAct("proposal/cancel", {}); }
+  if (d.pwa) { stop(); const p = propOf(st.prop); if (p) shareProp(p); return; }
+  if (d.pcopy) { stop(); const p = propOf(st.prop); if (p) navigator.clipboard?.writeText(propLink(p)).then(() => notify(T.copied), () => {}); return; }
+  if (d.pacct) { closeProp(); return; }   // puis le gestionnaire général ouvre Réglages (connexion)
+  if (d.gno) { stop(); st.askGroup = null; return void render(); }
+  if (d.gsave) { stop(); const g = st.askGroup, name = ($("gname")?.value || g.name).trim();
+    st.askGroup = null; api("group/save", { name, members: g.members }).then((j) => { S = j; notify(T.groupSaved); render(); }, () => { notify(T.error); render(); }); return; }
+  if (d.gdel) { stop(); api("group/delete", { gid: +d.gdel }).then((j) => { S = j; render(); }, () => notify(T.error)); return; }
+}, true);
+document.addEventListener("input", (e) => { if (e.target.id === "pnote" || e.target.id === "panote") st.pnote = e.target.value; });
+
+// --- Rafraîchissement en direct ---------------------------------------------------------
+// Toutes les 15 s (app visible), au retour dans l'app, et dès qu'une notification arrive : on demande une
+// empreinte au serveur ; si elle a changé, on recharge l'état sans toucher à ce qu'on est en train de faire.
+let PING_V = "", pinging = false;
+const typing = () => { const a = document.activeElement; return !!a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.type !== "button"; };
+async function tick(force = false) {
+  if (!S || document.hidden || pinging || st.busy) return;
+  pinging = true;
+  try {
+    if (S.guest) { if (st.prop && !typing()) await fetchProp(st.prop); return; }
+    const { v } = await api("ping");
+    const changed = force || st.stale || (PING_V && v !== PING_V);
+    PING_V = v;
+    if (!changed) return;
+    if (typing() || document.querySelector(".cropbg")) { st.stale = true; return; }
+    st.stale = false;
+    const j = await api("state");
+    if (st.busy) return;
+    S = j; T = L[S.lang] || L.fr;
+    if (st.prop && !(S.proposals || []).some((p) => p.id === st.prop)) await fetchProp(st.prop);
+    else render();
+  } catch {} finally { pinging = false; }
+}
+setInterval(() => tick(), 15000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
+if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener?.("message", (e) => { if (e.data && e.data.t === "refresh") tick(true); });
+// Ouvert par un lien de proposition : la page s'ouvre dessus une fois l'état chargé (compte ou sans compte).
+if (PROP_IN) { const wait = setInterval(() => { if (S) { clearInterval(wait); openProp(PROP_IN); } }, 150); setTimeout(() => clearInterval(wait), 20000); }
 render(); load();
 </script>
 </body>

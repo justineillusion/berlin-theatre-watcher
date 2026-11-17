@@ -82,7 +82,7 @@ export async function pushCount(env: Env, chat: number): Promise<number> {
 }
 
 /** Une notification de la boîte « Pour toi » devient aussi une notif sur le téléphone. */
-export async function notifyPush(env: Env, chat: number, kind: string, from: number | null, item: string | null, note: string | null, at: string | null) {
+export async function notifyPush(env: Env, chat: number, kind: string, from: number | null, item: string | null, note: string | null, at: string | null, ref: string | null = null) {
   if (!env.VAPID_PRIVATE_KEY) return;
   const has = await env.DB.prepare("SELECT 1 FROM push_subs WHERE chat_id = ? LIMIT 1").bind(chat).first();
   if (!has) return;
@@ -95,8 +95,13 @@ export async function notifyPush(env: Env, chat: number, kind: string, from: num
     share: { title: en ? `💌 ${who} sent you ${title}` : `💌 ${who} t'envoie ${title}`, body: note ? `« ${note} »` : (en ? "Have a look?" : "Tu regardes ?"), url: "/app#mine/all" },
     booked: { title: en ? `🎟 ${who} booked ${title} for you` : `🎟 ${who} a réservé ${title} pour toi`, body: (en ? "See it in My outings" : "C'est dans Mes sorties") + when, url: "/app#mine/all" },
     friend_request: { title: en ? `👋 ${who} wants to add you` : `👋 ${who} veut t'ajouter`, body: en ? "Accept in Friends" : "À accepter dans Amis", url: "/app#set/friends" },
+    // 🗳 Propositions : la notif ouvre la proposition (slot = créneau en clair, dans « at » pour prop_set).
+    proposal: { title: en ? `💌 ${who} suggests ${title}` : `💌 ${who} te propose ${title}`, body: note ? `« ${note} »` : (en ? "Which day works for you?" : "Quel jour te va ?"), url: `/app?p=${ref ?? ""}` },
+    prop_answer: { title: en ? `💌 ${who} answered` : `💌 ${who} a répondu`, body: title, url: `/app?p=${ref ?? ""}` },
+    prop_set: { title: en ? `✓ It's on: ${title}` : `✓ C'est calé : ${title}`, body: (en ? `With ${who}` : `Avec ${who}`) + (at ? ` · ${at.slice(8, 10)}/${at.slice(5, 7)}${at.length > 10 ? " " + at.slice(11, 16) : ""}` : ""), url: `/app?p=${ref ?? ""}` },
+    prop_cancel: { title: en ? `✕ ${who} cancelled` : `✕ ${who} a annulé`, body: title, url: `/app?p=${ref ?? ""}` },
     friend_ok: { title: en ? `🤝 ${who} accepted your request` : `🤝 ${who} a accepté ta demande`, body: en ? "You now see each other's picks" : "Vous voyez maintenant vos envies", url: "/app#set/friends" },
   };
   const msg = M[kind]; if (!msg) return;
-  await pushTo(env, chat, { ...msg, tag: `${kind}-${item ?? from ?? ""}` });
+  await pushTo(env, chat, { ...msg, tag: `${kind}-${ref ?? item ?? from ?? ""}` });
 }

@@ -485,5 +485,88 @@ await step("ajouter au calendrier : .ics en heure de Berlin, rappel 2 h avant", 
   assert.equal((await fetch(`${W}/app/cal/p1.ics?at=nope`)).status, 404);
 });
 
+await step("🗳 proposer : invités prévenus (app + Telegram), réponses visibles par tous, lien sans compte, calé → 🎟", async () => {
+  const lyna = initData({ id: 666, first_name: "Lyna" });
+  const [s1, s2] = [day(3), day(4)];
+  assert.equal((await post("/app/api/proposal/create", { initData: me, id: "e1", to: [555, 666], slots: [day(-2)] })).status, 400);   // créneau passé
+  calls = [];
+  let r = await post("/app/api/proposal/create", { initData: me, id: "e1", to: [555, 666, 4242], slots: [s2, s1, s1], note: "Photo ?" });
+  assert.equal(r.status, 200, JSON.stringify(r.json));
+  const P = r.json.proposal, pid = P.id;
+  assert.match(pid, /^[a-f0-9]{24}$/); assert.ok(P.mine); assert.deepEqual(P.slots, [s1, s2]);
+  assert.deepEqual(P.people.map((x) => x.name), ["Justine", "Joss", "Lyna"]);              // 4242 (pas une connexion) ignoré
+  assert.deepEqual(P.people[0].answers, { [s1]: 1, [s2]: 1 });                                // qui propose : partant·e partout
+  const tgs = calls.filter((c) => c.method === "sendMessage");
+  assert.deepEqual(tgs.map((c) => c.chat_id).sort(), [555, 666]);
+  assert.ok(tgs.every((c) => c.reply_markup.inline_keyboard[0][0].url.endsWith(`startapp=p_${pid}`)));
+  assert.ok(tgs.find((c) => c.chat_id === 666).text.includes("Joss"));                        // chacun sait avec qui
+  const before = (await post("/app/api/ping", { initData: me })).json.v;
+  // Joss : la proposition est dans son état + « Pour toi » ; il répond (oui samedi, non dimanche).
+  let js = (await post("/app/api/state", { initData: joss })).json;
+  assert.equal(js.proposals.length, 1); assert.ok(!js.proposals[0].mine);
+  assert.ok(js.inbox.some((n) => n.kind === "proposal" && n.ref === pid));
+  r = await post("/app/api/proposal/answer", { initData: joss, pid, answers: { [s1]: 1, [s2]: 0, "1999-01-01": 1 }, note: "après 15 h" });
+  assert.equal(r.status, 200);
+  assert.deepEqual(r.json.proposal.people.find((x) => x.name === "Joss").answers, { [s1]: 1, [s2]: 0 });
+  // Lyna voit la réponse de Joss ; Justine est prévenue ; l'empreinte a bougé (la page se rafraîchit).
+  const ls = (await post("/app/api/state", { initData: lyna })).json;
+  assert.equal(ls.proposals[0].people.find((x) => x.name === "Joss").note, "après 15 h");
+  const ms = (await post("/app/api/state", { initData: me })).json;
+  assert.ok(ms.inbox.some((n) => n.kind === "prop_answer" && n.ref === pid && n.from_id === 555));
+  assert.notEqual((await post("/app/api/ping", { initData: me })).json.v, before);
+  // Lien sans compte : Théo voit les noms (aucun id de compte), répond avec son prénom, peut changer d'avis.
+  const key = "ab".repeat(16);
+  r = await post("/app/api/proposal/public", { id: pid, key });
+  assert.equal(r.status, 200); assert.ok(!JSON.stringify(r.json).includes('"id":555') && !JSON.stringify(r.json).includes("4242"));
+  assert.equal(r.json.proposal.joined, false);
+  r = await post("/app/api/proposal/guest", { id: pid, key, name: "Théo", answers: { [s1]: 1 } });
+  assert.equal(r.status, 200); assert.equal(r.json.proposal.people.length, 4);
+  r = await post("/app/api/proposal/guest", { id: pid, key, name: "Théo", answers: { [s1]: 1, [s2]: 1 } });
+  assert.equal(r.json.proposal.people.length, 4);                                            // même appareil : même ligne
+  assert.ok(r.json.proposal.people.find((x) => x.me).guest);
+  assert.equal((await post("/app/api/proposal/guest", { id: pid, key, name: " ", answers: {} })).status, 400);
+  // Seule la personne qui propose cale ; calé → 🎟 pour les comptes qui ont dit oui (pas Lyna, sans réponse).
+  assert.equal((await post("/app/api/proposal/set", { initData: joss, pid, slot: s1 })).status, 403);
+  calls = [];
+  r = await post("/app/api/proposal/set", { initData: me, pid, slot: s1 });
+  assert.equal(r.status, 200); assert.equal(r.json.proposal.status, "set"); assert.equal(r.json.proposal.chosen, s1);
+  assert.equal(item(r.json, "e1").me.booked, s1);
+  js = (await post("/app/api/state", { initData: joss })).json;
+  assert.equal(item(js, "e1").me.booked, s1); assert.ok(js.inbox.some((n) => n.kind === "prop_set" && n.at === s1));
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id === 555 && /It.s on/.test(c.text)));
+  assert.ok(!calls.some((c) => c.chat_id === 666));
+  assert.ok(!item((await post("/app/api/state", { initData: lyna })).json, "e1")?.me?.booked);
+  assert.equal((await post("/app/api/proposal/answer", { initData: joss, pid, answers: {} })).status, 400);   // calé : fermé
+  // Annulée après coup : seule la personne qui propose ; le 🎟 posé par « C'est calé » disparaît, les autres sont prévenus.
+  assert.equal((await post("/app/api/proposal/cancel", { initData: joss, pid })).status, 403);
+  calls = [];
+  r = await post("/app/api/proposal/cancel", { initData: me, pid });
+  assert.equal(r.status, 200); assert.equal(r.json.proposal.status, "cancelled");
+  assert.ok(!item(r.json, "e1").me.booked);
+  js = (await post("/app/api/state", { initData: joss })).json;
+  assert.ok(!item(js, "e1").me.booked);
+  assert.ok(js.inbox.some((n) => n.kind === "prop_cancel" && n.ref === pid));
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id === 555 && /cancelled/.test(c.text)));
+  assert.equal((await post("/app/api/proposal/set", { initData: me, pid, slot: s1 })).status, 400);
+});
+await step("groupes privés : enregistrés, ≥ 2 connexions, jamais visibles par les membres ; retirés", async () => {
+  assert.equal((await post("/app/api/group/save", { initData: me, name: "Solo", members: [555] })).status, 400);
+  let r = await post("/app/api/group/save", { initData: me, name: "Joss + Lyna", members: [555, 666, 4242] });
+  assert.equal(r.status, 200); assert.equal(r.json.groups.length, 1); assert.deepEqual(r.json.groups[0].members.sort(), [555, 666]);
+  const js = (await post("/app/api/state", { initData: joss })).json;
+  assert.deepEqual(js.groups, []); assert.ok(!JSON.stringify(js).includes("Joss + Lyna"));
+  r = await post("/app/api/group/delete", { initData: me, gid: r.json.groups[0].id });
+  assert.deepEqual(r.json.groups, []);
+});
+
+await step("🎟 heure disparue du programme : rattachée à la séance du même jour (moi et mes amis)", async () => {
+  const d = item((await post("/app/api/state", { initData: me })).json, "p1").dates.find((x) => x.length > 10 && x.slice(11, 13) < "23");
+  const odd = `${d.slice(0, 11)}${String(+d.slice(11, 13) + 1).padStart(2, "0")}:17`;   // une heure plus tard : absente du programme
+  const s = await act("bd", "p1", odd.replace(/\D/g, ""));
+  assert.equal(item(s, "p1").me.booked, d);
+  const js = (await post("/app/api/state", { initData: joss })).json;
+  assert.equal(item(js, "p1").friends.find((f) => f.id === ME).booked, d);
+});
+
 console.log(`\n${ok} étapes OK`);
 dev.kill(); tgServer.close(); rmSync(STATE, { recursive: true, force: true }); rmSync(`${STATE}-seed.sql`, { force: true });
