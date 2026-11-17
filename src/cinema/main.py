@@ -101,6 +101,17 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
             errors.append(f"{cin.get('name')}: pas de réponse en {limit:.0f} s, cinéma sauté")
             print(f"⏱  {cin.get('name')} : pas de réponse en {limit:.0f} s, cinéma sauté.", file=sys.stderr)
             continue
+        # Jamais de lien mort : page du film morte -> page programme du cinéma (si elle répond), sinon rien.
+        from .. import linkcheck
+        home = cin.get("film_url") or cin.get("url") or (
+            f"https://www.yorck.de/de/kinos/{cin['yorck_slug']}" if cin.get("yorck_slug") else None)
+        linkcheck.check([u for x in got for u in (x.url, x.booking_url)] + [home])
+        bad = linkcheck.dead([u for x in got for u in (x.url, x.booking_url)])
+        if bad:
+            print(f"🔗 {cin['name']} : {len(set(bad))} lien(s) mort(s) remplacé(s) : {', '.join(sorted(set(bad))[:5])}")
+        for x in got:
+            x.url = linkcheck.pick(x.url, home)
+            x.booking_url = linkcheck.pick(x.booking_url, x.url) if x.booking_url else None
         later = [s for s in got if evening_day(s) > win["last"]]
         got = [s for s in got if evening_day(s) <= win["last"]]
         known_until[cin["name"]] = max((evening_day(s) for s in got), default=None)

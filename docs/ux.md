@@ -13,6 +13,12 @@
 4. **Langue :** uniquement celle de l'utilisateur (fr/en). Langue jouée seulement si ce n'est pas l'allemand.
 5. **Crédits courts** (auteur / mise en scène), sans bruit de site (« World Premiere », « Stage A », promos).
 
+## Jamais de lien mort
+
+Chaque lien de fiche est testé avant l'envoi (`src/linkcheck.py`, appelé par le scan théâtre/expos et par le ciné).
+404 / 410 / site injoignable = mort : on met la page programme du lieu si elle répond, sinon aucun lien.
+Un délai dépassé ou un anti-bot (403, 429) n'est pas une preuve : le lien reste.
+
 ## 🎟 Réservé !
 
 - **Une fiche = un message qui évolue** (édition sur place, pas de nouveau message) :
