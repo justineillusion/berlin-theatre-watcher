@@ -54,7 +54,7 @@ def pre_filter(film: Film, cfg: dict) -> Optional[str]:
             return f"pas un film (rubrique {s.category})"
     if not live:
         for kw in bl.get("non_film_keywords", []):
-            if any(_ci_in(kw, t) for s in film.screenings for t in [s.title] + s.tags):
+            if any(_ci_in(kw, t) for s in film.screenings for t in [s.title, s.category or ""] + s.tags):
                 return f"pas un film (« {kw} »)"
     for kw in bl.get("keywords", []):
         if _ci_in(kw, hay):
