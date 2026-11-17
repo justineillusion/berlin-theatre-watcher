@@ -7,6 +7,7 @@ programme du lieu, du cinéma), sinon retiré.
 """
 from __future__ import annotations
 
+import time
 from typing import Dict, Iterable, List, Optional
 
 import httpx
@@ -17,6 +18,8 @@ _UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKi
                      "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"}
 _DEAD = {404, 410}
 _cache: Dict[str, bool] = {}
+_RUN_BUDGET = 240.0                          # plafond total du run (tous les appels à check())
+_spent = [0.0]
 
 
 def _alive(url: str) -> bool:
@@ -38,18 +41,28 @@ def _alive(url: str) -> bool:
 def check(urls: Iterable[Optional[str]], budget_s: float = 150) -> Dict[str, bool]:
     """Teste les liens (en parallèle, borné en temps). Ce qui n'a pas pu être testé à temps est gardé."""
     todo = sorted({u for u in urls if u and u.startswith("http") and u not in _cache})
-    if todo:
-        done, _late = map_with_budget(todo, _alive, budget_s, workers=8, item_timeout=40)
+    left = min(budget_s, _RUN_BUDGET - _spent[0])
+    if todo and left <= 5:
+        print(f"🔗 budget de vérification épuisé : {len(todo)} lien(s) gardés sans test", flush=True)
+        for u in todo:
+            _cache[u] = True
+    elif todo:
+        t0 = time.monotonic()
+        done, late = map_with_budget(todo, _alive, left, workers=16, item_timeout=40)
         for i, ok in done.items():
-            _cache[todo[i]] = ok
+            _cache[todo[i]] = ok if ok is not None else True
+        for i in late:                       # pas testé à temps : gardé, et jamais retesté dans ce run
+            _cache[todo[i]] = True
+        if late:
+            print(f"🔗 {len(late)} lien(s) non testé(s) à temps, gardés", flush=True)
+        _spent[0] += time.monotonic() - t0
     return _cache
 
 
 def pick(url: Optional[str], *fallbacks: Optional[str]) -> Optional[str]:
     """Le premier lien vivant parmi url puis les replis (déjà passés par check())."""
     cands: List[str] = [u for u in (url, *fallbacks) if u]
-    check(cands)
-    for u in cands:
+    for u in cands:                          # check() doit avoir été appelé avant : aucun réseau ici
         if _cache.get(u, True):
             return u
     return None
