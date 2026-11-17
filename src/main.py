@@ -71,8 +71,24 @@ def collect_shows(theaters: list) -> List[Show]:
                 show.theater = name
         unit = "expo(s)" if kind == "expo" else "représentation(s)"
         print(f"   {name} : {len(found)} {unit} trouvée(s).")
+        for show in found:
+            show._venue_url = theater["url"]
         shows.extend(found)
+    _no_dead_links(shows)
     return shows
+
+
+def _no_dead_links(shows: List[Show]) -> None:
+    """Jamais de lien mort : fiche morte -> page programme du lieu (si elle répond), sinon rien."""
+    from . import linkcheck
+    linkcheck.check([u for s in shows for u in (s.url, s.booking_url, getattr(s, "_venue_url", None))])
+    bad = linkcheck.dead([u for s in shows for u in (s.url, s.booking_url)])
+    for s in shows:
+        venue = getattr(s, "_venue_url", None)
+        s.url = linkcheck.pick(s.url, venue)
+        s.booking_url = linkcheck.pick(s.booking_url) if s.booking_url else None
+    if bad:
+        print(f"🔗 {len(set(bad))} lien(s) mort(s) remplacé(s) par la page du lieu : " + ", ".join(sorted(set(bad))[:10]))
 
 
 def add_critics(shows: List[Show], config: dict, online: bool = False) -> None:
