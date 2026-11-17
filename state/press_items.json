@@ -11,7 +11,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Hedda",
-  "url": "https://www.berliner-ensemble.de/en/production/hedda",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/hedda",
   "opens": "2026-11-18",
   "aliases": []
  },
@@ -78,7 +78,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Twelfth Night (Was ihr wollt)",
-  "url": "https://www.berliner-ensemble.de/en/production/twelfth-night-was-ihr-wollt",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/twelfth-night-was-ihr-wollt",
   "opens": "2026-12-08",
   "aliases": [
    "Twelfth Night",
@@ -116,7 +116,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Hamlet",
-  "url": "https://www.berliner-ensemble.de/en/production/hamlet",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/hamlet",
   "opens": "2026-12-19",
   "aliases": []
  },
@@ -140,7 +140,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "De Profundis",
-  "url": "https://www.berliner-ensemble.de/en/production/de-profundis",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/de-profundis",
   "opens": "2027-01-09",
   "aliases": []
  },
@@ -341,25 +341,7 @@
   "venue": "HAU Hebbel am Ufer",
   "title": "Monga",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/jessica-teixeira-monga/",
-  "opens": "2026-11-16",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Deutsche Oper Berlin",
-  "title": "The Magic Flute",
-  "url": "https://deutscheoperberlin.de/en_EN/production/the-magic-flute.1385471",
-  "opens": "2026-11-16",
-  "aliases": [
-   "Die Zauberflöte"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Berliner Philharmoniker",
-  "title": "OriginalklangIl pomo d’oro & Jakub Józef Orliński",
-  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57058/",
-  "opens": "2026-11-16",
+  "opens": "2026-11-17",
   "aliases": []
  },
  {
@@ -376,6 +358,14 @@
   "title": "Elektra",
   "url": "https://deutscheoperberlin.de/en_EN/production/elektra.1385724",
   "opens": "2026-11-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Calisto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
+  "opens": "2026-11-18",
   "aliases": []
  },
  {
@@ -442,9 +432,19 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "The Magic Flute",
+  "url": "https://deutscheoperberlin.de/en_EN/production/the-magic-flute.1385471",
+  "opens": "2026-11-24",
+  "aliases": [
+   "Die Zauberflöte"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Blechtrommel (The Tin Drum)",
-  "url": "https://www.berliner-ensemble.de/en/production/tin-drum",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/tin-drum",
   "opens": "2026-11-25",
   "aliases": [
    "Die Blechtrommel",
@@ -457,6 +457,14 @@
   "title": "Jazz at Berlin Philharmonic“Conversations”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57062/",
   "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Alles Glück der Welt",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261126-1900/",
+  "opens": "2026-11-26",
   "aliases": []
  },
  {
@@ -485,6 +493,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Die Zauberflöte",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
+  "opens": "2026-11-29",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schaubühne",
   "title": "Bad Kingdom",
   "url": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
@@ -496,14 +512,6 @@
   "venue": "Maxim Gorki Theater",
   "title": "The Hearing Trumpet",
   "url": "https://www.gorki.de/en/the-hearing-trumpet",
-  "opens": "2026-12-03",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Die Zauberflöte",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
   "opens": "2026-12-03",
   "aliases": []
  },
@@ -534,6 +542,14 @@
   "aliases": []
  },
  {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "BPA// Exhibition 2026 — Undercurrents",
+  "url": "https://www.kw-berlin.de/en/exhibitions/bpa-exhibition-2026-undercurrents",
+  "opens": "2026-12-05",
+  "aliases": []
+ },
+ {
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Hansel and Gretel",
@@ -549,14 +565,6 @@
   "title": "Piano Recital with Mitsuko Uchida",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57070/",
   "opens": "2026-12-06",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Alles Glück der Welt",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261207-1830/",
-  "opens": "2026-12-07",
   "aliases": []
  },
  {
@@ -625,14 +633,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "T-Boy on Grindr",
-  "url": "https://www.berliner-ensemble.de/en/production/t-boy-grindr",
-  "opens": "2026-12-20",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Hänsel und Gretel",
   "url": "https://deutscheoperberlin.de/en_EN/production/haensel-und-gretel.1385736",
@@ -643,7 +643,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "It's Britney, Bitch!",
-  "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/its-britney-bitch",
   "opens": "2026-12-26",
   "aliases": []
  },
@@ -669,7 +669,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
+  "url": "https://www.berliner-ensemble.de/index.php/en/inszenierung/die-dreigroschenoper",
   "opens": "2026-12-27",
   "aliases": [
    "Die Dreigroschenoper",
@@ -696,7 +696,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "The Arsonists (Biedermann und die Brandstifter)",
-  "url": "https://www.berliner-ensemble.de/en/production/arsonists-biedermann-und-die-brandstifter",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/arsonists-biedermann-und-die-brandstifter",
   "opens": "2026-12-31",
   "aliases": [
    "The Arsonists",
@@ -739,7 +739,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "#Motherfuckinghood",
-  "url": "https://www.berliner-ensemble.de/en/production/motherfuckinghood",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/motherfuckinghood",
   "opens": "2027-01-08",
   "aliases": []
  },
@@ -916,6 +916,30 @@
   "title": "Sakari Oramo and Vilde Frang",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57108/",
   "opens": "2027-02-11",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Abbas Akhavan — if and only if",
+  "url": "https://www.kw-berlin.de/en/exhibitions/abbas-akhavan-if-and-only-if",
+  "opens": "2027-02-12",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Anna Boghiguian — The Day the Earth Shook",
+  "url": "https://www.kw-berlin.de/en/exhibitions/anna-boghiguian-the-day-the-earth-shook",
+  "opens": "2027-02-12",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Tiffany Sia — Overt Listening: Berlin",
+  "url": "https://www.kw-berlin.de/en/exhibitions/tiffany-sia-overt-listening-berlin",
+  "opens": "2027-02-12",
   "aliases": []
  },
  {
@@ -1398,6 +1422,14 @@
  },
  {
   "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "14th Berlin Biennale for Contemporary Art — Central Europe Eastern Time",
+  "url": "https://www.kw-berlin.de/en/exhibitions/14th-berlin-biennale-for-contemporary-art-central-europe-eastern-time",
+  "opens": "2027-06-05",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "C/O Berlin",
   "title": "Dana Lixenberg — American Images",
   "url": "https://co-berlin.org/en/program/exhibitions/dana-lixenberg",
@@ -1543,11 +1575,59 @@
   "aliases": []
  },
  {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Vlassis Caniaris — Red Carnations",
+  "url": "https://www.kw-berlin.de/en/exhibitions/vlassis-caniaris-red-carnations",
+  "opens": "2027-10-15",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Colectivo Los Ingrávidos — Cosmos: A Theater of Spirit",
+  "url": "https://www.kw-berlin.de/en/exhibitions/the-schering-stiftung-award-for-artistic-research-2026-colectivo-los-ingravidos-cosmos-a-theater-of-spirit",
+  "opens": "2027-10-15",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Bridget Polk — In der Schwebe",
+  "url": "https://www.kw-berlin.de/en/exhibitions/bridget-polk-in-der-schwebe",
+  "opens": "2027-10-15",
+  "aliases": []
+ },
+ {
   "kind": "theatre",
   "venue": "Volksbühne",
   "title": "CURSED – a preinvented world.",
   "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261210-1800/",
   "opens": null,
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Susan Hiller — Bad Dreams",
+  "url": "https://www.kw-berlin.de/en/exhibitions/susan-hiller-bad-dreams",
+  "opens": "",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "KOO JEONG A — OUSSSEAN",
+  "url": "https://www.kw-berlin.de/en/exhibitions/koo-jeong-a-ousssean",
+  "opens": "",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "KW Institute for Contemporary Art",
+  "title": "Rafik Greiss — The City and the City",
+  "url": "https://www.kw-berlin.de/en/exhibitions/rafik-greiss-the-city-and-the-city",
+  "opens": "",
   "aliases": []
  },
  {
