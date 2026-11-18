@@ -24,12 +24,12 @@ _SHORT_VERSION = {
 # Textes fixes du récap
 _T = {
     "fr": {"title": "Ciné de la semaine", "tonight_span": " + ce soir", "tonight": "Ce soir", "or": "ou",
-           "ov": "VO", "live": " + musique live", "unrated": "Pas encore notés",
+           "ov": "VO", "live": " + musique live", "live_orch": " · avec orchestre live", "live_organ": " · avec orgue live", "unrated": "Pas encore notés",
            "nothing": "Rien de fou cette semaine 🤷‍♀️ — rien de bien noté en VO le soir.",
            "known_until": "programme connu jusqu'au", "not_published": "programme pas encore publié",
            "pick": "⭐ <b>Ça te tente ?</b> Touche un film : la bande le verra (et toi, qui d'autre est partant)."},
     "en": {"title": "Films of the week", "tonight_span": " + tonight", "tonight": "Tonight", "or": "or",
-           "ov": "original version", "live": " + live music", "unrated": "Not rated yet",
+           "ov": "original version", "live": " + live music", "live_orch": " · with live orchestra", "live_organ": " · with live organ", "unrated": "Not rated yet",
            "nothing": "Nothing great this week 🤷‍♀️ — no well-rated original-version evening shows.",
            "known_until": "programme known until", "not_published": "programme not published yet",
            "pick": "⭐ <b>Fancy one?</b> Tap a film: the gang will see it (and you'll see who else is in)."},
@@ -145,6 +145,16 @@ def _names(film: Film, full: bool, lang: str = "fr") -> str:
     return out + (f" ({esc(meta)})" if meta else "")
 
 
+def _live(s: Screening, lang: str) -> str:
+    """Ciné-concert : dire QUOI (orchestre, orgue), pas juste « musique live »."""
+    tags = {t.lower() for t in s.tags}
+    if "orchester" in tags or (s.category or "").upper() == "ORCHESTER":
+        return text(lang, "live_orch")
+    if "kino-orgel" in tags:
+        return text(lang, "live_organ")
+    return text(lang, "live")
+
+
 def _times(items: List[Screening]) -> str:
     return ", ".join(_a(s.booking_url, _fmt_time(s)) for s in items)
 
@@ -153,7 +163,7 @@ def _where(items: List[Screening], lang: str = "fr") -> str:
     s = items[0]
     ver = _SHORT_VERSION[lang].get(s.version, s.version or "?")
     if s.live_music:
-        ver += text(lang, "live")
+        ver += _live(s, lang)
     return f"{_a(s.url, esc(s.cinema))} · {esc(ver)}"
 
 
@@ -260,7 +270,7 @@ def _sessions(film: Film, lang: str, limit: int = 6) -> List[str]:
         by_cinema.setdefault((s.cinema, s.version, s.live_music), []).append(s)
     out = []
     for (cin, ver, live), items in by_cinema.items():
-        v = _SHORT_VERSION[lang].get(ver, ver or "?") + (text(lang, "live") if live else "")
+        v = _SHORT_VERSION[lang].get(ver, ver or "?") + (_live(items[0], lang) if live else "")
         shown = " · ".join(_a(s.booking_url, f"{fmt_day(evening_day(s), lang)} {_fmt_time(s)}") for s in items[:limit])
         more = f" (+{len(items) - limit})" if len(items) > limit else ""
         colon = ":" if lang == "en" else " :"

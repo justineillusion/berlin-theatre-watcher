@@ -411,7 +411,7 @@ Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", wit
   setBtn:(w) => `C'est calé · ${w}`, setOther:(w) => `ou caler ${w}`, allYes:"marche pour tout le monde", cancelProp:"Annuler la proposition", shareWa:"WhatsApp", copyLink:"Copier le lien",
   saveGroupT:"Enregistrer comme groupe ?", saveGroupP:"La prochaine fois, un appui suffit pour les inviter ensemble.", groupName:"Nom du groupe", onlyYou:"Visible seulement par toi", noThanks:"Non merci",
   groupSaved:"Groupe enregistré ✓", propsT:"Propositions", yourTurn:"à toi de répondre", answeredN:(a, n) => `${a}/${n} ont répondu`, propBy:(w) => `Proposé par ${w}`, orW:" ou ", andW:" et ",
-  ignoreL:"Pas pour moi", unignoreL:"Finalement si", seenL:"Déjà vu", tix:"Billets sur le site", tixExpo:"Infos et billets",
+  ignoreL:"Pas pour moi", unignoreL:"Finalement si", seenL:"Déjà vu", tix:"Billets sur le site", tixExpo:"Infos et billets", liveOrch: "avec orchestre", liveOrgan: "avec orgue",
   nProp:(n, t) => `${n} te propose ${t}`, nPropAns:(n, t) => `${n} a répondu pour ${t}`, nPropSet:(n, t, w) => `C'est calé : ${t}, ${w}`, nPropCancel:(n, t) => `${n} a annulé : ${t}`, cancelQ:"Annuler pour tout le monde ?", cancelQSet:"Annuler pour tout le monde ? Le 🎟 sera retiré de leurs sorties.", cancelYes:"Oui, annuler", cancelNo:"Non", needAccount:"Créer un compte pour la retrouver dans tes sorties",
   noSlots:"Choisis 1 à 3 créneaux.", groupsT:"Mes groupes", groupsP:"Privés : tes amis ne voient jamais leurs noms.", gdel:"Retirer", propGone:"Cette proposition n'existe plus.",
   waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
@@ -422,7 +422,7 @@ Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWh
   setBtn:(w) => `It's on · ${w}`, setOther:(w) => `or set ${w}`, allYes:"works for everyone", cancelProp:"Cancel the suggestion", shareWa:"WhatsApp", copyLink:"Copy link",
   saveGroupT:"Save as a group?", saveGroupP:"Next time, one tap invites them together.", groupName:"Group name", onlyYou:"Only you can see it", noThanks:"No thanks",
   groupSaved:"Group saved ✓", propsT:"Suggestions", yourTurn:"your turn to answer", answeredN:(a, n) => `${a}/${n} answered`, propBy:(w) => `Suggested by ${w}`, orW:" or ", andW:" and ",
-  ignoreL:"Not for me", unignoreL:"Actually yes", seenL:"Already seen", tix:"Tickets on the website", tixExpo:"Info and tickets",
+  ignoreL:"Not for me", unignoreL:"Actually yes", seenL:"Already seen", tix:"Tickets on the website", tixExpo:"Info and tickets", liveOrch: "with live orchestra", liveOrgan: "with live organ",
   nProp:(n, t) => `${n} suggests ${t}`, nPropAns:(n, t) => `${n} answered for ${t}`, nPropSet:(n, t, w) => `It's on: ${t}, ${w}`, nPropCancel:(n, t) => `${n} cancelled: ${t}`, cancelQ:"Cancel for everyone?", cancelQSet:"Cancel for everyone? The 🎟 will be removed from their outings.", cancelYes:"Yes, cancel", cancelNo:"No", needAccount:"Create an account to find it in your outings",
   noSlots:"Pick 1 to 3 options.", groupsT:"My groups", groupsP:"Private: your friends never see their names.", gdel:"Remove", propGone:"This suggestion no longer exists.",
   waText:(t) => `Shall we? ${t} 👉`, pTitle:"Which day works for you?", answers:"Answers", byLink:"via the link" });
@@ -895,12 +895,15 @@ function mineSections(xs) {
   if (seen.length) h += `<details class="mseen"${st.seenOpen ? " open" : ""}><summary>✅ ${esc(T.done)} · ${seen.length}</summary>${seen.map(row).join("")}</details>`;
   return h;
 }
+/** Ciné-concert : « 🎻 avec orchestre » dès la ligne de la liste (la fiche le dit dans 📍). */
+const liveTag = (x) => x.kind !== "film" ? "" : /avec orchestre live|with live orchestra/.test(x.text || "") ? `🎻 ${T.liveOrch}`
+  : /avec orgue live|with live organ/.test(x.text || "") ? `🎹 ${T.liveOrgan}` : "";
 function item(x) {
   const open = st.open === x.id, s = state(x), me = x.me || {};
   const soldNow = st.tab === "prog" && isSold(x, next(x));
   let h = `<div class="item${open ? " open" : ""}${soldNow ? " soldout" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div>
-    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}${hurry(x)}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${s === "seen" ? "" : propLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
+    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), esc(liveTag(x)), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}${hurry(x)}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${s === "seen" ? "" : propLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
     ${badge(x)}</button>`;
   if (!open) return h + "</div>";
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
