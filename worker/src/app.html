@@ -370,7 +370,7 @@ if (tgApp) {
 
 const L = {
   fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pushT:"Notifications sur ce téléphone", pushOn:"Activées ✓", pushOff:"Désactivées", pushIos:"Sur iPhone : ajoute d'abord l'app à l'écran d'accueil (Partager → « Sur l'écran d'accueil »), puis ouvre-la de là.", pushYes:"Activer", pushNo:"Désactiver", pushTest:"M'envoyer un test", pushDenied:"Notifications bloquées : réautorise-les dans les réglages du téléphone.", pushSent:"Test envoyé ✓", pushOfferT:"Être prévenu·e sur ton téléphone ?", pushOfferP:"Quand un ami t'envoie une sortie ou réserve pour toi.", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkUseEmail:"Utiliser mon email plutôt", pkBack:"← Revenir à Face ID", pkManage:"Gérer", secT:"Notifications et connexion", pkWelcome:"Content de te revoir.", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas activé", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Tout Berlin est coché : théâtres, cinés, expos. Tu peux ne garder que tes lieux.", onbGo:"Choisir mes lieux", onbP2:"🙋 sur ce qui te tente : tes amis le verront.", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
-        sPh:"Pièce, film, lieu, artiste…", sHint:"Cherche dans tous les lieux, même ceux que tu ne suis pas (en gris).", sNone:(q) => `Rien pour « ${q} ».`, sNoneHint:"Le théâtre n'apparaît que surtitré en anglais (ou sans barrière de langue).", sVenues:"Lieux", sItems:"À l'affiche", sFollow:(v) => `＋ Suivre ${v}`, week:"7 jours", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
+        sPh:"Pièce, film, lieu, artiste…", sHint:"Cherche dans tous les lieux, même ceux que tu ne suis pas (en gris).", sNone:(q) => `Rien pour « ${q} ».`, sNoneHint:"Le théâtre n'apparaît que surtitré en anglais (ou sans barrière de langue).", sVenues:"Lieux", sItems:"À l'affiche", sFollow:(v) => `＋ Suivre ${v}`, week:"7 jours", thisWe:"Ce week-end", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
         star:"🙋 Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
         booked:"Réservé", wish:"Envies", done:"Vus", tonightH:"Ce soir", later:"Plus tard", toRate:"À noter", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : 🙋 ce qui te tente.",
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
@@ -394,7 +394,7 @@ const L = {
         fbVenueT:"Un lieu manque ?", fbVenuePh:"Son nom, et le lien si tu l'as", fbT:"Une idée, un souci ?", fbPh:"Dis-moi tout", fbSend:"Envoyer", fbThanks:"Merci, c'est transmis.", photoT:"Ma photo", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pushT:"Notifications on this phone", pushOn:"On ✓", pushOff:"Off", pushIos:"On iPhone: first add the app to your home screen (Share → “Add to Home Screen”), then open it from there.", pushYes:"Turn on", pushNo:"Turn off", pushTest:"Send me a test", pushDenied:"Notifications are blocked: allow them again in your phone settings.", pushSent:"Test sent ✓", pushOfferT:"Get notified on your phone?", pushOfferP:"When a friend sends you an outing or books for you.", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkUseEmail:"Use my email instead", pkBack:"← Back to Face ID", pkManage:"Manage", secT:"Notifications & sign-in", pkWelcome:"Good to see you again.", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Off", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"All of Berlin is on: theatres, cinemas, galleries. You can keep just your venues.", onbGo:"Pick my venues", onbP2:"🙋 what tempts you: your friends will see it.", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
-        week:"7 days", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
+        week:"7 days", thisWe:"This weekend", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"🙋 Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to", calOther:"iPhone / Outlook",
         booked:"Booked", wish:"Wishlist", done:"Seen", tonightH:"Tonight", later:"Later", toRate:"To rate", empty:"Nothing in this window.", emptyMine:"Nothing yet: 🙋 what tempts you.",
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
@@ -461,8 +461,12 @@ const MONTH_END = (([y, m]) => m === 12 ? `${y + 1}-01-01` : `${y}-${String(m + 
 const nextMonth = (d) => (([y, m]) => m === 12 ? `${y + 1}-01-01` : `${y}-${String(m + 1).padStart(2, "0")}-01`)(d.split("-").map(Number));
 const M2 = nextMonth(MONTH_END), M3 = nextMonth(M2);
 // Fenêtres de dates : [FROM, LIMIT). m1 / m2 = les deux mois calendaires suivants (ex. décembre, janvier).
-const LIMIT = { week: plus(7), month: MONTH_END, m1: M2, m2: M3, all: "9999" };
-const FROM_ = { m1: MONTH_END, m2: M2 };
+// « Ce week-end » = vendredi → dimanche : celui en cours (on est ven./sam./dim.), sinon le prochain.
+const DOW = new Date(TODAY + "T12:00:00Z").getUTCDay();          // 0 = dimanche
+const WE_FROM = DOW === 0 || DOW >= 5 ? TODAY : plus(5 - DOW);
+const WE_END = plus(DOW === 0 ? 1 : 8 - DOW);                    // le lundi suivant (exclu)
+const LIMIT = { week: plus(7), we: WE_END, month: MONTH_END, m1: M2, m2: M3, all: "9999" };
+const FROM_ = { we: WE_FROM, m1: MONTH_END, m2: M2 };
 const FROM = () => (st.tab === "prog" && FROM_[st.when]) || TODAY;
 const monthName = (d) => cap(new Intl.DateTimeFormat(T === L.en ? "en-GB" : "fr-FR", { month: "long", timeZone: "UTC" }).format(new Date(d + "T12:00:00Z")));
 
@@ -1205,7 +1209,7 @@ function readHash() {
   st.tab = tab;
   if (tab === "set" && ["venues", "friends", "account", "admin"].includes(a)) st.setTab = a;
   if (tab !== "set" && ["all", "theatre", "music", "film", "expo"].includes(a)) st.kind = a;
-  if (tab === "prog" && ["week", "month", "m1", "m2", "all"].includes(b)) st.when = b;
+  if (tab === "prog" && ["week", "we", "month", "m1", "m2", "all"].includes(b)) st.when = b;
 }
 function writeHash() {
   const lg = T === L.en ? "en" : "fr", q = new URLSearchParams(location.search);
@@ -1320,7 +1324,7 @@ function render() {
   if (st.kind !== "all" && !followedKinds.has(st.kind)) st.kind = "all";
   K.hidden = kindChips.length < 2;
   chips(K, kindChips.length < 2 ? [] : [["all", T.all], ...kindChips], "kind");
-  chips(W, [["week", T.week], ["month", T.month], ["m1", monthName(MONTH_END)], ["m2", monthName(M2)], ["all", T.any]], "when");
+  chips(W, [["week", T.week], ["we", T.thisWe], ["month", T.month], ["m1", monthName(MONTH_END)], ["m2", monthName(M2)], ["all", T.any]], "when");
 
   let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
   let h = "";
