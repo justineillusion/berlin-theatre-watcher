@@ -28,7 +28,8 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{overscroll-behavior-y:none;margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
-body{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+html{scrollbar-gutter:stable;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px));min-height:100dvh;box-sizing:border-box;overflow-x:hidden}
 body.landing{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 button{font-family:inherit;color:inherit;cursor:pointer}
 
