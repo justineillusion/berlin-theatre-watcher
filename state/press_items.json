@@ -9,14 +9,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "Hedda",
-  "url": "https://www.berliner-ensemble.de/en/production/hedda",
-  "opens": "2026-11-18",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "A Friend in Berlin",
   "url": "https://www.volksbuehne-berlin.de/en/productions/a-friend-in-berlin/20261119-1800/",
@@ -285,14 +277,6 @@
   "venue": "Chamäleon Berlin",
   "title": "Kintsugi",
   "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
-  "opens": "2026-11-18",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "La Calisto",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
   "opens": "2026-11-18",
   "aliases": []
  },
@@ -673,14 +657,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "#Motherfuckinghood",
-  "url": "https://www.berliner-ensemble.de/en/production/motherfuckinghood",
-  "opens": "2027-01-08",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Echnaton (Akhnaten)",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
@@ -689,6 +665,14 @@
    "Echnaton",
    "Akhnaten"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Salome",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/salome.96/",
+  "opens": "2027-01-10",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1033,6 +1017,22 @@
   "aliases": []
  },
  {
+  "kind": "expo",
+  "venue": "Gropius Bau",
+  "title": "Wenn ich an Deutschland denke*",
+  "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2027/ausstellungen/wenn-ich-an-deutschland-denke",
+  "opens": "2027-03-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Tannhäuser",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tannhaeuser.20/",
+  "opens": "2027-03-20",
+  "aliases": []
+ },
+ {
   "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Semele",
@@ -1089,6 +1089,14 @@
   "venue": "Staatsoper Unter den Linden",
   "title": "Les pêcheurs de perles",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/les-pecheurs-de-perles.3/",
+  "opens": "2027-04-02",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Gropius Bau",
+  "title": "Florentina Holzinger: SEAWORLD <s>VENICE</s> BERLIN",
+  "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2027/ausstellungen/florentina-holzinger",
   "opens": "2027-04-02",
   "aliases": []
  },
@@ -1455,6 +1463,14 @@
   "aliases": []
  },
  {
+  "kind": "expo",
+  "venue": "Gropius Bau",
+  "title": "Rosa Barba: Myth and Mercury*",
+  "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2027/ausstellungen/rosa-barba",
+  "opens": "2027-06-18",
+  "aliases": []
+ },
+ {
   "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Jazz at Berlin Philharmonic“Remember Esbjörn Svensson”",
@@ -1476,6 +1492,14 @@
   "title": "Maria Lassnig — Paris – New York – Berlin",
   "url": "https://berlinischegalerie.de/en/exhibitions/preview/maria-lassnig/",
   "opens": "2027-09-03",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Gropius Bau",
+  "title": "Keith Haring Lives",
+  "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2027/ausstellungen/keith-haring",
+  "opens": "2027-09-09",
   "aliases": []
  },
  {
