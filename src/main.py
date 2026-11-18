@@ -166,6 +166,7 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
     budget = float(_ENRICH_BUDGET_S)
     cache = _load_summary_cache()
     fresh_after = (datetime.now(timezone.utc) - timedelta(days=_SUMMARY_TTL_DAYS)).isoformat()
+    retry_after = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
     print(f"📝 Pages détail + résumés {'/'.join(langs).upper()} ({len(shows)} item(s), {budget:.0f} s max, cache)…")
 
     def one(show: Show):
@@ -174,6 +175,8 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
             c = None                       # résumé en cache = un générique : on relit la page
         if c and c.get("v") != _SUMMARY_VERSION:
             c = None                       # extracteur amélioré depuis : on relit la page
+        if c and not c.get("src") and c.get("at", "") < retry_after:
+            c = None                       # pas de résumé il y a > 2 jours (page en panne, extracteur ajouté) : on relit
         if c and c.get("at", "") >= fresh_after and all(c.get(lg) is not None for lg in langs):
             return c
         summary, page_text = fetch_details(show.theater, show.url)

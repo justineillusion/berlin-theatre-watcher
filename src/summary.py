@@ -286,6 +286,17 @@ def _chamaeleon(soup: BeautifulSoup) -> Optional[str]:
     return _paragraphs(paras, 300)
 
 
+def _urban_spree(soup: BeautifulSoup) -> Optional[str]:
+    """« About the Concert » : ligne date/Einlass, puis le texte du groupe (jusqu'à « View_all »)."""
+    t = _clean(soup.get_text(" "))
+    if "About the Concert" not in t:
+        return None
+    body = t.split("About the Concert", 1)[1].split("View_all", 1)[0]
+    marks = list(re.finditer(r"(?:Beginn|Start|Doors|Einlass)\s*:?\s*\d{1,2}[:.]\d{2}\s*(?:Uhr)?", body[:300], re.I))
+    body = (body[marks[-1].end():] if marks else body).strip()
+    return body or None
+
+
 def _generic(soup: BeautifulSoup) -> Optional[str]:
     for attrs in ({"property": "og:description"}, {"name": "description"}):
         meta = soup.find("meta", attrs=attrs)
@@ -306,6 +317,7 @@ _EXTRACTORS = {
     "Komische Oper Berlin": _komische_oper,
     "Berliner Philharmoniker": _philharmonie,
     "Chamäleon Berlin": _chamaeleon,
+    "Urban Spree": _urban_spree,
 }
 
 

@@ -179,19 +179,19 @@ def run_multi(
         # part : /programme et le parcours par lieu montrent des fiches complètes.
         # Les nouveautés d'abord (budget de temps) ; caches = coût faible ensuite.
         ordered = need + [s for s in hits if s.item_id() not in need_ids]
-        enrich(ordered, digest, langs)
+        # Pièces complètes : en dernier (budget), pour que leur fiche « Complet » ait aussi un 📝.
+        enrich(ordered + list(sold_items or []), digest, langs)
         add_critics(ordered, config)
 
         rendered = api.post(
             "/api/render",
             json={
                 "mode": mode,
-                "items": [_texts(s, langs) for s in ordered if _complete(s, need_ids)],
+                "items": [_texts(s, langs) for s in ordered + list(sold_items or []) if _complete(s, need_ids)],
                 # Tout le reste du catalogue, en version courte (sans résumé ni
                 # critiques) : /programme et les récaps ont toujours une ligne.
                 # Le Worker n'écrase pas un texte complet déjà rédigé.
-                "basic": [_texts(s, langs) for s in ordered if not _complete(s, need_ids)]
-                + [_texts(s, langs) for s in (sold_items or [])],
+                "basic": [_texts(s, langs) for s in ordered + list(sold_items or []) if not _complete(s, need_ids)],
             },
         )
         rendered.raise_for_status()

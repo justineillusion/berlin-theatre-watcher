@@ -207,7 +207,8 @@ def parse_urban_spree_event(html: Optional[str], card: dict) -> Optional[Show]:
         lo, hi = parse_range(_clean(price.get_text(" "))) if price else (None, None)
         btn = next((a for a in soup.find_all("a", href=True)
                     if re.search(r"tickets?", a.get_text(" "), re.I) and a["href"].startswith("http")), None)
-        booking = btn["href"].strip() if btn else None
+        booking = re.sub(r"[?&](?:fbclid|utm_[a-z]+|clickId|irgwc|ircid|afsrc|camefrom)=[^&#]*", "", btn["href"].strip()) if btn else None
+        booking = re.sub(r"^([^?#]*)&", r"\1?", booking) if booking else None
         head = _clean(" ".join(x.get_text(" ") for x in soup.select(".ct-price, h1, .ct-btns")))
         sold = True if _SOLD.search(head) else None
         full = _clean(soup.get_text(" "))

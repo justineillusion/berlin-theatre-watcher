@@ -172,7 +172,19 @@ def clean_credits(text: str) -> str:
 
 
 _CREDIT_WORDS = {
-    "fr": [(r"\btranslation by\b", "traduction de"), (r"\bin an adaptation by\b", "dans une adaptation de"), (r"\bin collaboration with\b", "en collaboration avec"),
+    "fr": [(r"\b(?:a|an) project by\b", "un projet de"), (r"\b(?:a|an) play by\b", "une pièce de"),
+           (r"\b(?:a|an) opera by\b", "un opéra de"), (r"\b(?:a|an) musical by\b", "une comédie musicale de"),
+           (r"\b(?:based on|after) the graphic novel by\b", "d'après le roman graphique de"),
+           (r"\b(?:based on|after) the novella by\b", "d'après la nouvelle de"),
+           (r"\b(?:based on|after) the novel by\b", "d'après le roman de"),
+           (r"\b(?:based on|after) the (?:short )?story by\b", "d'après le récit de"),
+           (r"\b(?:based on|after) the play by\b", "d'après la pièce de"),
+           (r"\b(?:based on|after) the film by\b", "d'après le film de"),
+           (r"\b(?:based on|after) motifs? (?:from|by)\b", "d'après des motifs de"),
+           (r"\btranslated from (?:the )?English by\b", "traduit de l'anglais par"),
+           (r"\btranslated from (?:the )?(\w+) by\b", r"traduit du \1 par"),
+           (r"\bbased on\b", "d'après"),
+           (r"\btranslation by\b", "traduction de"), (r"\bin an adaptation by\b", "dans une adaptation de"), (r"\bin collaboration with\b", "en collaboration avec"),
            (r"\badapted by\b", "adapté par"), (r"\bdirected by\b", "mis en scène par"), (r"^\s*(?:by|von)\b", "De"),
            (r"\bafter\b|\bnach\b", "d'après"), (r"\bby\b|\bvon\b", "de"), (r"\band\b|\bund\b", "et"),
            (r"\(Book\)", "(livret)"), (r"\(Music\)", "(musique)"), (r"\bDirector:", "Mise en scène :"),
@@ -190,8 +202,13 @@ def synopsis_block(escaped: str) -> str:
 def credits_line(text: str, lang: str = "fr") -> str:
     """Crédits nettoyés, connecteurs dans la langue de la fiche (« By X and Y » -> « De X et Y »)."""
     t = clean_credits(text)
+    # Particule dans un nom (« Heinrich von Kleist ») : protégée des règles « von -> de / by ».
+    t = re.sub(r"(\b[A-ZÄÖÜ][a-zäöüß]+) von (?=[A-ZÄÖÜ])", "\\1 \u2063 ", t)
     for pat, rep in _CREDIT_WORDS.get(lang, []):
         t = re.sub(pat, rep, t, flags=re.I)
+    t = t.replace(" \u2063 ", " von ")
+    if lang == "fr" and t[:1].islower():
+        t = t[0].upper() + t[1:]
     if lang == "fr":                        # élision : « D'Oscar Wilde », « d'Elisabeth »
         t = re.sub(r"\b([Dd])e ([AEIOUÉÈÂÎaeiouéèâî])", r"\1'\2", t)
     return t
