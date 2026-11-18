@@ -840,6 +840,13 @@ try {
     c = take();
     assert.match(sends(c, OWNER)[0].text, /^🎟 C'est ouvert : ventes Berliner Ensemble pour avril\.\n• <a[^>]*>King Lear/);
     assert.equal(sends(c, LEA).length, 0);                                   // rien à réserver pour elle là-bas
+    // 14:00 Berlin, 1re ouverture du mois : « le programme d'avril est sorti » à TOUT le monde, une fois
+    r = await api("/api/sales-tick", { now: "2030-03-05T13:05:00Z" });
+    c = take();
+    assert.match(sends(c, OWNER)[0].text, /^<b>🗓 Le programme d'avril est sorti !<\/b>\n• Berliner Ensemble : billets en vente/);
+    if (sends(c, LEA)[0]) assert.match(sends(c, LEA)[0].text, /The April programme is out!/);
+    r = await api("/api/sales-tick", { now: "2030-03-05T15:05:00Z" });
+    assert.equal(sends(take(), OWNER).length, 0);                             // une seule fois
     // heure non publiée : « dans la journée », jamais une heure inventée
     await api("/api/plan", { mode: "scan", venues: VENUES, items: [hedda, ente, lear],
       sales: { "berliner-ensemble": { ...be, day: "2030-05-02", at: null, hour_known: false } } });
