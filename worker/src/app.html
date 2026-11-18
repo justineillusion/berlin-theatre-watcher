@@ -451,7 +451,7 @@ st.setArea = "";
 try { localStorage.removeItem("areas"); } catch {}
 st.hideSold = true;   // complets masqués par défaut ; « Voir les complets » les montre, grisés
 try { st.hideDismissed = localStorage.getItem("hideDismissed") === "1"; } catch {}
-const ICON = { theatre:"🎭", expo:"🏛", film:"🎬", music:"🎻" };
+const ICON = { theatre:"🎭", expo:"🏛", film:"🎬", music:"🎵" };
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const berlin = (d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone:"Europe/Berlin", year:"numeric", month:"2-digit", day:"2-digit" }).format(d);

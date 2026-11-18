@@ -139,8 +139,31 @@ def urban_spree(url: str = _US_BASE + "program/concerts/") -> List[Show]:
         cards += [c for c in got if c["date"] >= today_iso]
         if min(c["date"] for c in got) < today_iso:  # du plus lointain au plus proche : fini
             break
+    cards = list({c["url"]: c for c in cards}.values())      # une carte peut revenir sur deux pages
     pages = fetch_many([c["url"] for c in cards])
     return [s for c in cards for s in [parse_urban_spree_event(pages.get(c["url"]), c)] if s]
+
+
+# Styles reconnus dans le texte « About the Concert » (le site n'a pas de champ genre).
+_GENRES = ["post-punk", "post-rock", "noise-rock", "math-rock", "stoner rock", "psych-rock", "garage rock", "indie rock",
+           "hardcore", "punk", "shoegaze", "doom", "black metal", "death metal", "metal", "grunge", "emo", "rock",
+           "darkwave", "cold wave", "coldwave", "synth-pop", "synthpop", "new wave", "goth", "industrial", "ebm",
+           "indie-pop", "indie pop", "dream pop", "art pop", "pop", "folk", "singer-songwriter", "americana", "country",
+           "blues", "soul", "r&b", "funk", "jazz", "hip-hop", "hip hop", "rap", "electronic", "techno", "ambient",
+           "experimental", "noise", "krautrock", "reggae", "ska", "afrobeat", "cumbia", "world"]
+_GENRE_RE = re.compile(r"(?<![\w-])(" + "|".join(re.escape(g) for g in _GENRES) + r")(?![\w-])", re.I)
+_PARTY = re.compile(r"\b(?:party|parties|dj[- ]?sets?|club ?night|rave|karaoke|quiz)\b", re.I)
+
+
+def us_genres(text: str, n: int = 3) -> List[str]:
+    """« … their own blend of punk and extatic noise-rock … » -> ['punk', 'noise-rock']."""
+    out: List[str] = []
+    for m in _GENRE_RE.finditer(text or ""):
+        g = m.group(1).lower().replace("hip hop", "hip-hop").replace("synthpop", "synth-pop").replace("coldwave", "cold wave")
+        # « rock » / « pop » / « noise » seuls : seulement si rien de plus précis ne les contient déjà
+        if g not in out and not any(g in x for x in out):
+            out = [x for x in out if x not in g] + [g]
+    return out[:n]
 
 
 def urban_spree_cards(html: str) -> List[dict]:
@@ -174,6 +197,7 @@ def parse_urban_spree_event(html: Optional[str], card: dict) -> Optional[Show]:
     lo = hi = None
     booking = None
     sold = None
+    about = ""
     if html:
         soup = BeautifulSoup(html, "html.parser")
         h1 = soup.find("h1")
@@ -186,11 +210,16 @@ def parse_urban_spree_event(html: Optional[str], card: dict) -> Optional[Show]:
         booking = btn["href"].strip() if btn else None
         head = _clean(" ".join(x.get_text(" ") for x in soup.select(".ct-price, h1, .ct-btns")))
         sold = True if _SOLD.search(head) else None
+        full = _clean(soup.get_text(" "))
+        about = full.split("About the Concert", 1)[1].split("View_all", 1)[0] if "About the Concert" in full else ""
     title = _us_title(title)
     if not title:
         return None
     if re.search(r"\b(?:workshop|flea|market|flohmarkt|exhibition|vernissage)\b", title, re.I):
         return None
+    if _PARTY.search(title):
+        return None                                # soirées / DJ sets : pas un concert
+    genres = us_genres(about)
     return Show(
         theater="Urban Spree",
         title=title,
@@ -199,7 +228,7 @@ def parse_urban_spree_event(html: Optional[str], card: dict) -> Optional[Show]:
         venue=None,
         url=card["url"],
         languages=None,
-        production_type="Concert",
+        production_type="Concert" + (f" · {' / '.join(genres)}" if genres else ""),
         has_english_surtitles=True,               # pas de filtre de langue pour les concerts
         sold_out=sold,
         booking_url=booking,
