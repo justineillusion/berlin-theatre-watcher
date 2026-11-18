@@ -32,6 +32,7 @@ cinemas:
   - name: Kino International
     source: yorck                    # Karl-Marx-Allee 33 ; yorck.de donne le format de chaque séance
     yorck_slug: kino-international   # (kinoheld 713 n'en donnait aucun ; yorck depuis 17/11/2026)
+    show_all: true                   # un seul film par soir : toujours montré (seule la version filtre)
 
   - name: Babylon
     source: babylon                  # page /programm du site (une vignette par séance)

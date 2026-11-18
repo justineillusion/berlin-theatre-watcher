@@ -270,6 +270,9 @@ async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<R
     return sent instanceof Response ? sent : Response.json({ id: sent });
   }
   if (path === "/app/api/teaser") return Response.json(await teaser(env));
+  // 🔍 Recherche : titre, lieu, équipe (texte de la fiche), dans TOUS les lieux actifs.
+  // Données publiques (ce que montre déjà /programme) : pas besoin d'être connecté·e.
+  if (path === "/app/api/search") return Response.json(await search(env, String(body.q ?? ""), asLang(body.lang)));
   if (path === "/app/api/guest") {
     const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
     return Response.json(await guestState(env, asLang(body.lang), focus));
@@ -698,6 +701,34 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
 }
 
 /** Page d'accueil (non connecté·e) : quelques séances des 7 prochains jours, données publiques du programme. */
+const fold = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ß/g, "ss").toLowerCase();
+let searchCache: { at: number; rows: any[] } | null = null;
+async function search(env: Env, q: string, lang: Lang) {
+  const words = fold(q).replace(/<[^>]*>/g, " ").split(/[^a-z0-9]+/).filter((w) => w.length >= 2).slice(0, 6);
+  if (!words.length) return { q, items: [], venues: [] };
+  if (!searchCache || Date.now() - searchCache.at > 60_000) {
+    const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
+    const { results } = await env.DB.prepare(
+      `SELECT i.*, v.name AS venue FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+       WHERE (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now') ELSE i.last_seen >= ?1 END)
+         AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now'))
+       LIMIT 1500`,
+    ).bind(since).all<any>();
+    searchCache = { at: Date.now(), rows: results.map((r) => ({ r, hay: fold(`${r.title} ${r.venue} ${(r.text || "").replace(/<[^>]*>/g, " ")}`) })) };
+  }
+  const hit = (h: string) => words.every((w) => h.includes(w));
+  const rows = searchCache.rows.filter((x) => hit(x.hay))
+    // Le titre d'abord, puis le lieu, puis le reste (équipe, résumé).
+    .map((x) => ({ ...x, rank: hit(fold(x.r.title)) ? 0 : hit(fold(x.r.venue)) ? 1 : 2 }))
+    .sort((a, b) => a.rank - b.rank).slice(0, 60);
+  const { results: vs } = await env.DB.prepare("SELECT id, name, kind, optional FROM venues WHERE active = 1").all<any>();
+  return {
+    q,
+    items: rows.map((x) => shapeItem(x.r, null, [], lang)),
+    venues: vs.filter((v) => hit(fold(v.name))).slice(0, 8),
+  };
+}
+
 async function teaser(env: Env) {
   const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
   const { results } = await env.DB.prepare(
