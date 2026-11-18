@@ -142,6 +142,17 @@ theaters:
     optional: true
     url: https://www.berliner-philharmoniker.de/en/concerts/subscriptions-and-flex-packages/
 
+  # Salles de concert (optional : à la carte, rangées dans « Musique ») ; voir parsers/concerts.py
+  - name: Schokoladen
+    parser: schokoladen
+    optional: true
+    url: https://www.schokoladen-mitte.de/
+
+  - name: Urban Spree
+    parser: urban_spree
+    optional: true
+    url: https://www.urbanspree.com/program/concerts/
+
   # --- Expos -----------------------------------------------------------------
   - name: Hamburger Bahnhof
     parser: smb

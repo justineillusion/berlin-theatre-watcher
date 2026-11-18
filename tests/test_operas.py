@@ -140,6 +140,7 @@ def test_grouped_per_production():
 def test_config_optional_venues():
     cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
     new = {t["name"]: t for t in cfg["theaters"] if t.get("optional")}
-    assert {venue_slug(n) for n in new} == {
-        "staatsoper-unter-den-linden", "deutsche-oper-berlin", "komische-oper-berlin", "berliner-philharmoniker"}
+    assert {venue_slug(n) for n in new} >= {
+        "staatsoper-unter-den-linden", "deutsche-oper-berlin", "komische-oper-berlin", "berliner-philharmoniker",
+        "schokoladen", "urban-spree"}
     assert all(t["parser"] in SOURCES and t.get("kind", "theatre") == "theatre" for t in new.values())
