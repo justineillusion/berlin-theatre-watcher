@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1794834102.0209315,
+    "at": 1795008104.966521,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1794834116.8834546,
+    "at": 1795008116.8768888,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1794834092.9047253,
+    "at": 1795008098.6679344,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -1800,7 +1800,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1794834111.0878947,
+    "at": 1795008111.9938602,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -2691,7 +2691,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/antigone-der-abschied-alexander-zeldins-familiendrama-um-abschied-trauer-und-verdraengung": {
-   "at": 1794834121.9511855,
+   "at": 1795008120.7692695,
    "published": 1793025056.0,
    "scores": [
     -0.8462,
@@ -2800,8 +2800,28 @@
  },
  "searches": {
   "20 Minuten": {
-   "at": 1794656533.2121675,
+   "at": 1795008189.756458,
    "results": [
+    [
+     "Der kleine Prinz / Kleine Prinzen – Schauspielhaus Zürich & Theater Basel – Antú Romero Nunes erkundet den berühmten Stoff von Antoine de Saint-Exupéry",
+     "https://nachtkritik.de/nachtkritiken/schweiz/nordwestschweiz/basel/theater-basel/der-kleine-prinz-kleine-prinzen-schauspielhaus-zuerich-theater-basel-antu-romero-nunes-saint-exupery",
+     "2026-11-15T09:43:44+01:00"
+    ],
+    [
+     "Berlin Alexanderplatz – Staatstheater Saarbrücken – Christoph Mehler zeichnet den Leidensweg des Franz Biberkopf in düsteren, videogesättigten Farben",
+     "https://nachtkritik.de/nachtkritiken/deutschland/saarland/saarbruecken/saarlaendisches-staatstheater-saarbruecken/berlin-alexanderplatz-staatstheater-saarbruecken-christoph-mehler-zeichnet-den-leidensweg-des-franz-biberkopf-in-duesteren-videogesaettigten-farben",
+     "2026-11-15T09:12:02+01:00"
+    ],
+    [
+     "Die heilige Johanna der Schlachthöfe – Schauspiel Dortmund – Ariane Kareev inszeniert Bertolt Brechts Lehrstück an einem Tatort",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/dortmund/theater-dortmund/die-heilige-johanna-der-schlachthoefe-schauspiel-dortmund-bertolt-brecht-ariane-kareev",
+     "2026-11-15T09:09:38+01:00"
+    ],
+    [
+     "Ein Übertritt (alles auf Ende) – Schauspielhaus Graz – Das Digitaltheater-Duo DARUM zeigt Elfriede Jelinek auf Science-Fiction-Reise",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/steiermark/graz/schauspielhaus-graz/ein-uebertritt-alles-auf-ende-schauspielhaus-graz-das-digitaltheater-duo-darum-zeigt-elfriede-jelinek-auf-science-fiction-reise",
+     "2026-11-15T07:47:17+01:00"
+    ],
     [
      "Schubert in Paradise – Münchner Kammerspiele – Katharina Bach, Jelena Kuljić, Lucy Wilke und die Band Bitchboy laden zu einer Reise in die Nacht",
      "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/muenchner-kammerspiele/schubert-in-paradise-muenchner-kammerspiele-katharina-bach-jelena-kuljic-lucy-wilke-und-die-band-bitchboy-laden-zu-einer-reise-in-die-nacht",
@@ -3256,31 +3276,11 @@
      "I. Grief. Different. – Theater Bremen – Miriam Ibrahim inszeniert die Uraufführung eines Texts von Ralph Tharayil",
      "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/bremen/schauspiel-bremen/i-grief-different-theater-bremen-miriam-ibrahim-ralph-tharayil",
      "2026-09-19T07:30:54+02:00"
-    ],
-    [
-     "Mephisto – Berliner Ensemble – Mit dem Künstlerstoff von Klaus Mann und einem für ihn komplett neuen Ensemble erfindet sich Frank Castorf neu",
-     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/mephisto-berliner-ensemble-mit-dem-kuenstlerstoff-von-klaus-mann-und-einem-fuer-ihn-komplett-neuen-ensemble-erfindet-sich-frank-castorf-neu",
-     "2026-09-18T09:06:17+02:00"
-    ],
-    [
-     "Lear – Komische Oper Berlin – Nicholas Carter und Barrie Kosky machen Aribert Reimanns Avantgarde-Oper zum fulminanten, existenziellen Bühnenerlebnis",
-     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/komische-oper-berlin/lear-komische-oper-berlin-nicholas-carter-und-barrie-kosky-machen-aribert-reimanns-avantgarde-oper-zum-fulminanten-existenziellen-buehnenerlebnis",
-     "2026-09-17T08:07:06+02:00"
-    ],
-    [
-     "In Zukunft nur Rosa – Theater Neumarkt Zürich – Mathieu Bertholet auf den Spuren von Rosa Luxemburg",
-     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/theater-neumarkt-zuerich/in-zukunft-nur-rosa-theater-neumarkt-zuerich-mathieu-bertholet",
-     "2026-09-15T08:55:19+02:00"
-    ],
-    [
-     "Der Abend vor dem Danach – Schauspiel Frankfurt – Susanne Frieling inszeniert Lisa Wentz' Stück über sexuelle Gewalt",
-     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/der-abend-vor-dem-danach-schauspiel-frankfurt-susanne-frieling-inszeniert-lisa-wentz-stueck-ueber-sexuelle-gewalt",
-     "2026-09-13T08:39:41+02:00"
     ]
    ]
   },
   "20 Minuten Volksbühne": {
-   "at": 1794656560.0478468,
+   "at": 1795008218.132899,
    "results": [
     [
      "Mata Leão – Volksbühne am Rosa-Luxemburg-Platz Berlin – Davi Pontes und Wallace Ferreira zelebrieren Tanz als Selbstverteidigung",
@@ -3680,11 +3680,11 @@
    ]
   },
   "Archives of Feelings": {
-   "at": 1794744549.9378881,
+   "at": 1795008139.0027397,
    "results": []
   },
   "Archives of Feelings Berliner Festspiele": {
-   "at": 1794744575.7287242,
+   "at": 1795008164.1872725,
    "results": []
   },
   "BODEN": {
@@ -4127,7 +4127,7 @@
    "results": []
   },
   "Berlin Review x Volksbühne Volksbühne": {
-   "at": 1794573028.605262,
+   "at": 1795008199.18533,
    "results": []
   },
   "CURSED": {
@@ -4174,7 +4174,7 @@
    ]
   },
   "Die Blechtrommel": {
-   "at": 1794229878.367946,
+   "at": 1795008297.5004358,
    "results": [
     [
      "Spieler – Schauspielhaus Bochum – Johan Simons inszeniert Dostojewskis Roulettenburg-Roman",
@@ -4479,7 +4479,7 @@
    ]
   },
   "Die Seherin Schaubühne": {
-   "at": 1794572969.4957292,
+   "at": 1795008193.0448928,
    "results": []
   },
   "Die Wildente": {
@@ -4617,7 +4617,7 @@
    "results": []
   },
   "Disrupt the Default Volksbühne": {
-   "at": 1794573026.8102546,
+   "at": 1795008169.2110686,
    "results": []
   },
   "EXXY": {
@@ -4975,15 +4975,15 @@
    ]
   },
   "Eugene Onegin": {
-   "at": 1794744667.6776047,
+   "at": 1795008251.7733912,
    "results": []
   },
   "Fiddler! One Night Only": {
-   "at": 1794744561.3910701,
+   "at": 1795008193.399064,
    "results": []
   },
   "Good Vibes Only": {
-   "at": 1794744588.656917,
+   "at": 1795008219.9863687,
    "results": [
     [
      "Dark Star – René Pollesch verabschiedet sich stilecht von der Berliner Volksbühne",
@@ -4997,7 +4997,7 @@
    "results": []
   },
   "Guided Tour of Volksbühne Volksbühne": {
-   "at": 1794488730.9305177,
+   "at": 1795008221.026813,
    "results": []
   },
   "Hedda": {
@@ -5356,7 +5356,7 @@
    ]
   },
   "Jazz at Berlin Philharmonic“Conversations”": {
-   "at": 1794744689.567067,
+   "at": 1795008294.8381233,
    "results": []
   },
   "Justices": {
@@ -5370,7 +5370,7 @@
    ]
   },
   "KIDS": {
-   "at": 1794744543.49242,
+   "at": 1795008173.0412192,
    "results": [
     [
      "Der kleine Prinz / Kleine Prinzen – Schauspielhaus Zürich & Theater Basel – Antú Romero Nunes erkundet den berühmten Stoff von Antoine de Saint-Exupéry",
@@ -5735,7 +5735,7 @@
    ]
   },
   "Kintsugi": {
-   "at": 1794744592.6117146,
+   "at": 1795008222.021878,
    "results": [
     [
      "reEDOcate me! – Floating University Berlin – Ein postfossiler Themenpark von raumlaborberlin und les dramaturx",
@@ -5778,7 +5778,7 @@
    "results": []
   },
   "L’incoronazione di Poppea": {
-   "at": 1794744651.9592671,
+   "at": 1795008230.744983,
    "results": []
   },
   "MAMI": {
@@ -6006,7 +6006,7 @@
    "results": []
   },
   "Madama Butterfly": {
-   "at": 1794744661.1170187,
+   "at": 1795008245.5759816,
    "results": [
     [
      "Antigone – Staatstheater Nürnberg – Andreas Kriegenburg ringt dem Sophokles-Klassiker ein Bekenntnis gegen die Vorherrschaft des Mannes ab",
@@ -6021,15 +6021,15 @@
    ]
   },
   "Marek Janowski conducts Bruckner’s Eighth": {
-   "at": 1794573201.5579362,
+   "at": 1795008391.137182,
    "results": []
   },
   "Maxim Emelyanychev conducts Mendelssohn, Mozart and Haydn": {
-   "at": 1794744665.1125033,
+   "at": 1795008239.7641718,
    "results": []
   },
   "May Fall": {
-   "at": 1794744543.348921,
+   "at": 1795008130.8913126,
    "results": [
     [
      "Kleiner Mann – was nun? – Schauspiel Frankfurt – Mit opulenter Bildsprache nähert sich Luise Voigt dem Arbeitslosen-Roman von Hans Fallada",
@@ -6439,7 +6439,7 @@
    ]
   },
   "OriginalklangBaroque Christmas music with Les Accents": {
-   "at": 1794573198.3977995,
+   "at": 1795008385.465191,
    "results": []
   },
   "OriginalklangIl pomo d’oro & Jakub Józef Orliński": {
@@ -6447,7 +6447,7 @@
    "results": []
   },
   "Piano Recital with Mitsuko Uchida": {
-   "at": 1794488864.022916,
+   "at": 1795008363.5282383,
    "results": []
   },
   "QuartetBeethoven cycle with the Quatuor Ébène": {
@@ -6459,7 +6459,7 @@
    "results": []
   },
   "Rome with Kirill Petrenko and Ottorino Respighi": {
-   "at": 1794744697.5390654,
+   "at": 1795008318.3356805,
    "results": []
   },
   "Schnee von gestern, Schnee von morgen": {
@@ -6515,7 +6515,7 @@
    ]
   },
   "The Seer": {
-   "at": 1794488691.8151112,
+   "at": 1795008161.184766,
    "results": [
     [
      "Die Deutsche Bahn AG – Schauspiel Köln – Calle Fuhr erzählt die Skandalgeschichte von Deutschlands mutmaßlich unpünktlichstem Mobilitätsunternehmen",
@@ -6730,7 +6730,7 @@
    ]
   },
   "The Seer Schaubühne": {
-   "at": 1794573011.676775,
+   "at": 1795008235.2375844,
    "results": [
     [
      "The Bolaño Project – Das Duo Notfoundyet dilettiert für Euro-Scene und Schauspiel Leipzig mit einer hanebüchen-unterhaltsamen Meta-Als-Ob-Performance zu Bolaños \"2666\"",
@@ -6750,7 +6750,7 @@
    ]
   },
   "Tool-Party #4": {
-   "at": 1794744539.5968287,
+   "at": 1795008127.5519922,
    "results": []
   },
   "Tosca": {
