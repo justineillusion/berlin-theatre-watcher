@@ -52,14 +52,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Dido & Aeneas",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Volksbühne",
   "title": "Disrupt the Default: Translating Experience",
   "url": "https://www.volksbuehne-berlin.de/en/productions/disrupt-the-default-translating-experience/20261128-1800/",
@@ -162,6 +154,38 @@
  },
  {
   "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "The International Abstraction",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/the-international-abstraction/",
+  "opens": "2027-06-06",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Extreme Tension. Art between Politics and Society",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/extreme-tension-art-between-politics-and-society/",
+  "opens": "2023-11-18",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Christoph Schlingensief. Deutschlandsuche ’99",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/christoph-schlingensief-deutschlandsuche-99/",
+  "opens": "2025-05-02",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Ruin and Rush",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/current/",
+  "opens": "2026-04-25",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Gabriele Stötzer: Dabei sein und nicht schweigen",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/gabriele-stoetzer",
@@ -182,6 +206,14 @@
   "title": "Thomas Billhardt — Die Augen weit offen",
   "url": "https://berlin.fotografiska.com/en/exhibitions/thomas-billhardt",
   "opens": "2026-08-28",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Maurizio Cattelan. NIGHT",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/maurizio-cattelan-night/",
+  "opens": "2026-09-10",
   "aliases": []
  },
  {
@@ -246,22 +278,6 @@
   "title": "Roger Ballen — roger ballen.! drawing meets photography",
   "url": "https://berlin.fotografiska.com/en/exhibitions/roger-ballen",
   "opens": "2026-11-07",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "HAU Hebbel am Ufer",
-  "title": "Monga",
-  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/jessica-teixeira-monga/",
-  "opens": "2026-11-17",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Deutsche Oper Berlin",
-  "title": "Elektra",
-  "url": "https://deutscheoperberlin.de/en_EN/production/elektra.1385724",
-  "opens": "2026-11-17",
   "aliases": []
  },
  {
@@ -365,18 +381,18 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Philharmoniker",
-  "title": "Jazz at Berlin Philharmonic“Conversations”",
-  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57062/",
+  "venue": "Volksbühne",
+  "title": "Alles Glück der Welt",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261125-1830/",
   "opens": "2026-11-25",
   "aliases": []
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Alles Glück der Welt",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261126-1900/",
-  "opens": "2026-11-26",
+  "venue": "Berliner Philharmoniker",
+  "title": "Jazz at Berlin Philharmonic“Conversations”",
+  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57062/",
+  "opens": "2026-11-25",
   "aliases": []
  },
  {
@@ -392,6 +408,14 @@
   "venue": "Staatsoper Unter den Linden",
   "title": "Tosca",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
+  "opens": "2026-11-28",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Ulay, Ulay & Abramović",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ulay-ulay-abramovic/",
   "opens": "2026-11-28",
   "aliases": []
  },
@@ -537,6 +561,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Nabucco",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/nabucco.15505/",
+  "opens": "2026-12-22",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Hänsel und Gretel",
   "url": "https://deutscheoperberlin.de/en_EN/production/haensel-und-gretel.1385736",
@@ -660,14 +692,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Salome",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/salome.96/",
-  "opens": "2027-01-10",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Lisa Batiashvili, Robin Ticciati and the Chamber Orchestra of Europe",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57086/",
@@ -693,7 +717,7 @@
  {
   "kind": "theatre",
   "venue": "Berliner Philharmoniker",
-  "title": "Jazz at Berlin PhilharmonicSoul Train",
+  "title": "Jazz at Berlin Philharmonic“Hallelujah trail”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57091/",
   "opens": "2027-01-17",
   "aliases": []
@@ -767,6 +791,14 @@
   "venue": "Deutsche Oper Berlin",
   "title": "Rigoletto",
   "url": "https://deutscheoperberlin.de/en_EN/production/rigoletto.1385794",
+  "opens": "2027-01-29",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Schatten Reich",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/schatten-reich/",
   "opens": "2027-01-29",
   "aliases": []
  },
@@ -1002,14 +1034,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Tannhäuser",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tannhaeuser.20/",
-  "opens": "2027-03-20",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Semele",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/semele/",
@@ -1153,6 +1177,14 @@
   "venue": "Deutsche Oper Berlin",
   "title": "Nabucco",
   "url": "https://deutscheoperberlin.de/en_EN/production/nabucco.1385815",
+  "opens": "2027-04-24",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Katharina Sieverding",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/katharina-sieverding/",
   "opens": "2027-04-24",
   "aliases": []
  },
@@ -1490,7 +1522,7 @@
   "kind": "theatre",
   "venue": "Volksbühne",
   "title": "CURSED – a preinvented world.",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261210-1800/",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261211-1800/",
   "opens": null,
   "aliases": []
  },
