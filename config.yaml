@@ -110,6 +110,16 @@ theaters:
     parser: chamaeleon
     url: https://chamaeleonberlin.com/en/schedule/
 
+  # Spielplan anglais : drapeau « English surtitles » de chaque date (voir parsers/deutsches_theater.py)
+  - name: Deutsches Theater
+    parser: deutsches_theater
+    url: https://www.deutschestheater.de/en/programme/
+
+  # Théâtre indépendant (Mitte) : langue lue sur chaque page production (voir parsers/sophiensaele.py)
+  - name: Sophiensæle
+    parser: sophiensaele
+    url: https://sophiensaele.com/en/
+
   # Next.js : on passe par le sitemap de chaque festival (voir parsers/festspiele.py)
   # Un seul lieu pour tous les programmes théâtre des Festspiele (un sitemap par programme).
   - name: Berliner Festspiele
