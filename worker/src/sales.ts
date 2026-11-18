@@ -3,7 +3,8 @@
 // par chaque scan (src/sales.py). Cron du Worker toutes les 15 min (à l'heure,
 // contrairement aux crons GitHub qui dérivent de plusieurs heures).
 import { Lang, asLang, tr } from "./i18n";
-import { Env, esc, send, setSetting, setting } from "./lib";
+import { Env, WEB_ID_BASE, esc, send, setSetting, setting } from "./lib";
+import { pushTo } from "./push";
 
 export interface Sale {
   venue_id: string;
@@ -40,13 +41,55 @@ async function starsAt(env: Env, chat: number, venue: string): Promise<{ title: 
 const list = (items: { title: string; link: string | null }[]) =>
   items.map((s) => `• ${s.link ? `<a href="${s.link}">${esc(s.title)}</a>` : esc(s.title)}`).join("\n");
 
+const fmtDay = (day: string, lang: Lang) => new Date(day + "T12:00:00Z").toLocaleDateString(lang === "en" ? "en-GB" : "fr-FR", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
+
+/** 🗓 « Le programme de janvier est sorti » : à TOUT le monde, une fois par mois, à 14:00 le jour de la
+ *  1re ouverture des ventes de ce mois (le job presale a eu le temps de scanner le nouveau programme). */
+async function programmeTick(env: Env, sales: Sale[], b: { day: string; hm: string }): Promise<number> {
+  const months = [...new Set(sales.map((s) => s.month))];
+  let n = 0;
+  for (const month of months) {
+    const ofMonth = sales.filter((s) => s.month === month).sort((a, c) => a.day.localeCompare(c.day));
+    if (b.day !== ofMonth[0].day || b.hm < "14:00" || b.hm >= "20:00") continue;
+    const key = `programme_sent:${month}`;
+    if (await setting(env, key)) continue;
+    await setSetting(env, key, new Date().toISOString());   // avant l'envoi : jamais deux fois
+    const names = new Map((await env.DB.prepare("SELECT id, name FROM venues").all<{ id: string; name: string }>()).results.map((v) => [v.id, v.name]));
+    const { results: users } = await env.DB.prepare("SELECT chat_id, lang FROM users WHERE active = 1").all<{ chat_id: number; lang: string | null }>();
+    const app = (env.APP_URL || "https://berlinencore.app").replace(/\/$/, "") + "/app";
+    for (const u of users) {
+      const lang: Lang = asLang(u.lang), en = lang === "en";
+      const mName = tr(lang).monthsFull[Number(month.slice(5, 7)) - 1];
+      const lines = ofMonth.map((s) => {
+        const v = esc(names.get(s.venue_id) ?? s.venue_id);
+        const hm = s.at ? berlinNow(new Date(s.at)).hm.replace(":", "h").replace("h00", "h") : "";
+        if (s.day <= b.day) return en ? `• ${v}: tickets on sale now` : `• ${v} : billets en vente`;
+        return en ? `• ${v}: tickets from ${fmtDay(s.day, lang)}${hm ? ` at ${s.at ? berlinNow(new Date(s.at)).hm : ""}` : ""}`
+                  : `• ${v} : billets dès le ${fmtDay(s.day, lang)}${hm ? ` à ${hm}` : ""}`;
+      });
+      const head = en ? `🗓 The ${mName} programme is out!` : `🗓 Le programme ${/^[aeiouyéè]/i.test(mName) ? "d'" : "de "}${mName} est sorti !`;
+      const tail = en ? `Have a look and add your ⭐ before it sells out.` : `Va voir et mets tes ⭐ avant que ça parte.`;
+      const text = `<b>${head}</b>
+${lines.join("\n")}
+
+${tail}
+<a href="${app}">Berlin Encore!</a>`;
+      try {
+        if (u.chat_id < WEB_ID_BASE) { await send(env, u.chat_id, text); n++; }
+        n += await pushTo(env, u.chat_id, { title: head, body: tail, url: "/app", tag: `programme-${month}` });
+      } catch (e) { console.log("programme notif failed", u.chat_id, e); }
+    }
+  }
+  return n;
+}
+
 /** Une passe du cron (exportée pour les tests : `now` simulé). Renvoie le nombre de messages envoyés. */
 export async function salesTick(env: Env, now = new Date()): Promise<number> {
   const raw = await setting(env, "sales");
   if (!raw) return 0;
   const sales: Record<string, Sale> = JSON.parse(raw);
   const b = berlinNow(now);
-  let n = 0;
+  let n = await programmeTick(env, Object.values(sales), b);
   for (const s of Object.values(sales)) {
     // Veille, 19:00–23:59 ; jour J : à l'heure (ou 09:00 si l'heure n'est pas publiée), dans les 3 h.
     const openAt = s.at ? berlinNow(new Date(s.at)).hm : "09:00";
