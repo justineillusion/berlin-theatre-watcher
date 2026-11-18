@@ -127,6 +127,11 @@ theaters:
     parser: festspiele
     url: https://www.berlinerfestspiele.de/sitemap.xml?type=pages&nodePath=performing-arts-season,theatertreffen
 
+  # Tout en anglais (International Performing Arts Center, Kreuzberg) : parsers/english_theatre.py
+  - name: English Theatre Berlin
+    parser: english_theatre
+    url: https://www.etberlin.de/calendar/
+
   # --- Opéras & concerts (à la carte) -----------------------------------------
   # optional: true = lieu proposé dans /suivre mais PAS d'abonnement d'office
   # (géré côté Worker). Surtitres : voir src/parsers/opera.py.
@@ -145,6 +150,12 @@ theaters:
     parser: komische_oper
     optional: true
     url: https://www.komische-oper-berlin.de/en/what/schedule/
+
+  # Danse : sans barrière de langue ; cours, ateliers et rencontres écartés (parsers/staatsballett.py).
+  - name: Staatsballett Berlin
+    parser: staatsballett
+    optional: true
+    url: https://www.staatsballett-berlin.de/en/schedule.html
 
   # Concerts : pas de filtre de langue. kind theatre faute de kind « concert »
   # côté Worker (il ne connaît que theatre / expo / cinema).
