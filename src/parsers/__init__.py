@@ -10,8 +10,8 @@ from __future__ import annotations
 from typing import Callable, List
 
 from ..models import Show
-from . import (berliner_ensemble, chamaeleon, deutsches_theater, english_theatre, expos, festspiele, gorki, hau,
-               opera, philharmonie, schaubuehne, sophiensaele, staatsballett, volksbuehne)
+from . import (berliner_ensemble, chamaeleon, concerts, deutsches_theater, english_theatre, expos, festspiele, gorki,
+               hau, opera, philharmonie, schaubuehne, sophiensaele, staatsballett, volksbuehne)
 
 SOURCES: dict[str, Callable[[str], List[Show]]] = {
     "berliner_ensemble": berliner_ensemble.collect,
@@ -30,6 +30,8 @@ SOURCES: dict[str, Callable[[str], List[Show]]] = {
     "deutsche_oper": opera.deutsche_oper,
     "komische_oper": opera.komische_oper,
     "philharmonie": philharmonie.collect,
+    "schokoladen": concerts.schokoladen,
+    "urban_spree": concerts.urban_spree,
     # Lieux d'expo (kind: expo dans config.yaml)
     "smb": expos.smb,
     "kw": expos.kw,

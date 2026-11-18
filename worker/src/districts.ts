@@ -11,6 +11,10 @@ export const DISTRICT: Record<string, string> = {
   "berliner-festspiele": "Wilmersdorf",                       // Schaperstraße 24
   "deutsches-theater": "Mitte",                                // Schumannstraße 13a
   "sophiensle": "Mitte",                                       // Sophienstraße 18 (slug : le « æ » tombe)
+  "english-theatre-berlin": "Kreuzberg",                       // Fidicinstraße 40
+  "staatsballett-berlin": "Charlottenburg",                    // Deutsche Oper (Bismarckstr.) + Staatsoper
+  "schokoladen": "Mitte",                                      // Ackerstraße 169
+  "urban-spree": "Friedrichshain",                             // Revaler Straße 99
   // Expos
   "hamburger-bahnhof": "Mitte",                                // Invalidenstraße 50
   "neue-nationalgalerie": "Tiergarten",                        // Potsdamer Straße 50
