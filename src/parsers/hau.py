@@ -229,6 +229,12 @@ def _parse_item(item, iso: str, lang_ids: Dict[str, str], prices) -> Optional[Sh
             sold_out = bool(re.search(r"sold out|ausverkauft", label, re.I))
             break
 
+    # Danse sans langue annoncée : pas de barrière de langue (comme le cirque du Chamäleon).
+    # « In German » ou un atelier/une rencontre gardent leur langue.
+    dance = not language and any(re.search(r"\bdance\b|\btanz\b", c, re.I) for c in cats) \
+        and not re.search(r"workshop|talk|gespräch|lecture|party|dj\b", f"{title} {' '.join(cats)}", re.I)
+    if dance:
+        language = "No language needed (dance)"
     note = " · ".join(p for p in ((artist if artist != title else None), language) if p) or None
     return Show(
         theater="HAU Hebbel am Ufer",
@@ -239,7 +245,7 @@ def _parse_item(item, iso: str, lang_ids: Dict[str, str], prices) -> Optional[Sh
         url=url,
         languages=note,                        # artiste·s · langue / surtitres
         production_type=" / ".join(cats) or None,
-        has_english_surtitles=_is_english_friendly(language, title),
+        has_english_surtitles=dance or _is_english_friendly(language, title),
         sold_out=sold_out,
         booking_url=booking,
         price_min=parse_range(label)[0],       # « Admission free » ; sinon un bouton « Tickets » sans prix

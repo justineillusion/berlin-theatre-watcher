@@ -128,7 +128,20 @@ def staatsoper(url: str) -> List[Show]:
     shows: List[Show] = []
     for link, page in fetch_many(links).items():
         shows.extend(parse_staatsoper(page, link))
+    # Page anglaise muette (« In German language with surtitles », Ariadne 11/2026) : la page
+    # allemande, elle, dit lesquels (« mit deutschen und englischen Übertiteln »).
+    vague = sorted({s.url for s in shows if s.languages and _SO_VAGUE.search(s.languages) and not _has_english(s.languages)})
+    if vague:
+        de = fetch_many([u.replace("/en/", "/de/") for u in vague])
+        for s in shows:
+            page = de.get((s.url or "").replace("/en/", "/de/"))
+            if s.url in vague and page and re.search(r"englischen\s+(?:und\s+\w+\s+)?Übertitel|und\s+englischen\s+Übertitel", page):
+                s.languages = _SO_VAGUE.sub("with German and English surtitles", s.languages)
+                s.has_english_surtitles = True
     return shows
+
+
+_SO_VAGUE = re.compile(r"\bwith surtitles\b", re.I)
 
 
 def staatsoper_links(html: str) -> List[str]:
