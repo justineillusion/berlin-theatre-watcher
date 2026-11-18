@@ -93,3 +93,31 @@ def sold_out_dates(shows: List[Show], config: dict) -> dict:
             continue
         out.setdefault(show.item_id(), set()).add(f"{show.date} {show.time}".strip())
     return {k: sorted(v) for k, v in out.items()}
+
+
+def sold_only(shows: List[Show], config: dict, hits: List[Show]) -> List[Show]:
+    """Pièces surtitrées EN dont TOUTES les dates à venir sont complètes (absentes de
+    `hits`) : une fiche « Complet » dans la mini-app, jamais annoncée. Sans ça, une pièce
+    déjà complète à sa découverte n'apparaîtrait nulle part."""
+    avoid = config.get("keywords_avoid") or []
+    today = date.today().isoformat()
+    taken = {h.key() for h in hits}
+    groups: "OrderedDict[str, List[Show]]" = OrderedDict()
+    for show in shows:
+        if show.kind == "expo" or not show.has_english_surtitles or show.sold_out is not True:
+            continue
+        if not show.date or show.date < today or show.key() in taken or _find(avoid, show.haystack()):
+            continue
+        groups.setdefault(show.key(), []).append(show)
+    reps: List[Show] = []
+    for members in groups.values():
+        members.sort(key=lambda s: s.date or "9999")
+        rep = members[0]
+        rep.all_sold = True
+        rep.available_dates = [_fmt_date(m) for m in members]
+        rep.available_iso = []           # aucune date libre : rien à annoncer
+        rep.other_dates_count = len(members) - 1
+        rep.price_min, rep.price_max = price.merge((m.price_min, m.price_max) for m in members)
+        rep.price_from = any(m.price_from for m in members)
+        reps.append(rep)
+    return reps

@@ -38,6 +38,7 @@ class Show:
     aliases: List[str] = field(default_factory=list)  # autres titres (titre original, pour la presse)
     price_min: Optional[float] = None     # € ; seulement si le site du lieu l'affiche (0 = entrée libre)
     price_max: Optional[float] = None
+    all_sold: bool = False                # toutes les dates surtitrées sont complètes (carte « Complet »)
     price_from: bool = False              # le site ne donne que le minimum (« dès 28 € »)
 
     def key(self) -> str:

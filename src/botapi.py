@@ -141,6 +141,7 @@ def run_multi(
     digest: bool,
     enrich: Callable[[List[Show], bool, tuple], None],
     sold: Optional[Dict[str, List[str]]] = None,
+    sold_items: Optional[List[Show]] = None,
 ) -> None:
     from .main import add_critics
     global HORIZON_THEATRE_DAYS
@@ -162,6 +163,8 @@ def run_multi(
                 "horizon_theatre_days": config.get("horizon_theatre_days", 14),
                 "sales": _sales(config),
                 "sold": sold or {},
+                # Pièces entièrement complètes, inconnues jusque-là : fiche « Complet » seulement.
+                "sold_items": [_meta(s) for s in (sold_items or [])],
             },
         )
         plan.raise_for_status()
@@ -187,7 +190,8 @@ def run_multi(
                 # Tout le reste du catalogue, en version courte (sans résumé ni
                 # critiques) : /programme et les récaps ont toujours une ligne.
                 # Le Worker n'écrase pas un texte complet déjà rédigé.
-                "basic": [_texts(s, langs) for s in ordered if not _complete(s, need_ids)],
+                "basic": [_texts(s, langs) for s in ordered if not _complete(s, need_ids)]
+                + [_texts(s, langs) for s in (sold_items or [])],
             },
         )
         rendered.raise_for_status()

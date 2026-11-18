@@ -357,6 +357,15 @@ export async function plan(env: Env, body: any): Promise<Response> {
   // (dates = []), donc aucune annonce ; si des places reviennent, ce sont des dates nouvelles.
   if (mode === "scan" && body.sold && typeof body.sold === "object") {
     const sold: Record<string, string[]> = body.sold;
+    // Pièce déjà complète à sa découverte : on crée sa fiche (sans date libre) pour
+    // qu'elle apparaisse grisée « Complet » ; l'UPDATE ci-dessous pose ses dates complètes.
+    const soldNew: MetaIn[] = (body.sold_items ?? []).filter((it: any) => it && typeof it.id === "string" && sold[it.id]?.length);
+    const ins = soldNew.map((it) => env.DB.prepare(
+      `INSERT INTO items (id, venue_id, kind, title, url, dates, start_date, end_date, starred, last_seen)
+       VALUES (?, ?, 'theatre', ?, ?, '[]', NULL, NULL, ?, ?)
+       ON CONFLICT(id) DO UPDATE SET title = excluded.title, url = excluded.url`,
+    ).bind(it.id, it.venue_id, it.title, it.url, it.starred ? 1 : 0, started));
+    for (let i = 0; i < ins.length; i += 80) await env.DB.batch(ins.slice(i, i + 80));
     const inScan = new Set(items.map((i) => i.id));
     const ups: D1PreparedStatement[] = items.filter((i) => i.kind === "theatre").map((i) =>
       env.DB.prepare("UPDATE items SET sold = ? WHERE id = ?").bind(sold[i.id]?.length ? JSON.stringify(sold[i.id]) : null, i.id));
