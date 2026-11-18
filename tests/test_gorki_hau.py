@@ -119,7 +119,7 @@ def test_hau_language_labels():
 def test_hau_november():
     shows = _hau_nov()
     assert len(shows) == 20 and all(s.date >= "2026-11-11" for s in shows)   # jours passés écartés
-    assert sum(s.has_english_surtitles for s in shows) == 8
+    assert sum(s.has_english_surtitles for s in shows) == 14   # dont 6 dates de danse sans langue annoncée
     exxy = [s for s in shows if s.title == "EXXY"]
     assert [(s.date, s.time, s.venue) for s in exxy] == [("2026-11-11", "20:00", "HAU2"), ("2026-11-12", "19:00", "HAU2")]
     assert exxy[0].url == "https://www.hebbel-am-ufer.de/en/programme/pdetail/dan-daw-creative-projects-exxy/"
@@ -152,7 +152,7 @@ def test_hau_sold_out_from_price_buttons():
 
 def test_hau_december():
     shows = hau.parse(_read("hau_schedule_2026-12.html"), {}, today=TODAY)
-    assert len(shows) == 25 and sum(s.has_english_surtitles for s in shows) == 10
+    assert len(shows) == 25 and sum(s.has_english_surtitles for s in shows) == 15   # dont 5 de danse
     revue = [s for s in shows if s.title == "Die große Klassenrevue"]
     assert len(revue) == 3 and revue[0].languages == "Christiane Rösinger / HAU · In German, with English surtitles"
     kids = [s for s in shows if s.title == "KIDS"][0]
