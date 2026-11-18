@@ -242,9 +242,14 @@ def analyse(cfg: dict, start: date) -> dict:
     candidates = merge_by_rating([f for i, f in enumerate(candidates) if i in done])
 
     always = {t.lower() for t in cfg.get("always_include") or []}
+    # Cinémas « un film par soir » (show_all) : on montre toujours le film, sans filtre de goût
+    # ni de note ; seule la version compte (pas de doublage allemand).
+    show_all = {c["name"] for c in cfg.get("cinemas", []) if c.get("show_all")}
 
     def judge(f: Film) -> Optional[str]:
         try:
+            if show_all and any(s.cinema in show_all for s in f.screenings):
+                return taste.version_filter(f, cfg)
             why = (taste.genre_filter(f, cfg) or taste.version_filter(f, cfg)
                    or taste.wide_release_filter(f, cfg))
             if not why and f.title.lower() not in always:
