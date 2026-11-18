@@ -203,6 +203,16 @@ async function upsertFilms(env: Env, list: any[]): Promise<void> {
   ).bind(f.id, f.venue_id, f.title, f.url ?? null, JSON.stringify(f.dates ?? []), f.text ?? null, f.line ?? null,
     f.text_en ?? null, f.line_en ?? null, now));
   for (let i = 0; i < stmts.length; i += 80) await env.DB.batch(stmts.slice(i, i + 80));
+  // Catalogue complet reçu : un film absent (titre/année corrigés → nouvel id, film retiré) perd ses
+  // séances à venir, sinon il resterait en double à côté de sa nouvelle fiche. Seulement les cinémas
+  // présents dans l'envoi (un cinéma sauté garde son programme) et jamais sur un envoi maigre.
+  const venues = [...new Set(list.map((f) => f.venue_id))];
+  if (list.length >= 15) {
+    await env.DB.prepare(
+      `UPDATE items SET dates = '[]' WHERE kind = 'film' AND last_seen < ?1
+         AND venue_id IN (SELECT value FROM json_each(?2)) AND id NOT IN (SELECT value FROM json_each(?3))`,
+    ).bind(now, JSON.stringify(venues), JSON.stringify(list.map((f) => f.id))).run();
+  }
 }
 
 /** Ciné du dimanche, un message par film :

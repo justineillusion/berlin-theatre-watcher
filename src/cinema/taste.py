@@ -96,6 +96,18 @@ def wide_release_filter(film: Film, cfg: dict) -> Optional[str]:
     return None
 
 
+_EN_COUNTRIES = re.compile(r"^(?:usa|us|u\.s\.a\.|vereinigte staaten|uk|gb|großbritannien|grossbritannien|england|"
+                           r"irland|ireland|kanada|canada|australien|australia|neuseeland|new zealand|united kingdom|united states)$", re.I)
+
+
+def _english_original(film: Film, s) -> bool:
+    langs = {x.original_language for x in film.screenings if x.original_language}
+    if langs:
+        return "en" in langs
+    countries = [c.strip() for x in film.screenings for c in x.countries]
+    return bool(countries) and _EN_COUNTRIES.match(countries[0]) is not None
+
+
 def version_filter(film: Film, cfg: dict) -> Optional[str]:
     """Écarte les séances doublées ; renvoie une raison si plus rien ne reste."""
     german = _german_original(film)
@@ -110,6 +122,9 @@ def version_filter(film: Film, cfg: dict) -> Optional[str]:
                 film.dropped_screenings.append(f"{s.cinema} {s.start:%a %d %H:%M} (VF allemande)")
             else:
                 keep.append(s)
+        elif s.version == "OmU" and not _english_original(film, s):
+            # Sous-titres allemands seulement : inaccessible à un·e anglophone (sauf VO anglaise).
+            film.dropped_screenings.append(f"{s.cinema} {s.start:%a %d %H:%M} (OmU, sous-titres allemands)")
         elif s.version in accepted or s.version is None:
             keep.append(s)
         else:
