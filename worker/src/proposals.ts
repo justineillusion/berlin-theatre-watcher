@@ -43,8 +43,8 @@ export function slotLabel(s: string, lang: Lang): string {
 const list = (xs: string[], L: typeof T.fr) => xs.length <= 1 ? xs.join("") : xs.slice(0, -1).join(", ") + L.and + xs[xs.length - 1];
 
 async function itemInfo(env: Env, id: string) {
-  return env.DB.prepare("SELECT i.id, i.kind, i.title, i.url, i.end_date AS end, i.dates, v.name AS venue FROM items i JOIN venues v ON v.id = i.venue_id WHERE i.id = ?")
-    .bind(id).first<{ id: string; kind: string; title: string; url: string | null; end: string | null; dates: string | null; venue: string }>();
+  return env.DB.prepare("SELECT i.id, i.kind, i.title, i.url, i.end_date AS end, i.dates, i.text, i.text_en, v.name AS venue FROM items i JOIN venues v ON v.id = i.venue_id WHERE i.id = ?")
+    .bind(id).first<{ id: string; kind: string; title: string; url: string | null; end: string | null; dates: string | null; text: string | null; text_en: string | null; venue: string }>();
 }
 
 /** Nouvelle proposition. to = mes connexions seulement ; slots = 1 à 3 créneaux à venir. */
@@ -88,7 +88,8 @@ async function shape(env: Env, id: string, viewer: string | null, lang: Lang, wi
   return {
     id: p.id, item_id: p.item_id, note: p.note, slots: JSON.parse(p.slots), chosen: p.chosen, status: p.status,
     created_at: p.created_at, updated_at: p.updated_at,
-    item: item ? { title: item.title, venue: item.venue, kind: item.kind === "film" ? "cinema" : item.kind, end: item.end, url: item.url } : null,
+    item: item ? { title: item.title, venue: item.venue, kind: item.kind === "film" ? "cinema" : item.kind, end: item.end, url: item.url,
+      text: (lang === "en" && item.text_en) || item.text || "" } : null,
     from: { name: from?.name ?? "?", ...(withIds ? { id: p.from_id } : {}) },
     mine: viewer === `u${p.from_id}`,
     people: results.map((r) => ({

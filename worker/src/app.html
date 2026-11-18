@@ -284,6 +284,8 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .phead{padding:10px 12px 4px}.pbody{padding:6px 16px 24px}
 .pfrom{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
 .ptitle{font:800 22px/1.15 var(--sans);letter-spacing:-.02em;margin:12px 0 2px}
+.ptbtn{all:unset;cursor:pointer;font:inherit;letter-spacing:inherit}.ptbtn span{font-size:15px;color:var(--muted)}
+.pdetail{margin:8px 0 4px;font-size:14px;display:flex;flex-direction:column;gap:3px}.pdetail .syn{margin-top:6px}
 .pbody .quote{margin:10px 0}
 .pset{background:#eaf6ef;color:#1f6e3f;font:700 14.5px var(--sans);padding:12px 14px;margin:12px 0}
 .pcan{background:var(--card);color:var(--muted);font:700 14px var(--sans);padding:12px 14px;margin:12px 0}
@@ -1597,7 +1599,7 @@ function draftFrom(p) {
   st.pa = me && me.answers ? { ...me.answers } : {}; st.pnote = (me && me.note) || "";
 }
 async function openProp(id, data) {
-  st.prop = id; st.open = null; st.proposing = null; st.pconfirm = false;
+  st.prop = id; st.open = null; st.proposing = null; st.pconfirm = false; st.pdetail = false;
   if (data) st.propData = data;
   let p = propOf(id);
   draftFrom(p); render(); window.scrollTo?.(0, 0);
@@ -1614,7 +1616,7 @@ async function fetchProp(id) {
   if (st.prop === id) render();
 }
 function closeProp() {
-  st.prop = null; st.propData = null; st.askGroup = null; st.pa = {}; st.pconfirm = false;
+  st.prop = null; st.propData = null; st.askGroup = null; st.pa = {}; st.pconfirm = false; st.pdetail = false;
   const q = new URLSearchParams(location.search); if (q.has("p")) { q.delete("p"); history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "") + location.hash); }
 }
 const propLink = (p) => `${API_BASE || location.origin}/app?p=${p.id}`;
@@ -1629,6 +1631,16 @@ function bestSlot(p) {
   for (const s of p.slots) { const k = p.people.filter((x) => x.answers && x.answers[s]).length; if (k > n) { n = k; best = s; } }
   return { slot: best, yes: n, all: p.people.filter((x) => x.answers).every((x) => x.answers[best]) && p.people.every((x) => x.answers) };
 }
+/** Détails de la fiche dans une proposition (toucher le titre) : mêmes lignes que la carte. */
+function propDetail(it) {
+  const f = facts({ text: it.text, kind: it.kind === "cinema" ? "film" : it.kind });
+  let h = `<div class="pdetail">`;
+  if (f.rating) h += `<div>${esc(f.rating)}</div>`;
+  h += f.meta.filter((l) => !l.startsWith("📍")).map((l) => `<div class="m">${esc(l)}</div>`).join("");
+  if (f.syn) h += `<div class="syn">${esc(f.syn)}${f.syn.length >= 420 ? "…" : ""}</div>`;
+  if (it.url) h += `<a class="tix" href="${esc(it.url)}" data-link="1" target="_blank" rel="noopener">${esc(it.kind === "expo" ? T.tixExpo : T.tix)} ↗</a>`;
+  return h + `</div>`;
+}
 function propPage() {
   const p = propOf(st.prop);
   const back = `<div class="phead"><button class="act" data-pback="1">‹ ${esc(T.propHead)}</button></div>`;
@@ -1642,8 +1654,9 @@ function propPage() {
   const b = bestSlot(p);
   let h = back + `<div class="pbody">
     <div class="pfrom">${face(host)}<div>${p.mine ? esc(T.youPropose(toNames || "…")) : esc(T.proposesYou(host.name, withNames))}</div></div>
-    <h2 class="ptitle">${esc(p.item ? p.item.title : "")}</h2>
+    <h2 class="ptitle"><button class="ptbtn" data-pdetail="1" aria-expanded="${!!st.pdetail}">${esc(p.item ? p.item.title : "")} <span>${st.pdetail ? "▴" : "▾"}</span></button></h2>
     <div class="v">${esc(p.item ? p.item.venue : "")}${p.item && p.item.kind === "expo" && p.item.end ? ` · ${esc(T.until)} ${esc(shortDay(p.item.end))}` : ""}</div>
+    ${st.pdetail && p.item ? propDetail(p.item) : ""}
     ${p.note ? `<div class="quote">« ${esc(p.note)} »</div>` : ""}
     ${p.status === "set" ? `<div class="pset">${esc(T.isSet(slotText(p.chosen)))}</div>` : p.status === "cancelled" ? `<div class="pcan">${esc(T.cancelledP)}</div>` : ""}`;
   // Grille : une ligne par personne, une colonne par créneau. Ma ligne se règle d'un toucher (tant que c'est ouvert).
@@ -1756,6 +1769,7 @@ document.addEventListener("click", (e) => {
   if (d.pans) { stop(); st.pa[d.pans] = st.pa[d.pans] === 1 ? 0 : 1; return void render(); }
   if (d.psubmit) { stop(); return void submitAnswer(); }
   if (d.pset) { stop(); return void propAct("proposal/set", { slot: d.pset }); }
+  if (d.pdetail) { stop(); st.pdetail = !st.pdetail; return void render(); }
   if (d.pcancel) { stop(); st.pconfirm = true; return void render(); }
   if (d.pcancelno) { stop(); st.pconfirm = false; return void render(); }
   if (d.pcancelok) { stop(); st.pconfirm = false; return void propAct("proposal/cancel", {}); }
