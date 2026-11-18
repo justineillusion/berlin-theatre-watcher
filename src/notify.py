@@ -210,7 +210,10 @@ def digest_line(show: Show, lang: str = "fr") -> str:
         if period:
             lines.append(f"   🗓 {_esc(period)}")
         return "\n".join(lines)
-    detail = " · ".join(p for p in (_short_dates(show, lang), _labels(show, lang)[0]) if p)
+    when = _short_dates(show, lang)
+    if when and show.all_sold:
+        when += " (sold out)" if lang == "en" else " (complet)"
+    detail = " · ".join(p for p in (when, _labels(show, lang)[0]) if p)
     if detail:
         line = f"   🗓 {_esc(detail)}"
         if show.booking_url:
@@ -306,7 +309,8 @@ def format_show(show: Show, lang: str = "fr") -> str:
     if dates:
         more = len(dates) - 5
         shown = " | ".join(dates[:5]) + ((f" (+{more} more)" if en else f" (+{more} autres)") if more > 0 else "")
-        lines.append(("🗓 Seats available: " if en else "🗓 Places libres : ") + _esc(shown))
+        label = ("🗓 Sold out: " if en else "🗓 Complet : ") if show.all_sold else ("🗓 Seats available: " if en else "🗓 Places libres : ")
+        lines.append(label + _esc(shown))
     cost = price.label(show.price_min, show.price_max, lang, only_min=show.price_from)
     if cost:
         lines.append(f"💶 {_esc(cost)}")
