@@ -173,7 +173,9 @@ def detect(
     if _WORDLESS.search(note):
         return "Sans texte", None
     if _NO_LANGUAGE.search(note):
-        return NO_LANGUAGE_FR + (" (cirque)" if re.search(r"circus|zirkus|cirque", note, re.I) else ""), None
+        kind = " (cirque)" if re.search(r"circus|zirkus|cirque", note, re.I) else \
+            " (danse)" if re.search(r"\((?:dance|tanz|danse)\)", note, re.I) else ""
+        return NO_LANGUAGE_FR + kind, None
     detail = _context(page_text or "")
     haystack = f"{note} | {detail}"
 
@@ -256,7 +258,8 @@ def to_english_labels(spoken: Optional[str], surtitles: Optional[str]) -> Tuple[
         if spoken == "Sans texte":
             en_spoken = "No spoken word"
         elif spoken.startswith(NO_LANGUAGE_FR):
-            en_spoken = "No language needed" + (" (circus)" if spoken.endswith("(cirque)") else "")
+            en_spoken = "No language needed" + (" (circus)" if spoken.endswith("(cirque)")
+                                                else " (dance)" if spoken.endswith("(danse)") else "")
         elif spoken == "Multilingue":
             en_spoken = "Multilingual"
         elif spoken.startswith("En "):
