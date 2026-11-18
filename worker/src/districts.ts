@@ -9,6 +9,8 @@ export const DISTRICT: Record<string, string> = {
   "hau-hebbel-am-ufer": "Kreuzberg",                           // Hallesches Ufer 32
   "chamaleon-berlin": "Mitte",                                 // Rosenthaler Str. 40/41 (Hackesche Höfe)
   "berliner-festspiele": "Wilmersdorf",                       // Schaperstraße 24
+  "deutsches-theater": "Mitte",                                // Schumannstraße 13a
+  "sophiensle": "Mitte",                                       // Sophienstraße 18 (slug : le « æ » tombe)
   // Expos
   "hamburger-bahnhof": "Mitte",                                // Invalidenstraße 50
   "neue-nationalgalerie": "Tiergarten",                        // Potsdamer Straße 50
