@@ -44,14 +44,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Dido & Aeneas",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
-  "opens": "2026-11-25",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Sophiensæle",
   "title": "Antonia Baehr: Schreien (SCREAMING) II – Eine Forschungsreihe",
   "url": "https://sophiensaele.com/en/stueck/screaming-ii-eine-forschungsreihe",
@@ -370,14 +362,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Chamäleon Berlin",
-  "title": "Kintsugi",
-  "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
-  "opens": "2026-11-19",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Sophiensæle",
   "title": "Unbestimmte Bewegung: daniel’s destruction",
   "url": "https://sophiensaele.com/en/stueck/daniels-destruction",
@@ -413,21 +397,19 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "L’incoronazione di Poppea",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
+  "venue": "Chamäleon Berlin",
+  "title": "Kintsugi",
+  "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
   "opens": "2026-11-20",
   "aliases": []
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Orpheus in the Underworld",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "L’incoronazione di Poppea",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
   "opens": "2026-11-20",
-  "aliases": [
-   "Orpheus in der Unterwelt"
-  ]
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -455,6 +437,14 @@
    "Die Marquise von O. und –",
    "The Marquise of O."
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "La Calisto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
+  "opens": "2026-11-21",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -631,9 +621,9 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsballett Berlin",
-  "title": "The Nutcracker",
-  "url": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-nussknacker-en/348.html",
+  "venue": "Sophiensæle",
+  "title": "Simone Dede Ayivi & Kompliz*innen: Schwarze Leute – Reclaiming Memories",
+  "url": "https://sophiensaele.com/en/stueck/schwarze-leute-reclaiming-memories",
   "opens": "2026-11-27",
   "aliases": []
  },
@@ -735,7 +725,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Saba Lou (bln, r'n'b / soul / songwriter) Rec Release!",
-  "url": "https://www.schokoladen-mitte.de/#e20261202",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261202",
   "opens": "2026-12-02",
   "aliases": []
  },
@@ -769,7 +759,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "The Wants (post-punk, nyc) & Schnallo (wave, bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20261203",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261203",
   "opens": "2026-12-03",
   "aliases": [
    "The Wants",
@@ -821,9 +811,19 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Orpheus in the Underworld",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
+  "opens": "2026-12-04",
+  "aliases": [
+   "Orpheus in der Unterwelt"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Bei Bedarf (punkrock / Berlin) + Pornobalken (punk / MV)",
-  "url": "https://www.schokoladen-mitte.de/#e20261204",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261204",
   "opens": "2026-12-04",
   "aliases": [
    "Bei Bedarf",
@@ -834,7 +834,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "The Magic Touch feat. The Floorettes",
-  "url": "https://www.schokoladen-mitte.de/#e20261205",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261205",
   "opens": "2026-12-05",
   "aliases": []
  },
@@ -892,7 +892,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Twins in Colour (dream-pop / wave, le) + n0t here there (dark electronic / trip-hop, bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20261207",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261207",
   "opens": "2026-12-07",
   "aliases": [
    "Twins in Colour",
@@ -922,7 +922,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "ANTILLECTUAL (punkrock, NL) + GOOD VIEWS, BAD NEWS (punkrock, BLN)",
-  "url": "https://www.schokoladen-mitte.de/#e20261208",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261208",
   "opens": "2026-12-08",
   "aliases": [
    "ANTILLECTUAL",
@@ -952,7 +952,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Berlin Release Show von Angela Aux w/ \"Das Nichts macht Kopien von sich selbst\" + TBA",
-  "url": "https://www.schokoladen-mitte.de/#e20261209",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261209",
   "opens": "2026-12-09",
   "aliases": []
  },
@@ -968,7 +968,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "ERECTION (punkrock, Regensburg) + Träsh",
-  "url": "https://www.schokoladen-mitte.de/#e20261210",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261210",
   "opens": "2026-12-10",
   "aliases": []
  },
@@ -995,7 +995,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Wood In Di Fire (Rocksteady, Reggae & Jamaican Jazz)",
-  "url": "https://www.schokoladen-mitte.de/#e20261211",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261211",
   "opens": "2026-12-11",
   "aliases": [
    "Wood In Di Fire",
@@ -1044,7 +1044,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Cloks Tik (experimental-pop/ch) + Husbandry (post-rock)",
-  "url": "https://www.schokoladen-mitte.de/#e20261216",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261216",
   "opens": "2026-12-16",
   "aliases": [
    "Cloks Tik",
@@ -1087,7 +1087,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Los Baby Jaguars (psych / cumbia / latin funk, bln), 2 sets!",
-  "url": "https://www.schokoladen-mitte.de/#e20261217",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261217",
   "opens": "2026-12-17",
   "aliases": []
  },
@@ -1130,7 +1130,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "The Special Guests feat. Willie Ocean",
-  "url": "https://www.schokoladen-mitte.de/#e20261219",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261219",
   "opens": "2026-12-19",
   "aliases": []
  },
@@ -1138,7 +1138,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Jaguwar (shoegaze/noise-pop) & Crush Tones (indie-rock)",
-  "url": "https://www.schokoladen-mitte.de/#e20261221",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261221",
   "opens": "2026-12-21",
   "aliases": [
    "Jaguwar",
@@ -1157,7 +1157,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Poledance (Emo Rock, Alternative Pop) + Milo030 (Alternative Rock)",
-  "url": "https://www.schokoladen-mitte.de/#e20261222",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261222",
   "opens": "2026-12-22",
   "aliases": [
    "Poledance",
@@ -1195,7 +1195,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Weihnachtstrinken mit: Klinge Komplex (rap, le) & Carmel Zoum (singer/dj/solar-punk) live",
-  "url": "https://www.schokoladen-mitte.de/#e20261225",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20261225",
   "opens": "2026-12-25",
   "aliases": []
  },
@@ -1248,7 +1248,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Sempf (pop-punk/ HH) + Bistro 11 (PopPunk/CollegeRock/ Bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20261228",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20261228",
   "opens": "2026-12-28",
   "aliases": [
    "Sempf",
@@ -1297,7 +1297,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Van Urst/Fevering + Third Lung (weirdo mutant punk, mmbrs milemarker, big eater) + tba live",
-  "url": "https://www.schokoladen-mitte.de/#e20261231",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20261231",
   "opens": "2026-12-31",
   "aliases": []
  },
@@ -1321,7 +1321,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Dark Selbo (bln, release show) + CHEEKY (us/bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20270106",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20270106",
   "opens": "2027-01-06",
   "aliases": [
    "Dark Selbo",
@@ -1348,7 +1348,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Death Party (garage-punk, us)",
-  "url": "https://www.schokoladen-mitte.de/#e20270107",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20270107",
   "opens": "2027-01-07",
   "aliases": [
    "Death Party",
@@ -1370,7 +1370,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Rat Hole (punk from england) + Not The Ones (punk from east-berlin)",
-  "url": "https://www.schokoladen-mitte.de/#e20270109",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20270109",
   "opens": "2027-01-09",
   "aliases": [
    "Rat Hole",
@@ -1389,7 +1389,7 @@
   "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Salome",
-  "url": "https://www.staatsoper-berlin.de/en/programme/operas/",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/salome.96/",
   "opens": "2027-01-10",
   "aliases": []
  },
@@ -1405,7 +1405,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Slow Mass (Post-HC/Indie Rock, Chicago) + Outlander (Slow Rock, Birmingham)",
-  "url": "https://www.schokoladen-mitte.de/#e20270111",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20270111",
   "opens": "2027-01-11",
   "aliases": [
    "Slow Mass",
@@ -1424,7 +1424,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Ida the Young (psych / alt-rock / indie-folk, cz)",
-  "url": "https://www.schokoladen-mitte.de/#e20270112",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270112",
   "opens": "2027-01-12",
   "aliases": [
    "Ida the Young",
@@ -1441,6 +1441,17 @@
  },
  {
   "kind": "theatre",
+  "venue": "Schokoladen",
+  "title": "MIGHT (Doom/Sludge/Post-Noir, Hannover) + Alphatrip (Psychedelic Post-Rock, Berlin)",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270114",
+  "opens": "2027-01-14",
+  "aliases": [
+   "MIGHT",
+   "Doom/Sludge/Post-Noir, Hannover) + Alphatrip (Psychedelic Post-Rock, Berlin"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Festspiele",
   "title": "2020",
   "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/2020",
@@ -1449,9 +1460,17 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsballett Berlin",
+  "title": "The Nutcracker",
+  "url": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-nussknacker-en/348.html",
+  "opens": "2027-01-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Angelika Express (indie punk, köln) + Power Müsli of Death (punkrock, berlin)",
-  "url": "https://www.schokoladen-mitte.de/#e20270116",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270116",
   "opens": "2027-01-16",
   "aliases": [
    "Angelika Express",
@@ -1518,7 +1537,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "knitting (indie-rock, can)",
-  "url": "https://www.schokoladen-mitte.de/#e20270125",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270125",
   "opens": "2027-01-25",
   "aliases": [
    "knitting",
@@ -1537,7 +1556,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Yur mum (rock duo/ brazil + UK) + special guest",
-  "url": "https://www.schokoladen-mitte.de/#e20270126",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270126",
   "opens": "2027-01-26",
   "aliases": []
  },
@@ -1545,7 +1564,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Euroteuro (synth-pop, wien) & Uzimoto (dada-synth-lofi, bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20270127",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270127",
   "opens": "2027-01-27",
   "aliases": [
    "Euroteuro",
@@ -1572,7 +1591,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "ASTORE (P38 GANG, IT) \"Non è un live rap\" - ONE STEP FORWARD Tour",
-  "url": "https://www.schokoladen-mitte.de/#e20270128",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270128",
   "opens": "2027-01-28",
   "aliases": []
  },
@@ -1588,7 +1607,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "remine [clicker voodoo noisepop°da 'rec release'] + Emperor X [experimental folk pop°jacksonville°bln]",
-  "url": "https://www.schokoladen-mitte.de/#e20270129",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270129",
   "opens": "2027-01-29",
   "aliases": []
  },
@@ -1622,7 +1641,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Whippets (grunge-gaze / garage-post-punk, us)",
-  "url": "https://www.schokoladen-mitte.de/#e20270130",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270130",
   "opens": "2027-01-30",
   "aliases": [
    "Whippets",
@@ -1633,7 +1652,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "KULK (Noise-Rock/Sludge, Norwich/UK) + tba",
-  "url": "https://www.schokoladen-mitte.de/#e20270204",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270204",
   "opens": "2027-02-04",
   "aliases": []
  },
@@ -1651,7 +1670,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Mahler/Fondermann & the beast (Indie_Punk/HH) + Litbarski (Punk/Bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20270206",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270206",
   "opens": "2027-02-06",
   "aliases": [
    "Mahler/Fondermann & the beast",
@@ -1678,7 +1697,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Venin Carmin (cold-punk / new-wave, fr)",
-  "url": "https://www.schokoladen-mitte.de/#e20270208",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270208",
   "opens": "2027-02-08",
   "aliases": [
    "Venin Carmin",
@@ -1689,7 +1708,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Johnny Dynamite (synth-pop, us)",
-  "url": "https://www.schokoladen-mitte.de/#e20270209",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270209",
   "opens": "2027-02-09",
   "aliases": [
    "Johnny Dynamite",
@@ -1708,7 +1727,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Daniel Benyamin (ghost-pop)",
-  "url": "https://www.schokoladen-mitte.de/#e20270210",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270210",
   "opens": "2027-02-10",
   "aliases": [
    "Daniel Benyamin",
@@ -1801,7 +1820,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "GLUT 'BURN' Tour 2027 + special guest",
-  "url": "https://www.schokoladen-mitte.de/#e20270215",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270215",
   "opens": "2027-02-15",
   "aliases": []
  },
@@ -1817,7 +1836,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Alien Chicks (post-punk/london)",
-  "url": "https://www.schokoladen-mitte.de/#e20270217",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270217",
   "opens": "2027-02-17",
   "aliases": [
    "Alien Chicks",
@@ -1836,7 +1855,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "The Klittens (post-punk, nl)",
-  "url": "https://www.schokoladen-mitte.de/#e20270218",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270218",
   "opens": "2027-02-18",
   "aliases": [
    "The Klittens",
@@ -1855,7 +1874,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "HERBST IN PEKING (dub post punk / bln) + TJ WHITE RABBIT (dub witch house / bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20270220",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270220",
   "opens": "2027-02-20",
   "aliases": [
    "HERBST IN PEKING",
@@ -1866,7 +1885,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Honig & Meursault - stupid love tour 2027! (2x folk / indie-pop / songwriter)",
-  "url": "https://www.schokoladen-mitte.de/#e20270222",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270222",
   "opens": "2027-02-22",
   "aliases": [
    "Honig & Meursault - stupid love tour 2027!",
@@ -1877,7 +1896,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "P.O. BOX (FR) | „The 25th-Something Anniversary Tour“ + guest",
-  "url": "https://www.schokoladen-mitte.de/#e20270223",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270223",
   "opens": "2027-02-23",
   "aliases": []
  },
@@ -1893,7 +1912,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Frau Vorne und die Hintermänner + Der Wankende Wolf (2x folk, ska, balkan, punk, rock, bln)",
-  "url": "https://www.schokoladen-mitte.de/#e20270226",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270226",
   "opens": "2027-02-26",
   "aliases": [
    "Frau Vorne und die Hintermänner + Der Wankende Wolf",
@@ -1936,7 +1955,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "🎸 The Overjoyed (powerpop, punk - Athen) + tba",
-  "url": "https://www.schokoladen-mitte.de/#e20270301",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270301",
   "opens": "2027-03-01",
   "aliases": []
  },
@@ -1952,7 +1971,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Palinstar (indie, zürich)",
-  "url": "https://www.schokoladen-mitte.de/#e20270303",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270303",
   "opens": "2027-03-03",
   "aliases": [
    "Palinstar",
@@ -1995,7 +2014,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "DORFTERROR (Punkrock/Oberbillig) + special guest",
-  "url": "https://www.schokoladen-mitte.de/#e20270306",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270306",
   "opens": "2027-03-06",
   "aliases": []
  },
@@ -2011,7 +2030,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Death By Horse (Punk/HC - SWE) + tba",
-  "url": "https://www.schokoladen-mitte.de/#e20270311",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270311",
   "opens": "2027-03-11",
   "aliases": []
  },
@@ -2035,7 +2054,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Chéri Chéri (glam-rock, paris)",
-  "url": "https://www.schokoladen-mitte.de/#e20270318",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270318",
   "opens": "2027-03-18",
   "aliases": [
    "Chéri Chéri",
@@ -2062,7 +2081,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Die Ausreden (PowerPunk/Bln) + Spandau (IndiePunk/HH)",
-  "url": "https://www.schokoladen-mitte.de/#e20270319",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270319",
   "opens": "2027-03-19",
   "aliases": [
    "Die Ausreden",
@@ -2113,7 +2132,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Jamie Perrett (post-punk/indie singer-songwriter, uk)",
-  "url": "https://www.schokoladen-mitte.de/#e20270322",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270322",
   "opens": "2027-03-22",
   "aliases": [
    "Jamie Perrett",
@@ -2144,7 +2163,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Desperate Journalist (post-punk/indie-rock, london)",
-  "url": "https://www.schokoladen-mitte.de/#e20270327",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270327",
   "opens": "2027-03-27",
   "aliases": [
    "Desperate Journalist",
@@ -2171,7 +2190,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Materazi Future Club (electro-punk, it)",
-  "url": "https://www.schokoladen-mitte.de/#e20270402",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270402",
   "opens": "2027-04-02",
   "aliases": [
    "Materazi Future Club",
@@ -2190,7 +2209,7 @@
   "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Norma",
-  "url": "https://www.staatsoper-berlin.de/en/programme/operas/",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/norma.15538/",
   "opens": "2027-04-03",
   "aliases": []
  },
@@ -2222,7 +2241,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "MUCK AND THE MIRES (Boston/ Garagerock) + special guest",
-  "url": "https://www.schokoladen-mitte.de/#e20270412",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270412",
   "opens": "2027-04-12",
   "aliases": []
  },
@@ -2286,7 +2305,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Marla Moya (Americana, Soft-Rock, Psychedelic Folk)",
-  "url": "https://www.schokoladen-mitte.de/#e20270421",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270421",
   "opens": "2027-04-21",
   "aliases": [
    "Marla Moya",
@@ -2307,6 +2326,14 @@
   "title": "Pure Obsessions & Red Nights + Nico Amara",
   "url": "https://www.urbanspree.com/program/concerts/pure-obsessions-and-red-nights-nico-amara-urban-spree-berlin.html",
   "opens": "2027-04-23",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Rigoletto",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/rigoletto.2774/",
+  "opens": "2027-04-24",
   "aliases": []
  },
  {
@@ -2369,7 +2396,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Bärchen und die Milchbubis (NDW/Pop/Punk) & Hatless Cat (Ska/Rocksteady)",
-  "url": "https://www.schokoladen-mitte.de/#e20270430",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270430",
   "opens": "2027-04-30",
   "aliases": [
    "Bärchen und die Milchbubis",
@@ -2388,7 +2415,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Lilac Attitude (indie-punk/ch)",
-  "url": "https://www.schokoladen-mitte.de/#e20270503",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270503",
   "opens": "2027-05-03",
   "aliases": [
    "Lilac Attitude",
@@ -2399,7 +2426,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Quivers (jangle-pop / indie-rock, aus)",
-  "url": "https://www.schokoladen-mitte.de/#e20270505",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270505",
   "opens": "2027-05-05",
   "aliases": [
    "Quivers",
@@ -2434,7 +2461,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Naima Bock (indie-folk/uk)",
-  "url": "https://www.schokoladen-mitte.de/#e20270513",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270513",
   "opens": "2027-05-13",
   "aliases": [
    "Naima Bock",
@@ -2461,7 +2488,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Malmequer & Friends",
-  "url": "https://www.schokoladen-mitte.de/#e20270516",
+  "url": "https://www.schokoladen-mitte.de/?page=9#e20270516",
   "opens": "2027-05-16",
   "aliases": []
  },
@@ -2541,7 +2568,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Dosenstolz (Punk/Dresden) + Eddie (Punk/Neuruppin)",
-  "url": "https://www.schokoladen-mitte.de/#e20270604",
+  "url": "https://www.schokoladen-mitte.de/?page=9#e20270604",
   "opens": "2027-06-04",
   "aliases": [
    "Dosenstolz",
