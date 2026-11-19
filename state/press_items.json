@@ -44,6 +44,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Dido & Aeneas",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
+  "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Sophiensæle",
   "title": "Antonia Baehr: Schreien (SCREAMING) II – Eine Forschungsreihe",
   "url": "https://sophiensaele.com/en/stueck/screaming-ii-eine-forschungsreihe",
@@ -94,7 +102,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Twelfth Night (Was ihr wollt)",
-  "url": "https://www.berliner-ensemble.de/index.php/en/production/twelfth-night-was-ihr-wollt",
+  "url": "https://www.berliner-ensemble.de/en/production/twelfth-night-was-ihr-wollt",
   "opens": "2026-12-08",
   "aliases": [
    "Twelfth Night",
@@ -164,7 +172,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "De Profundis",
-  "url": "https://www.berliner-ensemble.de/index.php/en/production/de-profundis",
+  "url": "https://www.berliner-ensemble.de/en/production/de-profundis",
   "opens": "2027-01-09",
   "aliases": []
  },
@@ -555,7 +563,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Blechtrommel (The Tin Drum)",
-  "url": "https://www.berliner-ensemble.de/index.php/en/production/tin-drum",
+  "url": "https://www.berliner-ensemble.de/en/production/tin-drum",
   "opens": "2026-11-25",
   "aliases": [
    "Die Blechtrommel",
@@ -619,14 +627,6 @@
   "title": "COOGANS BLUFF 10 Years Of Flying To The Stars",
   "url": "https://www.urbanspree.com/program/concerts/coogans-bluff-10-years-of-flying-to-the-stars.html",
   "opens": "2026-11-26",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Sophiensæle",
-  "title": "Simone Dede Ayivi & Kompliz*innen: Schwarze Leute – Reclaiming Memories",
-  "url": "https://sophiensaele.com/en/stueck/schwarze-leute-reclaiming-memories",
-  "opens": "2026-11-27",
   "aliases": []
  },
  {
@@ -706,6 +706,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Die Zauberflöte",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
+  "opens": "2026-11-29",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schaubühne",
   "title": "Bad Kingdom",
   "url": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
@@ -744,14 +752,6 @@
   "venue": "Maxim Gorki Theater",
   "title": "The Hearing Trumpet",
   "url": "https://www.gorki.de/en/the-hearing-trumpet",
-  "opens": "2026-12-03",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Die Zauberflöte",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
   "opens": "2026-12-03",
   "aliases": []
  },
@@ -1069,6 +1069,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Nabucco",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/nabucco.15505/",
+  "opens": "2026-12-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Maxime Pascal makes his debut with Berlioz’s “L’Enfance du Christ”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57079/",
@@ -1195,7 +1203,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "It's Britney, Bitch!",
-  "url": "https://www.berliner-ensemble.de/index.php/en/production/its-britney-bitch",
+  "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
   "opens": "2026-12-26",
   "aliases": []
  },
@@ -1221,7 +1229,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/index.php/en/inszenierung/die-dreigroschenoper",
+  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
   "opens": "2026-12-27",
   "aliases": [
    "Die Dreigroschenoper",
@@ -1259,7 +1267,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "The Arsonists (Biedermann und die Brandstifter)",
-  "url": "https://www.berliner-ensemble.de/index.php/en/production/arsonists-biedermann-und-die-brandstifter",
+  "url": "https://www.berliner-ensemble.de/en/production/arsonists-biedermann-und-die-brandstifter",
   "opens": "2026-12-31",
   "aliases": [
    "The Arsonists",
@@ -1381,7 +1389,7 @@
   "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Salome",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/salome.96/",
+  "url": "https://www.staatsoper-berlin.de/en/programme/operas/",
   "opens": "2027-01-10",
   "aliases": []
  },
@@ -2182,7 +2190,7 @@
   "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Norma",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/norma.15538/",
+  "url": "https://www.staatsoper-berlin.de/en/programme/operas/",
   "opens": "2027-04-03",
   "aliases": []
  },
@@ -2303,14 +2311,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Rigoletto",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/rigoletto.2774/",
-  "opens": "2027-04-24",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Nabucco",
   "url": "https://deutscheoperberlin.de/en_EN/production/nabucco.1385815",
@@ -2364,6 +2364,17 @@
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57152/",
   "opens": "2027-04-30",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Schokoladen",
+  "title": "Bärchen und die Milchbubis (NDW/Pop/Punk) & Hatless Cat (Ska/Rocksteady)",
+  "url": "https://www.schokoladen-mitte.de/#e20270430",
+  "opens": "2027-04-30",
+  "aliases": [
+   "Bärchen und die Milchbubis",
+   "NDW/Pop/Punk) & Hatless Cat (Ska/Rocksteady"
+  ]
  },
  {
   "kind": "theatre",
