@@ -102,6 +102,8 @@ def parse_schokoladen(html: str, base: str = _SK_BASE, today: Optional[date] = N
         ticket = info.select_one("a.ticket-btn[href]")
         promoter = _clean((ev.select_one(".promoter") or BeautifulSoup("", "html.parser")).get_text(" ")).rstrip(":").strip()
         promoter = re.sub(r"\s*(?:prsnt|presents?|präsentiert)\s*:?\s*$", "", promoter, flags=re.I).strip()
+        if re.search(r"nur\s+noch|restkarten|tickets?\b|ausverkauft|sold\s*out|few\s+left|last\s+tickets", promoter, re.I):
+            promoter = ""                         # « Nur noch 10 » = état de la billetterie, pas un organisateur
         lo, hi = parse_range(facts_txt)
         anchor = info.get("id") or ""
         shows.append(Show(
