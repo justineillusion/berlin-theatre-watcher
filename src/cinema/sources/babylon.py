@@ -77,7 +77,12 @@ def _details(url: str, cache: Dict[str, dict]) -> dict:
         info["credit"] = credit
         info.update(parse_credit_line(credit))
         # résumé : 1er paragraphe long (souvent allemand, parfois ES puis EN)
-        info["description"] = next((ln for ln in lines[1:12] if len(ln) > 120), None)
+        # Séances spéciales : le texte suit « EVENT DESCRIPTION » / « Beschreibung », plus bas.
+        head = next((i for i, ln in enumerate(lines) if re.fullmatch(r"(event\s+)?(description|beschreibung|inhalt|about)\s*:?", ln, re.I)), None)
+        pool = lines[head + 1:head + 8] if head is not None else lines[1:25]
+        # Pas une liste de crédits (« ARTISTS: … | DURATION: … »), pas une ligne de films.
+        info["description"] = next((ln for ln in pool if len(ln) > 120 and "|" not in ln
+                                    and not re.match(r"^[A-ZÄÖÜ\- ]{4,}:", ln)), None)
     except Exception as exc:  # noqa: BLE001
         info["error"] = str(exc)
     cache[url] = info
