@@ -498,7 +498,7 @@ html{background:var(--bg)}
 .tabs::after{content:"";position:absolute;left:0;right:0;top:100%;height:120px;background:var(--bg);pointer-events:none}
 /* Zone de la barre d'accueil iPhone : chaque onglet descend jusqu'au bord (l'onglet actif noir aussi), plus de bande blanche. */
 .tabs{padding-bottom:0}
-.tabs .tab{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+.tabs .tab{padding:12px 4px max(10px, calc(env(safe-area-inset-bottom,0px) - 12px))}
 
 /* Filtre par lieu : « Lieux ▾ », pastilles, bande du lieu, panneau en ligne. */
 .vbtn{flex:none;border:1px solid var(--tagb);background:var(--bg);color:var(--ink);font:700 13px var(--sans);padding:5px 9px;min-height:32px}
@@ -1783,8 +1783,7 @@ function render() {
     const focused = st.focus && xs.find((x) => x.id === st.focus) || (st.focus && st.kind === "all" && !vfOn && S.items.find((x) => x.id === st.focus));
     if (focused) { h += dayHead(T.shared) + item(focused); xs = xs.filter((x) => x.id !== st.focus); }
     // Dans chaque jour, ce qui tente mes amis (ou moi) d'abord, puis l'heure.
-    const pull = (x) => (x.me && (x.me.star || x.me.booked)) || (x.friends || []).some((p) => (p.star || p.booked) && !p.seen) ? 0 : 1;
-    const shows = xs.filter((x) => x.kind !== "expo").sort((a, b) => next(a).slice(0, 10).localeCompare(next(b).slice(0, 10)) || pull(a) - pull(b) || next(a).localeCompare(next(b)));
+    const shows = xs.filter((x) => x.kind !== "expo").sort((a, b) => next(a).localeCompare(next(b)) || a.title.localeCompare(b.title));   // l'heure fait l'ordre (colonne heure)
     const expos = xs.filter((x) => x.kind === "expo").sort((a, b) => (a.end || "9").localeCompare(b.end || "9"));
     let cur = "";
     for (const x of shows) { const d = next(x).slice(0, 10); if (d !== cur) { h += feedHead(d); cur = d; } h += unf(x, item(x)); }
