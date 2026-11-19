@@ -57,8 +57,10 @@ def schokoladen(url: str = _SK_BASE) -> List[Show]:
     shows: List[Show] = []
     seen: set = set()
     for page in range(1, _SK_MAX_PAGES + 1):
-        html = fetch_html(url if page == 1 else urljoin(url, f"?page={page}"))
-        got = [s for s in parse_schokoladen(html, url) if (s.date, s.title) not in seen]
+        page_url = url if page == 1 else urljoin(url, f"?page={page}")
+        html = fetch_html(page_url)
+        # Lien = la page où le bloc se trouve (+ #ancre) : le résumé est lu dans ce bloc-là.
+        got = [s for s in parse_schokoladen(html, page_url) if (s.date, s.title) not in seen]
         if not got and page > 1:
             break
         for s in got:
@@ -99,7 +101,9 @@ def parse_schokoladen(html: str, base: str = _SK_BASE, today: Optional[date] = N
         title = re.sub(r"^\s*(?:ausverkauft|sold\s*out)\s*!*\s*[-–:]?\s*", "", title, flags=re.I) or title
         ticket = info.select_one("a.ticket-btn[href]")
         promoter = _clean((ev.select_one(".promoter") or BeautifulSoup("", "html.parser")).get_text(" ")).rstrip(":").strip()
-        promoter = re.sub(r"\s*(?:prsnt|presents?|präsentiert)\s*:?\s*$", "", promoter, flags=re.I).strip()
+        promoter = re.sub(r"\s*(?:prsnts?|presents?|präsentiert|booking)\s*:?\s*$", "", promoter, flags=re.I).strip()
+        if re.search(r"nur\s+noch|restkarten|tickets?\b|ausverkauft|sold\s*out|few\s+left|last\s+tickets", promoter, re.I):
+            promoter = ""                         # « Nur noch 10 » = état de la billetterie, pas un organisateur
         lo, hi = parse_range(facts_txt)
         anchor = info.get("id") or ""
         shows.append(Show(
@@ -207,7 +211,8 @@ def parse_urban_spree_event(html: Optional[str], card: dict) -> Optional[Show]:
         lo, hi = parse_range(_clean(price.get_text(" "))) if price else (None, None)
         btn = next((a for a in soup.find_all("a", href=True)
                     if re.search(r"tickets?", a.get_text(" "), re.I) and a["href"].startswith("http")), None)
-        booking = btn["href"].strip() if btn else None
+        booking = re.sub(r"[?&](?:fbclid|utm_[a-z]+|clickId|irgwc|ircid|afsrc|camefrom)=[^&#]*", "", btn["href"].strip()) if btn else None
+        booking = re.sub(r"^([^?#]*)&", r"\1?", booking) if booking else None
         head = _clean(" ".join(x.get_text(" ") for x in soup.select(".ct-price, h1, .ct-btns")))
         sold = True if _SOLD.search(head) else None
         full = _clean(soup.get_text(" "))

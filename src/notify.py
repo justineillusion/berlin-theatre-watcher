@@ -10,7 +10,7 @@ import httpx
 
 from . import price
 from .language import is_pure_language_note, strip_language_notes, to_english_labels
-from .models import Show
+from .models import Show, english_title
 
 _API = "https://api.telegram.org/bot{token}/sendMessage"
 
@@ -172,7 +172,19 @@ def clean_credits(text: str) -> str:
 
 
 _CREDIT_WORDS = {
-    "fr": [(r"\btranslation by\b", "traduction de"), (r"\bin an adaptation by\b", "dans une adaptation de"), (r"\bin collaboration with\b", "en collaboration avec"),
+    "fr": [(r"\b(?:a|an) project by\b", "un projet de"), (r"\b(?:a|an) play by\b", "une pièce de"),
+           (r"\b(?:a|an) opera by\b", "un opéra de"), (r"\b(?:a|an) musical by\b", "une comédie musicale de"),
+           (r"\b(?:based on|after) the graphic novel by\b", "d'après le roman graphique de"),
+           (r"\b(?:based on|after) the novella by\b", "d'après la nouvelle de"),
+           (r"\b(?:based on|after) the novel by\b", "d'après le roman de"),
+           (r"\b(?:based on|after) the (?:short )?story by\b", "d'après le récit de"),
+           (r"\b(?:based on|after) the play by\b", "d'après la pièce de"),
+           (r"\b(?:based on|after) the film by\b", "d'après le film de"),
+           (r"\b(?:based on|after) motifs? (?:from|by)\b", "d'après des motifs de"),
+           (r"\btranslated from (?:the )?English by\b", "traduit de l'anglais par"),
+           (r"\btranslated from (?:the )?(\w+) by\b", r"traduit du \1 par"),
+           (r"\bbased on\b", "d'après"),
+           (r"\btranslation by\b", "traduction de"), (r"\bin an adaptation by\b", "dans une adaptation de"), (r"\bin collaboration with\b", "en collaboration avec"),
            (r"\badapted by\b", "adapté par"), (r"\bdirected by\b", "mis en scène par"), (r"^\s*(?:by|von)\b", "De"),
            (r"\bafter\b|\bnach\b", "d'après"), (r"\bby\b|\bvon\b", "de"), (r"\band\b|\bund\b", "et"),
            (r"\(Book\)", "(livret)"), (r"\(Music\)", "(musique)"), (r"\bDirector:", "Mise en scène :"),
@@ -190,8 +202,13 @@ def synopsis_block(escaped: str) -> str:
 def credits_line(text: str, lang: str = "fr") -> str:
     """Crédits nettoyés, connecteurs dans la langue de la fiche (« By X and Y » -> « De X et Y »)."""
     t = clean_credits(text)
+    # Particule dans un nom (« Heinrich von Kleist ») : protégée des règles « von -> de / by ».
+    t = re.sub(r"(\b[A-ZÄÖÜ][a-zäöüß]+) von (?=[A-ZÄÖÜ])", "\\1 \u2063 ", t)
     for pat, rep in _CREDIT_WORDS.get(lang, []):
         t = re.sub(pat, rep, t, flags=re.I)
+    t = t.replace(" \u2063 ", " von ")
+    if lang == "fr" and t[:1].islower():
+        t = t[0].upper() + t[1:]
     if lang == "fr":                        # élision : « D'Oscar Wilde », « d'Elisabeth »
         t = re.sub(r"\b([Dd])e ([AEIOUÉÈÂÎaeiouéèâî])", r"\1'\2", t)
     return t
@@ -300,7 +317,9 @@ def format_show(show: Show, lang: str = "fr") -> str:
     """Fiche (HTML) d'une pièce — même gabarit que les expos et les films :
     titre · 📍 lieu · 🗓 dates · 🗣 langue · ★ note (si connue) · 📝 description · liens."""
     en = lang == "en"
-    lines = [f"🎭 <b>{_esc(show.title)}</b>"]
+    en_t, orig_t = english_title(show.title)
+    concert = (show.production_type or "").startswith("Concert")
+    lines = [f"{'🎵' if concert else '🎭'} <b>{_esc(en_t)}</b>" + (f" — <i>{_esc(orig_t)}</i>" if orig_t else "")]
     lines.append(f"📍 {_esc(show.theater)}" + (f" · {_esc(show.venue)}" if show.venue else ""))
     if show.new_dates:
         lines.append("🆕 New dates for a play already announced" if en
@@ -317,7 +336,7 @@ def format_show(show: Show, lang: str = "fr") -> str:
     # Disponibilité inconnue : on n'écrit rien (docs/ux.md, zéro remplissage).
     # « In English » en 🎬 = la langue jouée, déjà dite (traduite) par 🗣 : pas de doublon.
     if show.production_type and not is_pure_language_note(show.production_type):
-        lines.append(f"🎬 {_esc(show.production_type)}")
+        lines.append(f"{'🎸' if concert else '🎬'} {_esc(show.production_type)}")
     credits = strip_language_notes(show.languages)   # la langue est dite une fois, par 🗣
     if credits:
         lines.append(f"✍️ {_esc(credits_line(credits, lang))}")
@@ -334,7 +353,7 @@ def format_show(show: Show, lang: str = "fr") -> str:
     if show.booking_url:
         links.append(f'🎟 <a href="{html.escape(show.booking_url)}">{"Book" if en else "Réserver"}</a>')
     if show.url:
-        links.append(f'🔗 <a href="{html.escape(show.url)}">{"Play page" if en else "Page de la pièce"}</a>')
+        links.append(f'🔗 <a href="{html.escape(show.url)}">{("Event page" if concert else "Play page") if en else ("Page du concert" if concert else "Page de la pièce")}</a>')
     if links:
         lines.append("\n" + " · ".join(links))
     return "\n".join(lines)

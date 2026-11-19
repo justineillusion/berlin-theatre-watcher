@@ -133,7 +133,7 @@ def _short_rating(film: Film, link: bool, lang: str = "fr") -> str:
 
 def _names(film: Film, full: bool, lang: str = "fr") -> str:
     sc = film.senscritique
-    orig = (sc.original_title if sc and sc.original_title else None) or film.original_title or film.title
+    orig = film.display_title
     out = f"<b>{esc(orig)}</b>" if full else esc(orig)
     # Titre français (SensCritique) : seulement pour qui lit en français.
     if lang == "fr" and full and sc and sc.title and norm_title(sc.title) != norm_title(orig):

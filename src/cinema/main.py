@@ -363,8 +363,7 @@ def _film_item(f: Film, by_id: Dict[str, str]) -> dict:
     return {
         "id": f.item_id(),
         "venue_id": names.get(first.cinema, cinema_venue_id(first.cinema)),
-        "title": (f.senscritique.original_title if f.senscritique and f.senscritique.original_title else None)
-                 or f.original_title or f.title,
+        "title": f.display_title,
         "url": first.url,
         "dates": sorted({s.start.astimezone(_TZ).strftime("%Y-%m-%d %H:%M") for s in f.screenings}),
         "text": film_card(f, "fr"), "line": film_line(f, "fr"),

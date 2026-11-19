@@ -114,9 +114,12 @@ def version_filter(film: Film, cfg: dict) -> Optional[str]:
     keep: List[Screening] = []
     accepted = cfg.get("accept_versions") or ["OmeU", "OmU", "OV", "muet", None]
     for s in film.screenings:
-        if s.version in ("DF", "DE"):
+        if german and s.version not in ("OmeU", "muet"):
+            # Film allemand sans sous-titres anglais : inaccessible à un·e anglophone (public de l'app).
+            film.dropped_screenings.append(f"{s.cinema} {s.start:%a %d %H:%M} (VO allemande sans sous-titres anglais)")
+        elif s.version in ("DF", "DE"):
             if german:
-                s.version = "DE"              # VO allemande : parfait
+                s.version = "DE"
                 keep.append(s)
             elif cfg.get("exclude_dubbed", True):
                 film.dropped_screenings.append(f"{s.cinema} {s.start:%a %d %H:%M} (VF allemande)")
@@ -130,7 +133,7 @@ def version_filter(film: Film, cfg: dict) -> Optional[str]:
         else:
             film.dropped_screenings.append(f"{s.cinema} {s.start:%a %d %H:%M} ({s.version})")
     if not keep:
-        return "seulement en version allemande doublée"
+        return "seulement en allemand (doublé ou VO sans sous-titres anglais)"
     film.screenings = keep
     return None
 
