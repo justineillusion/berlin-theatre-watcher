@@ -92,7 +92,8 @@ def main() -> int:
     for r in rows:
         key = (r["kind"], norm(r["title"]), "" if r["kind"] == "film" else r["venue_id"])
         by[key].append(r)
-        if r["url"]:
+        # Même lien : seulement si c'est la page d'une œuvre (une page programme partagée n'est pas un doublon).
+        if r["url"] and r["kind"] != "film" and not re.search(r"/(programm?e?|spielplan|program|operas?|calendar)/?(\.html)?$", r["url"]):
             by[("url", r["url"], r["venue_id"])].append(r)
     for k, rs in by.items():
         if len({x["id"] for x in rs}) > 1:
