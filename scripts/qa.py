@@ -6,6 +6,7 @@
 Contrôles (docs/ux.md : zéro remplissage, jamais de lien mort) :
   links      : chaque lien de la fiche (page, billets) répond (HTTP < 400)
   synopsis   : pièce / film / expo sans bloc 📝 (description)
+  synopsis_repeat : même 📝 sur des fiches différentes
   duplicate  : même œuvre deux fois (titre normalisé, ou même lien, ou mêmes séances)
   mixed      : générique traduit à moitié (« a project de », « based on the novella de »)
   empty      : à l'affiche sans aucune date (ni libre ni complète)
@@ -99,6 +100,15 @@ def main() -> int:
         if len({x["id"] for x in rs}) > 1:
             issues["duplicate"].append(" = ".join(sorted({f"{x['venue']} · {x['title']}" for x in rs})))
     issues["duplicate"] = sorted(set(issues["duplicate"]))
+    # Même 📝 sur plusieurs fiches différentes = résumé lu au mauvais endroit (ex. page d'agenda unique).
+    syn = defaultdict(list)
+    for r in rows:
+        m = re.search(r"📝 (.{80})", r["text"] or "")
+        if m:
+            syn[m.group(1)].append(r)
+    for t, rs in syn.items():
+        if len({norm(x["title"]) for x in rs}) > 1:
+            issues["synopsis_repeat"].append(f"{len(rs)} fiches · {rs[0]['venue']} : « {t[:50]}… »")
     # Lieux maigres
     per = defaultdict(int)
     for r in rows:
@@ -117,14 +127,14 @@ def main() -> int:
                     bucket = "links_unverifiable" if _SHOPS.search(u) and not isinstance(code, int) or (_SHOPS.search(u) and code in (401, 403)) else "links"
                     issues[bucket].append(f"{code} {u[:110]}  ({'; '.join(who)})")
     print(f"QA : {len(rows)} fiches, {len(per)} lieux")
-    for k in ["links", "duplicate", "mixed", "empty", "synopsis", "synopsis_optional", "venue_low", "links_unverifiable"]:
+    for k in ["links", "duplicate", "synopsis_repeat", "mixed", "empty", "synopsis", "synopsis_optional", "venue_low", "links_unverifiable"]:
         xs = issues.get(k, [])
         print(f"\n[{k}] {len(xs)}")
         for x in xs[:40]:
             print("  -", x)
         if len(xs) > 40:
             print(f"  … +{len(xs) - 40}")
-    return 1 if any(issues.get(k) for k in ("links", "duplicate", "mixed", "empty")) else 0
+    return 1 if any(issues.get(k) for k in ("links", "duplicate", "synopsis_repeat", "mixed", "empty")) else 0
 
 
 if __name__ == "__main__":

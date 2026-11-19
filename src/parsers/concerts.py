@@ -57,8 +57,10 @@ def schokoladen(url: str = _SK_BASE) -> List[Show]:
     shows: List[Show] = []
     seen: set = set()
     for page in range(1, _SK_MAX_PAGES + 1):
-        html = fetch_html(url if page == 1 else urljoin(url, f"?page={page}"))
-        got = [s for s in parse_schokoladen(html, url) if (s.date, s.title) not in seen]
+        page_url = url if page == 1 else urljoin(url, f"?page={page}")
+        html = fetch_html(page_url)
+        # Lien = la page où le bloc se trouve (+ #ancre) : le résumé est lu dans ce bloc-là.
+        got = [s for s in parse_schokoladen(html, page_url) if (s.date, s.title) not in seen]
         if not got and page > 1:
             break
         for s in got:

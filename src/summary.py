@@ -321,9 +321,19 @@ _EXTRACTORS = {
 }
 
 
-def summary_from_html(theater: str, html: str) -> Optional[str]:
-    """Résumé (2–3 phrases) d'une page détail déjà téléchargée, ou None."""
+def summary_from_html(theater: str, html: str, anchor: Optional[str] = None) -> Optional[str]:
+    """Résumé (2–3 phrases) d'une page détail déjà téléchargée, ou None.
+
+    `anchor` : page d'agenda unique (Schokoladen, « …/#e20261120 ») — on ne lit que le
+    bloc de cet id ; sans ce bloc, pas de résumé (jamais celui d'un autre événement)."""
     soup = BeautifulSoup(html, "html.parser")
+    if anchor:
+        block = soup.find(id=anchor)
+        if not block:
+            return None
+        desc = block.select_one(".event-description")
+        text = _clean(desc.get_text(" ")) if desc else None
+        return _trim(text) if text and is_synopsis(text) else None
     _strip_consent(soup)                     # bandeaux cookies : jamais un résumé
     extractor = _EXTRACTORS.get(theater)
     text = None
@@ -354,8 +364,9 @@ def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Opti
         html = fetch_html(url)
     except Exception:  # noqa: BLE001 — un résumé manquant n'est pas bloquant
         return None, None
+    anchor = url.split("#", 1)[1] if "#" in url else None
     page_text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
-    return summary_from_html(theater, html), page_text
+    return summary_from_html(theater, html, anchor), page_text
 
 
 def fetch_summary(theater: str, url: Optional[str]) -> Optional[str]:
