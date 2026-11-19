@@ -66,3 +66,12 @@ def test_german_film_without_english_subtitles_is_dropped():
     assert version_filter(Film(key="h", screenings=[mk("DF")]), {}) is not None
     f = Film(key="h", screenings=[mk("DF"), mk("OmeU")])
     assert version_filter(f, {}) is None and [s.version for s in f.screenings] == ["OmeU"]
+
+
+def test_same_cinema_same_time_listed_once():
+    from datetime import datetime
+    from src.cinema.main import group
+    from src.cinema.models import Screening
+    t = datetime(2026, 11, 23, 20)
+    f = group([Screening(cinema="Intimes", start=t, title="You Can See Everything", booking_url=u) for u in ("a", "b")])
+    assert len(f) == 1 and len(f[0].screenings) == 1

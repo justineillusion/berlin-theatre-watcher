@@ -135,8 +135,12 @@ def _names(film: Film, full: bool, lang: str = "fr") -> str:
     sc = film.senscritique
     orig = film.display_title
     out = f"<b>{esc(orig)}</b>" if full else esc(orig)
+    # Titre original quand l'affiché est le titre anglais (« Ghost in the Shell / Kôkaku kidôtai »).
+    first = (sc.original_title if sc and sc.original_title else None) or film.original_title or film.title
+    if full and first and norm_title(first) != norm_title(orig):
+        out += f" / <i>{esc(first)}</i>"
     # Titre français (SensCritique) : seulement pour qui lit en français.
-    if lang == "fr" and full and sc and sc.title and norm_title(sc.title) != norm_title(orig):
+    if lang == "fr" and full and sc and sc.title and norm_title(sc.title) not in (norm_title(orig), norm_title(first or "")):
         out += f" — <i>{esc(sc.title)}</i>"
     dirs = film.directors[:2]
     if not full:

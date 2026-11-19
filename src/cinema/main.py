@@ -147,7 +147,13 @@ def coverage_lines(known_until: Dict[str, Optional[date]], names: List[str], win
 
 def group(screenings: List[Screening]) -> List[Film]:
     films: Dict[str, Film] = {}
+    seen: set = set()
     for s in screenings:
+        # Même film, même cinéma, même heure (2 salles / 2 fiches billetterie) : une seule séance affichée.
+        slot = (norm_title(s.original_title or s.title), s.cinema, s.start)
+        if slot in seen:
+            continue
+        seen.add(slot)
         key = norm_title(s.original_title or s.title) or norm_title(s.title) or s.title.lower()
         if key in films:
             films[key].screenings.append(s)

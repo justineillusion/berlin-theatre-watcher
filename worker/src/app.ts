@@ -272,7 +272,11 @@ async function emailLogin(env: Env, path: string, body: any, ip = ""): Promise<R
   if (path === "/app/api/teaser") return Response.json(await teaser(env));
   // 🔍 Recherche : titre, lieu, équipe (texte de la fiche), dans TOUS les lieux actifs.
   // Données publiques (ce que montre déjà /programme) : pas besoin d'être connecté·e.
-  if (path === "/app/api/search") return Response.json(await search(env, String(body.q ?? ""), asLang(body.lang)));
+  if (path === "/app/api/search") {
+    // { venues: [id…] } : toute la programmation de ces lieux (filtre « Lieux », suivis ou non).
+    const ids = Array.isArray(body.venues) ? body.venues.map(String).filter((v: string) => /^[\w-]{1,60}$/.test(v)).slice(0, 30) : [];
+    return Response.json(await search(env, String(body.q ?? ""), asLang(body.lang), ids));
+  }
   if (path === "/app/api/guest") {
     const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
     return Response.json(await guestState(env, asLang(body.lang), focus));
@@ -703,9 +707,29 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
 /** Page d'accueil (non connecté·e) : quelques séances des 7 prochains jours, données publiques du programme. */
 const fold = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ß/g, "ss").toLowerCase();
 let searchCache: { at: number; rows: any[] } | null = null;
-async function search(env: Env, q: string, lang: Lang) {
+/** Un item vu depuis un ou plusieurs lieux. Pièce/expo : son lieu. Film : il est rangé sous le
+ *  cinéma de sa 1re séance, mais sa fiche liste chaque cinéma (« 📍 <a>Babylon</a> (OmeU) : sam. 21 18:00 · … ») :
+ *  on garde le film s'il passe dans un des lieux demandés, avec les seules séances de ces lieux. */
+function venueSlice(r: any, vs: { id: string; name: string }[]): any | null {
+  if (r.kind !== "film") return vs.some((v) => v.id === r.venue_id) ? r : null;
+  const keep = new Set<string>();
+  let found = false;
+  for (const line of String(r.text || "").split("\n")) {
+    if (!line.startsWith("📍")) continue;
+    const plain = line.replace(/<[^>]*>/g, "");
+    const v = vs.find((x) => plain.slice(2).trimStart().startsWith(x.name));
+    if (!v) continue;
+    found = true;
+    for (const m of plain.matchAll(/(\d{1,2})\s+(\d{1,2}:\d{2})/g)) keep.add(`${m[1].padStart(2, "0")} ${m[2].padStart(5, "0")}`);
+  }
+  if (!found) return vs.some((v) => v.id === r.venue_id) ? r : null;
+  const dates = (JSON.parse(r.dates || "[]") as string[]).filter((d) => keep.has(`${d.slice(8, 10)} ${d.slice(11, 16)}`));
+  return dates.length ? { ...r, dates: JSON.stringify(dates), venue: vs.find((x) => String(r.text).includes(`>${x.name}<`))?.name ?? r.venue } : null;
+}
+
+async function search(env: Env, q: string, lang: Lang, venueIds: string[] = []) {
   const words = fold(q).replace(/<[^>]*>/g, " ").split(/[^a-z0-9]+/).filter((w) => w.length >= 2).slice(0, 6);
-  if (!words.length) return { q, items: [], venues: [] };
+  if (!words.length && !venueIds.length) return { q, items: [], venues: [] };
   if (!searchCache || Date.now() - searchCache.at > 60_000) {
     const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
     const { results } = await env.DB.prepare(
@@ -717,6 +741,17 @@ async function search(env: Env, q: string, lang: Lang) {
     searchCache = { at: Date.now(), rows: results.map((r) => ({ r, hay: fold(`${r.title} ${r.venue} ${(r.text || "").replace(/<[^>]*>/g, " ")}`) })) };
   }
   const hit = (h: string) => words.every((w) => h.includes(w));
+  if (venueIds.length) {
+    const want = new Set(venueIds);
+    const { results: vs } = await env.DB.prepare("SELECT id, name, kind, optional FROM venues WHERE active = 1").all<any>();
+    return {
+      q, venueIds,
+      items: searchCache.rows.map((x) => venueSlice(x.r, vs.filter((v) => want.has(v.id))))
+        .filter((r): r is any => !!r && hit(fold(`${r.title} ${r.venue} ${(r.text || "").replace(/<[^>]*>/g, " ")}`)))
+        .map((r) => shapeItem(r, null, [], lang)),
+      venues: vs.filter((v) => want.has(v.id)).map((v) => ({ ...v, district: DISTRICT[v.id] ?? null })),
+    };
+  }
   const rows = searchCache.rows.filter((x) => hit(x.hay))
     // Le titre d'abord, puis le lieu, puis le reste (équipe, résumé).
     .map((x) => ({ ...x, rank: hit(fold(x.r.title)) ? 0 : hit(fold(x.r.venue)) ? 1 : 2 }))
