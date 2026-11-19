@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1795008104.966521,
+    "at": 1795095858.0916908,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1795008116.8768888,
+    "at": 1795095871.1385338,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1795008098.6679344,
+    "at": 1795095851.0177617,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -1800,7 +1800,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1795008111.9938602,
+    "at": 1795095865.7328022,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -2643,7 +2643,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/hamlet-berliner-ensemble": {
-   "at": 1794834122.071507,
+   "at": 1795095875.8750563,
    "published": 1793957711.0,
    "scores": [
     0.0,
@@ -2770,6 +2770,20 @@
    "published": 1202132697.0,
    "scores": [
     0.3107
+   ],
+   "theater_ok": true
+  },
+  "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrfestspiele-recklinghausen/polaris-ruhrfestspiele-recklinghausen-deutsches-theater-berlin-jan-christoph-gockels-antarktis-befragung": {
+   "at": 1795095971.443626,
+   "published": 1779176820.0,
+   "scores": [
+    -0.5,
+    0.0,
+    -0.5833,
+    0.6667,
+    0.0,
+    -0.6774,
+    0.1889
    ],
    "theater_ok": true
   },
@@ -3679,12 +3693,365 @@
     ]
    ]
   },
+  "Absteige (nndw) + Yakama (alternative, saarbrücken) + nobis": {
+   "at": 1795096055.7968323,
+   "results": []
+  },
+  "Antonia Baehr": {
+   "at": 1795095882.9105203,
+   "results": [
+    [
+     "Gut gemacht! – Schauspiel Leipzig – Antonia Baehr und Kolleg*innen stellen mit Vorbildern aus der DDR-Kunst die Frage nach der Qualität",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/leipzig1/schauspiel-leipzig/gut-gemacht-schauspiel-leipzig-antonia-baehr-und-kolleg-innen-stellen-mit-vorbildern-aus-der-ddr-kunst-die-frage-nach-der-qualitaet",
+     "2025-12-18T08:36:54+01:00"
+    ],
+    [
+     "Kanon – HAU Berlin – She She Pop feiert das Bleibende der Postdramatik",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin/kanon-hau-berlin-she-she-pop-feiert-das-bleibende-der-postdramatik",
+     "2019-11-22T23:20:00+01:00"
+    ],
+    [
+     "EXIT – Antonia Baehrs neue Lecture-Performance über Notausgangslichter am Mousonturm Frankfurt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/kuenstlerhaus-mousonturm-frankfurt/exit-antonia-baehrs-neue-lecture-performance-ueber-notausgangslichter-am-mousonturm-frankfurt",
+     "2018-02-08T22:00:00+01:00"
+    ],
+    [
+     "Abecedarium bestiarium – Beim Brüsseler Kunstenfestivaldesarts lässt Antonia Baehr Wesen zwischen Mensch und Tier Freundschaften porträtieren",
+     "https://nachtkritik.de/nachtkritiken/belgien/bruessel/kunstenfestivaldesarts-bruessel/abecedarium-bestiarium-",
+     "2013-05-03T07:58:51+02:00"
+    ],
+    [
+     "PAZZ – Das 3. internationale Festival der Performing Arts am Staatstheater Oldenburg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/oldenburg/pazz-festival-oldenburg/pazz-das-3-internationale-festival-der-performing-arts-am-staatstheater-oldenburg",
+     "2012-04-29T07:51:17+02:00"
+    ]
+   ]
+  },
+  "Apart": {
+   "at": 1795095956.751835,
+   "results": [
+    [
+     "Die Möwe – Düsseldorfer Schauspielhaus – Barbara Frey inszeniert Anton Tschechow",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/duesseldorf/duesseldorfer-schauspielhaus/die-moewe-duesseldorfer-schauspielhaus-barbara-frey-anton-tschechow",
+     "2026-10-17T09:38:49+02:00"
+    ],
+    [
+     "Bye Bye Lolita – Residenztheater München – Nora Schlocker bringt Lea Ruckpauls Lolita-Kontergesang auf die Bühne",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/residenztheater/bye-bye-lolita-residenztheater-muenchen-nora-schlocker-bringt-lea-ruckpauls-lolita-kontergesang-auf-die-buehne",
+     "2026-10-02T07:52:02+02:00"
+    ],
+    [
+     "Das Rheingold – Staatstheater Meiningen – Malerfürst Markus Lüpertz bringt den ersten Teil von Richard Wagners Ring-Tetralogie auf die Bühne",
+     "https://nachtkritik.de/nachtkritiken/deutschland/thueringen/meiningen/staatstheater-meiningen/das-rheingold-staatstheater-meiningen-malerfuerst-markus-luepertz-bringt-den-ersten-teil-von-richard-wagners-ring-tetralogie-auf-die-buehne",
+     "2026-03-28T08:20:05+01:00"
+    ],
+    [
+     "Don Karlos (A New Morning) – Theater Bonn – Felix Krakau überschreibt Schiller als politdramatische Familien-Soap",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bonn/schauspiel-bonn/don-karlos-a-new-morning-theater-bonn",
+     "2026-03-21T08:36:15+01:00"
+    ],
+    [
+     "Pizza oder Eine Tür in der Dunkelheit tanzt nicht – Gold & Pech Theater Höf-Präbach – Nature Theatre of Oklahoma beseelen die Steiermark mit einem rätselhaften Musical",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/steiermark/gold-pech-theater-hoef-praebach-in-eggersdorf/pizza-oder-eine-tuer-in-der-dunkelheit-tanzt-nicht-gold-pech-theater-hoef-praebach-nature-theatre-of-oaklahoma-beseelen-die-steiermark-mit-einem-raetselhaften-musical",
+     "2025-12-06T09:04:08+01:00"
+    ],
+    [
+     "Der zerbrochne Krug – Theater Freiburg – Yana Eva Thönnes dekonstruiert Kleists Klassiker auf einer Pyjamaparty",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/freiburg/theater-freiburg/der-zerbrochene-krug-theater-freiburg-yana-eva-thoennes-dekonstruiert-kleists-klassiker-auf-einer-pyjamaparty",
+     "2025-10-26T10:44:44+01:00"
+    ],
+    [
+     "Das Floß der Medusa – Theater Magdeburg – Regisseurin Mirjam Loibl bebildert das berühmte Untergangs-Gemälde",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen-anhalt/magdeburg/das-floss-der-medusa-theater-magdeburg-regisseurin-mirjam-loibl-bebildert-das-beruehmte-gemaelde",
+     "2025-03-23T08:09:15+01:00"
+    ],
+    [
+     "Krieg und Frieden – Staatstheater Darmstadt – Martin Laberenz wagt einen vierstündigen Ritt durch Tolstois sehr gegenwärtigen Riesenroman",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/darmstadt/krieg-und-frieden-staatstheater-darmstadt",
+     "2025-02-23T09:56:37+01:00"
+    ],
+    [
+     "Bullshit – Hebbel am Ufer – She She Pop stellen in ihrem neuen Abend alte Gewissheiten auf den Prüfstand",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin/bullshit-hebbel-am-ufer-she-she-pop",
+     "2024-10-30T08:01:41+01:00"
+    ],
+    [
+     "Wiener Festwochen – Proteste gegen Omri Boehms \"Rede an Europa\"",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/wiener-festwochen/wiener-festwochen-proteste-gegen-omri-boehms-rede-an-europa",
+     "2024-05-08T11:28:44+02:00"
+    ],
+    [
+     "Die Bridgetower-Sonate – Schauspiel Leipzig – Amanda Wilkin erzählt ein vergessenes Stück Musikgeschichte aus dem Wirken von Ludwig van Beethoven",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/leipzig1/schauspiel-leipzig/die-bridgetower-sonate-schauspiel-leipzig-amanda-wilkin-erzaehlt-ein-vergessenes-stueck-musikgeschichte-aus-dem-wirken-von-ludwig-van-beethoven",
+     "2024-04-07T10:02:51+02:00"
+    ],
+    [
+     "Der Würgeengel – Schauspiel Frankfurt – Claudia Bauer erkundet mit dem Filmklassiker von Luis Buñuel eine muntere Bürgerhölle ohne Ausweg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/der-wuergeengel-schauspiel-frankfurt-claudia-bauer-erkundet-mit-dem-filmklassiker-von-luis-bunuel-eine-muntere-buergerhoelle-ohne-ausweg",
+     "2024-01-21T09:58:14+01:00"
+    ],
+    [
+     "aerocircus – Theater RambaZamba / Berliner Festspiele – Jacob Höhne sucht mit Starbesetzung, Spektakel und Thomas-Köck-Text nach den Schuldigen am Weltuntergang",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/theater-rambazamba/aerocircus-theater-rambazamba-jacob-hoehne-sucht-mit-starbesetzung-spektakel-und-thomas-koeck-text-nach-den-schuldigen-am-weltuntergang",
+     "2023-12-06T10:53:58+01:00"
+    ],
+    [
+     "Meine geniale Freundin – Thalia Theater Hamburg – Ewelina Marciniak setzt bei der Inszenierung des letzten Teils von Elena Ferrantes Romansaga auf Psychologie",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/meine-geniale-freundin-thalia-theater-hamburg-ewelina-marciniak-setzt-bei-der-inszenierung-des-letzten-teils-von-elena-ferrantes-romansaga-auf-psychologie",
+     "2023-09-29T07:57:42+02:00"
+    ],
+    [
+     "Yazdgerds Tod – Schauspiel Köln – Mina Salehpour zeigt ein Stück des \"persischen Shakespeare\" Bahram Beyzaie",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/koeln/schauspiel-koeln/yazdgerds-tod-schauspiel-koeln-mina-salehpour-zeigt-ein-stueck-des-persischen-shakespeare-bahram-beyzaie",
+     "2023-09-03T09:14:48+02:00"
+    ],
+    [
+     "Das letzte Feuer – Schauspiel Hannover – Dea Lohers preisgekrönten Text inszeniert Anja Behrens als modellhaftes gesellschaftliches Schuldpanorama",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/hannover/schauspiel-hannover/das-letzte-feuer-staatsschauspiel-hannover-dea-lohers-preisgekroenten-text-inszeniert-anja-behrens-als-modellhaftes-gesellschaftliches-schuldpanorama",
+     "2023-05-06T08:58:48+02:00"
+    ],
+    [
+     "Die Argonauten – Salzburger Landestheater – Regisseur Nuran David Calis verlegt Franz Grillparzers Drama mit Großstadt-Vibes ins Hier und Jetzt",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/salzburg-region/salzburg/salzburger-landestheater/die-argonauten-salzburger-landestheater-regisseur-nuran-david-calis-verlegt-franz-grillparzers-drama-mit-grossstadt-vibes-ins-hier-und-jetzt",
+     "2023-04-30T08:18:29+02:00"
+    ],
+    [
+     "FIND-Festival 2023 – Schaubühne Berlin – Neue Dramatik aus New York, Teheran und Tokio",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/find-festival-2023-schaubuehne-berlin-neue-dramatik-aus-new-york-teheran-und-tokio",
+     "2023-04-27T09:02:05+02:00"
+    ],
+    [
+     "Gier – Schauspielhaus Zürich – Christopher Rüping inszeniert Sarah Kanes Text als Stimmen im Kopf",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/schauspielhaus-zuerich/gier-schauspielhaus-zuerich-christopher-rueping-inszeniert-sarah-kanes-text-als-stimmen-im-kopf",
+     "2023-03-05T08:45:24+01:00"
+    ],
+    [
+     "Schnee Weiß (Die Erfindung der alten Leier) – Tiroler Landestheater – Joachim Gottfried Goller inszeniert die österreichische Erstaufführung von Elfriede Jelineks Skimissbrauchs-Stück",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/tirol/innsbruck/tiroler-landestheater-innsbruck/schnee-weiss-die-erfindung-der-alten-leier-tiroler-landestheater-joachim-gottfried-goller-inszeniert-die-oesterreichische-erstauffuehrung-von-elfriede-jelineks-skimissbrauchs-stueck",
+     "2023-01-22T09:31:26+01:00"
+    ],
+    [
+     "Sibyl – Ruhrfestspiele Recklinghausen – William Kentridge eröffnet die Ruhrfestspiele Recklinghausen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrfestspiele-recklinghausen/sibyl-ruhrfestspiele-recklinghausen-william-kentridge-eroeffnet-die-ruhrfestspiele-recklinghausen",
+     "2022-05-04T08:21:09+02:00"
+    ],
+    [
+     "Odyssey. A Story for Hollywood – Schauspiel Stuttgart – Krzysztof Warlikowskis Produktion aus dem Nowy Teatr Warschau ist jetzt in Stuttgart angekommen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/stuttgart/schauspiel-stuttgart/odyssey-a-story-for-hollywood-schauspiel-stuttgart-krzysztof-warlikowskis-produktikion-aus-dem-nowy-teatr-warschau-ist-jetzt-in-stuttgart-angekommen",
+     "2022-04-08T07:54:27+02:00"
+    ],
+    [
+     "Protec / Attac – Deutsches Schauspielhaus Hamburg – Das New Yorker Künstler:innenduo Julia Mounsey und Peter Mills Weiss erzählt von der Sehnsucht nach Ausstieg aus dem Psychostress",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/deutsches-schauspielhaus-hamburg/protec-attac-deutsches-schauspielhaus-hamburg-das-new-yorker-kuenstler-innenduo-julia-mounsey-und-peter-mills-weiss-erzaehlt-von-der-sehnsucht-nach-ausstieg-aus-dem-psychostress",
+     "2022-03-20T07:33:24+01:00"
+    ],
+    [
+     "Schande – Schauspielhaus Bochum – Oliver Frljić adaptiert J. M. Coetzees Roman",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bochum/schauspielhaus-bochum/schande-schauspielhaus-bochum-oliver-frljic-adaptiert-j-m-coetzees-roman",
+     "2021-10-30T23:50:44+02:00"
+    ],
+    [
+     "Fräulein Julie – Deutsches Theater Berlin – Als Quartett der Begehrlichkeiten  inszeniert Timofej Kuljabin den Strindberg-Klassiker um eine Dreiecksaffäre",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/fraeulein-julie-deutsches-theater-berlin-als-quartett-der-begehrlichkeiten-inszeniert-timofej-kuljabin-den-strindberg-klassiker-um-eine-dreiecksaffaere",
+     "2021-08-13T08:45:29+02:00"
+    ],
+    [
+     "Alice – Düsseldorfer Schauspielhaus – André Kaczmarczyk inszeniert scheinhaft schönes Musiktheater nach Lewis Carroll",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/duesseldorf/duesseldorfer-schauspielhaus/alice-duesseldorfer-schauspielhaus-andre-kaczmarczyk-inszeniert-musiktheater-nach-lewis-carroll",
+     "2020-10-29T23:05:47+01:00"
+    ],
+    [
+     "Das Leben ein Traum – Burgtheater Wien –  Martin Kušej macht dort weiter, wo er aufgehört hat",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/das-leben-ein-traum-burgtheater-wien-martin-kusej-macht-dort-weiter-wo-er-aufgehoert-hat",
+     "2020-09-11T23:23:01+02:00"
+    ],
+    [
+     "Dekalog: Folge 1 – Schauspielhaus Zürich – Christopher Rüping verlegt Krzysztof Kieślowskis Filmreihe ins Digitale",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/schauspielhaus-zuerich/dekalog-folge-1-fuers-schauspielhaus-zuerich-verlegt-christopher-rueping-krzysztof-kieslowskis-filmreihe-auf-die-digitale-buehne",
+     "2020-04-18T08:26:03+02:00"
+    ],
+    [
+     "Wir sind das Volk – HAU Hebbel am Ufer – Anja Quickert arrangiert mit Sloweniens Konzeptkunstklangkörper Laibach ein martialisches Heiner-Müller-Medley",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin/wir-sind-das-volk-hau-hebbel-am-ufer-anja-quickert-arrangiert-mit-sloweniens-konzeptkunstklangkoerper-laibach-ein-martialisches-heiner-mueller-medley",
+     "2020-02-08T09:24:49+01:00"
+    ],
+    [
+     "La forza del destino – Deutsche Oper Berlin – Frank Castorf injiziert Giuseppe Verdi eine Dosis Postkolonialismus und erlebt einen Ausbruch von Entrüstung",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsche-oper-berlin/la-forza-del-destino-deutsche-oper-berlin-frank-castorf-injiziert-giuseppe-verdi-eine-dosis-postkolonialismus-und-erlebt-einen-ausbruch-von-entruestung",
+     "2019-09-08T23:12:29+02:00"
+    ],
+    [
+     "Rotkäppchen und der Wolf – Schauspiel Hannover – Die Intendanz von Lars-Ole Walburg endet und Tom Kühnel bittet zum Fest mit Martin Mosebachs erotischem Versdrama",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/hannover/schauspiel-hannover/rotkaeppchen-und-der-wolf-schauspiel-hannover-die-intendanz-endet-lars-ole-walburg-endet-und-tom-kuehnel-bittet-zum-fest-mit-martin-mosebachs-erotischem-versdrama",
+     "2019-05-23T23:08:55+02:00"
+    ],
+    [
+     "I Love You, Goodbye (The Brexit Edition) – HAU Berlin – Gob Squad üben schon einmal für den Abbruch der deutsch-britischen Beziehungen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin/i-love-you-goodbye-the-brexit-edition-hau-berlin-gob-squad-ueben-schon-einmal-fuer-den-abbruch-der-deutsch-britischen-beziehungen",
+     "2019-03-29T09:25:11+01:00"
+    ],
+    [
+     "Das Imperium des Schönen – Nis-Momme Stockmanns Kultur-Clash-Stück von Tina Lanik in Stuttgart uraufgeführt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/stuttgart/schauspiel-stuttgart/das-imperium-des-schoenen-nis-momme-stockmanns-kultur-clash-stueck-von-tina-lanik-in-stuttgart-uraufgefuehrt",
+     "2019-01-31T23:00:00+01:00"
+    ],
+    [
+     "Kinder der Nacht – Am Schauspiel Köln inszeniert Melanie Kretschmann packend und einfallsreich Helene Hegemanns Bühnenadaption des Rausch-Romans von Jean Cocteau",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/koeln/schauspiel-koeln/kinder-der-nacht-am-schauspiel-koeln-inszeniert-melanie-kretschmann-packend-und-einfallsreich-helene-hegemanns-buehnenadaption-des-rausch-romans-von-jean-cocteau",
+     "2019-01-26T23:23:32+01:00"
+    ],
+    [
+     "Maria – Sebastian Nüblings Uraufführung des neuen Stücks von Simon Stephens eröffnet die Lessingtage am Thalia Theater Hamburg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/maria-sebastian-nueblings-urauffuehrung-des-neuen-stuecks-von-simon-stephens-eroeffnet-die-lessingtage-am-thalia-theater-hamburg",
+     "2019-01-19T09:08:12+01:00"
+    ],
+    [
+     "Schnee Weiss – In der Uraufführung am Schauspiel Köln lädt Stefan Bachmann zur Rutschpartie mit Elfriede Jelinek",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/koeln/schauspiel-koeln/schnee-weiss-in-der-urauffuehrung-am-schauspiel-koeln-laedt-stefan-bachmann-zur-rutschpartie-mit-elfriede-jelinek",
+     "2018-12-21T23:30:00+01:00"
+    ],
+    [
+     "44 Harmonies from Apartment House 1776 – Christoph Marthaler mit einer Hommage an John Cage am Schauspielhaus Zürich",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/schauspielhaus-zuerich/44-harmonies-from-apartment-house-1776-christoph-marthaler-mit-einer-hommage-an-john-cage-am-schauspielhaus-zuerich",
+     "2018-12-05T09:10:23+01:00"
+    ],
+    [
+     "Nora, Hedda und ihre Schwestern – Karlsruhes neue Schauspieldirektorin Anna Bergmann inszeniert Henrik Ibsen in einer Bearbeitung von Ulrike Syha",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/karlsruhe/badisches-staatstheater/nora-hedda-und-ihre-schwestern-karlsruhes-neue-schauspieldirektorin-anna-bergmann-inszeniert-henrik-ibsen-in-einer-bearbeitung-von-ulrike-syha",
+     "2018-10-06T22:02:02+02:00"
+    ],
+    [
+     "Nackt über Berlin – Henriette Hörnigk inszeniert den Roman von Axel Ranisch in der neuen Raumbühne der Oper Halle",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen-anhalt/halle/oper-halle/nackt-ueber-berlin-henriette-hoernigk-inszeniert-den-roman-von-axel-ranisch-in-der-neuen-raumbuehne-der-oper-halle",
+     "2018-09-16T23:00:00+02:00"
+    ],
+    [
+     "The Head and the Load – William Kentridge eröffnet mit African Power die Ruhrtriennale in der Kraftzentrale Duisburg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrtriennale/the-head-and-the-load-william-kentridge-eroeffnet-mit-african-power-die-ruhrtriennale-in-der-kraftzentrale-duisburg",
+     "2018-08-09T22:28:49+02:00"
+    ],
+    [
+     "Festival Theaterformen \"Watch & Write\" – Heba El-Sherif on the limitations of Selina Thompson's \"Race Cards\" and why cultural journalism is important",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-watch-write-herba-el-sherif-on-on-the-limitations-of-selina-thompson-s-race-cards-and-why-cultural-journalism-is-important",
+     "2018-06-17T13:51:45+02:00"
+    ],
+    [
+     "Festival Theaterformen \"Watch & Write\" – Ayodeji Rotinwa writes a letter about Milo Rau's \"Compassion. The History of the Machine Gun\"",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-watch-write-ayodeji-rotinwa-writes-a-letter-about-milo-rau-s-compassion-the-history-of-the-machine-gun-in-cameroon-theater-for-children-is-a-success-a",
+     "2018-06-17T11:16:47+02:00"
+    ],
+    [
+     "Festival Theaterformen \"Watch & Write\" – Ayodeji Rotinwa schreibt einen Brief über Milo Raus \"Mitleid. Die Geschichte des Maschinengewehrs\"",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-watch-write-ayodeji-rotinwa-schreibt-einen-brief-ueber-milo-raus-mitleid-die-geschichte-des-maschinengewehrs",
+     "2018-06-17T11:08:01+02:00"
+    ],
+    [
+     "Festival Theaterformen \"Watch & Write\" – In Cameroon, Theater for Children is a Success",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-watch-write-in-cameroon-theater-for-children-is-a-success",
+     "2018-06-16T13:39:38+02:00"
+    ],
+    [
+     "Festival Theaterformen \"Watch & Write\" – Wie Kindertheater in Kamerun dauerhaft Anklang findet",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-2018-watch-write-wie-kindertheater-in-kamerun-dauerhaft-anklang-findet",
+     "2018-06-16T11:50:04+02:00"
+    ],
+    [
+     "Jungfrau, Fractured Memories, 3x30 – Beim Festival Theaterformen in Braunschweig laden Arbeiten aus Kenia, Mosambik und Südafrika zur Verschiebung von Perspektiven ein",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/jungfrau-fractured-memories-3x30-beim-festival-theaterformen-in-braunschweig-laden-arbeiten-aus-kenia-mosambik-und-suedafrika-zur-verschiebung-von-perspektiven-ein",
+     "2018-06-15T23:00:28+02:00"
+    ],
+    [
+     "Festival Theaterformen 2017 \" Watch & Write\" – wie das Theater in Mosambik zum sozialen Wandel beiträgt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/medienkooperation-mit-dem-theaterfestival-theaterformen-festival-theaterformen-2017-watch-write-wie-das-theater-in-mosambik-zum-sozialen-wandel-beitraegt",
+     "2018-06-15T11:33:39+02:00"
+    ],
+    [
+     "Festival Theaterformen 2017 \" Watch & Write\" – Carla Lever über Theater in Kapstadt, die die faktische Apartheid in Südafrikas Kulturbetrieb überwinden",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-2017-watch-write-carla-lever-ueber-theater-in-kapstadt-die-die-faktische-apartheid-in-suedafrikas-kulturbetrieb-ueberwinden",
+     "2018-06-14T13:13:01+02:00"
+    ],
+    [
+     "Festival Theaterformen 2018 \"Watch & Write\" – Carla Lever on Cape Town theatres that are challenging South Africa's cultural post-Apartheid segregation",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-2018-watch-write-carla-lever-on-cape-town-theatres-that-are-challenging-south-africas-cultural-post-apartheid-segregation",
+     "2018-06-14T12:38:29+02:00"
+    ],
+    [
+     "Festival Theaterformen 2018 \"Watch & Write\" – Yvon Edoumou on the question whether \"poor\" people can enjoy arts",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-2018-watch-write-yvon-edoumou-from-dr-congo-on-the-question-whether-poor-people-can-enjoy-arts",
+     "2018-06-08T13:02:39+02:00"
+    ],
+    [
+     "\"Watch & Write\" beim Festival Theaterformen – Yvon Edoumou über die Frage, ob \"arme\" Leute Kunst genießen können",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/watch-write-beim-festival-theaterformen-yvon-edoumou-aus-der-demokratischen-republik-kongo-ueber-die-frage-ob-arme-leute-kunst-geniessen-koennen",
+     "2018-06-08T11:08:24+02:00"
+    ],
+    [
+     "Festival Theaterformen 2018 \"Watch & Write\" – Milisuthando Bongela on the situation of cultural journalism on the African continent",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-2018-watch-and-write-milisuthando-bongela-on-the-situation-of-cultural-journalism-on-the-african-continent",
+     "2018-06-07T11:28:10+02:00"
+    ],
+    [
+     "\"Watch & Write\" beim Festival Theaterformen – Milisuthando Bongela zur Lage des Kulturjournalismus' auf dem afrikanischen Kontinent",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/watch-write-beim-festival-theaterformen-milisuthando-bongela-zur-frage-wie-sich-ein-panafrikanisches-netzwerk-fuer-kulturjournalisten-aufbauen-liesse",
+     "2018-06-07T10:55:55+02:00"
+    ],
+    [
+     "Hillbrowification – Maxim Gorki Theater / Ruhrtriennale – Constanza Macras und das Hillbrow Theatre Project versetzen dem Tanztheater einen Energiestoß",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin/hillbrowification-am-berliner-maxim-gorki-theater-versetzen-constanza-macras-und-das-hillbrow-theatre-project-dem-tanztheater-einen-energiestoss",
+     "2018-06-01T08:58:30+02:00"
+    ],
+    [
+     "Tell – Den Schweizer Gründungsmythos aktualisieren Daniela Janjic und Jérôme Junod gemeinsam mit dem Jungen Theater Biel",
+     "https://nachtkritik.de/nachtkritiken/schweiz/espace-mittelland/biel-solothurn/tell-den-schweizer-gruendungsmythos-aktualisieren-daniela-janjic-und-jerome-junod-gemeinsam-mit-dem-jungen-theater-biel",
+     "2018-05-10T08:37:36+02:00"
+    ],
+    [
+     "Eines langen Tages Reise in die Nacht – An Eugene O'Neills Familientragödie zeigt Andrea Breth ihre Meisterschaft am Burgtheater Wien",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/eines-langen-tages-reise-in-die-nacht-an-eugene-o-neills-familientragoedie-zeigt-andrea-breth-ihre-meisterschaft-am-burgtheater-wien",
+     "2018-04-14T23:55:30+02:00"
+    ],
+    [
+     "Dokusoap – Ein Fernsehformat und seinen Theaterbezug analysiert Luise Voigt in Oldenburg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/oldenburg/oldenburgisches-staatstheater/dokusoap-ein-fernsehformat-und-seinen-theaterbezug-analysiert-luise-voigt-in-oldenburg",
+     "2018-02-23T21:00:00+01:00"
+    ],
+    [
+     "Supergutman – Leichthändig interpretiert Clara Weyde das Auftragswerk von Lukas Linder am Theater Bonn",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bonn/schauspiel-bonn/supergutman-leichthaendig-interpretiert-clara-weyde-das-auftragswerk-von-lukas-linder-am-theater-bonn",
+     "2018-01-27T23:02:46+01:00"
+    ],
+    [
+     "Die Wiederentdeckung der Granteloper – Im Berliner HAU nörgeln FUX an den Problemen der Gegenwart herum",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin/die-wiederentdeckung-der-granteloper-im-berliner-hau-noergeln-fux-an-den-problemen-der-gegenwart-herum",
+     "2018-01-10T17:59:26+01:00"
+    ],
+    [
+     "Elektra - Was ist das für 1 Morgen – Jacob Suske und Ann Cotten geleiten am Schauspielhaus Wien mit einer elektronische Kammeroper ins neue Jahr",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/schauspielhaus-wien/elektra-was-ist-das-fuer-1-morgen-jacob-suskes-und-ann-cottens-elektronische-kammeroper-schauspielhaus-wien",
+     "2017-12-31T23:48:54+01:00"
+    ],
+    [
+     "Ödipus / Antigone – Felix Rothenhäusler reagiert in Bremen auf Sophokles mit dem Telefon und mit statisch-sprudelndem Sprechtheater",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/bremen/schauspiel-bremen/oedipus-antigone-felix-rothenhaeusler-reagiert-in-bremen-auf-sophokles-mit-statisch-sprudelndem-sprechtheater",
+     "2017-12-09T22:00:00+01:00"
+    ],
+    [
+     "Spielart Festival München 2017 – Mit postkolonialem Schwerpunkt und Performances aus Südafrika schärft das Münchner Freie-Szene-Festival sein Profil",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/spielart-festival-muenchen/das-spielart-festival-in-muenchen",
+     "2017-11-09T07:39:09+01:00"
+    ]
+   ]
+  },
   "Archives of Feelings": {
    "at": 1795008139.0027397,
    "results": []
   },
   "Archives of Feelings Berliner Festspiele": {
    "at": 1795008164.1872725,
+   "results": []
+  },
+  "Awesome Scampis": {
+   "at": 1795095988.3777673,
    "results": []
   },
   "BODEN": {
@@ -4123,11 +4490,15 @@
    ]
   },
   "Berlin Review x Volksbühne": {
-   "at": 1794834158.5326505,
+   "at": 1795095912.767379,
    "results": []
   },
   "Berlin Review x Volksbühne Volksbühne": {
    "at": 1795008199.18533,
+   "results": []
+  },
+  "Bragolin + Carrellee": {
+   "at": 1795095962.1671715,
    "results": []
   },
   "CURSED": {
@@ -4613,12 +4984,37 @@
    ]
   },
   "Disrupt the Default": {
-   "at": 1794834167.2353663,
+   "at": 1795095910.883009,
    "results": []
   },
   "Disrupt the Default Volksbühne": {
    "at": 1795008169.2110686,
    "results": []
+  },
+  "Dive into You": {
+   "at": 1795096030.750941,
+   "results": [
+    [
+     "Dracula. Blutige Anfänger – Komödie am Kurfürstendamm Berlin – Peter Jordan und Leonhard Koppelmann inszenieren ein gutgelauntes Grusical",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/theater-am-kurfuerstendamm-berlin/dracula-blutige-anfaenger-komoedie-am-kurfuerstendamm-berlin-peter-jordan-und-leonhard-koppelmann-inszenieren-ein-gutgelauntes-grusical",
+     "2026-10-12T07:35:47+02:00"
+    ],
+    [
+     "Turn the P_Age – Sophiensäle Berlin – Eva Meyer-Keller erforscht das Älterwerden des weiblichen Körpers",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/turn-the-p-age-sophiensaele-berlin-eva-meyer-keller-erforscht-das-aelterwerden-des-weiblichen-koerpers",
+     "2025-02-14T07:59:42+01:00"
+    ],
+    [
+     "Festival Theaterformen 2018 \"Watch & Write\" – Carla Lever on Cape Town theatres that are challenging South Africa's cultural post-Apartheid segregation",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-2018-watch-write-carla-lever-on-cape-town-theatres-that-are-challenging-south-africas-cultural-post-apartheid-segregation",
+     "2018-06-14T12:38:29+02:00"
+    ],
+    [
+     "Drop Dead, Gorgeous! – In der Kaserne Basel musizieren fleischlin/meser/oberholzer gegen den Tod an",
+     "https://nachtkritik.de/nachtkritiken/schweiz/nordwestschweiz/basel/kaserne-basel/drop-dead-gorgeous-in-der-kaserne-basel-musizieren-fleischlinmeseroberholzer-gegen-den-tod-an",
+     "2013-01-09T07:21:51+01:00"
+    ]
+   ]
   },
   "EXXY": {
    "at": 1794398613.9421296,
@@ -5000,6 +5396,10 @@
    "at": 1795008221.026813,
    "results": []
   },
+  "Hanako Hayakawa": {
+   "at": 1795095898.4669762,
+   "results": []
+  },
   "Hedda": {
    "at": 1794488604.268093,
    "results": [
@@ -5354,6 +5754,10 @@
      "2024-02-02T09:51:39+01:00"
     ]
    ]
+  },
+  "It’s Gonna Rain": {
+   "at": 1795095885.3523839,
+   "results": []
   },
   "Jazz at Berlin Philharmonic“Conversations”": {
    "at": 1795008294.8381233,
@@ -6438,6 +6842,26 @@
     ]
    ]
   },
+  "Olympia Bukkakis": {
+   "at": 1795095891.4860961,
+   "results": [
+    [
+     "Cast Away + Liars – Sophiensaele Berlin – Neue Abende von Markus&Markus und Henrike Iglesias",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/cast-away-liars-sophiensaele-berlin-neue-abende-von-markus-markus-und-henrike-iglesias",
+     "2025-11-21T06:51:27+01:00"
+    ],
+    [
+     "Blutbuch – Schauspiel Hannover – Ran Chai Bar-Zvi inszeniert die deutsche Erstaufführung von Kim de l’Horizons preisgekröntem RomanWer",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/hannover/schauspiel-hannover/blutbuch-schauspiel-hannover-ran-chai-bar-zvi-inszeniert-die-deutsche-erstauffuehrung-von-kim-de-l-horizons-preisgekroentem-roman",
+     "2023-12-16T09:40:51+01:00"
+    ],
+    [
+     "Holiday Sauce… Pandemic! – Berliner Festspiele – Ibsen Award-Gewinner* Taylor Mac entwirft gemeinsam mit (s)einer Drag-Community einen glamourösen Ersatz für das Konzept dysfunktionaler Familienweihnachten",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele/holiday-sauce-pandemic-berliner-festspiele-ibsen-award-gewinner-taylor-mac-entwirft-gemeinsam-mit-s-einer-drag-community-einen-glamouroesen-ersatz-fuer-das-konzept-dysfunktionaler-familienweihnachten",
+     "2020-12-13T08:54:41+01:00"
+    ]
+   ]
+  },
   "OriginalklangBaroque Christmas music with Les Accents": {
    "at": 1795008385.465191,
    "results": []
@@ -6449,6 +6873,211 @@
   "Piano Recital with Mitsuko Uchida": {
    "at": 1795008363.5282383,
    "results": []
+  },
+  "Polaris": {
+   "at": 1795095967.8677573,
+   "results": [
+    [
+     "Zerstörungslust – Theater Paderborn – Katharina Kreuzhage bringt die Studie über rechtsextreme Einstellungen von Carolin Amlinger und Oliver Nachtwey auf die Bühne",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/paderborn/theater-paderborn-westfaelische-kammerspiele/zerstoerungslust-katharina-kreuzhage-bringt-die-studie-ueber-rechtsextreme-einstellungen-von-carolin-amlinger-und-oliver-nachtwey-auf-die-buehne",
+     "2026-10-31T08:30:40+01:00"
+    ],
+    [
+     "Warten auf’n Bus – Berliner Ensemble – Max Hopp inszeniert zwei exklusiv für's Theater geschriebene Folgen der Kultserie von Oliver Bukowski",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble/warten-aufn-bus-berliner-ensemble-max-hopp",
+     "2026-10-26T07:24:07+01:00"
+    ],
+    [
+     "Tag und Nacht – Schauspiel Köln – Lily Sykes inszeniert die Uraufführung des neuen Stücks von Roland Schimmelpfennig",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/koeln/schauspiel-koeln/tag-und-nacht-schauspiel-koeln-lily-sykes-inszeniert-die-urauffuehrung-des-neuen-stuecks-von-roland-schimmelpfennig",
+     "2026-09-28T07:12:59+02:00"
+    ],
+    [
+     "Der Menschenfeind – Salzburger Festspiele – Jette Steckel versetzt Molière ins Grand Siècle des Pop",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/salzburg-region/salzburg/salzburger-festspiele/der-menschenfeind-salzburger-festspiele-moliere-jette-steckel",
+     "2026-08-16T07:48:31+02:00"
+    ],
+    [
+     "Doppelgänger / Doppelganger – Wiener Festwochen – Gob Squad holen das Publikum ins Spiegelkabinett zum Ich-und-Du-Spiel",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/wiener-festwochen/doppelgaenger-doppelganger-wiener-festwochen-gob-squad-holen-publikum-ins-spiegelkabinett-zum-ich-und-du-spiel",
+     "2026-06-19T10:19:18+02:00"
+    ],
+    [
+     "Sommersonnenwende – Schauspiel Stuttgart – Daniela Löffner bringt Roland Schimmelpfennigs Stück zur Uraufführung",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/stuttgart/schauspiel-stuttgart/sommensonnenwende-schauspiel-stuttgart",
+     "2026-06-07T10:14:52+02:00"
+    ],
+    [
+     "Polaris – Ruhrfestspiele Recklinghausen/Deutsches Theater Berlin – Jan-Christoph Gockels Antarktis-Abend über Isolation und menschliche Hybris",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrfestspiele-recklinghausen/polaris-ruhrfestspiele-recklinghausen-deutsches-theater-berlin-jan-christoph-gockels-antarktis-befragung",
+     "2026-05-17T09:39:11+02:00"
+    ],
+    [
+     "183 Abgeordnete – Schauspielhaus Graz – Monika Klengel inszeniert Zitate aus dem Nationalrat",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/steiermark/graz/schauspielhaus-graz/183-abgeordnete-schauspielhaus-graz-monika-klengel-inszeniert-zitate-aus-dem-nationalrat",
+     "2026-05-10T09:56:37+02:00"
+    ],
+    [
+     "Der Freischütz – Theater Bonn – Volker Lösch und Lothar Kittstein besetzen Webers romantische Oper mit den Gesichtern der AfD",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bonn/schauspiel-bonn/der-freischuetz-theater-bonn-volker-loesch-und-lothar-kittstein-besetzen-webers-romantische-oper-mit-den-gesichtern-der-afd",
+     "2026-05-04T07:44:08+02:00"
+    ],
+    [
+     "Prozess gegen Deutschland – Thalia Theater Hamburg – Milo Rau lässt im Theater ein AfD-Verbot prüfen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/prozess-gegen-deutschland-thalia-theater-hamburg-milo-rau-laesst-im-theater-ein-afd-verbot-pruefen",
+     "2026-02-16T07:46:27+01:00"
+    ],
+    [
+     "Winnetou V – Stadttheater Ingolstadt – Kieran Joel mit einem schwungvollen Anti-Western",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/ingolstadt/theater-ingolstadt/winnetou-v-stadttheater-ingolstadt-kieran-joel-mit-einem-schwungvollen-anti-western",
+     "2026-02-15T09:13:45+01:00"
+    ],
+    [
+     "Pretty Privilege – Schauspiel Stuttgart – Wilke Weermann erzählt Wilde im Zeitalter der KI",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/stuttgart/schauspiel-stuttgart/pretty-privilege-schauspieler-stuttgart-wilke-weermann-erzaehlt-wilde-im-zeitalter-der-ki",
+     "2026-02-08T08:23:54+01:00"
+    ],
+    [
+     "Die Nashörner – Düsseldorfer Schauspielhaus – Selen Kara inszeniert Eugène Ionescos Parabel auf die Selbstabschaffung des Menschen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/duesseldorf/duesseldorfer-schauspielhaus/die-nashoerner-duesseldorfer-schauspielhaus-selen-kara-inszeniert-eugene-ionescos-parabel-auf-die-selbstabschaffung-des-menschen",
+     "2025-12-13T09:06:26+01:00"
+    ],
+    [
+     "Appropriate – Münchner Volkstheater – Christian Stückl inszeniert ein Familiendrama von Branden Jacobs-Jenkins",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/muenchner-volkstheater/appropriate-muenchner-volkstheater-christian-stueckl",
+     "2025-11-01T09:02:24+01:00"
+    ],
+    [
+     "The Last Conference – Heimathafen Neukölln – Krzysztof Minkowski lädt zu einer fiktiven Klimakonferenz",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/heimathafen-neukoelln-berlin/in-sonntagsreden-ist-jeder-gruen",
+     "2025-10-12T08:24:40+02:00"
+    ],
+    [
+     "Die Tragödie von Romeo & Julia – Schauspielhaus Graz – Emre Akal inszeniert Shakespeare auf den Plot zugespitzt",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/steiermark/graz/schauspielhaus-graz/die-tragoedie-von-romeo-julia-schauspielhaus-graz-emre-akal-inszeniert-shakespeare-auf-den-plot-zugespitzt",
+     "2025-10-12T08:22:03+02:00"
+    ],
+    [
+     "Propaganda – Theater Heidelberg – In einer chilenisch-deutschen Koproduktion zeigen Juan Pablo Troncoso und Björn SC Deigner, wie sich rechtsextremes Gedankengut in sozialmedialen Filterblasen international verbreitet",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/heidelberg/theater-heidelberg/das-chilenisch-deutsche-autoren-duo-juan-pablo-troncoso-und-bjoern-sc-deigner-ueber-rechtsextreme-propaganda",
+     "2025-10-04T09:00:32+02:00"
+    ],
+    [
+     "Crowd Control – Sophiensaele Berlin – In \"choreografischen Performance-Essays\" beschäftigt sich Oliver Zahn mit Polizei-Arbeit",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/crowd-control-sophiensaele-berlin",
+     "2025-09-12T08:26:56+02:00"
+    ],
+    [
+     "FaustX – Kunstfest Weimar – Der südafrikanische Künstler Brett Bailey eröffnet das Kunstfest Weimar mit Maskentheater nach Goethe",
+     "https://nachtkritik.de/nachtkritiken/deutschland/thueringen/weimar/kunstfest-weimar/faustx-kunstfest-weimar-der-suedafrikanische-kuenstler-brett-bailey-eroeffnet-das-kunstfest-weimar-mit-maskentheater-nach-goethe",
+     "2025-08-21T07:48:09+02:00"
+    ],
+    [
+     "Also sprach Zarathustra – Schauspielhaus Zürich – Sebastian Hartmanns neuester Abend auf Basis von Friedrich Nietzsche",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/schauspielhaus-zuerich/also-sprach-zarathustra-schauspielhaus-zuerich-sebastian-hartmanns-neuester-abend-auf-basis-von-friedrich-nietzsche",
+     "2025-05-04T11:29:00+02:00"
+    ],
+    [
+     "Immer noch hier – Schauspielhaus Graz – Rebekka David und das Ensemble holen Lear, Harpagon, Onkel Wanja in eine besondere Versuchsanordnung",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/steiermark/graz/schauspielhaus-graz/immer-noch-hier-schauspielhaus-graz",
+     "2025-04-12T08:50:09+02:00"
+    ],
+    [
+     "Bucket List – Deutsches Theater Göttingen – Aureliusz Śmigiel und Valentí Rocamora i Torà zeigen das Kriegstrauma-Musical von Yael Ronen und Shlomi Shaban",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/goettingen/deutsches-theater-goettingen/bucket-list-deutsches-theater-goettingen-aureliusz-smigiel-und-valenti-rocamora-i-tora-zeigen-das-kriegstrauma-musical-von-yael-ronen-und-shlomi-shaban",
+     "2025-03-23T08:04:53+01:00"
+    ],
+    [
+     "Alles wie es sein soll – Schauspiel Essen – Dawn Kings Auftragswerk von Adrian Figueroa uraufgeführt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/essen/schauspiel-essen/alles-wie-es-sein-soll-schauspiel-essen-dawn-kings-auftragswerk-von-adrian-figueroa-uraufgefuehrt",
+     "2025-02-09T08:45:23+01:00"
+    ],
+    [
+     "Der Tartuffe – Burgtheater Wien – Barbara Frey fasst Molière komisch und analytisch",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/der-tartuffe-burgtheater-wien-barbara-frey-fasst-moliere-komisch-und-analytisch",
+     "2025-01-27T07:13:36+01:00"
+    ],
+    [
+     "Fast Forward Festival – Staatsschauspiel Dresden – Bei der 14. Ausgabe des Festivals spiegeln sich Gegenwartskrisen im Persönlichen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/dresden/staatsschauspiel-dresden/fast-forward-festival-staatsschauspiel-dresden-die-14-ausgabe",
+     "2024-11-18T08:27:32+01:00"
+    ],
+    [
+     "Dibbuk - zwischen (zwei) Welten – Ruhrfestspiele Recklinghausen – Die KULA Compagnie mit dem Stück von Solomon An-Ski",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrfestspiele-recklinghausen/dibbuk-zwischen-zwei-welten-ruhrfestspiele-recklinghausen-die-kula-compagnie-mit-dem-stueck-von-solomon-an-ski",
+     "2024-05-18T09:27:55+02:00"
+    ],
+    [
+     "50 Ways to Leave Your Ehemann – Theater Paderborn – Jacinta Nandis Plädoyer für alleinerziehende Mütter erlebt eine überzeugende Uraufführung",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/paderborn/theater-paderborn-westfaelische-kammerspiele/50-ways-to-leave-your-ehemann-theater-paderborn-jacinda-nandis-plaedoyer-fuer-alleinerziehende-muetter-erlebt-eine-ueberzeugende-urauffuehrung",
+     "2024-03-03T10:52:44+01:00"
+    ],
+    [
+     "Antigone – Schauspielhaus Salzburg – Robert Pienz bringt Michael Köhlmeiers Tragödien-Neudichtung zur Uraufführung",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/salzburg-region/salzburg/schauspielhaus-salzburg-2/antigone-schauspielhaus-salzburg-robert-pienz-bringt-michael-koehlmeiers-tragoedien-neudichtung-zur-urauffuehrung",
+     "2023-09-17T08:42:55+02:00"
+    ],
+    [
+     "Lulu – Staatsschauspiel Dresden – Daniela Löffner inszeniert Wedekinds Stück über machistische Projektionen auf Frauen mit einem exklusiv männlichen Ensemble",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/dresden/staatsschauspiel-dresden/lulu-staatsschauspiel-dresden",
+     "2023-09-10T07:06:19+02:00"
+    ],
+    [
+     "Über Menschen – Theater Eisleben – Michael Moritz verläßt sich ganz auf die Stärken von Juli Zehs Romanvorlage",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen-anhalt/eisleben/theater-eisleben/ueber-menschen-theater-eisleben-michael-moritz-verlaesst-sich-ganz-auf-die-staerken-von-juli-zehs-romanvorlage",
+     "2023-06-11T08:35:31+02:00"
+    ],
+    [
+     "Die Nibelungen – Nationaltheater Weimar – Hasko Weber gelingt ein konzentriert-brisanter Abend ohne plakative Aktualisierungen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/thueringen/weimar/nationaltheater-weimar/die-nibelungen",
+     "2023-02-12T09:27:28+01:00"
+    ],
+    [
+     "Undine – Schauspiel Leipzig – Anna-Sophie Mahlers düster-schöne Nixen-Nachtmahr vom Aufkommen der großen Flut",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/leipzig1/schauspiel-leipzig/undine-schauspiel-leipzig-anna-sophie-mahler-duester-schoener-nixen-nachtmahr-vom-aufkommen-der-grossen-flut",
+     "2022-03-27T08:18:01+02:00"
+    ],
+    [
+     "Wie es euch gefällt – Nationaltheater Weimar – Christian Weise inszeniert in Weimar das richtige Stück zur richtigen Zeit",
+     "https://nachtkritik.de/nachtkritiken/deutschland/thueringen/weimar/nationaltheater-weimar/wie-es-euch-gefaellt-nationaltheater-weimar-christian-weise-inszeniert-in-weimar-das-richtige-stueck-zur-richtigen-zeit",
+     "2021-06-18T22:17:41+02:00"
+    ],
+    [
+     "Jugend ohne Gott – Volkstheater Rostock – Regisseur Daniel Pfluger zeigt Ödön von Horváths brisanten Stoff im Rahmen eines Corona-Pilotprojekts live",
+     "https://nachtkritik.de/nachtkritiken/deutschland/mecklenburg-vorpommern/rostock/volkstheater-rostock/jugend-ohne-gott-volkstheater-rostock-regisseur-daniel-pfluger-inszeniert-oedoen-von-horvaths-romanvorlage-als-medialen-buehnenzauber",
+     "2021-03-27T09:29:32+01:00"
+    ],
+    [
+     "Parade 24/7 – Schlosstheater Moers – Ulrich Greb und sein Ensemble wagen sich an eine theatrale Aufarbeitung der Love-Parade-Katastrophe von Duisburg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/moers/schlosstheater-moers/parade-24-7-schlosstheater-moers-ulrich-greb-und-sein-ensemble-wagen-sich-an-eine-theatrale-aufarbeitung-der-love-parade-katastrophe-von-duisburg",
+     "2020-02-19T23:46:57+01:00"
+    ],
+    [
+     "Romeo und Julia – Theater Ingolstadt – Mareike Mikat verlegt die größte Liebesgeschichte aller Zeiten auf den Rummelplatz",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/ingolstadt/theater-ingolstadt/romeo-und-julia-theater-ingolstadt-mareike-mikat-verlegt-die-groesste-liebesgeschichte-aller-zeiten-auf-den-rummelplatz",
+     "2019-10-18T22:30:00+02:00"
+    ],
+    [
+     "Eröffnung – Schauspielhaus Zürich – In der ersten Woche der neuen Intendanz Stemann/Blomberg präsentiert sich das Regie-Team mit erprobten Arbeiten",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/schauspielhaus-zuerich/eroeffnung-schauspielhaus-zuerich-am-ersten-wochenende-der-neuen-intendanz-stemann-blomberg-praesentiert-sich-das-regie-team-mit-erprobten-arbeiten",
+     "2019-09-15T23:20:04+02:00"
+    ],
+    [
+     "The Nation I und II – Schauspiel Frankfurt – David Bösch inszeniert die deutschsprachige Erstaufführung von Eric de Vroedts Theaterthriller",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/the-nation-i-und-ii-david-boesch-inszeniert-am-frankfurter-schauspiel-die-deutschsprachige-erstauffuehrung-von-eric-de-vroedts-the-nation-verteilt-auf-zwei-abende",
+     "2019-03-30T23:00:00+01:00"
+    ],
+    [
+     "Disko – Ivan Panteleev bringt Wolfram Hölls Auftragswerk für das Schauspiel Leipzig zur Uraufführung",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/leipzig1/schauspiel-leipzig/disko-ivan-panteleev-bringt-wolfram-hoells-auftragswerk-fuer-das-schauspiel-leipzig-zur-urauffuehrung",
+     "2019-02-09T23:51:32+01:00"
+    ],
+    [
+     "Faust – Am Theater Heidelberg von Philipp Preuss in Bild und Ton gebracht",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/heidelberg/theater-heidelberg/faust-am-theater-heidelberg-von-philipp-preuss-in-bild-und-ton-gebracht",
+     "2018-02-17T22:00:00+01:00"
+    ]
+   ]
   },
   "QuartetBeethoven cycle with the Quatuor Ébène": {
    "at": 1794573208.1649442,
@@ -6486,6 +7115,10 @@
      "2009-05-02T10:54:34+02:00"
     ]
    ]
+  },
+  "Sick and Tired": {
+   "at": 1795095958.819872,
+   "results": []
   },
   "The Abduction from the Seraglio": {
    "at": 1794834301.378575,
@@ -6823,12 +7456,119 @@
     ]
    ]
   },
+  "Unbestimmte Bewegung": {
+   "at": 1795095951.633394,
+   "results": [
+    [
+     "Love me tender – Münchner Kammerspiele – Felicitas Brucker inszeniert mit drei Ausnahme-Schauspielerinnen nach dem Roman von Constance Debré einen Prozess radikaler Emanzipation",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/muenchner-kammerspiele/felicitas-brucker-inszeniert-constance-debres-prozess-radikaler-emanzipation",
+     "2026-01-17T09:52:20+01:00"
+    ],
+    [
+     "Die realen Geister – Schauspielhaus Wien – Guido Wertheimers zwischen mörderischen Zeiten flirrendes Drama von Stephan Kimmig uraufgeführt",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/schauspielhaus-wien/die-realen-geister-schauspielhaus-wien-stephan-kimmig-guido-wertheimer",
+     "2025-02-01T10:26:09+01:00"
+    ],
+    [
+     "Bucket List – Schaubühne Berlin – Yael Ronen und Shlomi Shaban mit einem Musical über den Krieg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/bucket-list-schaubuehne-berlin-yael-ronen-und-shlomi-shaban",
+     "2023-12-10T10:45:08+01:00"
+    ],
+    [
+     "Agamemnon – Residenztheater München – Ulrich Rasche versenkt seinen Chor im Nebel des Krieges",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/residenztheater/agamemnon-residenztheater-muenchen-ulrich-rasche",
+     "2023-12-09T10:27:00+01:00"
+    ],
+    [
+     "Johanna – Schauspielhaus Hamburg – Leonie Böhm befreit Schillers Johanna und lotet ihre Abgründe aus",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/deutsches-schauspielhaus-hamburg/johanna-deutsches-schauspielhaus-hamburg-leonie-boehm-befreit-schillers-johanna-und-lotet-ihre-abgruende-aus",
+     "2023-10-21T08:41:00+02:00"
+    ],
+    [
+     "Doughnuts – Thalia Theater Hamburg – Die Menschen in Toshiki Okadas poetischer Bühnenfantasie stecken in einem Hotel fest, während draußen die Welt im Chaos versinkt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/doughnuts-thalia-theater-hamburg-die-menschen-in-toshiki-okadas-poetischer-buehnenfantasie-stecken-in-einem-hotel-fest-waehrend-draussen-die-welt-im-chaos-versinkt",
+     "2022-01-22T08:58:35+01:00"
+    ],
+    [
+     "3 Episodes of Life – Wiener Festwochen – Markus Öhrn beschäftigt sich in einer Theaterserie mit Missbrauch im Namen der Kunst",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/wiener-festwochen/3-episodes-of-life-wiener-festwochen-markus-oehrn",
+     "2019-05-13T07:30:06+02:00"
+    ],
+    [
+     "Universe, Incomplete – Bei der Ruhrtriennale widmet sich Christoph Marthaler dem Fragment gebliebenen Werk des Komponisten Charles Ives",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrtriennale/universe-incomplete-bei-der-ruhrtriennale-widmet-sich-christoph-marthaler-dem-fragment-gebliebenen-werk-des-komponisten-charles-ives",
+     "2018-08-17T23:09:33+02:00"
+    ],
+    [
+     "die unverheiratete – Uraufführung eines (Nach-)Kriegsfrauenstücks von Ewald Palmetshofer im Wiener Akademietheater",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/2014-12-15-06-28-50",
+     "2014-12-14T23:53:52+01:00"
+    ],
+    [
+     "Sinfonie des sonnigen Tages – Ein Randlagen-Projekt von Anja Hilling, Felicitas Brucker und Mouse in Mars am Schauspielhaus Wien",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/schauspielhaus-wien/sinfonie-des-sonnigen-tages",
+     "2014-10-02T06:05:38+02:00"
+    ],
+    [
+     "Der Besuch der alten Dame – Komödienstimmung mit Dürrenmatt vom Theater Stendal zu Gast in Brandenburg",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen-anhalt/stendal/theater-der-altmark-stendal/der-besuch-der-alten-dame-komoedienstimmung-mit-duerrenmatt-in-brandenburg",
+     "2014-04-01T07:45:31+02:00"
+    ],
+    [
+     "Ein Sommernachtstraum – Henry Mason peppt bei den Salzburger Festspielen Shakespeares Komödie mit der Musik von Mendelssohn Bartholdy auf",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/salzburg-region/salzburg/salzburger-festspiele/ein-sommernachtstraum-henry-mason-peppt-bei-den-salzburger-festspielen-shakespeares-komoedie-mit-der-schauspielmusik-von-mendelssohn-bartholdy-auf",
+     "2013-08-03T08:48:33+02:00"
+    ],
+    [
+     "John Gabriel Borkman – Andrea Breth zeigt Henrik Ibsens Alterswerk am Schauspiel Frankfurt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/john-gabriel-borkman-andrea-breth-zeigt-henrik-ibsens-alterswerk-am-schauspiel-frankfurt",
+     "2013-04-12T22:56:02+02:00"
+    ],
+    [
+     "Liliom – Barbara Frey zeigt Franz Molnárs Vorstadtlegende im Wiener Burgtheater",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/liliom-barbara-frey-zeigt-franz-molnars-liliomq-im-wiener-burgtheater-als-ein-stueck-sprachlosigkeit-in-dem-jedes-wort-sticht-und-toetet",
+     "2013-04-07T00:58:34+02:00"
+    ],
+    [
+     "Edgar und Annabel – Lily Sykes zeigt Sam Holcrofts Erfolgstück in Frankfurt zuerst auf Deutsch",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/schauspiel-frankfurt/edgar-und-annabel-nlily-sykes",
+     "2012-05-21T07:32:49+02:00"
+    ],
+    [
+     "Im Dickicht der Städte – Zum Kulturhauptstadtjahr inszeniert Matthias Langhoff Bertolt Brecht",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/oberoesterreich/linz/landestheater-linz/im-dickicht-der-staedte-zum-kulturhauptstadtjahr-inszeniert-matthias-langhoff-bertolt-brecht",
+     "2009-12-05T01:00:08+01:00"
+    ],
+    [
+     "Brickland – Constanza Macras bringt die Gated Communities zum Tanzen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/brickland-constanza-macras-bringt-die-gated-communities-zum-tanzen",
+     "2007-12-14T10:28:36+01:00"
+    ],
+    [
+     "Angoloscuro/Camerascura – die neue Choreografie von William Forsythe",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/frankfurt/forsythe-company/angoloscurocamerascura-die-neue-choreografie-von-william-forsythe",
+     "2007-05-03T03:00:00+02:00"
+    ]
+   ]
+  },
+  "WISBORG Phantomschmerz Tour": {
+   "at": 1795096015.9551995,
+   "results": []
+  },
   "WorldKlezmer, Hora and love songs with She’Koyokh and Çiğdem Aslan": {
    "at": 1794398731.3476074,
    "results": []
   },
   "Zubin Mehta and Pinchas Zukerman with Bruch’s First Violin Concerto": {
    "at": 1794398745.72278,
+   "results": []
+  },
+  "emo-/indie-rock, fr) & Llana (math-rock, bln": {
+   "at": 1795095978.7236397,
+   "results": []
+  },
+  "ska- + pop-punk) + Buster Beat (ska": {
+   "at": 1795096008.1180506,
    "results": []
   }
  }
