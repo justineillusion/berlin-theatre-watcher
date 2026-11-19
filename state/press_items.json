@@ -94,7 +94,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Twelfth Night (Was ihr wollt)",
-  "url": "https://www.berliner-ensemble.de/en/production/twelfth-night-was-ihr-wollt",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/twelfth-night-was-ihr-wollt",
   "opens": "2026-12-08",
   "aliases": [
    "Twelfth Night",
@@ -164,7 +164,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "De Profundis",
-  "url": "https://www.berliner-ensemble.de/en/production/de-profundis",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/de-profundis",
   "opens": "2027-01-09",
   "aliases": []
  },
@@ -186,10 +186,66 @@
  },
  {
   "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "The International Abstraction",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/the-international-abstraction/",
+  "opens": "2027-06-06",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Extreme Tension. Art between Politics and Society",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/extreme-tension-art-between-politics-and-society/",
+  "opens": "2023-11-18",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Christoph Schlingensief. Deutschlandsuche ’99",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/christoph-schlingensief-deutschlandsuche-99/",
+  "opens": "2025-05-02",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "Shilpa Gupta",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/shilpa-gupta/",
+  "opens": "2026-03-27",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Ruin and Rush",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ruin-and-rush/",
+  "opens": "2026-04-25",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "CHANEL Commission: Lina Lapelytė. We Make Years Out of Hours",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/chanel-commission-lina-lapelyte-we-make-years-out-of-hours/",
+  "opens": "2026-05-01",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Gabriele Stötzer: Dabei sein und nicht schweigen",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/gabriele-stoetzer",
   "opens": "2026-06-19",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "[ materialistin ]",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/materialistin/",
+  "opens": "2026-07-03",
   "aliases": []
  },
  {
@@ -210,10 +266,26 @@
  },
  {
   "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Maurizio Cattelan. NIGHT",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/maurizio-cattelan-night/",
+  "opens": "2026-09-10",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Kreuzberg",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/kreuzberg",
   "opens": "2026-09-10",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "Ryuichi Sakamoto",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/ryuichi-sakamoto/",
+  "opens": "2026-09-11",
   "aliases": []
  },
  {
@@ -250,6 +322,14 @@
  },
  {
   "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "Next Door",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/next-door/",
+  "opens": "2026-10-09",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
   "venue": "Gropius Bau",
   "title": "Christoph Schlingensief",
   "url": "https://www.berlinerfestspiele.de/en/gropius-bau/programm/2026/ausstellungen/christoph-schlingensief",
@@ -273,15 +353,12 @@
   "aliases": []
  },
  {
-  "kind": "theatre",
-  "venue": "Schokoladen",
-  "title": "7ebra (indie-pop, swe) + Joy Wellboy (indie/electronia, swe)",
-  "url": "https://www.schokoladen-mitte.de/#e20261118",
-  "opens": "2026-11-18",
-  "aliases": [
-   "7ebra",
-   "indie-pop, swe) + Joy Wellboy (indie/electronia, swe"
-  ]
+  "kind": "expo",
+  "venue": "Hamburger Bahnhof",
+  "title": "Sophie Calle",
+  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/sophie-calle/",
+  "opens": "2026-11-13",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -346,14 +423,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Urban Spree",
-  "title": "Process Party x Effetto Notte: Hall of Bats with Lovataraxx, Hysteric Helen, Olgha",
-  "url": "https://www.urbanspree.com/program/concerts/process-party-x-effetto-notte-hall-of-bats-with-lovataraxx,-hysteric-helen,-olgha.html",
-  "opens": "2026-11-20",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "HAU Hebbel am Ufer",
   "title": "May Fall",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/aristide-rontini-skaanes-dansteater-may-fall/",
@@ -378,14 +447,6 @@
    "Die Marquise von O. und –",
    "The Marquise of O."
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "La Calisto",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
-  "opens": "2026-11-21",
-  "aliases": []
  },
  {
   "kind": "theatre",
@@ -494,20 +555,12 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Blechtrommel (The Tin Drum)",
-  "url": "https://www.berliner-ensemble.de/en/production/tin-drum",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/tin-drum",
   "opens": "2026-11-25",
   "aliases": [
    "Die Blechtrommel",
    "The Tin Drum"
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Alles Glück der Welt",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261125-1830/",
-  "opens": "2026-11-25",
-  "aliases": []
  },
  {
   "kind": "theatre",
@@ -523,6 +576,14 @@
   "title": "Faux Real + Dance Arts Center + The Nightclubs",
   "url": "https://www.urbanspree.com/program/concerts/faux-real-urban-spree-berlin.html",
   "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Alles Glück der Welt",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261126-1900/",
+  "opens": "2026-11-26",
   "aliases": []
  },
  {
@@ -565,6 +626,14 @@
   "venue": "Sophiensæle",
   "title": "Simone Dede Ayivi & Kompliz*innen: Schwarze Leute – Reclaiming Memories",
   "url": "https://sophiensaele.com/en/stueck/schwarze-leute-reclaiming-memories",
+  "opens": "2026-11-27",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsballett Berlin",
+  "title": "The Nutcracker",
+  "url": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-nussknacker-en/348.html",
   "opens": "2026-11-27",
   "aliases": []
  },
@@ -628,11 +697,11 @@
   "aliases": []
  },
  {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Die Zauberflöte",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
-  "opens": "2026-11-29",
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Ulay, Ulay & Abramović",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ulay-ulay-abramovic/",
+  "opens": "2026-11-28",
   "aliases": []
  },
  {
@@ -675,6 +744,14 @@
   "venue": "Maxim Gorki Theater",
   "title": "The Hearing Trumpet",
   "url": "https://www.gorki.de/en/the-hearing-trumpet",
+  "opens": "2026-12-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Die Zauberflöte",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
   "opens": "2026-12-03",
   "aliases": []
  },
@@ -957,14 +1034,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Schokoladen",
-  "title": "YOK - pocketpunk spielt FUCK 10 CHECK",
-  "url": "https://www.schokoladen-mitte.de/#e20261213",
-  "opens": "2026-12-13",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Berliner Philharmoniker EnsemblesBerliner Barock Solisten and Daishin Kashimoto with Vivaldi’s “The Four Seasons”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57448/",
@@ -1116,14 +1185,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsballett Berlin",
-  "title": "The Nutcracker",
-  "url": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-nussknacker-en/348.html",
-  "opens": "2026-12-25",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Weihnachtstrinken mit: Klinge Komplex (rap, le) & Carmel Zoum (singer/dj/solar-punk) live",
   "url": "https://www.schokoladen-mitte.de/#e20261225",
@@ -1134,7 +1195,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "It's Britney, Bitch!",
-  "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/its-britney-bitch",
   "opens": "2026-12-26",
   "aliases": []
  },
@@ -1160,7 +1221,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
+  "url": "https://www.berliner-ensemble.de/index.php/en/inszenierung/die-dreigroschenoper",
   "opens": "2026-12-27",
   "aliases": [
    "Die Dreigroschenoper",
@@ -1198,7 +1259,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "The Arsonists (Biedermann und die Brandstifter)",
-  "url": "https://www.berliner-ensemble.de/en/production/arsonists-biedermann-und-die-brandstifter",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/arsonists-biedermann-und-die-brandstifter",
   "opens": "2026-12-31",
   "aliases": [
    "The Arsonists",
@@ -1285,14 +1346,6 @@
    "Death Party",
    "garage-punk, us"
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "#Motherfuckinghood",
-  "url": "https://www.berliner-ensemble.de/en/production/motherfuckinghood",
-  "opens": "2027-01-08",
-  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1438,6 +1491,14 @@
   "aliases": []
  },
  {
+  "kind": "expo",
+  "venue": "Fotografiska Berlin",
+  "title": "Paul McCartney — Photographs 1963–64: Eyes of the Storm",
+  "url": "https://berlin.fotografiska.com/en/exhibitions/paul-mccartney",
+  "opens": "2027-01-24",
+  "aliases": []
+ },
+ {
   "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "WorldLast Breaths from Aleppo",
@@ -1461,6 +1522,14 @@
   "venue": "Chamäleon Berlin",
   "title": "North of Now",
   "url": "https://chamaeleonberlin.com/en/shows/north-of-now-berlin/",
+  "opens": "2027-01-26",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Schokoladen",
+  "title": "Yur mum (rock duo/ brazil + UK) + special guest",
+  "url": "https://www.schokoladen-mitte.de/#e20270126",
   "opens": "2027-01-26",
   "aliases": []
  },
@@ -1512,6 +1581,14 @@
   "venue": "Schokoladen",
   "title": "remine [clicker voodoo noisepop°da 'rec release'] + Emperor X [experimental folk pop°jacksonville°bln]",
   "url": "https://www.schokoladen-mitte.de/#e20270129",
+  "opens": "2027-01-29",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Schatten Reich",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/schatten-reich/",
   "opens": "2027-01-29",
   "aliases": []
  },
@@ -2237,6 +2314,14 @@
   "venue": "Deutsche Oper Berlin",
   "title": "Nabucco",
   "url": "https://deutscheoperberlin.de/en_EN/production/nabucco.1385815",
+  "opens": "2027-04-24",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Neue Nationalgalerie",
+  "title": "Katharina Sieverding",
+  "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/katharina-sieverding/",
   "opens": "2027-04-24",
   "aliases": []
  },
