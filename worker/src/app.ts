@@ -834,6 +834,13 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
             AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now')))
         OR i.id IN (SELECT item_id FROM reactions WHERE chat_id = ?1 AND (interested = 1 OR status = 'seen'))
         OR i.id = ?3   -- fiche ouverte depuis une annonce du groupe (même hors de mes lieux)
+        -- Filtre « Amis » : ce qui tente / est réservé par mes connexions, même hors de mes lieux (à l'affiche).
+        OR (i.id IN (SELECT r.item_id FROM reactions r JOIN connections c ON c.status = 'ok'
+                      AND ((c.a = ?1 AND c.b = r.chat_id) OR (c.b = ?1 AND c.a = r.chat_id))
+                     WHERE r.interested = 1 AND (r.status IS NULL OR r.status NOT IN ('seen', 'ignored')))
+            AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
+                      ELSE i.last_seen >= ?2 END)
+            AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now')))
         OR i.id IN (SELECT item_id FROM notifications WHERE chat_id = ?1 AND item_id IS NOT NULL AND created_at > datetime('now', '-30 days'))
      LIMIT 600`,
   ).bind(chat, since, focus).all<Item & { venue: string }>();
@@ -854,6 +861,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     `SELECT v.id, v.name, v.kind, v.optional, EXISTS (SELECT 1 FROM subscriptions s WHERE s.chat_id = ? AND s.venue_id = v.id) AS followed
      FROM venues v WHERE v.active = 1 ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
   ).bind(chat).all<any>();
+  const followedIds = new Set(venues.filter((v: any) => v.followed).map((v: any) => v.id));
   // « Envoyer à » / « + Joss » : mes connexions seulement.
   const circle = await circleState(env, chat);
   const people = circle.friends;
@@ -897,7 +905,9 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     invite: (invite.match(/https:\/\/\S+/) || [""])[0],   // le lien seul (le message autour est pour le chat)
     proposals: await myProposals(env, chat, lang),
     groups: await myGroups(env, chat),
-    items: items.map((i) => shapeItem(i, mine.get(i.id), friends.get(i.id) ?? [], lang)),
+    // ff = là seulement grâce aux amis (lieu non suivi, pas de réaction à moi) : montré par le filtre « Amis », pas dans le fil.
+    items: items.map((i) => ({ ...shapeItem(i, mine.get(i.id), friends.get(i.id) ?? [], lang),
+      ...(!followedIds.has(i.venue_id) && !mine.has(i.id) && i.id !== focus && (friends.get(i.id) ?? []).some((f) => f.star) ? { ff: 1 } : {}) })),
   };
 }
 
