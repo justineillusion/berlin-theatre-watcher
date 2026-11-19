@@ -1164,7 +1164,9 @@ function dateBlock(x) {
   const firstFree = free.filter((d) => !isSold(x, d)).sort()[0];
   const sel = selDate(x) || firstFree;
   const L = sessionLinks(x), more = st.dmore === x.id;
-  const shown = more ? all : all.slice(0, 8);
+  const MAXD = 4;   // 4 dates visibles (2 lignes), le reste derrière « + n séances »
+  let shown = more ? all : all.slice(0, MAXD);
+  if (!more && sel && !shown.includes(sel)) shown = [...shown.slice(0, MAXD - 1), sel];   // la date choisie reste visible
   const months = new Set(all.map((d) => d.slice(0, 7)));
   let h = `<div class="dblock">`, curM = "";
   for (const d of shown) {
@@ -1176,7 +1178,7 @@ function dateBlock(x) {
     h += `<button class="dch${d === sel ? " on" : ""}${sd ? " sd" : ""}"${sd ? " disabled" : ` data-dsel="${x.id}|${d}"`}><span class="dl">${esc(T.dows[t.getUTCDay()].slice(0, 3))}. ${d.slice(8, 10)}/${d.slice(5, 7)}${d.length > 10 ? ` · ${esc(d.slice(11, 16))}` : ""}</span>${micro ? `<i>${esc(micro)}</i>` : ""}${L.multi && info ? `<small>${esc(info.cinema)}</small>` : ""}${sd ? `<em>${esc(T.soldShort)}</em>` : ""}</button>`;
   }
   h += "</div>";
-  if (all.length > 8 && !more) h += `<button class="dmore" data-dmore="${x.id}">${esc(T.moreDates(all.length - 8))}</button>`;
+  if (all.length > MAXD && !more) h += `<button class="dmore" data-dmore="${x.id}">${esc(T.moreDates(all.length - MAXD))}</button>`;
   return h + "</div>";
 }
 /** Marque à droite : ☆/★ « ça me tente » en un geste ; 🎟 réservé ; ✓ ou 4/5 vu ; ↩︎ pour un écarté. */
@@ -1290,7 +1292,6 @@ function item(x) {
     const lk = [
       tixUrl ? `<a href="${esc(tixUrl)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tixD)} ↗</a>` : "",
       x.url && x.url !== tixUrl ? `<a href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(T.pageL[x.kind] || T.pageL.theatre)} ↗</a>` : "",
-      `<a href="https://www.google.com/maps/dir/?api=1&destination=${mapQ}" data-link="1" target="_blank" rel="noopener">${esc(T.routeL)} ↗</a>`,
     ].filter(Boolean);
     h += `<div class="dlinks">${lk.join("")}<span class="dlr"><button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button>${s === "ignored" ? `<button class="lnk" data-act="u" data-id="${x.id}">${esc(T.unignoreL)}</button>` : `<button class="lnk" data-act="x" data-id="${x.id}">${esc(T.hideL)}</button>`}</span></div>`;
   } else if (x.url) {
