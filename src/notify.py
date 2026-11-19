@@ -319,7 +319,7 @@ def format_show(show: Show, lang: str = "fr") -> str:
     en = lang == "en"
     en_t, orig_t = english_title(show.title)
     concert = (show.production_type or "").startswith("Concert")
-    lines = [f"{'🎵' if concert else '🎭'} <b>{_esc(en_t)}</b>" + (f" — <i>{_esc(orig_t)}</i>" if orig_t else "")]
+    lines = [f"{'🎵' if concert else '🎭'} <b>{_esc(en_t)}</b>" + (f" / <i>{_esc(orig_t)}</i>" if orig_t else "")]
     lines.append(f"📍 {_esc(show.theater)}" + (f" · {_esc(show.venue)}" if show.venue else ""))
     if show.new_dates:
         lines.append("🆕 New dates for a play already announced" if en

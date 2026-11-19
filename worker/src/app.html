@@ -4,7 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Berlin Encore!</title>
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121314" media="(prefers-color-scheme: dark)">
+<script>
+// Thème choisi (Réglages → Compte) appliqué avant le 1er rendu : pas de flash clair → sombre.
+try { const th = localStorage.getItem("theme"); if (th === "light" || th === "dark") document.documentElement.dataset.theme = th; } catch {}
+</script>
 <meta name="description" content="Théâtre surtitré, expos et ciné en VO à Berlin, avec tes amis.">
 <link rel="manifest" href="/app/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/app/icon-180.png">
@@ -20,10 +25,27 @@
 :root{
   /* Noir sur blanc, police moderne (Manrope). Accents rares : rouge (actions, « ! » du nom), or (étoiles). */
   --bg:#ffffff; --card:#f2f2f5; --ink:#111214; --muted:#686e75;
-  --line:#e6e6ea;
-  --velvet:#d7263d; --velvet-ink:#ffffff; --gold:#e0a100; --gold-soft:#fff6dc;
-  --ok:#2f9e5b; --sans:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; --serif:var(--sans);
+  --line:#e6e6ea; --rule:#111214; --tagb:#cfd1d6; --dim:#9aa0a6; --faint:#c3c6cb; --ph:#a0a5ab;
+  --velvet:#d7263d; --velvet-ink:#ffffff; --gold:#e0a100; --gold-soft:#fff6dc; --gold-ink:#8a6400;
+  --ok:#2f9e5b; --ok-soft:#eaf6ef; --ok-ink:#1f6e3f; --hit:#fdf0f2; --chipbg:#ffffff; --onaccent:#ffffff;
+  --overlay:rgba(14,15,17,.55); --avbg:#ffffff;
+  --sans:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; --serif:var(--sans);
   color-scheme:light;
+}
+/* Sombre : quasi-noir (pas #000), encre blanc cassé, rouge un peu plus clair pour le contraste (AA). */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121314; --card:#1d1f22; --ink:#ecebe7; --muted:#a3a8ae; --line:#2c2f33; --rule:#ecebe7; --tagb:#4a4e54;
+    --dim:#7d838a; --faint:#53585e; --ph:#7d838a; --velvet:#ff5266; --velvet-ink:#121314; --gold:#f0b52a; --gold-soft:#2a2414;
+    --gold-ink:#f0c35a; --ok:#4cc27e; --ok-soft:#16281e; --ok-ink:#7fd9a4; --hit:#2a1a1d; --chipbg:#1d1f22; --onaccent:#121314;
+    --overlay:rgba(0,0,0,.7); --avbg:#2c2f33; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#121314; --card:#1d1f22; --ink:#ecebe7; --muted:#a3a8ae; --line:#2c2f33; --rule:#ecebe7; --tagb:#4a4e54;
+    --dim:#7d838a; --faint:#53585e; --ph:#7d838a; --velvet:#ff5266; --velvet-ink:#121314; --gold:#f0b52a; --gold-soft:#2a2414;
+    --gold-ink:#f0c35a; --ok:#4cc27e; --ok-soft:#16281e; --ok-ink:#7fd9a4; --hit:#2a1a1d; --chipbg:#1d1f22; --onaccent:#121314;
+    --overlay:rgba(0,0,0,.7); --avbg:#2c2f33; color-scheme:dark;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -62,7 +84,7 @@ body.landing .tabs,.top[hidden]~main~.tabs{display:none}
 
 .tab{border:0;border-right:2px solid var(--ink);background:var(--bg);padding:10px 4px;font:800 12.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);border-radius:0}
 .tab:last-child{border-right:0}
-.tabav{width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:-6px;margin-right:7px;background:#fff;box-shadow:0 0 0 1.5px currentColor}
+.tabav{width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:-6px;margin-right:7px;background:var(--avbg);box-shadow:0 0 0 1.5px currentColor}
 .tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
 .filters{display:flex;gap:6px;overflow-x:auto;padding:8px 12px 0;margin:0 -12px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
@@ -90,18 +112,18 @@ body.landing .tabs,.top[hidden]~main~.tabs{display:none}
 .wkgrid>span{font:700 11px var(--sans);color:var(--muted);padding-bottom:2px}
 .wd{border:0;background:none;padding:2px 0 0;display:flex;flex-direction:column;align-items:center;gap:2px}
 .wd b{font:800 15px var(--sans);width:30px;height:30px;line-height:30px;border-radius:50%;color:var(--ink)}
-.wd.past b{color:var(--muted)}.wd.out b{color:#c3c6cb}
-.wd.today b{background:var(--velvet);color:#fff}.wd.sel b{box-shadow:inset 0 0 0 2px var(--ink)}
+.wd.past b{color:var(--muted)}.wd.out b{color:var(--faint)}
+.wd.today b{background:var(--velvet);color:var(--onaccent)}.wd.sel b{box-shadow:inset 0 0 0 2px var(--ink)}
 .wd u{display:flex;gap:3px;height:6px;text-decoration:none}
 .wd u i{width:6px;height:6px;border-radius:50%;background:var(--velvet)}.wd u i.w{background:none;box-shadow:inset 0 0 0 1.5px var(--velvet)}
 .msub{padding:10px 16px 2px;font:700 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .qrate{display:flex;gap:2px;padding:0 16px 10px;margin-top:-4px}
-.qrate button{border:0;background:none;font-size:24px;line-height:1;color:#d6d6dc;padding:2px 3px}
-.qrate:hover button{color:var(--gold)}.qrate button:hover~button{color:#d6d6dc}
+.qrate button{border:0;background:none;font-size:24px;line-height:1;color:var(--faint);padding:2px 3px}
+.qrate:hover button{color:var(--gold)}.qrate button:hover~button{color:var(--faint)}
 .mseen>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;padding:20px 16px 10px;font:800 17px var(--sans);letter-spacing:-.01em}
 .mseen>summary::after{content:"›";color:var(--muted)}.mseen[open]>summary::after{content:"‹"}
 .mseen>summary::-webkit-details-marker{display:none}
-.item.hit{background:#fdf0f2}
+.item.hit{background:var(--hit)}
 .day{display:flex;align-items:baseline;gap:8px;padding:20px 16px 6px;font:800 17px var(--sans);letter-spacing:-.01em;color:var(--ink)}
 .day span{font:500 14px var(--sans);color:var(--muted)}
 .day em{font:600 11px var(--sans);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
@@ -115,16 +137,16 @@ em.sold{font-style:normal;font-weight:800;font-size:11px;color:var(--velvet);tex
 .subtabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));grid-auto-flow:column;margin:0 -18px 10px;background:var(--velvet);padding:0 8px}
 .subtabs .chip{border:0;background:none;text-align:center;padding:11px 2px 8px;font:700 12px var(--sans);letter-spacing:.03em;color:var(--velvet-ink);opacity:.72;border-bottom:3px solid transparent}
 .subtabs .chip[aria-pressed="true"]{background:none;color:var(--velvet-ink);opacity:1;border-bottom-color:var(--velvet-ink)}
-.subtabs .chip i{font-style:normal;background:#fff;color:var(--velvet);border-radius:9px;padding:0 6px;margin-left:6px;font-size:11px}
+.subtabs .chip i{font-style:normal;background:var(--chipbg);color:var(--velvet);border-radius:9px;padding:0 6px;margin-left:6px;font-size:11px}
 .cal{color:var(--velvet);font-weight:600;text-decoration:none;white-space:nowrap}
 .av{width:22px;height:22px;border-radius:50%;object-fit:cover;vertical-align:-6px;margin:0 1px;box-shadow:0 0 0 1px var(--line)}
-img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
+img.avbig,img.avmid,img.av{background:var(--avbg);box-shadow:0 0 0 1px var(--line)}
 .avbig,.avmid{width:52px;height:52px;border-radius:50%;object-fit:cover;flex:none;display:inline-flex;align-items:center;justify-content:center;background:var(--line);color:var(--muted);font:700 20px var(--sans)}
 .avmid{width:30px;height:30px;font-size:13px;margin-right:10px}
 .fline.photo>div:nth-child(2){flex:1}
 .fline .avbig.none,.fline .avmid.none{display:inline-flex;align-items:center;justify-content:center;font:800 22px/1 var(--sans);letter-spacing:-.02em;text-transform:uppercase}
 .fline .avmid.none{font-size:14px;margin-right:10px}
-.none.c0{background:var(--velvet);color:#fff}
+.none.c0{background:var(--velvet);color:var(--onaccent)}
 .none.c1{background:var(--ink);color:var(--bg)}
 .none.c2{background:var(--bg);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
 .none.c3{background:var(--bg);color:var(--velvet);box-shadow:inset 0 0 0 2px var(--velvet)}
@@ -171,23 +193,23 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .social .sp:last-child{min-width:0}
 .face[data-face]{cursor:pointer}
 .seenp{display:inline-flex;align-items:center;gap:3px}
-.rv{color:#a37700;font-weight:800}
+.rv{color:var(--gold-ink);font-weight:800}
 .av.none{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font:800 10px var(--sans);vertical-align:-5px}
 .ostar{font-size:14px;line-height:1}
 .badge.disc{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:15px;line-height:1;padding:0;margin-top:2px;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line)}
-.badge.disc.booked{background:#fff;box-shadow:inset 0 0 0 1.5px var(--velvet)}
-.badge.disc.seen{background:#fff;box-shadow:inset 0 0 0 1.5px var(--ok)}
-.badge.disc.rate{font:800 11.5px var(--sans);color:#8a6400;background:var(--gold-soft);box-shadow:inset 0 0 0 1.5px var(--gold);white-space:nowrap}
+.badge.disc.booked{background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--velvet)}
+.badge.disc.seen{background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--ok)}
+.badge.disc.rate{font:800 11.5px var(--sans);color:var(--gold-ink);background:var(--gold-soft);box-shadow:inset 0 0 0 1.5px var(--gold);white-space:nowrap}
 .badge.mystar{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--gold-soft);box-shadow:inset 0 0 0 1.5px var(--gold);font-size:17px;line-height:1;padding:0;margin-top:2px}
 .more{color:var(--muted);font-size:12.5px;white-space:nowrap}
-.cropbg{position:fixed;inset:0;background:rgba(14,15,17,.55);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
+.cropbg{position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
 .cropbox{background:var(--bg);padding:20px;display:grid;gap:16px;justify-items:center;width:100%;max-width:320px}
 .cropview{width:240px;height:240px;border-radius:50%;overflow:hidden;position:relative;touch-action:none;cursor:grab;background:var(--card);box-shadow:0 0 0 2px var(--ink)}
 .cropview img{position:absolute;left:50%;top:50%;max-width:none;user-select:none;-webkit-user-drag:none}
 .cropz{display:flex;align-items:center;gap:10px;width:100%;font:700 18px var(--sans);color:var(--muted)}
 .cropz input{flex:1;accent-color:var(--velvet)}
 .cropbox .acts{justify-content:center}
-.tab .tabn{display:inline-block;min-width:17px;height:17px;margin-left:6px;border-radius:9px;background:var(--velvet);color:#fff;font:800 10.5px/17px var(--sans);font-style:normal;text-align:center;padding:0 4px;vertical-align:1px;letter-spacing:0}
+.tab .tabn{display:inline-block;min-width:17px;height:17px;margin-left:6px;border-radius:9px;background:var(--velvet);color:var(--onaccent);font:800 10.5px/17px var(--sans);font-style:normal;text-align:center;padding:0 4px;vertical-align:1px;letter-spacing:0}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px}
 .kpi{border:1.5px solid var(--line);padding:10px}.kpi b small{font-size:13px;color:var(--muted);font-weight:600}
 .vbars{padding:4px 0 8px}.vbars div{display:grid;grid-template-columns:1fr 90px 28px;gap:8px;align-items:center;font-size:13px;padding:3px 0}.vbars span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vbars i{display:block;height:8px;background:var(--velvet);min-width:2px}.vbars b{text-align:right}.kpi b{display:block;font:800 22px var(--sans)}.kpi span{font-size:12px;color:var(--muted)}
@@ -271,7 +293,7 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .gbtn{min-height:44px;display:flex;justify-content:center}.gor{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}.gor::before,.gor::after{content:"";flex:1;border-top:1px solid var(--line)}
 .lform .note{background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 0;font:500 18px var(--sans);color:var(--ink);box-shadow:none;outline:none}
 .lform .note:focus{border-bottom-color:var(--velvet)}
-.lform .note::placeholder{color:#a0a5ab}
+.lform .note::placeholder{color:var(--ph)}
 .lform .act{box-shadow:none!important;border-radius:0;font:700 16px var(--sans);padding:15px 14px}.lform .lnk.inl{display:inline;padding:0;font-size:inherit}
 .lform .act:not(.on){border:0;background:none;padding:4px;color:var(--muted);letter-spacing:.06em}
 .lform .hint{margin:0}
@@ -302,19 +324,19 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .ptbtn{all:unset;cursor:pointer;font:inherit;letter-spacing:inherit}.ptbtn span{font-size:15px;color:var(--muted)}
 .pdetail{margin:8px 0 4px;font-size:14px;display:flex;flex-direction:column;gap:3px}.pdetail .syn{margin-top:6px}
 .pbody .quote{margin:10px 0}
-.pset{background:#eaf6ef;color:#1f6e3f;font:700 14.5px var(--sans);padding:12px 14px;margin:12px 0}
+.pset{background:var(--ok-soft);color:var(--ok-ink);font:700 14.5px var(--sans);padding:12px 14px;margin:12px 0}
 .pcan{background:var(--card);color:var(--muted);font:700 14px var(--sans);padding:12px 14px;margin:12px 0}
 .pgrid{display:grid;border-top:2px solid var(--ink);margin:14px 0 8px}
 .pgrid>div{padding:9px 4px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;min-width:0}
 .pgrid .ph{font:700 11.5px var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:center}
 .pgrid .ph:first-child,.pgrid .pn{justify-content:flex-start}
 .pgrid .pn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pgrid .pn small{color:var(--muted);font-size:11.5px}
-.pgrid .best{background:#eaf6ef;color:#1f6e3f}
-.pgrid .pc{font:800 16px var(--sans)}.pgrid .pc.y{color:var(--ok)}.pgrid .pc.n{color:var(--velvet)}.pgrid .pc.w{color:#9aa0a6;font-weight:500}
+.pgrid .best{background:var(--ok-soft);color:var(--ok-ink)}
+.pgrid .pc{font:800 16px var(--sans)}.pgrid .pc.y{color:var(--ok)}.pgrid .pc.n{color:var(--velvet)}.pgrid .pc.w{color:var(--dim);font-weight:500}
 .ptog{min-width:56px;min-height:44px;border:1.5px solid var(--ink);background:var(--bg);font:800 16px var(--sans);color:var(--muted);border-radius:0}
-.ptog.y{background:var(--ok);border-color:var(--ok);color:#fff}.ptog.n{border-color:#c3c6cb;color:var(--velvet)}
+.ptog.y{background:var(--ok);border-color:var(--ok);color:var(--onaccent)}.ptog.n{border-color:var(--faint);color:var(--velvet)}
 .pnotes{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--muted);margin:4px 0 12px}.pnotes b{color:var(--ink)}
-.pgo{background:var(--velvet)!important;border-color:var(--velvet)!important;color:#fff!important}
+.pgo{background:var(--velvet)!important;border-color:var(--velvet)!important;color:var(--onaccent)!important}
 .pok{color:var(--ok)!important}
 .main3{display:flex;gap:6px}.main3 .act{flex:1 1 0;min-width:0;justify-content:center;padding-left:4px;padding-right:4px;white-space:nowrap}
 .tix{display:inline-block;margin-top:12px;font:800 15px var(--sans);color:var(--velvet);text-decoration:underline;text-underline-offset:4px;padding:4px 0}
@@ -327,14 +349,176 @@ img.avbig,img.avmid,img.av{background:#fff;box-shadow:0 0 0 1px var(--line)}
 .act.grp{border-style:dashed}
 .who .act:has(.av){display:inline-flex;align-items:center;gap:6px}.who .act .av{width:20px;height:20px;margin:0}
 .lnk[disabled]{opacity:.4}
+
+/* ===== DA « Programme » : grille suisse, monochrome + un accent rouge ===== */
+.mast{padding:14px 16px 10px}
+.brand b{font:800 21px var(--sans);letter-spacing:-.01em;text-transform:uppercase}
+.brand b i{font-style:normal;color:var(--velvet)}
+.mast time{display:none}
+.top{padding:2px 16px 0;border-bottom:1px solid var(--rule)}
+/* Dates : une barre segmentée, le choix actif en noir plein. */
+#whens{display:flex;gap:0;margin:0;padding:0;border:1.5px solid var(--rule);overflow:hidden}
+#whens .chip{flex:1 1 auto;min-width:0;border:0;border-right:1.5px solid var(--rule);background:var(--bg);color:var(--ink);font:700 13px var(--sans);letter-spacing:-.01em;text-transform:none;padding:10px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}
+#whens .chip:last-child{border-right:0}
+#whens .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);text-decoration:none}
+/* Types : du texte, l'actif en rouge ; le compte à droite. */
+.krow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:12px 0 10px}
+#kinds{display:flex;gap:12px;flex:1;min-width:0;background:none;margin:0;padding:0;overflow-x:auto}
+#kinds .chip{flex:none;border:0;background:none;padding:0;font:600 14px var(--sans);letter-spacing:0;text-transform:none;color:var(--dim);opacity:1;border-bottom:0}
+#kinds .chip[aria-pressed="true"]{color:var(--velvet);background:none;border:0}
+#nshow{flex:none;font:500 13.5px var(--sans);color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+/* Intertitre du jour : capitales espacées, filet au-dessus. */
+.day{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:18px 0 0;padding:12px 16px 10px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:800 12.5px var(--sans);letter-spacing:.11em;text-transform:uppercase;color:var(--ink)}
+.day span{font:600 12px var(--sans);letter-spacing:.06em;color:var(--muted)}
+.day em{font:800 12px var(--sans);font-style:normal;letter-spacing:.11em;color:var(--velvet)}
+main>.day:first-child{margin-top:0;border-top:0}
+/* Ligne : heure | type | titre ; la marque (☆ ★ 🎟) à droite, hors du bouton de la ligne. */
+.item{margin:0;display:grid;grid-template-columns:minmax(0,1fr) 40px;border-bottom:1px solid var(--line)}
+.item>.detail{grid-column:1/-1}
+.row{grid-template-columns:46px 58px minmax(0,1fr);gap:8px;padding:14px 0 14px 16px;align-items:start}
+.when{text-align:left;font:800 15.5px var(--sans);padding-top:1px}
+.when small{font:600 11.5px var(--sans);color:var(--muted)}
+.kd{font:800 10.5px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--dim);padding-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t{font:800 16.5px/1.25 var(--sans);letter-spacing:-.015em;-webkit-line-clamp:3}
+.t .ot{font-weight:500;color:var(--dim)}
+.item.soldnow .t .tt{text-decoration:line-through;text-decoration-thickness:1.5px}
+.v{font-size:14px;color:var(--muted);margin-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tg{display:inline-flex;align-items:center;border:1px solid var(--tagb);padding:2px 7px;font:600 12px/1.45 var(--sans);color:var(--ink);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;text-decoration:none}
+.tg.red{border-color:var(--velvet);color:var(--velvet)}
+.tg.bk{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.tg.link{cursor:pointer}
+.mark{border:0;background:none;padding:12px 12px 0 0;align-self:start;justify-self:end;font:400 21px/1 var(--sans);color:var(--dim);min-height:44px;min-width:40px;text-align:right}
+.mark.on{color:var(--velvet)}
+.mark.tk{font-size:18px;padding-top:14px}
+.mark.ok{color:var(--ok);font:800 13px var(--sans);padding-top:16px}
+.mark .rescue{font-size:13px}
+.item.soldout:not(.open) .row{opacity:1}
+.item.open{border:0;box-shadow:none;margin:0;background:var(--card);border-bottom:1px solid var(--line)}
+.item.open .row{padding-bottom:8px}
+.detail{padding:0 16px 16px 128px}
+@media (max-width:420px){.detail{padding-left:16px}}
+.venue{margin:0;padding:16px 16px 8px;border-top:1px solid var(--rule);font:800 11.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.more{margin:0 0 4px 128px}
+@media (max-width:420px){.more{margin-left:128px}}
+.v .more{margin:0}
+/* Lieu non suivi : grisé, « ＋ Suivre » en rouge. */
+.sres.unf .row{opacity:1}
+.sres.unf .t,.sres.unf .v,.sres.unf .when,.sres.unf .tg{color:var(--dim)}
+.sres.unf .sfollow{display:block;margin:-8px 0 10px 128px;border:0;background:none;border-radius:0;padding:4px 0;font:800 13px var(--sans);color:var(--velvet)}
+/* Mon avis : une échelle 1–5 en pastilles (les étoiles = « ça me tente »). */
+.dots{color:var(--ink);letter-spacing:.12em;font-size:12px}.dots i{font-style:normal;color:var(--faint)}
+.qrate{gap:6px;padding:2px 16px 14px 128px;margin-top:0}
+
+.qrate button{width:34px;height:34px;border:1.5px solid var(--tagb);border-radius:50%;font:800 13px var(--sans);color:var(--ink);padding:0}
+.qrate:hover button{color:var(--ink);border-color:var(--ink)}.qrate button:hover~button{color:var(--ink);border-color:var(--tagb)}
+.act.rate{color:var(--ink);letter-spacing:0;min-width:44px}
+.act.rate.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.badge.disc.rate{color:var(--ink);background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.rv{color:var(--ink)}
+.social .ostar.st{color:var(--velvet);font-size:15px}
+.sect{color:var(--muted)}.mine{background:var(--bg);border-left-color:var(--ink)}
+.thm{margin-top:4px}
+
+/* Mes sorties : la date tient sur une ligne, le jour + l'heure dessous. */
+.when{white-space:nowrap}
+.row.dc{grid-template-columns:52px 58px minmax(0,1fr)}
+.row.dc .when{font-size:13.5px}
+/* Fiche ouverte : séances en pastilles « SAM 21 / 19:30 », la choisie en noir plein. */
+.dmon{font:800 10.5px var(--sans);letter-spacing:.12em;color:var(--muted);margin:6px 0 4px}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px}
+.dch{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);padding:6px 8px 7px;text-align:left;min-height:48px;border-radius:0}
+.dch b{font:800 12.5px var(--sans);letter-spacing:.05em;text-transform:uppercase}
+.dch span{font:600 14px var(--sans);font-variant-numeric:tabular-nums}
+.dch small{font:600 10.5px var(--sans);color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dch i{font:800 9.5px var(--sans);font-style:normal;letter-spacing:.1em;color:var(--velvet);text-transform:uppercase}
+.dch.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}.dch.on small{color:var(--bg);opacity:.75}.dch.on i{color:var(--bg)}
+.dch.sd{border-color:var(--line);color:var(--dim);cursor:default}.dch.sd b,.dch.sd span{text-decoration:line-through}
+.dch.sd em{font:800 9.5px var(--sans);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--velvet)}
+.dmore{border:0;background:none;padding:8px 0 0;font:700 13.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.dacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.dacts .act{display:inline-flex;align-items:center}
+.dcal{font-size:13.5px;color:var(--muted);margin-top:8px}
+
+/* Intertitres (jours, sections, lieux, mois des séances) : entre deux filets fins couleur encre. */
+.shead{margin:18px 0 0;padding:12px 16px 10px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:800 12px var(--sans);letter-spacing:.11em;color:var(--ink)}
+.venue{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:12px 16px 10px;color:var(--ink)}
+.mseen>summary{margin-top:18px;padding:12px 16px 10px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:800 12.5px var(--sans);letter-spacing:.11em;text-transform:uppercase}
+.dmon{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:5px 0 4px;margin:10px 0 6px}
+.dblock>.dmon:first-child{margin-top:2px}
+.svenue{border-bottom:1px solid var(--line)}
+
+/* Fiche ouverte (accordéon) : filet rouge à gauche, sections en petites capitales grises. */
+.item.open{border-left:3px solid var(--velvet);background:var(--card)}
+.item.open .row{padding-left:13px}
+.detail{padding:0 16px 16px 13px;font-size:14.5px;gap:0}
+.dloc{color:var(--muted);font-size:14px;margin-top:2px}
+.ul{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.dlab{font:800 10.5px var(--sans);letter-spacing:.11em;text-transform:uppercase;color:var(--dim);margin:16px 0 7px}
+.dgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dch{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2px 6px;min-height:0;padding:7px 9px;background:var(--bg)}
+.dch .dl{font:700 13.5px var(--sans);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dch.sd .dl{text-decoration:line-through;text-decoration-color:var(--velvet)}
+.dch.sd b,.dch.sd span{text-decoration:none}.dch.sd .dl{text-decoration:line-through}
+.dch.on .dl{color:var(--bg)}
+.dbk{margin-top:8px;font-weight:700}
+.dfacts{display:grid;grid-template-columns:76px minmax(0,1fr);row-gap:5px;column-gap:10px;font-size:14px}
+.dfacts b{font-weight:600;color:var(--muted)}
+.dsyn{margin:0;font:400 15px/1.5 var(--sans);overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.dsyn.full{display:block}
+.dmore.red{color:var(--velvet);text-decoration:none;padding-top:4px}
+.dsoc{font-size:14px}.dsoc .st{color:var(--velvet)}
+.dprop{margin-top:8px;border:1.5px solid var(--velvet);padding:10px 11px;font-size:13.5px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dgo{border:0;background:var(--velvet);color:var(--onaccent);font:800 13px var(--sans);padding:8px 11px;white-space:nowrap}
+.dacts2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.dacts2 .act{box-shadow:none;padding:10px 6px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dacts2 .act.on{background:var(--velvet);border-color:var(--velvet);color:var(--onaccent);box-shadow:none}
+.dacts2 .act.pri{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.dacts2 .act.bk{background:var(--bg);border-color:var(--ink)}
+.dlinks{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:12px;font:600 13.5px var(--sans);color:var(--muted)}
+.dlinks a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.dlr{margin-left:auto;display:flex;gap:12px}.dlr .lnk{padding:0;font-size:13.5px;color:var(--dim);text-decoration:none}
+.detail .friend{margin-top:6px}
+
+.detail .dmore{justify-self:start;text-align:left}
+main>:first-child>.day:first-child,main>:first-child>.shead:first-child{margin-top:0;border-top:0}
+
+/* En-tête collant : le nom + 🔍 restent visibles à tout moment du scroll. */
+.top .mast{padding:10px 0 8px}
+.sbtn{min-width:44px;min-height:44px;margin:-10px -12px -10px 0;align-items:center;justify-content:center}
+/* Barre du bas : son fond se prolonge sous elle (barre d'outils Safari qui se replie, zone de l'indicateur d'accueil). */
+html{background:var(--bg)}
+.tabs{border-bottom:0}
+.tabs::after{content:"";position:absolute;left:0;right:0;top:100%;height:120px;background:var(--bg);pointer-events:none}
+
+/* Filtre par lieu : « Lieux ▾ », pastilles, bande du lieu, panneau en ligne. */
+.vbtn{flex:none;border:1px solid var(--tagb);background:var(--bg);color:var(--ink);font:700 13px var(--sans);padding:5px 9px;min-height:32px}
+.vbtn.on{border-color:var(--velvet);color:var(--velvet)}
+.krow{align-items:center}
+#nshow{margin-left:auto}
+.vpanel{padding:4px 16px 12px;border-bottom:1px solid var(--rule)}
+.vph{display:block;font:800 10.5px var(--sans);letter-spacing:.11em;text-transform:uppercase;color:var(--dim);margin:12px 0 6px;border:0;background:none;padding:0}
+.vsub{font:700 12px var(--sans);color:var(--muted);margin:8px 0 4px}
+.vlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px}
+.vck{display:flex;align-items:center;gap:8px;border:0;background:none;padding:8px 0;font:600 14px var(--sans);color:var(--ink);text-align:left;min-height:40px}
+.vck i{font-style:normal;font-size:17px;color:var(--ink)}.vck[aria-pressed="true"] i{color:var(--velvet)}
+.vpills{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px 4px}
+.vpill{border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);font:700 13.5px var(--sans);padding:6px 10px;min-height:36px}
+.vpill b{margin-left:4px;font-weight:800}
+.vstrip{display:flex;align-items:center;gap:8px;padding:6px 16px 12px;font-size:14px;color:var(--muted)}
+.vfol{margin-left:auto;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);font:700 13px var(--sans);padding:6px 10px;min-height:36px}
+.vfol.on{border-color:var(--tagb);color:var(--muted)}
+.vname{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;text-decoration:underline;text-decoration-color:var(--tagb);text-underline-offset:3px;cursor:pointer}
+.svenue .vname{font:700 16px var(--sans);text-decoration:none}
+.vall{margin-top:14px}
 </style>
 </head>
 <body>
-<header class="mast"><div class="brand"><small>BERLIN</small><b>Berlin Encore<i>!</i></b></div><div class="mright"><time id="today"></time><button class="sbtn" id="sbtn" aria-label="Rechercher"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.6-4.6"/></svg></button></div></header>
 <div class="top">
+<header class="mast"><div class="brand"><small>BERLIN</small><b>Berlin Encore<i>.</i></b></div><div class="mright"><time id="today"></time><button class="sbtn" id="sbtn" aria-label="Rechercher"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.6-4.6"/></svg></button></div></header>
   <div class="sbar" id="sbar" hidden><input id="sq" type="search" enterkeyhint="search" autocomplete="off" autocorrect="off" spellcheck="false"><button id="sx" aria-label="Fermer">✕</button></div>
-  <div class="filters" id="kinds"></div>
   <div class="filters" id="whens"></div>
+  <div class="krow"><div class="filters" id="kinds"></div><span id="nshow"></span><button class="vbtn" id="vbtn" data-vpanel="1" hidden></button></div>
 </div>
 <main id="list"><div class="msg">…</div></main>
 <!-- Barre du bas hors de .top : un fixed dans un sticky saute sur iPhone (rebond du scroll). -->
@@ -366,14 +550,14 @@ if (tgApp) {
   tgApp.ready(); tgApp.expand();
   // Sinon, tirer vers le bas en haut de page fait glisser toute la mini-app (barre du bas comprise).
   try { tgApp.disableVerticalSwipes?.(); } catch {}
-  try { tgApp.setHeaderColor("#ffffff"); tgApp.setBackgroundColor("#ffffff"); } catch {}
+  try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || "#ffffff"; tgApp.setHeaderColor(bg); tgApp.setBackgroundColor(bg); } catch {}
 }
 
 const L = {
   fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pushT:"Notifications sur ce téléphone", pushOn:"Activées ✓", pushOff:"Désactivées", pushIos:"Sur iPhone : ajoute d'abord l'app à l'écran d'accueil (Partager → « Sur l'écran d'accueil »), puis ouvre-la de là.", pushYes:"Activer", pushNo:"Désactiver", pushTest:"M'envoyer un test", pushDenied:"Notifications bloquées : réautorise-les dans les réglages du téléphone.", pushSent:"Test envoyé ✓", pushOfferT:"Être prévenu·e sur ton téléphone ?", pushOfferP:"Quand un ami t'envoie une sortie ou réserve pour toi.", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkUseEmail:"Utiliser mon email plutôt", pkBack:"← Revenir à Face ID", pkManage:"Gérer", secT:"Notifications et connexion", pkWelcome:"Content de te revoir.", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas activé", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Tout Berlin est coché : théâtres, cinés, expos. Tu peux ne garder que tes lieux.", onbGo:"Choisir mes lieux", onbP2:"🙋 sur ce qui te tente : tes amis le verront.", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
-        ibAll:(n) => `Voir tout · ${n} lu${n > 1 ? "s" : ""}`, ibLess:"Masquer les messages lus", sPh:"Pièce, film, lieu, artiste…", sHint:"Cherche dans tous les lieux, même ceux que tu ne suis pas (en gris).", sNone:(q) => `Rien pour « ${q} ».`, sNoneHint:"Le théâtre n'apparaît que surtitré en anglais (ou sans barrière de langue).", sVenues:"Lieux", sItems:"À l'affiche", sFollow:(v) => `＋ Suivre ${v}`, week:"7 jours", thisWe:"Ce week-end", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
-        star:"🙋 Envie", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
-        booked:"Réservé", wish:"Envies", done:"Vus", tonightH:"Ce soir", later:"Plus tard", toRate:"À noter", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : 🙋 ce qui te tente.",
+        ibAll:(n) => `Voir tout · ${n} lu${n > 1 ? "s" : ""}`, ibLess:"Masquer les messages lus", sPh:"Pièce, film, lieu, artiste…", sNone:(q) => `Rien pour « ${q} ».`, sVenues:"Lieux", sItems:"À l'affiche", sFollow:(v) => `＋ Suivre ${v}`, week:"7 jours", thisWe:"Ce week-end", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
+        star:"Ça me tente", starA:"Ça me tente", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
+        booked:"Réservé", wish:"Envies", done:"Vus", tonightH:"Ce soir", later:"Plus tard", toRate:"Ton avis ?", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ☆ ce qui te tente.", vfBtn:"Lieux", vfMine:"Mes lieux", vfOther:"Autres lieux", vfFollow:"Suivre", seeAll:"Voir tout", vfNone:(v, w) => `Rien pour ${v}${w ? " " + w : ""}`, whenW:{ tn:"ce soir", tm:"demain", we:"ce week-end", week:"ces 7 jours", all:"" }, proposeOn:(d) => `Proposer le ${d}`, tixD:"Billets", dsec:{ dates:"Dates", infos:"Infos", syn:"Résumé", friends:"Entre amis", acts:"Actions" }, mapL:"Plan", routeL:"Itinéraire", hideL:"Masquer", readMore:"Lire plus", iLang:"Langue", iWith:"Avec", iBy:"De", iDur:"Durée", iPrice:"Prix", iRev:"Avis", intN:(n) => n > 1 ? "intéressé·es" : "intéressé·e", bookedOn:(n, d) => `${n > 1 ? "ont" : "a"} réservé le ${d}`, inProp:(n) => `${n} dans la boucle`, joinProp:"Je viens", seeProp:"Voir", starBtn:"Intéressé·e", iBooked:"J'ai réservé", proposeF:"Proposer à des amis", calBtn:"Calendrier", pageL:{ theatre:"Page de la pièce", music:"Page du concert", film:"Page du film", expo:"Page de l'expo" }, wTn:"Ce soir", wTm:"Demain", wWe:"Ce week-end", wWk:"7 jours", wAll:"Tout", nShows:(n) => `${n} séance${n > 1 ? "s" : ""}`, kindL:{ theatre:"Théâtre", film:"Ciné", music:"Musique", expo:"Expo" }, untilT:(d) => `jusqu'au ${d}`, soldT:"Complet", bookedT:"Réservé", surEN:"Surtitres EN", inEN:"En anglais", themeL:"Thème", themes:{ auto:"Auto", light:"Clair", dark:"Sombre" },
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
@@ -396,13 +580,13 @@ const L = {
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pushT:"Notifications on this phone", pushOn:"On ✓", pushOff:"Off", pushIos:"On iPhone: first add the app to your home screen (Share → “Add to Home Screen”), then open it from there.", pushYes:"Turn on", pushNo:"Turn off", pushTest:"Send me a test", pushDenied:"Notifications are blocked: allow them again in your phone settings.", pushSent:"Test sent ✓", pushOfferT:"Get notified on your phone?", pushOfferP:"When a friend sends you an outing or books for you.", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkUseEmail:"Use my email instead", pkBack:"← Back to Face ID", pkManage:"Manage", secT:"Notifications & sign-in", pkWelcome:"Good to see you again.", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Off", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"All of Berlin is on: theatres, cinemas, galleries. You can keep just your venues.", onbGo:"Pick my venues", onbP2:"🙋 what tempts you: your friends will see it.", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
         week:"7 days", thisWe:"This weekend", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
-        star:"🙋 Want", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to", calOther:"iPhone / Outlook",
-        booked:"Booked", wish:"Wishlist", done:"Seen", tonightH:"Tonight", later:"Later", toRate:"To rate", empty:"Nothing in this window.", emptyMine:"Nothing yet: 🙋 what tempts you.",
+        star:"I'm interested", starA:"Interested", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to", calOther:"iPhone / Outlook",
+        booked:"Booked", wish:"Wishlist", done:"Seen", tonightH:"Tonight", later:"Later", toRate:"Your verdict?", empty:"Nothing in this window.", emptyMine:"Nothing yet: ☆ what tempts you.", vfBtn:"Venues", vfMine:"My venues", vfOther:"Other venues", vfFollow:"Follow", seeAll:"See all", vfNone:(v, w) => `Nothing at ${v}${w ? " " + w : ""}`, whenW:{ tn:"tonight", tm:"tomorrow", we:"this weekend", week:"in the next 7 days", all:"" }, proposeOn:(d) => `Propose ${d}`, tixD:"Tickets", dsec:{ dates:"Dates", infos:"Info", syn:"Synopsis", friends:"Friends", acts:"Actions" }, mapL:"Map", routeL:"Directions", hideL:"Hide", readMore:"Read more", iLang:"Language", iWith:"With", iBy:"By", iDur:"Length", iPrice:"Price", iRev:"Reviews", intN:() => "interested", bookedOn:(n, d) => `booked for ${d}`, inProp:(n) => `${n} in the loop`, joinProp:"I'm in", seeProp:"Open", starBtn:"Interested", iBooked:"I booked", proposeF:"Suggest to friends", calBtn:"Calendar", pageL:{ theatre:"Play page", music:"Concert page", film:"Film page", expo:"Exhibit page" }, wTn:"Tonight", wTm:"Tomorrow", wWe:"Weekend", wWk:"7 days", wAll:"All", nShows:(n) => `${n} show${n > 1 ? "s" : ""}`, kindL:{ theatre:"Theatre", film:"Film", music:"Music", expo:"Exhibit" }, untilT:(d) => `until ${d}`, soldT:"Sold out", bookedT:"Booked", surEN:"EN surtitles", inEN:"In English", themeL:"Theme", themes:{ auto:"Auto", light:"Light", dark:"Dark" },
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
         reviewInChat:"The bot is waiting in the chat: reply with your review.", reviewPh:"What did you think?", whyHidden:"Not shown here:", whyIgnored:(n) => `${n} dismissed (🙅)`, notForMeN:(n) => `Not for me · ${n}`, soldN:(n) => `Sold out · ${n}`, hideD:"Hide", showD:"Show", whySeen:(n) => `${n} already seen`, whyLater:(n) => `${n} 🙋/🎟 later on`,
-        ibAll:(n) => `Show all · ${n} read`, ibLess:"Hide read messages", sPh:"Show, film, venue, artist…", sHint:"Searches every venue, including those you don't follow (in grey).", sNone:(q) => `Nothing for “${q}”.`, sNoneHint:"Theatre only shows up with English surtitles (or no language barrier).", sVenues:"Venues", sItems:"On now", sFollow:(v) => `＋ Follow ${v}`,
+        ibAll:(n) => `Show all · ${n} read`, ibLess:"Hide read messages", sPh:"Show, film, venue, artist…", sNone:(q) => `Nothing for “${q}”.`, sVenues:"Venues", sItems:"On now", sFollow:(v) => `＋ Follow ${v}`,
         whyRule:"Theatre: only dates with English surtitles. Sold-out shows are hidden.", whyCine:"Cinema: films in original version rated at least 6/10 on SensCritique, or not rated yet; evening screenings: from 6 pm, until 10 pm on weekdays, no limit at weekends.", soldShort:"sold out", hideSold:"Show sold out", lastDay:"last day!", daysLeft:(d) => `${d} day${d > 1 ? "s" : ""} left`, hideSoldOff:"Hide sold out", moreDates:(n) => `+${n} more date${n > 1 ? "s" : ""}`, whySold:(n) => `${n} sold out`, whySales:"Next ticket releases:", monthName:(m) => new Date(m + "-01T12:00Z").toLocaleDateString("en-GB", { month:"long" }) + " shows", save:"Save", cancel:"Cancel", undoSeen:"↩︎ Not seen", band:"The gang",
         dows:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], mons:["January","February","March","April","May","June","July","August","September","October","November","December"],
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
@@ -422,7 +606,7 @@ const L = {
 };
 // 🗳 Propositions + groupes (ajoutés à part pour garder les lignes ci-dessus lisibles).
 Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", withWho:"Avec qui ?", whenQ:"Quand ? · optionnel, 1 à 3 créneaux", whenHint:"Avec des créneaux, chacun répond et tu cales la date. Sans, c'est un simple « ça te dit ? ».", proposeTo:(n) => `Proposer à ${n}`, otherDate:"Autre date", addDate:"Ajouter",
-  noteQ:"Un mot ? · optionnel", propNotePh:"Ça vous tente ?", sendTo:(n) => `Envoyer à ${n}`, linkOnly:"Ou juste un lien à partager (WhatsApp…)", interestedHint:"🙋 Pré-cochés : intéressés.",
+  noteQ:"Un mot ? · optionnel", propNotePh:"Ça vous tente ?", sendTo:(n) => `Envoyer à ${n}`, linkOnly:"Ou juste un lien à partager (WhatsApp…)", interestedHint:"★ Pré-cochés : intéressés.",
   propHead:"Proposition", proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
   answerSend:"Envoyer ma réponse", answerUpdate:"Mettre à jour", answerHint:"Tout le monde voit les réponses. Tu peux changer d'avis tant que ce n'est pas calé.", yourName:"Ton prénom",
   setBtn:(w) => `C'est calé · ${w}`, setOther:(w) => `ou caler ${w}`, allYes:"marche pour tout le monde", cancelProp:"Annuler la proposition", shareWa:"WhatsApp", copyLink:"Copier le lien",
@@ -433,7 +617,7 @@ Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", wit
   noSlots:"Choisis 1 à 3 créneaux.", groupsT:"Mes groupes", groupsP:"Privés : tes amis ne voient jamais leurs noms.", gdel:"Retirer", propGone:"Cette proposition n'existe plus.",
   waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
 Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWho:"With whom?", whenQ:"When? · optional, 1 to 3 options", whenHint:"With options, everyone answers and you set the date. Without, it's a simple “fancy it?”.", proposeTo:(n) => `Suggest to ${n}`, otherDate:"Other date", addDate:"Add",
-  noteQ:"A word? · optional", propNotePh:"Fancy it?", sendTo:(n) => `Send to ${n}`, linkOnly:"Or just a link to share (WhatsApp…)", interestedHint:"🙋 Pre-selected: interested.",
+  noteQ:"A word? · optional", propNotePh:"Fancy it?", sendTo:(n) => `Send to ${n}`, linkOnly:"Or just a link to share (WhatsApp…)", interestedHint:"★ Pre-selected: interested.",
   propHead:"Suggestion", proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
   answerSend:"Send my answer", answerUpdate:"Update", answerHint:"Everyone sees the answers. You can change your mind until it's set.", yourName:"Your first name",
   setBtn:(w) => `It's on · ${w}`, setOther:(w) => `or set ${w}`, allYes:"works for everyone", cancelProp:"Cancel the suggestion", shareWa:"WhatsApp", copyLink:"Copy link",
@@ -445,7 +629,7 @@ Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWh
   waText:(t) => `Shall we? ${t} 👉`, pTitle:"Which day works for you?", answers:"Answers", byLink:"via the link" });
 let T = L[new URLSearchParams(location.search).get("lang")] || L[(() => { try { return localStorage.getItem("lang"); } catch { return ""; } })()]
   || ((navigator.languages || [navigator.language || ""]).some((l) => /^fr\b/i.test(l)) ? L.fr : L.en), S = null;   // accueil : langue du téléphone (ou choisie) ; connecté·e : celle du compte
-const st = { prop:null, propData:null, pa:{}, pnote:"", proposing:null, pslots:new Set(), askGroup:null, tab:"prog", kind:"all", when:"month", open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
+const st = { prop:null, propData:null, pa:{}, pnote:"", proposing:null, pslots:new Set(), askGroup:null, tab:"prog", kind:"all", when:"week", vf:[], vfData:null, vfLoading:false, vpanel:false, vpOther:false, open:null, picking:null, sharing:null, sel:new Set(), withs:new Set(), sent:null, busy:false, focus:FOCUS, venuesOpen:new Set(), note:"", confirmRemove:null };
 if (FOCUS) st.open = FOCUS;
 st.setArea = "";
 try { localStorage.removeItem("areas"); } catch {}
@@ -466,8 +650,8 @@ const M2 = nextMonth(MONTH_END), M3 = nextMonth(M2);
 const DOW = new Date(TODAY + "T12:00:00Z").getUTCDay();          // 0 = dimanche
 const WE_FROM = DOW === 0 || DOW >= 5 ? TODAY : plus(5 - DOW);
 const WE_END = plus(DOW === 0 ? 1 : 8 - DOW);                    // le lundi suivant (exclu)
-const LIMIT = { week: plus(7), we: WE_END, month: MONTH_END, m1: M2, m2: M3, all: "9999" };
-const FROM_ = { we: WE_FROM, m1: MONTH_END, m2: M2 };
+const LIMIT = { tn: TOMORROW, tm: plus(2), week: plus(7), we: WE_END, month: MONTH_END, m1: M2, m2: M3, all: "9999" };
+const FROM_ = { tm: TOMORROW, we: WE_FROM, m1: MONTH_END, m2: M2 };
 const FROM = () => (st.tab === "prog" && FROM_[st.when]) || TODAY;
 const monthName = (d) => cap(new Intl.DateTimeFormat(T === L.en ? "en-GB" : "fr-FR", { month: "long", timeZone: "UTC" }).format(new Date(d + "T12:00:00Z")));
 
@@ -493,9 +677,10 @@ function dayLabel(d) {
 }
 const shortDay = (d) => `${+d.slice(8, 10)} ${T.smons[+d.slice(5, 7) - 1]}`;
 const state = (x) => !x.me ? "" : x.me.status === "seen" ? "seen" : x.me.status === "ignored" ? "ignored" : x.me.booked ? "booked" : x.me.star ? "star" : "";
-const badge = (x) => state(x) === "ignored" && st.dateCell ? `<span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span>` : state(x) === "seen" && x.me.rating ? `<span class="badge disc rate">${x.me.rating}★</span>` : state(x) === "star" ? `<span class="badge mystar" title="${esc(T.star)}">🙋</span>`
+const badge = (x) => state(x) === "ignored" && st.dateCell ? `<span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span>` : state(x) === "seen" && x.me.rating ? `<span class="badge disc rate">${x.me.rating}/5</span>` : state(x) === "star" ? `<span class="badge mystar" title="${esc(T.star)}">★</span>`
   : ["booked", "seen"].includes(state(x)) ? `<span class="badge disc ${state(x)}">${state(x) === "booked" ? "🎟" : "✅"}</span>` : `<span class="badge"></span>`;
-const stars = (n) => n ? `<span class="stars">${"★".repeat(n)}<i>${"★".repeat(5 - n)}</i></span>` : "";
+/** Mon avis / celui d'un ami : 1–5 en pastilles (★ = « ça me tente », 🎟 = réservé). */
+const stars = (n) => n ? `<span class="dots" title="${n}/5">${"●".repeat(n)}<i>${"●".repeat(5 - n)}</i></span>` : "";
 
 /** Lignes utiles de la fiche du bot (HTML Telegram) : lieu/salle, auteur, langue, critiques presse, résumé. */
 function facts(x) {
@@ -807,7 +992,7 @@ function socialLine(x) {
   const names = (ps) => { const n = ps.filter((p) => !hasPhoto(p)); return n.length ? `<span class="fnames">${esc(n.slice(0, 3).map((p) => p.name).join(", "))}${n.length > 3 ? "…" : ""}</span>` : ""; };
   // Moi aussi intéressée : ma tête à côté des leurs + « Organiser › » (Envoyer à… pré-rempli avec eux).
   const meToo = x.me && x.me.star && !x.me.booked && !(x.me.status === "seen");
-  if (wantP.length) parts.push(`<span class="ostar">🙋</span>` + stack(wantP, meToo));
+  if (wantP.length) parts.push(`<span class="ostar st">★</span>` + stack(wantP, meToo));
   // 🎟 d'un ami : sa date quand ce n'est pas celle de la carte (la carte est à la prochaine séance).
   const shown = (x._at || next(x) || "").slice(0, 10);
   const bDays = [...new Set(bookP.map((p) => String(p.booked).slice(0, 10)))].filter((d) => d && d !== shown).sort();
@@ -815,7 +1000,7 @@ function socialLine(x) {
   // Vu : ✅ en cercle, visages, puis « Joss 4★ » (la note de chacun en valeur).
   const seenP = f.filter((p) => p.seen);
   if (seenP.length) parts.push(`<span class="ostar ok">✅</span>` + (seenP.some((p) => p.rating)
-    ? seenP.slice(0, 4).map((p) => `<span class="seenp">${face(p)}${hasPhoto(p) ? "" : `<span class="fnames">${esc(p.name)}</span>`}${p.rating ? `<b class="rv">${p.rating}★</b>` : ""}</span>`).join("")
+    ? seenP.slice(0, 4).map((p) => `<span class="seenp">${face(p)}${hasPhoto(p) ? "" : `<span class="fnames">${esc(p.name)}</span>`}${p.rating ? `<b class="rv">${p.rating}/5</b>` : ""}</span>`).join("")
     : `<span class="stack">${seenP.map(face).join("")}</span>` + names(seenP)));
   return parts.length ? `<div class="social">${parts.map((x) => `<span class="sp">${x}</span>`).join("")}</div>` : "";
 }
@@ -831,16 +1016,19 @@ function venueLogo(id) {
   return v && v.logo ? `<img class="logo" src="${API_BASE}${esc(v.logo)}" alt="" loading="lazy">` : "";
 }
 function whenCell(x) {
-  if (x.kind === "expo") return venueLogo(x.venue_id) || ICON.expo;
+  if (x.kind === "expo") return "—";
   const n = next(x);
   if (st.tab === "prog" && st.dateCell && n) return `${+n.slice(8, 10)} ${esc(T.smons[+n.slice(5, 7) - 1])}<small>${n.slice(11)}</small>`;
-  if (st.tab === "prog") return `${n ? n.slice(11) : "—"}<small>${isSold(x, n) ? esc(T.soldShort) : ICON[x.kind]}</small>`;
+  if (st.tab === "prog") return n ? n.slice(11) || "—" : "—";
   const d = (x.me && x.me.booked) || n || (x.dates || []).slice().sort().pop();
-  if (!d) return ICON[x.kind];
+  if (!d) return "—";
   return `${+d.slice(8, 10)} ${esc(T.smons[+d.slice(5, 7) - 1])}<small>${esc(T.dows[dt(d).getUTCDay()].slice(0, 3))}${d.length > 10 ? " " + d.slice(11, 16) : ""}</small>`;
 }
 /** « ★ 6,9 SC » : un clic ouvre la fiche SensCritique / Letterboxd. */
-const scTag = (f) => f.ratingUrl ? `<b class="sc link" data-href="${esc(f.ratingUrl)}">${esc(f.rating)} ↗</b>` : `<b class="sc">${esc(f.rating)}</b>`;
+const scoreText = (r) => { const m = String(r || "").match(/★\s*([\d.,]+)\s*([A-Za-z]+)/); return m ? `${m[2]} ${m[1]}` : String(r || "").replace(/★\s*/g, ""); };
+/** Nachtkritik ★★★½☆ -> « 3,5/5 » (★ veut dire « ça me tente » dans l'app). */
+const nkScore = (t) => { const m = String(t).match(/[★½☆]+/); if (!m) return t; const n = (m[0].match(/★/g) || []).length + (m[0].includes("½") ? .5 : 0); return t.replace(m[0], `${String(n).replace(".", ",")}/5`); };
+const scTag = (f) => f.ratingUrl ? `<b class="sc link" data-href="${esc(f.ratingUrl)}">${esc(scoreText(f.rating))} ↗</b>` : `<b class="sc">${esc(scoreText(f.rating))}</b>`;
 /** « +5 dates » : un film / une pièce n'apparaît qu'à sa prochaine séance ; on dit qu'il y en a d'autres. */
 /** Expo qui ferme dans moins de 2 semaines : « ⏳ plus que 9 jours ». */
 function hurry(x) {
@@ -891,7 +1079,7 @@ function weekBar(xs) {
 function mineSections(xs) {
   const hit = (x) => st.wkSel && (state(x) === "booked" ? x.me.booked.slice(0, 10) === st.wkSel : wishDays(x).includes(st.wkSel));
   const row = (x) => item(x).replace('<div class="item', `<div class="item${hit(x) ? " hit" : ""}`);
-  const qrate = (x) => `<div class="qrate">${[1, 2, 3, 4, 5].map((n) => `<button data-act="r" data-id="${x.id}" data-arg="${n}" aria-label="${n}★">★</button>`).join("")}</div>`;
+  const qrate = (x) => `<div class="qrate">${[1, 2, 3, 4, 5].map((n) => `<button data-act="r" data-id="${x.id}" data-arg="${n}" aria-label="${n}/5">${n}</button>`).join("")}</div>`;
   const recent = plus(-30);
   const bk = xs.filter((x) => state(x) === "booked");
   const coming = bk.filter((x) => x.me.booked.slice(0, 10) >= TODAY).sort((a, b) => a.me.booked.localeCompare(b.me.booked));
@@ -906,21 +1094,109 @@ function mineSections(xs) {
   if (coming.length) {
     h += dayHead(`🎟 ${T.booked} · ${coming.length}`) + coming.map(row).join("");
   }
-  if (wish.length) h += dayHead(`🙋 ${T.wish} · ${wish.length}`) + wish.map(row).join("");
-  if (toRate.length) h += dayHead(`★ ${T.toRate} · ${toRate.length}`) + toRate.map((x) => row(x) + (st.open === x.id ? "" : qrate(x))).join("");
+  if (wish.length) h += dayHead(`★ ${T.wish} · ${wish.length}`) + wish.map(row).join("");
+  if (toRate.length) h += dayHead(`✎ ${T.toRate} · ${toRate.length}`) + toRate.map((x) => row(x) + (st.open === x.id ? "" : qrate(x))).join("");
   if (seen.length) h += `<details class="mseen"${st.seenOpen ? " open" : ""}><summary>✅ ${esc(T.done)} · ${seen.length}</summary>${seen.map(row).join("")}</details>`;
   return h;
 }
 /** Ciné-concert : « 🎻 avec orchestre » dès la ligne de la liste (la fiche le dit dans 📍). */
 const liveTag = (x) => x.kind !== "film" ? "" : /avec orchestre live|with live orchestra/.test(x.text || "") ? `🎻 ${T.liveOrch}`
   : /avec orgue live|with live organ/.test(x.text || "") ? `🎹 ${T.liveOrgan}` : "";
+/** Titre original (« / Die Wildente ») : en italique juste après le titre gras de la fiche du bot. */
+function origTitle(x) {
+  const first = String(x.text || "").split("\n")[0];
+  const m = first.match(/<\/b>\s*\/\s*<i>([^<]+)<\/i>/);
+  if (!m) return "";
+  const d = document.createElement("textarea"); d.innerHTML = m[1]; return d.value.trim();
+}
+/** « Babylon — Mitte » : le lieu et son quartier. */
+function venueLine(x) {
+  const v = (S.venues || []).find((v) => v.id === x.venue_id);
+  return v && v.district ? `${x.venue} — ${v.district}` : x.venue || "";
+}
+/** Étiquettes encadrées : version / surtitres, style, réalisateur, note publique, complet, réservé, fin d'expo. */
+function tagsHtml(x, sold) {
+  const out = [], tg = (t, c = "") => out.push(`<span class="tg${c ? " " + c : ""}">${esc(t)}</span>`);
+  const raw = String(x.text || "");
+  const plain = (() => { const d = document.createElement("textarea"); d.innerHTML = raw.replace(/<br\s*\/?>/g, "\n").replace(/<[^>]*>?/g, ""); return d.value; })();
+  const lines = plain.split("\n").map((l) => l.trim());
+  if (x.kind === "film") {
+    const v = raw.match(/📍[^\n]*?\)?\s*\((OmeU|OmU|OV|OmdU|OmenglU|VO|VOST|OmU\/OV|muet|[A-Za-zé]{2,8})\)/);
+    if (v) tg(v[1]);
+    const cr = ((lines[0] || "").match(/\(\d{4},\s*([^)]+)\)\s*$/) || [])[1];
+    if (cr) { const d = cr.split(",")[0].trim(); tg(d.length > 18 ? d.split(/\s+/).pop() : d); }
+  } else if (x.kind !== "expo") {
+    const lang = lines.find((l) => l.startsWith("🗣")) || "";
+    if (/anglais|english/i.test(lang) && /surtit|subtit/i.test(lang)) tg(T.surEN);
+    else if (/^🗣\s*(en anglais|in english)\s*$/i.test(lang)) tg(T.inEN);
+    const pt = (lines.find((l) => /^(🎬|🎸)\s/.test(l)) || "").replace(/^(🎬|🎸)\s*/, "");
+    pt.split(/\s+·\s+/).filter((p) => p && p.length <= 22).slice(0, 2).forEach((p) => tg(cap(p)));
+  }
+  const f = facts(x);
+  if (f.rating) out.push(f.ratingUrl ? `<span class="tg link" data-href="${esc(f.ratingUrl)}">${esc(scoreText(f.rating))}</span>` : `<span class="tg">${esc(scoreText(f.rating))}</span>`);
+  const nk = lines.find((l) => /Nachtkritik\s+[★½☆]+/.test(l));
+  if (nk && !f.rating) tg("NK " + nkScore((nk.match(/[★½☆]+/) || [""])[0]).replace("/5", ""));
+  if (x.kind === "expo" && x.end) tg(T.untilT(shortDay(x.end)));
+  if (x.kind === "expo" && x.end && x.end >= TODAY) { const d = Math.round((dt(x.end) - dt(TODAY)) / 864e5); if (d <= 14) tg(`⏳ ${d === 0 ? T.lastDay : T.daysLeft(d)}`, "red"); }
+  if (sold) tg(T.soldT, "red");
+  if (state(x) === "booked") tg(`🎟 ${T.bookedT}${x.me.booked && x.me.booked.slice(0, 10) !== (next(x) || "").slice(0, 10) ? " · " + shortDay(x.me.booked) : ""}`, "bk");
+  return out.length ? `<div class="tags">${out.join("")}</div>` : "";
+}
+/** Séances de la fiche du bot : « 21 19:30 » -> { url, cinéma } (films : un lien par séance, une ligne 📍 par cinéma). */
+function sessionLinks(x) {
+  const map = new Map(); const raw = String(x.text || ""); let cinemas = 0;
+  for (const line of raw.split("\n").filter((l) => l.startsWith("📍"))) {
+    const links = [...line.matchAll(/<a href="([^"]+)"[^>]*>([^<]*)<\/a>/g)];
+    const cin = (links[0] && !/\d{1,2}:\d{2}/.test(links[0][2]) ? links[0][2] : line.replace(/<[^>]*>/g, "").replace(/^📍\s*/, "").split(/[(:·]/)[0]).trim();
+    let any = false;
+    for (const [, url, lab] of links) { const m = lab.match(/(\d{1,2})\s+(\d{1,2}:\d{2})\s*$/); if (m) { any = true; map.set(`${+m[1]} ${m[2].padStart(5, "0")}`, { url: url.replace(/&amp;/g, "&"), cinema: cin }); } }
+    if (any) cinemas++;
+  }
+  const book = (raw.match(/🎟\s*<a href="([^"]+)"/) || [])[1];
+  return { map, multi: cinemas > 1, book: book ? book.replace(/&amp;/g, "&") : x.url };
+}
+/** Fiche ouverte : séances en pastilles, la prochaine libre présélectionnée ; les actions suivent la séance choisie. */
+function dateBlock(x) {
+  const free = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY);
+  const sold = st.hideSold ? [] : (x.sold || []).filter((d) => d.slice(0, 10) >= TODAY && !free.includes(d));
+  const all = [...new Set([...free, ...sold])].sort();
+  if (!all.length) return "";
+  const firstFree = free.filter((d) => !isSold(x, d)).sort()[0];
+  const sel = selDate(x) || firstFree;
+  const L = sessionLinks(x), more = st.dmore === x.id;
+  const shown = more ? all : all.slice(0, 8);
+  const months = new Set(all.map((d) => d.slice(0, 7)));
+  let h = `<div class="dblock">`, curM = "";
+  for (const d of shown) {
+    const m = d.slice(0, 7);
+    if (months.size > 1 && m !== curM) { h += (curM ? "</div>" : "") + `<div class="dmon">${esc(T.smons[+d.slice(5, 7) - 1].replace(".", "").toUpperCase())}</div><div class="dgrid">`; curM = m; }
+    else if (!curM) { h += `<div class="dgrid">`; curM = m; }
+    const t = dt(d), sd = isSold(x, d), info = L.map.get(`${+d.slice(8, 10)} ${d.slice(11, 16)}`);
+    const micro = d.slice(0, 10) === TODAY ? T.tonightH : d.slice(0, 10) === TOMORROW ? T.tomorrow : "";
+    h += `<button class="dch${d === sel ? " on" : ""}${sd ? " sd" : ""}"${sd ? " disabled" : ` data-dsel="${x.id}|${d}"`}><span class="dl">${esc(T.dows[t.getUTCDay()].slice(0, 3))}. ${d.slice(8, 10)}/${d.slice(5, 7)}${d.length > 10 ? ` · ${esc(d.slice(11, 16))}` : ""}</span>${micro ? `<i>${esc(micro)}</i>` : ""}${L.multi && info ? `<small>${esc(info.cinema)}</small>` : ""}${sd ? `<em>${esc(T.soldShort)}</em>` : ""}</button>`;
+  }
+  h += "</div>";
+  if (all.length > 8 && !more) h += `<button class="dmore" data-dmore="${x.id}">${esc(T.moreDates(all.length - 8))}</button>`;
+  return h + "</div>";
+}
+/** Marque à droite : ☆/★ « ça me tente » en un geste ; 🎟 réservé ; ✓ ou 4/5 vu ; ↩︎ pour un écarté. */
+function mark(x) {
+  const s = state(x);
+  if (s === "ignored" && st.dateCell) return `<span class="mark"><span class="badge rescue" data-rescue="${x.id}" title="${esc(T.unignore)}">↩︎</span></span>`;
+  if (s === "booked") return `<span class="mark tk" title="${esc(T.bookedT)}">🎟</span>`;
+  if (s === "seen") return `<span class="mark ok">${x.me.rating ? `${x.me.rating}/5` : "✓"}</span>`;
+  if (s === "ignored") return `<span class="mark"></span>`;
+  const on = s === "star";
+  return `<button class="mark${on ? " on" : ""}" data-act="${on ? "ui" : "i"}" data-id="${x.id}" aria-pressed="${on}" aria-label="${esc(T.starA)}">${on ? "★" : "☆"}</button>`;
+}
 function item(x) {
   const open = st.open === x.id, s = state(x), me = x.me || {};
   const soldNow = st.tab === "prog" && isSold(x, next(x));
-  let h = `<div class="item${open ? " open" : ""}${soldNow ? " soldout" : ""}" data-item="${x.id}"><button class="row" data-open="${x.id}" aria-expanded="${open}">
-    <div class="when">${whenCell(x)}</div>
-    <div><div class="t">${esc(x.title)}</div><div class="v">${[st.grouped ? "" : esc(x.venue), esc(liveTag(x)), x.kind === "expo" && x.end ? `${esc(T.until)} ${esc(shortDay(x.end))}${hurry(x)}` : ""].filter(Boolean).join(" · ")}${facts(x).rating ? ` · ${scTag(facts(x))}` : ""}${moreDates(x)}</div>${s === "seen" ? reviewBlock(x, false) : socialLine(x)}${s === "seen" ? "" : propLine(x)}${x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : ""}</div>
-    ${badge(x)}</button>`;
+  const ot = origTitle(x), sold = soldNow || !!(x._at && isSold(x, x._at));
+  let h = `<div class="item${open ? " open" : ""}${sold ? " soldout soldnow" : ""}" data-item="${x.id}"><button class="row${st.tab !== "prog" || st.dateCell ? " dc" : ""}" data-open="${x.id}" aria-expanded="${open}">
+    <div class="when">${whenCell(x)}</div><div class="kd">${esc((T.kindL || {})[x.kind] || "")}</div>
+    <div><div class="t"><span class="tt">${esc(x.title)}</span>${ot ? `<span class="ot"> / ${esc(ot)}</span>` : ""}</div><div class="v">${[st.grouped ? "" : esc(venueLine(x)), esc(liveTag(x))].filter(Boolean).join(" · ")}${open ? "" : moreDates(x)}</div>${tagsHtml(x, sold)}${open ? "" : (s === "seen" ? reviewBlock(x, false) : socialLine(x)) + (s === "seen" ? "" : propLine(x)) + (x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : "")}</div>
+    </button>${mark(x)}`;
   if (!open) return h + "</div>";
   const upcoming = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY).sort();
   const dates = x.kind === "expo"
@@ -929,27 +1205,59 @@ function item(x) {
         .map((d) => isSold(x, d) ? `<s>${esc(dayLabel(d))} ${d.slice(11)}</s> <em class="sold">${esc(T.soldShort)}</em>` : esc(`${dayLabel(d)} ${d.slice(11)}`)).join(" · ");
   const f = facts(x);
   h += `<div class="detail">`;
+  const sec = (k) => `<div class="dlab">${esc(T.dsec[k])}</div>`;
+  const lines = factLines(x);
+  // 📍 Lieu — quartier · salle · Plan ↗
+  const salle = x.kind === "film" ? "" : ((lines.find((l) => l.startsWith("📍")) || "").replace(/^📍\s*/, "").split(/\s+·\s+/).slice(1).filter((p) => p && p !== x.venue).join(" · "));
+  const mapQ = encodeURIComponent(`${x.venue}, Berlin`);
+  h += `<div class="dloc"><button class="vname" data-vfilter="${esc(x.venue_id)}">${esc(venueLine(x))}</button>${salle ? ` · ${esc(salle)}` : ""} · <a class="ul" href="https://www.google.com/maps/search/?api=1&query=${mapQ}" data-link="1" target="_blank" rel="noopener">${esc(T.mapL)} ↗</a></div>`;
   if (s === "seen") {
     h += `<div class="mine"><div class="sect">${esc(T.myReview)}</div>${me.rating || me.comment ? reviewBlock(x, true) : ""}
-      <div class="acts">${[1,2,3,4,5].map((n) => `<button class="act rate ${me.rating === n ? "on" : ""}" data-act="r" data-id="${x.id}" data-arg="${n}">${n}★</button>`).join("")}</div>
+      <div class="acts">${[1,2,3,4,5].map((n) => `<button class="act rate ${me.rating === n ? "on" : ""}" data-act="r" data-id="${x.id}" data-arg="${n}">${n}/5</button>`).join("")}</div>
       ${st.writing === x.id ? `<textarea id="review" class="note review-in" maxlength="500" rows="4" placeholder="${esc(T.reviewPh)}">${esc(me.comment || "")}</textarea>
       <div class="acts"><button class="act on" data-savereview="${x.id}">${esc(T.save)}</button><button class="act" data-writing="">${esc(T.cancel)}</button></div>` : ""}
       <div class="acts">${st.writing === x.id ? "" : `<button class="act" data-writing="${x.id}">${me.comment ? T.editReview : T.writeReview}</button>`}
       <button class="act" data-act="u" data-id="${x.id}">${T.undoSeen}</button></div></div>`;
   }
-  const friends = (x.friends || []).filter((p) => p.seen && (p.rating || p.comment));
-  if (friends.length) h += `<div class="sect">${esc(T.band)}</div>` + friends.map((p) =>
-    `<div class="friend"><b>${esc(p.name)} ${stars(p.rating)}</b>${p.comment ? `<div class="quote">« ${esc(p.comment)} »</div>` : ""}</div>`).join("");
-  if (s !== "seen" && dates) h += `<div>🗓 ${x.kind === "expo" ? esc(dates) : dates}</div>`;
-  if (me.booked && s !== "seen") h += `<div>🎟 ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}` +
-    (me.booked.length >= 16 && me.booked.slice(0, 10) >= TODAY ? ` · <span class="calrow">${esc(T.addCal)} <a class="cal" href="${gcal(x, me.booked)}" data-link="1" target="_blank" rel="noopener">Google</a> · <a class="cal" href="${API_BASE || location.origin}/app/cal/${x.id}.ics?at=${me.booked.replace(/\D/g, "").slice(0, 12)}" data-link="1" target="_blank" rel="noopener">${esc(T.calOther)}</a></span>` : "") + `</div>`;
-  if (f.rating) h += `<div>${scTag(f)}</div>`;
-  // 📰 Nachtkritik ★★★½☆ : la note mène à la critique.
-  const nkLink = (l) => { const m = l.match(/^(📰\s*)(Nachtkritik [★½☆]+)(.*)$/); return f.nkUrl && m ? `${esc(m[1])}<b class="sc link" data-href="${esc(f.nkUrl)}">${esc(m[2])} ↗</b>${esc(m[3])}` : esc(l); };
-  h += f.meta.map((l) => `<div class="m">${nkLink(l)}</div>`).join("");
-  if (f.syn) h += `<div class="syn">${esc(f.syn)}${f.syn.length >= 420 ? "…" : ""}</div>`;
+  // DATES
+  const chipsOn = s !== "seen" && x.kind !== "expo" && !st.picking && !st.proposing && !st.sharing;
+  if (s !== "seen" && dates) h += sec("dates") + (chipsOn ? dateBlock(x) : `<div>${x.kind === "expo" ? esc(dates) : dates}</div>`);
+  if (me.booked && s !== "seen") h += `<div class="dbk">🎟 ${esc(T.bookedT)} · ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}</div>`;
+  // INFOS : seulement ce qu'on sait (jamais de durée ni de places inventées).
+  const nkLink = (l) => { const m = l.match(/^(📰\s*)(Nachtkritik [★½☆]+)(.*)$/); return f.nkUrl && m ? `<b class="sc link" data-href="${esc(f.nkUrl)}">${esc(nkScore(m[2]))} ↗</b>${esc(m[3])}` : esc(nkScore(l.replace(/^📰\s*/, ""))); };
+  const strip = (l) => l.replace(/^\S+\s*/, "");
+  const pick1 = (e) => (f.meta.find((l) => l.startsWith(e)) || "");
+  const info = [];
+  const lang = x.kind === "film" ? ((String(x.text || "").match(/📍[^\n]*?\((OmeU|OmU|OV|OmdU|VO|VOST|muet|[A-Za-zé]{2,8})\)/) || [])[1] || "") : strip(pick1("🗣"));
+  if (lang) info.push([T.iLang, esc(lang)]);
+  const withL = x.kind === "film" ? strip(pick1("🎬")).replace(/^\d{4},\s*/, "") : strip(pick1("✍️"));
+  if (withL) info.push([x.kind === "film" ? T.iBy : T.iWith, esc(withL)]);
+  const dur = lines.find((l) => l.startsWith("⏱"));
+  if (dur) info.push([T.iDur, esc(strip(dur))]);
+  if (pick1("💶")) info.push([T.iPrice, esc(strip(pick1("💶")))]);
+  const press = f.meta.filter((l) => l.startsWith("📰")).map(nkLink);
+  const avis = [f.rating ? scTag(f) : "", ...press].filter(Boolean).join(" · ");
+  if (avis) info.push([T.iRev, avis]);
+  if (info.length) h += sec("infos") + `<div class="dfacts">${info.map(([k, v]) => `<b>${esc(k)}</b><span>${v}</span>`).join("")}</div>`;
+  // RÉSUMÉ : 3 lignes, « Lire plus » déplie sur place.
+  const syn = synFull(x);
+  if (syn) h += sec("syn") + `<p class="dsyn${st.synOpen === x.id ? " full" : ""}">${esc(syn)}</p>${st.synOpen === x.id ? "" : `<button class="dmore red" data-synopen="${x.id}">${esc(T.readMore)}</button>`}`;
+  if (x._quote) h += `<div class="quote">« ${esc(x._quote)} »</div>`;
+  // ENTRE AMIS : qui est intéressé·e, qui a réservé, avis de la bande, proposition en cours.
+  const fr = x.friends || [];
+  const wantN = fr.filter((p) => p.star && !p.booked && !p.seen).map((p) => p.name);
+  const bookN = fr.filter((p) => p.booked && !p.seen);
+  const amis = [];
+  if (wantN.length) amis.push(`<span class="st">★</span> ${wantN.map((n) => `<b>${esc(n)}</b>`).join(", ")} ${esc(T.intN(wantN.length))}`);
+  if (bookN.length) amis.push(`🎟 ${bookN.map((p) => `<b>${esc(p.name)}</b>`).join(", ")} ${esc(T.bookedOn(bookN.length, shortDay(String(bookN[0].booked))))}`);
+  const reviews = fr.filter((p) => p.seen && (p.rating || p.comment));
+  const prop = (S.proposals || []).find((q) => q.item_id === x.id && q.status === "open");
+  let amisH = amis.length ? `<div class="dsoc">${amis.join(" · ")}</div>` : "";
+  amisH += reviews.map((p) => `<div class="friend"><b>${esc(p.name)} ${stars(p.rating)}</b>${p.comment ? `<div class="quote">« ${esc(p.comment)} »</div>` : ""}</div>`).join("");
+  if (prop) amisH += `<div class="dprop"><span><b>${esc(T.propBy(prop.mine ? T.toYou : prop.from.name))} · ${esc(prop.slots.map(slotText).join(T.orW))}</b>${(prop.people || []).length ? `<br>${esc(T.inProp((prop.people || []).length))}` : ""}</span><button class="dgo" data-openprop="${prop.id}">${esc(prop.mine ? T.seeProp : T.joinProp)}</button></div>`;
+  if (st.sent && st.sent.id === x.id && st.sent.names.length) amisH += `<div class="sent">✓ ${esc(T.sentTo)} ${esc(st.sent.names.join(", "))}</div>`;
+  if (amisH) h += sec("friends") + amisH;
   const people = S.people || [];
-  if (st.sent && st.sent.id === x.id && st.sent.names.length) h += `<div class="sent">✓ ${esc(T.sentTo)} ${esc(st.sent.names.join(", "))}</div>`;
   if (st.proposing === x.id) {
     h += proposer(x);
   } else if (st.sharing === x.id) {
@@ -966,21 +1274,42 @@ function item(x) {
       `<button class="act" data-act="bd" data-id="${x.id}" data-arg="${d.replace(/\D/g, "").slice(0, 12)}">${esc(dayLabel(d))} ${d.slice(11)}</button>`).join("")}
       ${me.booked ? `<button class="act" data-act="bx" data-id="${x.id}">${esc(T.cancelBook)}</button>` : ""}</div>`;
   } else if (s !== "seen") {
-    // Rangée principale : ce qu'on fait en ouvrant une fiche (envie → proposer → réservé). Une fois réservé,
-    // l'envie va de soi : seul 🎟 reste. Le reste en petits liens dessous (rien n'est retiré).
-    h += `<div class="acts main3">
-      ${me.booked ? "" : `<button class="act ${me.star ? "on" : ""}" data-act="i" data-id="${x.id}">${T.star}</button>`}
-      ${x.kind !== "expo" && upcoming.length ? `<button class="act ${me.booked ? "on" : ""}" data-pick="${x.id}">${T.book}</button>` : ""}
-      ${(S.people || []).length ? `<button class="act" data-propose="${x.id}">${esc(T.propose)}</button>` : ""}</div>
-      ${x.url ? `<a class="tix" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tix)} ↗</a>` : ""}
-      <div class="sublinks">${[
-        s === "ignored" ? `<button class="lnk" data-act="u" data-id="${x.id}">${esc(T.unignoreL)}</button>` : `<button class="lnk" data-act="x" data-id="${x.id}">${esc(T.ignoreL)}</button>`,
-        `<button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button>`,
-      ].join("<span>·</span>")}</div>`;
+    // ACTIONS : grille 2×2 (★ intéressé·e · 🎟 réservé · proposer · calendrier), puis les liens.
+    const sel = selDate(x), L = x.kind === "expo" ? { book: x.url, map: new Map() } : sessionLinks(x);
+    const calAt = me.booked && me.booked.length >= 16 && me.booked.slice(0, 10) >= TODAY ? me.booked : sel && sel.length >= 16 ? sel : "";
+    const sInfo = sel ? L.map.get(`${+sel.slice(8, 10)} ${sel.slice(11, 16)}`) : null;
+    const tixUrl = (sInfo && sInfo.url) || L.book || x.url;
+    const btns = [
+      me.booked ? "" : `<button class="act${me.star ? " on" : ""}" data-act="${me.star ? "ui" : "i"}" data-id="${x.id}">${me.star ? "★" : "☆"} ${esc(T.starBtn)}</button>`,
+      x.kind !== "expo" && upcoming.length ? `<button class="act${me.booked ? " bk" : ""}" data-pick="${x.id}">🎟 ${esc(me.booked ? `${T.bookedT} · ${shortDay(me.booked)}` : T.iBooked)}</button>` : "",
+      people.length ? (sel ? `<button class="act pri" data-proposeat="${x.id}|${sel}">${esc(T.proposeOn(`${sel.slice(8, 10)}/${sel.slice(5, 7)}`))}</button>` : `<button class="act pri" data-propose="${x.id}">${esc(T.proposeF)}</button>`) : "",
+      calAt ? `<button class="act" data-calopen="${x.id}">＋ ${esc(T.calBtn)}</button>` : "",
+    ].filter(Boolean);
+    h += sec("acts") + `<div class="dacts2">${btns.join("")}</div>`;
+    if (calAt && st.calOpen === x.id) h += `<div class="dcal">${esc(T.addCal)} <a class="cal" href="${gcal(x, calAt)}" data-link="1" target="_blank" rel="noopener">Google</a> · <a class="cal" href="${API_BASE || location.origin}/app/cal/${x.id}.ics?at=${calAt.replace(/\D/g, "").slice(0, 12)}" data-link="1" target="_blank" rel="noopener">${esc(T.calOther)}</a></div>`;
+    const lk = [
+      tixUrl ? `<a href="${esc(tixUrl)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tixD)} ↗</a>` : "",
+      x.url && x.url !== tixUrl ? `<a href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(T.pageL[x.kind] || T.pageL.theatre)} ↗</a>` : "",
+      `<a href="https://www.google.com/maps/dir/?api=1&destination=${mapQ}" data-link="1" target="_blank" rel="noopener">${esc(T.routeL)} ↗</a>`,
+    ].filter(Boolean);
+    h += `<div class="dlinks">${lk.join("")}<span class="dlr"><button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button>${s === "ignored" ? `<button class="lnk" data-act="u" data-id="${x.id}">${esc(T.unignoreL)}</button>` : `<button class="lnk" data-act="x" data-id="${x.id}">${esc(T.hideL)}</button>`}</span></div>`;
   } else if (x.url) {
-    h += `<div class="acts"><a class="act" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a></div>`;
+    h += `<div class="dlinks"><a href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${T.site}</a></div>`;
   }
   return h + "</div></div>";
+}
+/** Lignes texte de la fiche du bot (sans HTML). */
+function factLines(x) {
+  const d = document.createElement("textarea"); d.innerHTML = String(x.text || "").replace(/<br\s*\/?>/g, "\n").replace(/<[^>]*>?/g, "");
+  return d.value.split("\n").map((l) => l.trim());
+}
+/** Résumé complet (📝), sans la coupe à 420 caractères de facts(). */
+const synFull = (x) => factLines(x).filter((l) => l.startsWith("📝")).map((l) => l.replace(/^📝\s*/, "")).join(" ");
+/** Séance choisie dans la fiche ouverte : celle touchée, sinon la prochaine libre. */
+function selDate(x) {
+  const free = (x.dates || []).filter((d) => d.slice(0, 10) >= TODAY && !isSold(x, d)).sort();
+  if (st.dsel && st.dsel.id === x.id && ((x.dates || []).includes(st.dsel.d))) return st.dsel.d;
+  return free[0] || "";
 }
 // Expos : groupées par lieu (ordre des Réglages), 2 par lieu, d'abord celles qui intéressent
 // quelqu'un (⭐ 🎟), puis celles dont la presse parle (ligne 📰 avec des sources), puis la fin la plus proche.
@@ -1183,6 +1512,56 @@ function exposByVenue(expos) {
   }
   return h;
 }
+/** Filtre par lieu : en mémoire seulement (rouvrir l'app = tout le programme). Toujours via l'API :
+ *  un film a les séances de CE cinéma, et les lieux non suivis sont inclus. */
+function vfLoad() {
+  if (!st.vf.length) { st.vfData = null; st.vfLoading = false; return void render(); }
+  const key = st.vf.slice().sort().join(","); st.vfLoading = true; render();
+  api("search", { venues: st.vf, q: "", lang: S.lang }).then((j) => {
+    if (st.vf.slice().sort().join(",") !== key) return;
+    st.vfData = { key, items: j.items || [], venues: j.venues || [] }; st.vfLoading = false; render();
+  }, () => { st.vfLoading = false; notify(T.error); render(); });
+}
+function vfItems() {
+  if (!st.vfData) return [];
+  const mine = new Map((S.items || []).map((x) => [x.id + "|" + x.venue_id, x])), byId = new Map((S.items || []).map((x) => [x.id, x]));
+  return st.vfData.items.map((y) => { const m = mine.get(y.id + "|" + y.venue_id) || byId.get(y.id); return m ? { ...y, me: m.me, friends: m.friends } : y; });
+}
+const vInfo = (id) => (st.vfData && st.vfData.venues.find((v) => v.id === id)) || (S.venues || []).find((v) => v.id === id) || { id, name: id };
+const vFollowed = (id) => !!(S.venues || []).find((v) => v.id === id && v.followed);
+const vfNames = () => st.vf.map((id) => vInfo(id).name).join(", ");
+/** Ligne d'un lieu non suivi : grisée (même style que la recherche). */
+const unf = (x, html) => st.vf.length && !vFollowed(x.venue_id) ? `<div class="sres unf">${html}</div>` : html;
+/** Pastilles « Babylon ✕ », bande du lieu (un seul), panneau « Lieux ». */
+function vfBar() {
+  let h = "";
+  if (st.vpanel) {
+    const ck = (v) => `<button class="vck" data-vtoggle="${esc(v.id)}" aria-pressed="${st.vf.includes(v.id)}"><i>${st.vf.includes(v.id) ? "☑" : "☐"}</i>${esc(v.name)}</button>`;
+    const mineV = (S.venues || []).filter((v) => v.followed), others = (S.venues || []).filter((v) => !v.followed);
+    h += `<div class="vpanel"><div class="vph">${esc(T.vfMine)}</div><div class="vlist">${mineV.map(ck).join("")}</div>`;
+    if (others.length) {
+      h += `<button class="vph vtog" data-vother="1">${esc(T.vfOther)} ${st.vpOther ? "▴" : "▾"}</button>`;
+      if (st.vpOther) for (const [k, lab] of [["theatre", T.theatre], ["film", T.film], ["music", T.music], ["expo", T.expo]]) {
+        const vs = others.filter((v) => (v.optional ? "music" : v.kind === "cinema" ? "film" : v.kind) === k);
+        if (vs.length) h += `<div class="vsub">${esc(lab)}</div><div class="vlist">${vs.map(ck).join("")}</div>`;
+      }
+    }
+    h += `</div>`;
+  }
+  if (st.vf.length) {
+    h += `<div class="vpills">${st.vf.map((id) => `<button class="vpill" data-vremove="${esc(id)}">${esc(vInfo(id).name)} <b>✕</b></button>`).join("")}</div>`;
+    if (st.vf.length === 1) {
+      const v = vInfo(st.vf[0]), on = vFollowed(v.id);
+      h += `<div class="vstrip">${v.district ? `${esc(v.district)} · ` : ""}<a class="ul" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.name + " Berlin")}" data-link="1" target="_blank" rel="noopener">${esc(T.mapL)} ↗</a>
+        <button class="vfol${on ? " on" : ""}" data-act="s" data-id="${esc(v.id)}">${on ? "✓ " + esc(T.followed) : "＋ " + esc(T.vfFollow)}</button></div>`;
+    }
+  }
+  return h;
+}
+function vfSet(ids) { st.vf = [...new Set(ids)]; st.open = null; st.focus = null; vfLoad(); }
+/** Intertitre d'un jour du programme : la date en capitales, « Ce soir » en rouge, « Demain » en gris. */
+const feedHead = (d) => { const t = dt(d); return `<div class="day"><b>${esc(`${T.dows[t.getUTCDay()]} ${t.getUTCDate()} ${T.mons[t.getUTCMonth()]}`)}</b>${d === TODAY ? `<em>${esc(T.tonightH)}</em>` : d === TOMORROW ? `<span>${esc(T.tomorrow)}</span>` : ""}</div>`; };
+let nShown = 0;
 const dayHead = (label, note = "") => { const [a, b] = String(label).split(" · "); return `<div class="day">${esc(a)}${b ? ` <span>${esc(b)}</span>` : ""}${note ? ` <span>${esc(note)}</span>` : ""}</div>`; };
 /** Sous le programme : ce qui n'y est pas et pourquoi (écarté, vu, réservé plus tard), la règle
  *  (surtitres EN, pas complet) et les prochaines ouvertures de billetterie. */
@@ -1210,7 +1589,7 @@ function readHash() {
   st.tab = tab;
   if (tab === "set" && ["venues", "friends", "account", "admin"].includes(a)) st.setTab = a;
   if (tab !== "set" && ["all", "theatre", "music", "film", "expo"].includes(a)) st.kind = a;
-  if (tab === "prog" && ["week", "we", "month", "m1", "m2", "all"].includes(b)) st.when = b;
+  if (tab === "prog" && ["tn", "tm", "week", "we", "month", "m1", "m2", "all"].includes(b)) st.when = b;
 }
 function writeHash() {
   const lg = T === L.en ? "en" : "fr", q = new URLSearchParams(location.search);
@@ -1223,7 +1602,7 @@ readHash();
 /** 🔍 Recherche : tous les lieux ; ceux que je ne suis pas en gris, avec « ＋ Suivre ». */
 function searchView() {
   const q = (st.q || "").trim();
-  if (q.length < 2) return `<p class="hint" style="padding:8px 16px">${esc(T.sHint)}</p>`;
+  if (q.length < 2) return "";
   const r = st.sres;
   if (!r || r.q !== q) return st.sresPrev ? searchBody(st.sresPrev) : "";
   return searchBody(r);
@@ -1232,7 +1611,7 @@ function searchBody(r) {
   const fol = new Map((S.venues || []).map((v) => [v.id, !!v.followed]));
   const mine = new Map((S.items || []).map((x) => [x.id, x]));
   let h = "";
-  if (r.venues.length) h += `<div class="shead">${esc(T.sVenues)}</div>` + r.venues.map((v) => `<div class="svenue"><span>${esc(v.name)}</span><button class="act${fol.get(v.id) ? " on" : ""}" data-act="s" data-id="${esc(v.id)}">${fol.get(v.id) ? "✓ " + esc(T.followed) : esc(T.sFollow("").trim())}</button></div>`).join("");
+  if (r.venues.length) h += `<div class="shead">${esc(T.sVenues)}</div>` + r.venues.map((v) => `<div class="svenue"><button class="vname" data-vfilter="${esc(v.id)}">${esc(v.name)} ›</button><button class="act${fol.get(v.id) ? " on" : ""}" data-act="s" data-id="${esc(v.id)}">${fol.get(v.id) ? "✓ " + esc(T.followed) : esc(T.sFollow("").trim())}</button></div>`).join("");
   if (r.items.length) {
     h += `<div class="shead">${esc(T.sItems)}</div>`;
     st.dateCell = true;
@@ -1245,7 +1624,7 @@ function searchBody(r) {
     }).join("");
     st.dateCell = false;
   }
-  if (!h) h = `<div class="empty">${esc(T.sNone(r.q))}<p class="hint">${esc(T.sNoneHint)}</p></div>`;
+  if (!h) h = `<div class="empty">${esc(T.sNone(r.q))}</div>`;
   return h;
 }
 let sTimer = 0;
@@ -1277,12 +1656,13 @@ function render() {
     b.setAttribute("aria-selected", b.dataset.tab === st.tab);
   });
   const K = $("kinds"), W = $("whens"), list = $("list");
+  $("vbtn").hidden = true;
   if (!S) return;
-  if (st.prop) { K.hidden = true; W.hidden = true; list.innerHTML = propPage(); return; }
-  K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog";
+  if (st.prop) { K.hidden = true; W.hidden = true; $("nshow").hidden = true; list.innerHTML = propPage(); return; }
+  K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog"; $("nshow").hidden = st.tab !== "prog";
   const searching = st.tab === "prog" && st.q != null;
   $("sbar").hidden = !searching; $("sbtn").hidden = st.tab !== "prog" || searching;
-  if (searching) { K.hidden = true; W.hidden = true; list.innerHTML = searchView(); return; }
+  if (searching) { K.hidden = true; W.hidden = true; $("nshow").hidden = true; list.innerHTML = searchView(); return; }
   if (S.guest && st.tab !== "prog") {
     K.hidden = true; W.hidden = true;
     if (st.tab === "mine") { list.innerHTML = `<div class="gmine"><b class="ftitle">${esc(T.gMineT)}</b><p>${esc(T.gMineP)}</p><button class="act on" data-tab="set">${esc(T.gSignin)}</button></div>`; return; }
@@ -1306,7 +1686,9 @@ function render() {
         <button class="act${any ? "" : " on"}" data-sk="${k}" data-arg="${any ? "off" : "on"}">${esc(any ? T.catOff : T.catOn)}</button></div>` +
         vs.map((v) => `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}"><div>${v.logo ? `<img class="logo" src="${API_BASE}${esc(v.logo)}" alt="">` : ""}<div>${esc(v.name)}${v.district ? `<small class="dist">${esc(v.district)}</small>` : ""}</div></div><span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("");
     }).join("")}`;
-    const accountTab = accountSection() + feedbackBox("feedback") + dayHead(T.language) + `<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
+    const thNow = (() => { try { return localStorage.getItem("theme") || "auto"; } catch { return "auto"; } })();
+    const themeRow = dayHead(T.themeL) + `<div class="acts thm">${["auto", "light", "dark"].map((k) => `<button class="act ${thNow === k ? "on" : ""}" data-themeset="${k}">${esc(T.themes[k])}</button>`).join("")}</div>`;
+    const accountTab = accountSection() + feedbackBox("feedback") + themeRow + dayHead(T.language) + `<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) =>
         `<button class="act ${S.lang === c ? "on" : ""}" data-act="l" data-id="${c}">${l}</button>`).join("")}</div>` +
       securityBlock() +
       (WEB ? `<div class="acts" style="margin-top:28px"><button class="act" data-logout="1">${esc(T.logout)}</button></div>` : "");
@@ -1320,36 +1702,41 @@ function render() {
     return;
   }
   // Types suivis seulement : ne plus suivre aucun cinéma retire « Ciné » du menu.
-  const followedKinds = new Set(S.venues.filter((v) => v.followed).map((v) => v.optional ? "music" : v.kind === "cinema" ? "film" : v.kind));
+  const vfOn = st.tab === "prog" && st.vf.length > 0;
+  const BASE = vfOn ? vfItems() : S.items;
+  $("vbtn").hidden = st.tab !== "prog"; $("vbtn").textContent = `${T.vfBtn} ${st.vpanel ? "▴" : "▾"}`; $("vbtn").setAttribute("aria-expanded", !!st.vpanel);
+  $("vbtn").classList.toggle("on", vfOn);
+  const followedKinds = vfOn ? new Set(BASE.map((x) => x.kind)) : new Set(S.venues.filter((v) => v.followed).map((v) => v.optional ? "music" : v.kind === "cinema" ? "film" : v.kind));
   const kindChips = [["theatre", T.theatre], ["music", T.music], ["film", T.film], ["expo", T.expo]].filter(([k]) => followedKinds.has(k));
   if (st.kind !== "all" && !followedKinds.has(st.kind)) st.kind = "all";
   K.hidden = kindChips.length < 2;
   chips(K, kindChips.length < 2 ? [] : [["all", T.all], ...kindChips], "kind");
-  chips(W, [["week", T.week], ["we", T.thisWe], ["month", T.month], ["m1", monthName(MONTH_END)], ["m2", monthName(M2)], ["all", T.any]], "when");
+  chips(W, [["tn", T.wTn], ["tm", T.wTm], ["we", T.wWe], ["week", T.wWk], ["all", T.wAll]], "when");
 
-  let xs = S.items.filter((x) => st.kind === "all" || x.kind === st.kind);
-  let h = "";
+  let xs = (st.tab === "prog" ? BASE : S.items).filter((x) => st.kind === "all" || x.kind === st.kind);
+  let h = ""; nShown = 0;
   if (st.tab === "prog") {
     // Ce que j'ai vu ou écarté n'est plus reproposé (sauf la fiche ouverte, le temps de voir l'effet du clic).
     // 🙅 de la période : repliés tout en bas, grisés, avec « ↩︎ Finalement si ».
     const dismissed = xs.filter((x) => state(x) === "ignored" && next(x) && next(x).slice(0, 10) < LIMIT[st.when])
       .sort((a, b) => next(a).localeCompare(next(b)));
     xs = xs.filter((x) => (!["seen", "ignored"].includes(state(x)) || (x.id === st.open && state(x) === "seen")) && next(x) && next(x).slice(0, 10) < LIMIT[st.when]);
-    const focused = st.focus && xs.find((x) => x.id === st.focus) || (st.focus && st.kind === "all" && S.items.find((x) => x.id === st.focus));
+    const focused = st.focus && xs.find((x) => x.id === st.focus) || (st.focus && st.kind === "all" && !vfOn && S.items.find((x) => x.id === st.focus));
     if (focused) { h += dayHead(T.shared) + item(focused); xs = xs.filter((x) => x.id !== st.focus); }
     // Dans chaque jour, ce qui tente mes amis (ou moi) d'abord, puis l'heure.
     const pull = (x) => (x.me && (x.me.star || x.me.booked)) || (x.friends || []).some((p) => (p.star || p.booked) && !p.seen) ? 0 : 1;
     const shows = xs.filter((x) => x.kind !== "expo").sort((a, b) => next(a).slice(0, 10).localeCompare(next(b).slice(0, 10)) || pull(a) - pull(b) || next(a).localeCompare(next(b)));
     const expos = xs.filter((x) => x.kind === "expo").sort((a, b) => (a.end || "9").localeCompare(b.end || "9"));
     let cur = "";
-    for (const x of shows) { const d = dayLabel(next(x)); if (d !== cur) { h += dayHead(d); cur = d; } h += item(x); }
+    for (const x of shows) { const d = next(x).slice(0, 10); if (d !== cur) { h += feedHead(d); cur = d; } h += unf(x, item(x)); }
+    nShown = shows.length + expos.length + (focused ? 1 : 0);
     if (expos.length) h += dayHead(T.expos, T.exposNote) + exposByVenue(expos);
     // « Voir les complets » : les pièces sans séance libre dans la période, à leur 1re date complète, grisées, en bas.
     let soldHtml = "", soldCount = 0;
     {
       const inWin = (d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when];
       const shown = new Set([...shows, ...(focused ? [focused] : [])].map((x) => x.id));
-      const soldRows = S.items.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind)
+      const soldRows = BASE.filter((x) => x.kind !== "expo" && (st.kind === "all" || x.kind === st.kind)
           && !["seen", "ignored"].includes(state(x)) && !shown.has(x.id))
         .map((x) => ({ x, d: (x.sold || []).filter(inWin).sort()[0] })).filter((r) => r.d)
         .sort((a, b) => a.d.localeCompare(b.d));
@@ -1372,9 +1759,12 @@ function render() {
     const pushOffer = false && pushSupported() && !(IOS && !STANDALONE) && st.pushHere === false && !lsGet("pushAsked") && Notification.permission === "default";
     const pushHtml = pushOffer ? `<div class="onb"><div><b>🔔 ${esc(T.pushOfferT)}</b>${esc(T.pushOfferP)}<br><button class="go" data-pushon="1">${esc(T.pushYes)} ›</button> &nbsp; <button class="go" style="color:var(--muted)" data-pushlater="1">${esc(T.pkLater)}</button></div></div>` : "";
     const onbHtml = pushHtml + pkHtml + (st.pkOffer ? "" : onb ? `<div class="onb"><div><b>${esc(T.onbT)}</b>${esc(T.onbP)}<br><button class="go" data-onbgo="1">${esc(T.onbGo)} ›</button><p class="onb2">${esc(T.onbP2)}</p></div><button class="x" data-onbx="1" aria-label="OK">✕</button></div>` : "");
-    list.innerHTML = onbHtml + (h || `<div class="empty">${esc(T.empty)}</div>`) + soldBtn + soldHtml + whyNote();
+    const vfTop = vfBar();
+    const emptyH = vfOn ? (st.vfLoading && !st.vfData ? `<div class="msg">…</div>` : `<div class="empty">${esc(T.vfNone(vfNames(), T.whenW[st.when] || ""))}<br><button class="act vall" data-when="all">${esc(T.seeAll)}</button></div>`) : `<div class="empty">${esc(T.empty)}</div>`;
+    list.innerHTML = vfTop + (vfOn ? "" : onbHtml) + (h || emptyH) + soldBtn + soldHtml + (vfOn ? "" : whyNote());
+    $("nshow").textContent = T.nShows(nShown); $("nshow").hidden = false;
   } else {
-    h = mineSections(xs);
+    h = mineSections(xs); $("nshow").hidden = true;
     const forMe = inboxSection();
     list.innerHTML = forMe + (h || (forMe ? "" : `<div class="empty">${esc(T.emptyMine)}</div>`));
     markRead();
@@ -1439,6 +1829,17 @@ document.addEventListener("click", (e) => {
   const sc = e.target.closest("[data-href]");
   if (sc) { e.preventDefault(); e.stopPropagation(); tgApp?.openLink ? tgApp.openLink(sc.dataset.href) : window.open(sc.dataset.href, "_blank"); return; }
   const t = e.target.closest("button"); if (!t) return;
+  if (t.dataset.themeset) { setTheme(t.dataset.themeset); return void render(); }
+  if (t.dataset.dsel) { const [id, d] = t.dataset.dsel.split("|"); st.dsel = { id, d }; return void render(); }
+  if (t.dataset.dmore) { st.dmore = t.dataset.dmore; return void render(); }
+  if (t.dataset.vfilter) { st.q = null; st.sres = null; st.vpanel = false; st.tab = "prog"; $("sq")?.blur(); vfSet([t.dataset.vfilter]); window.scrollTo?.(0, 0); return; }
+  if (t.dataset.vpanel) { st.vpanel = !st.vpanel; return void render(); }
+  if (t.dataset.vother) { st.vpOther = !st.vpOther; return void render(); }
+  if (t.dataset.vtoggle) { const id = t.dataset.vtoggle; return void vfSet(st.vf.includes(id) ? st.vf.filter((v) => v !== id) : [...st.vf, id]); }
+  if (t.dataset.vremove) { return void vfSet(st.vf.filter((v) => v !== t.dataset.vremove)); }
+  if (t.dataset.synopen) { st.synOpen = t.dataset.synopen; return void render(); }
+  if (t.dataset.calopen) { st.calOpen = st.calOpen === t.dataset.calopen ? null : t.dataset.calopen; return void render(); }
+  if (t.dataset.proposeat) { const [id, d] = t.dataset.proposeat.split("|"); if (S.guest) return void act("i", id); const x = S.items.find((y) => y.id === id); if (x) { openProposer(x); st.pslots = new Set([d]); } return void render(); }
   if (t.dataset.tab || t.dataset.kind || t.dataset.when || t.dataset.hidesold) st.focus = null;
   if (t.dataset.tab) { if (st.prop) closeProp(); st.q = null; st.tab = t.dataset.tab; st.open = null; if (st.tab === "set") { st.setTab = null; st.friend = null; } window.scrollTo?.(0, 0); }
   else if (t.dataset.kind) st.kind = t.dataset.kind;
@@ -1889,6 +2290,19 @@ addEventListener("touchend", () => { touching = false; lastScroll = Date.now(); 
 addEventListener("touchcancel", () => { touching = false; }, { passive: true });
 // Hauteur de l'en-tête collant suivie en continu (polices, puces qui passent à la ligne).
 if (window.ResizeObserver) { const tp = document.querySelector(".top"); if (tp) new ResizeObserver(() => document.documentElement.style.setProperty("--toph", (tp.hidden ? 0 : tp.offsetHeight) + "px")).observe(tp); }
+/** Thème : auto (système) / clair / sombre, mémorisé ; barre d'état iOS et Telegram suivent. */
+function setTheme(k) {
+  try { k === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", k); } catch {}
+  if (k === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = k;
+  syncThemeColor();
+}
+function syncThemeColor() {
+  const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || "#ffffff";
+  const forced = document.documentElement.dataset.theme;
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { if (forced) m.setAttribute("content", bg); else m.setAttribute("content", m.media.includes("dark") ? "#121314" : "#ffffff"); });
+  try { tgApp?.setHeaderColor(bg); tgApp?.setBackgroundColor(bg); } catch {}
+}
+syncThemeColor();
 setInterval(() => tick(), 15000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener?.("message", (e) => { if (e.data && e.data.t === "refresh") tick(true); });
