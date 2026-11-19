@@ -57,8 +57,8 @@ cinemas:
     source: yorck                    # Kantstr. 10, Charlottenburg
     yorck_slug: delphi-lux
 
-  - name: FaF
-    source: yorck                    # Filmtheater am Friedrichshain, Bötzowstr. 1-5
+  - name: Filmtheater am Friedrichshain
+    source: yorck                    # Bötzowstr. 1-5 (id historique : cinema-faf)
     yorck_slug: filmtheater-am-friedrichshain
 
   - name: Passage
