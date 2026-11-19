@@ -1733,7 +1733,7 @@ function render() {
     b.setAttribute("aria-selected", b.dataset.tab === st.tab);
   });
   const K = $("kinds"), W = $("whens"), list = $("list");
-  $("vbtn").hidden = true;
+  $("vbtn").hidden = true; $("fbtn").hidden = true;
   if (!S) return;
   if (st.prop) { K.hidden = true; W.hidden = true; $("nshow").hidden = true; list.innerHTML = propPage(); return; }
   K.hidden = st.tab === "set"; W.hidden = st.tab !== "prog"; $("nshow").hidden = st.tab !== "prog";
