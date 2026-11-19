@@ -98,6 +98,16 @@ class Film:
         return self._first("original_title")
 
     @property
+    def display_title(self) -> str:
+        """Titre affiché : anglais (Letterboxd donne le titre international anglais),
+        sinon titre original, sinon celui du cinéma."""
+        lb = self.letterboxd
+        if lb and lb.title and lb.confidence == "high":
+            return lb.title
+        return (self.senscritique.original_title if self.senscritique and self.senscritique.original_title else None) \
+            or self.original_title or self.title
+
+    @property
     def year(self) -> Optional[int]:
         return self._first("year") or (self.senscritique.year if self.senscritique else None)
 

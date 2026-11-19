@@ -57,6 +57,12 @@ class Show:
         base = f"{self.venue_id or self.theater}|{self.title.strip().lower()}"
         return hashlib.sha1(base.encode()).hexdigest()[:12]
 
+    @property
+    def display_title(self) -> str:
+        """Titre affiché en anglais : « Die Wildente (The Wild Duck) » -> « The Wild Duck »,
+        « Die Zauberflöte » -> « The Magic Flute ». L'id reste fondé sur self.title."""
+        return english_title(self.title)[0]
+
     def haystack(self) -> str:
         """Texte concaténé pour la recherche de mots-clés (minuscules)."""
         parts = [
@@ -75,3 +81,35 @@ class Show:
     def from_dict(cls, d: dict) -> "Show":
         allowed = set(cls.__dataclass_fields__)  # type: ignore[attr-defined]
         return cls(**{k: v for k, v in d.items() if k in allowed})
+
+
+# Titres allemands courants sans traduction sur les sites (opéra / ballet).
+_EN_TITLES = {
+    "die zauberflöte": "The Magic Flute", "hänsel und gretel": "Hansel and Gretel",
+    "tristan und isolde": "Tristan and Isolde", "die zarenbraut": "The Tsar's Bride",
+    "der fliegende holländer": "The Flying Dutchman", "die entführung aus dem serail": "The Abduction from the Seraglio",
+    "der rosenkavalier": "Der Rosenkavalier", "die fledermaus": "Die Fledermaus",
+    "der nussknacker": "The Nutcracker", "schwanensee": "Swan Lake", "dornröschen": "The Sleeping Beauty",
+    "die walküre": "The Valkyrie", "das rheingold": "The Rhine Gold", "götterdämmerung": "Twilight of the Gods",
+    "die meistersinger von nürnberg": "The Mastersingers of Nuremberg", "die frau ohne schatten": "The Woman Without a Shadow",
+}
+_DE = __import__("re").compile(r"[äöüß]|\b(der|die|das|und|des|dem|den|ein|eine|vom|zum|zur|für|mit|im|am|ihr|ist|nicht|wie)\b", __import__("re").I)
+
+
+def english_title(title: str) -> tuple:
+    """(titre anglais, titre original ou None)."""
+    import re
+    t = (title or "").strip()
+    if t.lower() in _EN_TITLES:
+        en = _EN_TITLES[t.lower()]
+        return (en, None if en == t else t)
+    m = re.fullmatch(r"(.+?)\s*\(([^()]+)\)", t)
+    if m:
+        a, b = m.group(1).strip(), m.group(2).strip()
+        if b.upper() in ("AT", "UA", "WA"):           # Arbeitstitel / Uraufführung
+            return (a, None)
+        if _DE.search(a) and not _DE.search(b):
+            return (b, a)
+        if _DE.search(b) and not _DE.search(a):        # « Twelfth Night (Was ihr wollt) »
+            return (a, b)
+    return (t, None)

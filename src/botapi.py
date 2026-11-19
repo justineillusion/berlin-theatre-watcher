@@ -53,7 +53,7 @@ def _meta(show: Show) -> dict:
         "id": show.item_id(),
         "venue_id": show.venue_id,
         "kind": show.kind,
-        "title": show.title,
+        "title": show.display_title,
         "url": show.url,
         "dates": sorted(set(show.available_iso)),
         "start_date": show.date if show.kind == "expo" else None,

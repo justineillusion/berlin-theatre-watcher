@@ -10,7 +10,7 @@ import httpx
 
 from . import price
 from .language import is_pure_language_note, strip_language_notes, to_english_labels
-from .models import Show
+from .models import Show, english_title
 
 _API = "https://api.telegram.org/bot{token}/sendMessage"
 
@@ -317,7 +317,8 @@ def format_show(show: Show, lang: str = "fr") -> str:
     """Fiche (HTML) d'une pièce — même gabarit que les expos et les films :
     titre · 📍 lieu · 🗓 dates · 🗣 langue · ★ note (si connue) · 📝 description · liens."""
     en = lang == "en"
-    lines = [f"🎭 <b>{_esc(show.title)}</b>"]
+    en_t, orig_t = english_title(show.title)
+    lines = [f"🎭 <b>{_esc(en_t)}</b>" + (f" — <i>{_esc(orig_t)}</i>" if orig_t else "")]
     lines.append(f"📍 {_esc(show.theater)}" + (f" · {_esc(show.venue)}" if show.venue else ""))
     if show.new_dates:
         lines.append("🆕 New dates for a play already announced" if en
