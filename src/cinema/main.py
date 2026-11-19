@@ -359,7 +359,9 @@ def run(cfg: dict, start: date, cinemas: Optional[List[str]] = None, lang: str =
 def cinema_venue_id(name: str) -> str:
     """Id du cinéma côté bot (table venues) : « cinema-intimes »."""
     from ..main import venue_slug
-    return "cinema-" + venue_slug(name)
+    # Cinéma renommé : l'id reste celui d'origine (abonnements, fiches, liens déjà envoyés).
+    renamed = {"Filmtheater am Friedrichshain": "cinema-faf"}
+    return renamed.get(name) or "cinema-" + venue_slug(name)
 
 
 def _film_item(f: Film, by_id: Dict[str, str]) -> dict:
@@ -462,6 +464,8 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False, refresh:
         # et rien n'est envoyé d'ici ; sinon (autre jour, après midi) : envoi direct comme avant.
         resp = api.post("/api/film-plan", json={
             "films": [_film_item(f, by_id) for f in films.values()],
+            # Cinémas lus sans erreur : leurs films absents de l'envoi sont retirés (même si plus aucun n'y reste).
+            "fetched_venues": [cinema_venue_id(n) for n in analysis["known_until"]],
             "queue": not refresh,
             "targets": [{"chat_id": rcp["chat_id"], "ids": [f.item_id() for f in res["kept"]],
                          "header": res["header"],

@@ -184,7 +184,7 @@ export function keepSynopsis(next: string | null, prev: string | null | undefine
   return at >= 0 ? next.slice(0, at) + m[0] + next.slice(at) : next + m[0];
 }
 
-async function upsertFilms(env: Env, list: any[]): Promise<void> {
+async function upsertFilms(env: Env, list: any[], fetched: string[] = []): Promise<void> {
   const now = new Date().toISOString().replace("T", " ").slice(0, 19);
   const { results: oldRows } = await env.DB.prepare(
     "SELECT id, text, text_en FROM items WHERE id IN (SELECT value FROM json_each(?))",
@@ -206,7 +206,8 @@ async function upsertFilms(env: Env, list: any[]): Promise<void> {
   // Catalogue complet reçu : un film absent (titre/année corrigés → nouvel id, film retiré) perd ses
   // séances à venir, sinon il resterait en double à côté de sa nouvelle fiche. Seulement les cinémas
   // présents dans l'envoi (un cinéma sauté garde son programme) et jamais sur un envoi maigre.
-  const venues = [...new Set(list.map((f) => f.venue_id))];
+  // + les cinémas lus sans erreur (envoyés par le scraper), même s'il n'y reste plus aucun film retenu.
+  const venues = [...new Set([...list.map((f) => f.venue_id), ...fetched.filter((v) => /^[\w-]{1,60}$/.test(v))])];
   if (list.length >= 15) {
     await env.DB.prepare(
       `UPDATE items SET dates = '[]' WHERE kind = 'film' AND last_seen < ?1
@@ -222,7 +223,7 @@ async function upsertFilms(env: Env, list: any[]): Promise<void> {
  *     nouvelles séances ; jamais s'il est vu ou ignoré. Accusés via /api/sent, comme les pièces. */
 export async function filmPlan(env: Env, body: any): Promise<Response> {
   const list: any[] = (body.films ?? []).filter((f: any) => f && typeof f.id === "string" && f.title);
-  await upsertFilms(env, list);
+  await upsertFilms(env, list, Array.isArray(body.fetched_venues) ? body.fetched_venues.map(String) : []);
   // `cards` : fiche + dates propres à chaque ami (séances des seuls cinémas qu'il suit).
   const targets: { chat_id: number; ids: string[]; cards?: Record<string, Partial<Item> & { dates?: string[] }> }[] =
     body.targets ?? [];
