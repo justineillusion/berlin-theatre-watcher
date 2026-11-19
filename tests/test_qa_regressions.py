@@ -55,3 +55,14 @@ def test_omu_only_for_english_originals():
     assert taste.version_filter(_film("OmU", "en"), {}) is None
     assert taste.version_filter(_film("OmeU", "fr"), {}) is None
     assert taste.version_filter(_film("OV", "en"), {}) is None
+
+
+def test_german_film_without_english_subtitles_is_dropped():
+    from datetime import datetime
+    from src.cinema.models import Film, Screening
+    from src.cinema.taste import version_filter
+    mk = lambda v: Screening(cinema="FaF", start=datetime(2026, 11, 20, 18), title="Heimsuchung", version=v,
+                             countries=["Deutschland"], original_language="de")
+    assert version_filter(Film(key="h", screenings=[mk("DF")]), {}) is not None
+    f = Film(key="h", screenings=[mk("DF"), mk("OmeU")])
+    assert version_filter(f, {}) is None and [s.version for s in f.screenings] == ["OmeU"]
