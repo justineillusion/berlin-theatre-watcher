@@ -29,7 +29,7 @@
 [hidden]{display:none!important}
 html,body{overscroll-behavior-y:none;margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
 html{scrollbar-gutter:stable;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px));min-height:100dvh;box-sizing:border-box;overflow-x:hidden}
+body{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px));min-height:100svh;box-sizing:border-box;overflow-x:hidden}
 body.landing{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 button{font-family:inherit;color:inherit;cursor:pointer}
 
@@ -1869,15 +1869,26 @@ async function tick(force = false) {
     const changed = force || st.stale || (PING_V && v !== PING_V);
     PING_V = v;
     if (!changed) return;
-    if (typing() || document.querySelector(".cropbg")) { st.stale = true; return; }
+    if (typing() || document.querySelector(".cropbg") || scrolling()) { st.stale = true; return; }
     st.stale = false;
     const j = await api("state");
     if (st.busy) return;
+    if (scrolling()) { st.stale = true; return; }
     S = j; T = L[S.lang] || L.fr;
+    const y = window.scrollY;
     if (st.prop && !(S.proposals || []).some((p) => p.id === st.prop)) await fetchProp(st.prop);
-    else render();
+    else { render(); if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y); }
   } catch {} finally { pinging = false; }
 }
+// Pas de rafraîchissement pendant un scroll (le contenu ne doit jamais bouger sous le doigt).
+let lastScroll = 0, touching = false;
+const scrolling = () => touching || Date.now() - lastScroll < 2500;
+addEventListener("scroll", () => { lastScroll = Date.now(); }, { passive: true });
+addEventListener("touchstart", () => { touching = true; }, { passive: true });
+addEventListener("touchend", () => { touching = false; lastScroll = Date.now(); }, { passive: true });
+addEventListener("touchcancel", () => { touching = false; }, { passive: true });
+// Hauteur de l'en-tête collant suivie en continu (polices, puces qui passent à la ligne).
+if (window.ResizeObserver) { const tp = document.querySelector(".top"); if (tp) new ResizeObserver(() => document.documentElement.style.setProperty("--toph", (tp.hidden ? 0 : tp.offsetHeight) + "px")).observe(tp); }
 setInterval(() => tick(), 15000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener?.("message", (e) => { if (e.data && e.data.t === "refresh") tick(true); });

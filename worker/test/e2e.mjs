@@ -110,7 +110,7 @@ const step = async (name, fn) => {
 
 try {
   console.log("Scénario :");
-  const hedda = play("hedda0000001", "Hedda", ["2026-11-18 20:00"]);
+  const hedda = play("hedda0000001", "Hedda", ["2027-03-18 20:00"]);
   const ente = play("ente00000001", "Die Wildente", ["2026-11-20 19:30"], "schaubuhne");
 
   await step("inconnu sans invitation : refusé", async () => {
