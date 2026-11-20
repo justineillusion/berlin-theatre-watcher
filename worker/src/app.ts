@@ -29,7 +29,7 @@ import { DISTRICT } from "./districts";
 import { pushCount, pushTo, subscribe, unsubscribe } from "./push";
 import { listPasskeys, loginOptions, loginVerify, registerOptions, registerVerify, removePasskey } from "./passkeys";
 import { LOGOS } from "./web/logos";
-import { PROP_RE, answerProposal, cancelProposal, createProposal, deleteGroup, getProposal, guestAnswer, myGroups, myProposals, pingStamp, publicProposal, saveGroup, setProposal } from "./proposals";
+import { PROP_RE, answerProposal, cancelProposal, addToProposal, createProposal, deleteGroup, getProposal, guestAnswer, myGroups, myProposals, pingStamp, publicProposal, saveGroup, setProposal } from "./proposals";
 
 const enc = new TextEncoder();
 // Empreinte de la page (change à chaque déploiement qui la modifie) : la page compare et se recharge.
@@ -531,6 +531,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     else if (what === "answer") { err = await answerProposal(env, me, pid, body.answers, body.note); track(env, ctx, me.chat_id, "proposal_answer", null, null); }
     else if (what === "set") { err = await setProposal(env, me, pid, String(body.slot ?? "")); track(env, ctx, me.chat_id, "proposal_set", null, null); }
     else if (what === "cancel") err = await cancelProposal(env, me, pid);
+    else if (what === "add") { err = await addToProposal(env, me, pid, body.to); track(env, ctx, me.chat_id, "proposal_add", null, `to:${Array.isArray(body.to) ? body.to.length : 0}`); }
     else if (what !== "get") return new Response("not found", { status: 404 });
     if (err) return Response.json({ error: err }, { status: err === "not_found" ? 404 : err === "forbidden" ? 403 : 400 });
     const id = created ?? pid;
