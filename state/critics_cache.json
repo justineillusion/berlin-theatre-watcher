@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1795137921.9482043,
+    "at": 1795181132.510932,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1795138042.2414963,
+    "at": 1795181178.374809,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/chamaeleon-berlin": {
    "0": {
-    "at": 1795138030.1404831,
+    "at": 1795181172.6670113,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -1022,7 +1022,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin": {
    "0": {
-    "at": 1795137934.715549,
+    "at": 1795181147.7323225,
     "items": [
      {
       "date": "7. November 2026.",
@@ -1824,7 +1824,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/english-theatre-berlin": {
    "0": {
-    "at": 1795138018.8017902,
+    "at": 1795181169.3989742,
     "items": [
      {
       "date": "Berlin, 31. Mai 2018.",
@@ -1858,7 +1858,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin": {
    "0": {
-    "at": 1795137985.3158484,
+    "at": 1795181160.3538175,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -2560,7 +2560,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin": {
    "0": {
-    "at": 1795137960.2658865,
+    "at": 1795181154.1271582,
     "items": [
      {
       "date": "5. September 2026.",
@@ -3362,7 +3362,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1795137915.100763,
+    "at": 1795181126.1359756,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -4164,7 +4164,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin": {
    "0": {
-    "at": 1795138006.7192233,
+    "at": 1795181166.607265,
     "items": [
      {
       "date": "13. Februar 2026.",
@@ -4449,7 +4449,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1795137928.272339,
+    "at": 1795181140.3772552,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -5369,6 +5369,19 @@
     0.0,
     0.0,
     0.8851
+   ],
+   "theater_ok": true
+  },
+  "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/die-drei-leben-der-hannah-arendt-deutsches-theater-berlin-theresa-thomasberger-naehert-sich-der-eigenwilligen-denkerin-in-revueform": {
+   "at": 1795181182.4425604,
+   "published": 1761473145.0,
+   "scores": [
+    -0.5,
+    0.5833,
+    0.6667,
+    0.0,
+    -0.5,
+    -0.35
    ],
    "theater_ok": true
   },
@@ -6462,6 +6475,10 @@
    "at": 1795096055.7968323,
    "results": []
   },
+  "AntiFolk) + Gutter Romance (Akustikpunk": {
+   "at": 1795181390.6411643,
+   "results": []
+  },
   "Antonia Baehr": {
    "at": 1795095882.9105203,
    "results": [
@@ -7270,6 +7287,10 @@
    "at": 1795095962.1671715,
    "results": []
   },
+  "COOGANS BLUFF 10 Years Of Flying To The Stars": {
+   "at": 1795181373.4991357,
+   "results": []
+  },
   "CURSED": {
    "at": 1794573181.3500597,
    "results": []
@@ -7316,6 +7337,41 @@
   "Di/STRAUSS technique": {
    "at": 1795138153.3122907,
    "results": []
+  },
+  "Dido & Aeneas": {
+   "at": 1795181189.9421782,
+   "results": [
+    [
+     "Die Orestie – Theater Luzern – Bei Katja Langenbach ziehen die Atriden in einer Euripides-Neudichtung von Raoul Schrott ins Fachwerkhaus",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zentralschweiz/luzern/theater-luzern/die-orestie-theater-luzern-katja-langenbach-neudichtung-von-raoul-schrott",
+     "2023-08-27T08:20:01+02:00"
+    ],
+    [
+     "Dido and Aeneas, Remembered – Ruhrtriennale – David Marton und Kalle Kalima präsentieren ihre Überschreibung von Henry Purcells erster Oper in Duisburg in der Kraftzentrale",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrtriennale/dido-and-aeneas-remembered-ruhrtriennale-david-marton-und-kalle-kalima-praesentieren-ihre-ueberschreibung-von-henry-purcells-erster-oper-in-duisburg-in-der-kraftzentrale",
+     "2019-08-28T23:05:07+02:00"
+    ],
+    [
+     "Fatzer/Krieg – In Hamburg zieht Benjamin van Bebber mit Brecht und Goetz die vierte Wand hoch",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/kampnagel-hamburg/fatzerkrieg-in-hamburg-zieht-benjamin-van-bebber-mit-brecht-und-goetz-die-vierte-wand-hoch",
+     "2013-11-22T08:03:13+01:00"
+    ],
+    [
+     "King Arthur – Tilmann Köhler bekränzt die Semiopera von John Dryden und Henry Purcell zum 100. Geburtstag des Staatsschauspiels Dresden",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/dresden/staatsschauspiel-dresden/king-arthur-tilmann-koehler-bekraenzt-die-semiopera-von-john-dryden-und-henry-purcell-zum-100-geburtstag-des-staatsschauspiels-dresden",
+     "2013-09-14T00:59:39+02:00"
+    ],
+    [
+     "Die Aeneis – Erstaufführung der Vergil-Bearbeitung von Olivier Kemeid",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/brandenburg/potsdam/hans-otto-theater-potsdam/die-aeneis-erstauffuehrung-der-vergil-bearbeitung-von-olivier-kemeid-",
+     "2009-11-06T21:03:13+01:00"
+    ],
+    [
+     "Judith/Juditha triumphans – Sebastian Nübling eröffnet das Schauspielprogramm",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/salzburg-region/salzburg/salzburger-festspiele/judithjuditha-triumphans-sebastian-nuebling-eroeffnet-das-schauspielprogramm-",
+     "2009-07-27T02:00:00+02:00"
+    ]
+   ]
   },
   "Die Blechtrommel": {
    "at": 1795008297.5004358,
@@ -8147,12 +8203,20 @@
    "at": 1795008251.7733912,
    "results": []
   },
+  "Faux Real + Dance Arts Center + The Nightclubs": {
+   "at": 1795181310.064343,
+   "results": []
+  },
   "Fiddler! One Night Only": {
    "at": 1795008193.399064,
    "results": []
   },
   "Fiddler! One Night Only HAU": {
    "at": 1795138116.8880043,
+   "results": []
+  },
+  "FÏX8:SËD8 + NEROGRIS + SCHNEIDER": {
+   "at": 1795181404.0706089,
    "results": []
   },
   "Good Vibes Only": {
@@ -10760,6 +10824,10 @@
    "at": 1794315159.3060915,
    "results": []
   },
+  "The Nutcracker": {
+   "at": 1795181375.9889822,
+   "results": []
+  },
   "The Picture of Dorian Gray": {
    "at": 1794656563.498584,
    "results": [
@@ -11019,7 +11087,7 @@
    "results": []
   },
   "Tosca": {
-   "at": 1794834278.5954978,
+   "at": 1795181412.9941366,
    "results": [
     [
      "Glücklich die Glücklichen – Berliner Ensemble – Oliver Reese adaptiert Yasmina Rezas Roman von 2013",
@@ -11201,6 +11269,14 @@
   },
   "emo-/indie-rock, fr) & Llana (math-rock, bln": {
    "at": 1795095978.7236397,
+   "results": []
+  },
+  "markus&markustheaterkollektiv": {
+   "at": 1795181329.345493,
+   "results": []
+  },
+  "markus&markustheaterkollektiv Sophiensaele": {
+   "at": 1795181348.9054456,
    "results": []
   },
   "ska- + pop-punk) + Buster Beat (ska": {
