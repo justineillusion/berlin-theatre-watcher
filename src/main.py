@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timedelta, timezone
@@ -25,6 +26,14 @@ from .budget import call_with_timeout, map_with_budget
 
 CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
 
+
+
+# Ateliers et masterclasses : on va voir un spectacle, pas y participer (« Offener Tanzworkshop »).
+_WORKSHOP = re.compile(r"workshop|masterclass", re.I)
+
+
+def is_workshop(title: str) -> bool:
+    return bool(_WORKSHOP.search(title or ""))
 
 def _require_env(name: str) -> str:
     value = os.environ.get(name)
@@ -73,7 +82,10 @@ def collect_shows(theaters: list) -> List[Show]:
         print(f"   {name} : {len(found)} {unit} trouvée(s).")
         for show in found:
             show._venue_url = theater["url"]
-        shows.extend(found)
+        kept = [s for s in found if not is_workshop(s.title)]
+        if len(kept) < len(found):
+            print(f"   {name} : {len(found) - len(kept)} atelier(s) écarté(s).")
+        shows.extend(kept)
     _no_dead_links(shows)
     return shows
 
