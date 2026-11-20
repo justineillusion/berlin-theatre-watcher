@@ -535,6 +535,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Alles Glück der Welt",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261125-1830/",
+  "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Deutsches Theater",
   "title": "Die drei Leben der Hannah Arendt (The Three Escapes of Hannah Arendt)",
   "url": "https://www.deutschestheater.de/en/program/productions/die-drei-leben-der-hannah-arendt",
@@ -558,14 +566,6 @@
   "title": "Faux Real + Dance Arts Center + The Nightclubs",
   "url": "https://www.urbanspree.com/program/concerts/faux-real-urban-spree-berlin.html",
   "opens": "2026-11-25",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Alles Glück der Welt",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261126-1900/",
-  "opens": "2026-11-26",
   "aliases": []
  },
  {
