@@ -24,6 +24,7 @@ import { Env, Item, WEB_ID_BASE, esc, getItem, inbox, setting, getReaction, inCi
 import { acceptFriend, codeOwner, connect, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
 import { Lang, asLang, tr } from "./i18n";
 import PAGE from "./app.html";
+import { adminScans } from "./scanreport";
 import { webAsset } from "./web/assets";
 import { DISTRICT } from "./districts";
 import { pushCount, pushTo, subscribe, unsubscribe } from "./push";
@@ -549,6 +550,10 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     if (!TRACKABLE.has(name)) return Response.json({ error: "bad_request" }, { status: 400 });
     track(env, ctx, me.chat_id, name, /^[\w-]{1,40}$/.test(item) ? item : null, target.replace(/[^\w.:/-]/g, "") || null);
     return Response.json({ ok: true });
+  }
+  if (url.pathname === "/app/api/admin/scans") {
+    if (!isAdmin(env, me.chat_id)) return Response.json({ error: "forbidden" }, { status: 403 });
+    return Response.json(await adminScans(env));
   }
   if (url.pathname === "/app/api/admin") {
     if (!isAdmin(env, me.chat_id)) return Response.json({ error: "forbidden" }, { status: 403 });
