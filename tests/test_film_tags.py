@@ -17,3 +17,12 @@ def test_prize_in_another_sentence_and_berlinale():
 
 def test_no_festival_context():
     assert festival_from_text("A film shot in Cannes about a family.", 2020) is None
+
+
+def test_genres_from_wikipedia_first_sentence():
+    from src.cinema.tags import genres_from_intro
+    assert genres_from_intro("Sentimental Value is a 2025 Norwegian comedy-drama film directed by Joachim Trier. It premiered at Cannes.") == ["comedy"]
+    assert genres_from_intro("Block 10 is a 2025 German psychological thriller film by X.") == ["thriller"]
+    assert genres_from_intro("Leica is a 2024 German documentary film about the camera.") == ["doc"]
+    assert genres_from_intro("The Brutalist is a 2024 epic period drama film.") == ["history", "drama"]
+    assert genres_from_intro("Berlin is the capital of Germany.") == []
