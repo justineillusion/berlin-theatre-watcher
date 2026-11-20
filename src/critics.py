@@ -324,9 +324,19 @@ _THEATERS = {
     "Schaubühne": ("Schaubühne", "schaubuehne", _BERLIN + "schaubuehne-berlin"),
     "Berliner Ensemble": ("Berliner Ensemble", "berliner-ensemble", _BERLIN + "berliner-ensemble"),
     "Volksbühne": ("Volksbühne", "volksbuehne", _BERLIN + "volksbuehne-am-rosa-luxemburg-platz-berlin"),
+    "Deutsches Theater": ("Deutsches Theater", "deutsches-theater", _BERLIN + "deutsches-theater-berlin"),
+    "Maxim Gorki Theater": ("Gorki", "maxim-gorki-theater", _BERLIN + "maxim-gorki-theater-berlin"),
+    "HAU Hebbel am Ufer": ("HAU", "hau", _BERLIN + "hau-berlin"),
+    "Sophiensæle": ("Sophiensaele", "sophiensaele", _BERLIN + "sophiensaele-berlin"),
+    "English Theatre Berlin": ("English Theatre", "english-theatre", _BERLIN + "english-theatre-berlin"),
+    "Chamäleon Berlin": ("Chamäleon", "chamaeleon", _BERLIN + "chamaeleon-berlin"),
     # Festspiele : invités de partout, pas de contrainte de maison, mais une rubrique.
     "Berliner Festspiele": ("Berliner Festspiele", None, _BERLIN + "berliner-festspiele"),
 }
+# Maisons de théâtre sans rubrique Nachtkritik (vérifié) : on ne cherche pas.
+# tests/test_nachtkritik_coverage.py exige que chaque lieu théâtre de config.yaml soit
+# dans _THEATERS ou ici : un nouveau théâtre ne peut pas être oublié.
+NO_NACHTKRITIK = {"ACUD Theater"}
 
 
 def refresh_listings() -> int:
