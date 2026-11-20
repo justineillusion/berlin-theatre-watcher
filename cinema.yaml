@@ -86,6 +86,7 @@ cinemas:
 # ---------------------------------------------------------------------------
 days: 7                    # la semaine : lancé un dimanche = lundi→dimanche suivants (+ « Ce soir »), sinon aujourd'hui + 6 jours
 tonight_on_sunday: true    # le dimanche, ajoute une section « Ce soir » si un film passe les filtres
+weekend_from: "14:00"      # samedi / dimanche : matinées comprises
 evening_from: "18:00"      # séances qui commencent à partir de… (les séances après minuit comptent aussi)
 # Heure de début maximale, certains soirs seulement (0 = lundi … 6 = dimanche ;
 # le soir compté est celui de la séance : 00:30 = la veille). 22:00 pile passe.

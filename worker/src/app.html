@@ -1571,6 +1571,8 @@ function tagsHtml(x, sold, open = false) {
     if (lab) tg(lab);
     const fest = (lines.find((l) => l.startsWith("🏆")) || "").replace(/^🏆\s*/, "");
     if (fest) tg(`🏆 ${fest}`, "fest");
+  const ser = (lines.find((l) => l.startsWith("🎪")) || "").replace(/^🎪\s*/, "");
+  if (ser) tg(`🎪 ${ser}`, "fest");
     (lines.find((l) => l.startsWith("🏷")) || "").replace(/^🏷\s*/, "").split(" · ").filter(Boolean).slice(0, 2).forEach((g) => tg(g));
   } else if (x.kind !== "expo") {
     const lang = lines.find((l) => l.startsWith("🗣")) || "";
@@ -1671,9 +1673,9 @@ function item(x) {
   const pick1 = (e) => (f.meta.find((l) => l.startsWith(e)) || "");
   const vcode = (String(x.text || "").match(/📍[^\n]*?\((OmeU|OmU|OV|VO|muet)\)/) || [])[1] || "";
   const lang = x.kind === "film" ? (T.vWords[vcode] || "") : cap(strip(pick1("🗣")));
-  const gl = x.kind === "film" ? lines.find((l) => l.startsWith("🏷")) : "", fl = x.kind === "film" ? lines.find((l) => l.startsWith("🏆")) : "";
+  const gl = x.kind === "film" ? lines.find((l) => l.startsWith("🏷")) : "", fl = x.kind === "film" ? lines.find((l) => l.startsWith("🏆")) : "", sl = x.kind === "film" ? lines.find((l) => l.startsWith("🎪")) : "";
   const dur = lines.find((l) => l.startsWith("⏱"));
-  const top = [lang, gl && strip(gl), dur && strip(dur), fl && "🏆 " + strip(fl)].filter(Boolean);
+  const top = [lang, gl && strip(gl), dur && strip(dur), fl && "🏆 " + strip(fl), sl && "🎪 " + strip(sl)].filter(Boolean);
   if (top.length) h += `<div class="dline">${top.map(esc).join('<i>·</i>')}</div>`;
   const syn = synFull(x);
   if (syn) h += `<p class="dsyn${st.synOpen === x.id ? " full" : ""}">${esc(syn)}${st.synOpen === x.id ? "" : ` <button class="dmore" data-synopen="${x.id}">${esc(T.readMore)}</button>`}</p>`;

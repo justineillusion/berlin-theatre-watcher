@@ -77,6 +77,33 @@ def genre_line(film: Film, lang: str) -> str:
     return " · ".join(GENRE_LABELS[k][i] for k in keys)
 
 
+# --- Série / festival du cinéma (Yorck « specials ») -----------------------------------
+_PREVIEW = re.compile(r"^(?:preview|premiere|vorpremiere|avant-premi[eè]re)\b", re.I)
+
+
+def series_name(category: str, title: str = "") -> str:
+    """« 21. Around the World in 14 Films » -> « Around the World in 14 Films » ; « Preview: X » -> « preview » ;
+    « Special Screening: X » -> « » (ne dit rien de plus que la séance)."""
+    c = re.sub(r"^\s*\d+\.\s*", "", category or "").strip()
+    if not c or re.match(r"special screening\b|sondervorstellung\b", c, re.I):
+        return ""
+    if _PREVIEW.match(c):
+        return "preview"
+    c = re.sub(r"\s*#\d+\b", "", c.split(":")[0]).strip()
+    return c
+
+
+def series_line(film: Film, lang: str) -> str:
+    for s in film.screenings:
+        if getattr(s, "event", False) and s.category:
+            n = series_name(s.category, film.title)
+            if n == "preview":
+                return "Preview" if lang == "en" else "Avant-première"
+            if n:
+                return n
+    return ""
+
+
 # « is a 2024 German psychological thriller film » : l'expression entre « is a(n) » et « film ».
 _WIKI_GENRES = [
     ("doc", r"documentar"), ("animation", r"animated|animation"), ("comedy", r"comedy|comedic|satir"),
