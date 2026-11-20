@@ -528,7 +528,6 @@ html{background:var(--bg)}
 .bkt.wsh{background:var(--gold-soft)}.vlink{display:block;text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:3px}.wst{font-style:normal;color:var(--gold);margin-left:auto;font-size:18px;line-height:1}.tkd b.wst{font-size:26px;margin:0}
 .bkt.pinv.todo{background:var(--card)}
 .bkt.ghost{border-style:dashed;background:transparent;color:var(--dim)}.bkt.ghost .tkd{border-right-color:var(--faint);color:var(--faint)}.bkt.ghost .tkt{color:var(--muted);font-size:17px}
-.bkt.idea{background:transparent;border-style:dashed}.bkt.idea .wst{color:var(--faint)}
 .pinv .pyes.one{flex-wrap:nowrap}.pinv .pyes.one .btn.k{flex:1 1 0;min-width:0}.pinv .pyes .btn:last-child:not(.k){flex:0 0 76px}.pinv .pyes:not(.one) .btn.k{flex:1 0 100%}
 .day.dtog{display:flex;align-items:baseline;gap:6px;width:100%;border-left:0;border-right:0;background:none;text-align:left;cursor:pointer;color:inherit}.day.dtog .pchev{margin-left:auto;font-size:14px}
 .pcard.todo{box-shadow:3px 3px 0 var(--ink)}
@@ -754,7 +753,7 @@ const L = {
 // 🗳 Propositions + groupes (ajoutés à part pour garder les lignes ci-dessus lisibles).
 Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", withWho:"Avec qui ?", whenQ:"Quand ? · optionnel, 1 à 3 créneaux", whenHint:"Avec des créneaux, chacun répond et tu cales la date. Sans, c'est un simple « ça te dit ? ».", proposeTo:(n) => `Proposer à ${n}`, otherDate:"Autre date", addDate:"Ajouter",
   noteQ:"Un mot ? · optionnel", propNotePh:"Ça vous tente ?", sendTo:(n) => `Envoyer à ${n}`, linkOnly:"Ou juste un lien à partager (WhatsApp…)", interestedHint:"★ Pré-cochés : intéressés.",
-  propHead:"Proposition", alreadyP:"Tu as déjà proposé ce spectacle", addToIt:(n) => `Ajouter ${n} à cette proposition`, allIn:"Déjà invité·es", seeMine:"Voir ma proposition", ideasW:"des idées", ghostK:"Ton prochain billet", ghostT:"Réserve une sortie", ghostP:"Elle s’affichera ici, avec tes amis et l’agenda.", yesIn:"Oui, je viens", endsW:"fin", unstarL:"Retirer des envies", invitesW:"t’invite", nDatesS:"dates", inviteMore:"+ Inviter", noWhy:(n) => `Un mot pour ${n} ?`, noDates:"Pas dispo ces dates", noPiece:"Ça ne me tente pas", justNo:"Juste non", sendingW:"Envoi…", sentOk:(n) => `Envoyé à ${n} ✓`, proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
+  propHead:"Proposition", setSure:"Caler pour tous ?", alreadyP:"Tu as déjà proposé ce spectacle", addToIt:(n) => `Ajouter ${n} à cette proposition`, allIn:"Déjà invité·es", seeMine:"Voir ma proposition", ghostWK:"Tes envies", ghostWT:"Ajoute ce qui te tente", ghostWP:"Ça s’affichera ici, avec les amis tentés aussi.", ghostK:"Ton prochain billet", ghostT:"Réserve une sortie", ghostP:"Elle s’affichera ici, avec tes amis et l’agenda.", yesIn:"Oui, je viens", endsW:"fin", unstarL:"Retirer des envies", invitesW:"t’invite", nDatesS:"dates", inviteMore:"+ Inviter", noWhy:(n) => `Un mot pour ${n} ?`, noDates:"Pas dispo ces dates", noPiece:"Ça ne me tente pas", justNo:"Juste non", sendingW:"Envoi…", sentOk:(n) => `Envoyé à ${n} ✓`, proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
   answerSend:"Envoyer ma réponse", answerUpdate:"Mettre à jour", answerHint:"Tout le monde voit les réponses. Tu peux changer d'avis tant que ce n'est pas calé.", yourName:"Ton prénom",
   setBtn:(w) => `C'est calé · ${w}`, setOther:(w) => `ou caler ${w}`, allYes:"marche pour tout le monde", cancelProp:"Annuler la proposition", shareWa:"WhatsApp", copyLink:"Copier le lien",
   saveGroupT:"Enregistrer comme groupe ?", saveGroupP:"La prochaine fois, un appui suffit pour les inviter ensemble.", groupName:"Nom du groupe", onlyYou:"Visible seulement par toi", noThanks:"Non merci",
@@ -765,7 +764,7 @@ Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", wit
   waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
 Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWho:"With whom?", whenQ:"When? · optional, 1 to 3 options", whenHint:"With options, everyone answers and you set the date. Without, it's a simple “fancy it?”.", proposeTo:(n) => `Suggest to ${n}`, otherDate:"Other date", addDate:"Add",
   noteQ:"A word? · optional", propNotePh:"Fancy it?", sendTo:(n) => `Send to ${n}`, linkOnly:"Or just a link to share (WhatsApp…)", interestedHint:"★ Pre-selected: interested.",
-  propHead:"Suggestion", alreadyP:"You already suggested this show", addToIt:(n) => `Add ${n} to it`, allIn:"Already invited", seeMine:"See my suggestion", ideasW:"some ideas", ghostK:"Your next ticket", ghostT:"Book an outing", ghostP:"It will show up here, with your friends and calendar.", yesIn:"Yes, I’m in", endsW:"ends", unstarL:"Remove from wishlist", invitesW:"invites you", nDatesS:"dates", inviteMore:"+ Invite", noWhy:(n) => `A word for ${n}?`, noDates:"Not free on these dates", noPiece:"Not my thing", justNo:"Just no", sendingW:"Sending…", sentOk:(n) => `Sent to ${n} ✓`, proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
+  propHead:"Suggestion", setSure:"Lock it for all?", alreadyP:"You already suggested this show", addToIt:(n) => `Add ${n} to it`, allIn:"Already invited", seeMine:"See my suggestion", ghostWK:"Your wishlist", ghostWT:"Add what tempts you", ghostWP:"It will show up here, with friends who are tempted too.", ghostK:"Your next ticket", ghostT:"Book an outing", ghostP:"It will show up here, with your friends and calendar.", yesIn:"Yes, I’m in", endsW:"ends", unstarL:"Remove from wishlist", invitesW:"invites you", nDatesS:"dates", inviteMore:"+ Invite", noWhy:(n) => `A word for ${n}?`, noDates:"Not free on these dates", noPiece:"Not my thing", justNo:"Just no", sendingW:"Sending…", sentOk:(n) => `Sent to ${n} ✓`, proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
   answerSend:"Send my answer", answerUpdate:"Update", answerHint:"Everyone sees the answers. You can change your mind until it's set.", yourName:"Your first name",
   setBtn:(w) => `It's on · ${w}`, setOther:(w) => `or set ${w}`, allYes:"works for everyone", cancelProp:"Cancel the suggestion", shareWa:"WhatsApp", copyLink:"Copy link",
   saveGroupT:"Save as a group?", saveGroupP:"Next time, one tap invites them together.", groupName:"Group name", onlyYou:"Only you can see it", noThanks:"No thanks",
@@ -1285,7 +1284,7 @@ function propCard(p) {
   let more = "";
   if (open) {
     const rows = p.slots.map((x) => { const ys = p.people.filter((q) => q.answers && q.answers[x] === 1);
-      return `<div class="psr"><b>${esc(slotText(x))}</b><span class="stack">${ys.map(face).join("")}</span><span class="pgn">${ys.length}/${p.people.length}</span>${p.mine ? `<button class="btn s k" data-pqset="${p.id}|${esc(x)}">${esc(T.setDate)}</button>` : ""}</div>`; }).join("");
+      return `<div class="psr"><b>${esc(slotText(x))}</b><span class="stack">${ys.map(face).join("")}</span><span class="pgn">${ys.length}/${p.people.length}</span>${p.mine && ys.some((q) => !q.me) ? `<button class="btn s k" data-pqset="${p.id}|${esc(x)}">${esc(st.pSetSure === p.id + "|" + x ? T.setSure : T.setDate)}</button>` : ""}</div>`; }).join("");
     const notes = p.people.filter((q) => q.note && !q.host).map((q) => `<p class="pnote"><b>${esc(q.me ? T.you : q.name)}</b> « ${esc(q.note)} »</p>`).join("");
     const acts = [`<button class="lnk" data-pqitem="${esc(p.item_id)}">${esc(T.seeShow)}</button>`];
     if (!p.mine && !todo && st.pReans !== p.id) acts.push(`<button class="lnk" data-pqreans="${p.id}">${esc(T.changeAns)}</button>`);
@@ -1404,24 +1403,9 @@ const mapUrl = (x) => `https://www.google.com/maps/search/?api=1&query=${encodeU
 function ghostTicket() {
   return `<div class="bkt ghost"><div class="tkd"><b>?</b></div><div class="tkm"><span class="tke">${esc(T.ghostK)}</span><div class="tkt">${esc(T.ghostT)}</div><div class="tkv">${esc(T.ghostP)}</div></div></div>`;
 }
-/** Pas encore d'envie : trois vraies pièces à venir (celles qui tentent tes amis d'abord). */
-function ideas(xs) {
-  const nf = (x) => (x.friends || []).filter((p) => p.star).length, kd = (x) => x.kind === "cinema" ? "film" : x.kind;
-  const ok = (x) => !state(x) && !/workshop|führung|tour\b|guided/i.test(x.title) && (st.kind === "all" || kd(x) === st.kind)
-    && (x.dates || []).some((v) => v.slice(0, 10) > TODAY && v.slice(0, 10) <= plus(21)) || (!state(x) && kd(x) === "expo" && (st.kind === "all" || st.kind === "expo") && x.end && x.end >= plus(7));
-  const pool = (S.items || []).filter(ok).sort((a, b) => nf(b) - nf(a) || (next(a) || "9").localeCompare(next(b) || "9"));
-  const out = pool.filter((x) => nf(x) > 0).slice(0, 3);
-  for (const k of ["theatre", "music", "expo", "film"]) { if (out.length >= 3) break; const x = pool.find((y) => kd(y) === k && !out.includes(y)); if (x) out.push(x); }
-  for (const x of pool) { if (out.length >= 3) break; if (!out.includes(x)) out.push(x); }
-  return out;
-}
-function ideaCard(x) {
-  const n = (x.dates || []).filter((v) => v.slice(0, 10) > TODAY).sort()[0] || x.end, d = dt(n), isEnd = !(x.dates || []).length || n === x.end;
-  const fr = (x.friends || []).filter((p) => p.star);
-  return `<div class="bkt wsh idea" data-item="${x.id}"><div class="tkd"><b>${d.getUTCDate()}</b><small>${esc(T.smons[d.getUTCMonth()].replace(".", "").toUpperCase())}</small><em>${esc(isEnd ? T.endsW : T.dows[d.getUTCDay()].slice(0, 3) + ".")}</em></div><div class="tkm">
-    <span class="tke">${esc(T.kindL[x.kind === "cinema" ? "film" : x.kind] || "")}</span><button class="tkt" data-pqitem="${x.id}">${esc(x.title)}<i class="wst">☆</i></button><div class="tkv">${esc(venueLine(x))}</div>
-    ${fr.length ? `<div class="tkw">${esc(joinNames(fr.map((p) => p.name)) + " " + T.intN(fr.length))}</div>` : ""}
-    <div class="pft"><button class="btn s k" data-act="i" data-id="${x.id}">★ ${esc(T.tempts)}</button></div></div></div>`;
+/** Pas encore d'envie : la place qu'elles prendront. */
+function ghostWish() {
+  return `<div class="bkt ghost"><div class="tkd"><b>☆</b></div><div class="tkm"><span class="tke">${esc(T.ghostWK)}</span><div class="tkt">${esc(T.ghostWT)}</div><div class="tkv">${esc(T.ghostWP)}</div></div></div>`;
 }
 /** Une envie dépliée sur place : quand, de quoi ça parle, les liens, et sortir de la liste. */
 function wishMore(x) {
@@ -1475,7 +1459,7 @@ function mineSections(xs) {
   }
   // Rien encore ? On montre la forme que ça prendra : un billet fantôme, et de vraies idées rangées comme des envies.
   h += dayHead(T.setT) + (coming.length ? coming.map(ticket).join("") : ghostTicket());
-  h += dayHead(T.wish, wish.length ? "" : T.ideasW) + (wish.length ? wish.map(wishRow).join("") : ideas(xs).map(ideaCard).join(""));
+  h += dayHead(T.wish) + (wish.length ? wish.map(wishRow).join("") : ghostWish());
   if (toRate.length) h += dayHead(T.toRate) + toRate.map(rateRow).join("");
   const foot = [];
   if (refused.length) foot.push(`<details class="mseen"${st.refOpen ? " open" : ""} data-keep="refOpen"><summary>${esc(T.refusedT)} · ${refused.length}</summary>${refused.map(propCard).join("")}</details>`);
@@ -2787,7 +2771,7 @@ document.addEventListener("click", (e) => {
   if (d.tkprop) { stop(); const x = S.items.find((y) => y.id === d.tkprop); if (x) { openProposer(x); st.sel = new Set(st.withs); st.open = x.id; st.tkAdd = null; } return void render(); }
   if (d.tkadd) { stop(); st.tkAdd = st.tkAdd === d.tkadd ? null : d.tkadd; st.withs.clear(); return void render(); }
   if (d.calfor) { stop(); st.calFor = st.calFor === d.calfor ? null : d.calfor; return void render(); }
-  if (d.pqset) { stop(); const [pid, slot] = d.pqset.split("|"); return void propQuick("proposal/set", { pid, slot }); }
+  if (d.pqset) { stop(); if (st.pSetSure !== d.pqset) { st.pSetSure = d.pqset; return void render(); } st.pSetSure = null; const [pid, slot] = d.pqset.split("|"); return void propQuick("proposal/set", { pid, slot }); }
   if (d.pqcancel) { stop(); if (st.pCancel !== d.pqcancel) { st.pCancel = d.pqcancel; return void render(); } st.pCancel = null; st.pOpen = null; return void propQuick("proposal/cancel", { pid: d.pqcancel }); }
   if (d.propose) { stop(); if (S.guest) return void act("i", d.propose); const x = S.items.find((y) => y.id === d.propose); if (x) { openProposer(x); st.open = x.id; } render(); return void document.querySelector(`[data-item="${d.propose}"]`)?.scrollIntoView({ block: "start", behavior: "smooth" }); }
   if (d.proposing !== undefined) { stop(); st.proposing = null; st.sel.clear(); return void render(); }
