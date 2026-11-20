@@ -50,7 +50,7 @@ try { const th = localStorage.getItem("theme"); if (th === "light" || th === "da
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{overscroll-behavior-y:none;margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
-html{scrollbar-gutter:stable;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{overflow-x:clip;scrollbar-gutter:stable;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px));min-height:100svh;box-sizing:border-box;overflow-x:hidden}
 body.landing{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 button{font-family:inherit;color:inherit;cursor:pointer}
@@ -268,9 +268,10 @@ img.avbig,img.avmid,img.av{background:var(--avbg);box-shadow:0 0 0 1px var(--lin
 .why{margin:22px 0 8px;padding:12px 14px;border-left:3px solid var(--ink);background:var(--card);font-size:13.5px;line-height:1.45;color:var(--muted)}.why p{margin:0 0 6px}.why p:last-child{margin:0}.why b{color:var(--ink)}
 .set{padding:8px 18px}
 .set .line{padding:12px 0;border:0;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;display:flex;justify-content:space-between;gap:12px;font:400 14.5px var(--sans)}
-.set .line span{color:var(--muted)}
+.set .line{align-items:center}.set .line .fpill{flex:none;min-width:84px;text-align:center;border:1.5px solid var(--ink);padding:5px 10px;font:700 13px var(--sans);background:var(--ink);color:var(--bg)}
+.set .line:not(.on) > div{color:var(--muted)}
 .set .line .dist{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
-.set .line.on span{color:var(--ok)}
+.set .line.on .fpill{background:var(--bg);color:var(--muted);border-color:var(--line)}
 .fline{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .fline b{font-weight:700}.fline span{display:block;font-size:13px;color:var(--muted)}
 .hint{color:var(--muted);font-size:13px;margin-top:14px}
@@ -289,7 +290,7 @@ img.avbig,img.avmid,img.av{background:var(--avbg);box-shadow:0 0 0 1px var(--lin
 .login{padding:22px 20px 40px;gap:22px}
 .landing .login{max-width:460px;margin:0;padding-left:24px;padding-right:24px}   /* aligné sur le logo */
 .lform{display:grid;gap:18px;padding:22px 0 6px;border-top:2px solid var(--ink)}
-.login.gset{max-width:420px;margin:0;padding:18px 12px 6px}.gset .lform{border-top:0;padding-top:0}.gset .gwhy{margin:0 0 -4px}.gwhy{color:var(--ink)!important;font-weight:600}.gmine{display:grid;gap:12px;padding:28px 0}.gmine p{margin:0;color:var(--muted)}
+.login.gset{max-width:420px;margin:0;padding:18px 12px 6px}.gset .lform{border-top:0;padding-top:0}.gset .gwhy{margin:0 0 -4px}.gwhy{color:var(--ink)!important;font-weight:600}.gmine{display:grid;gap:12px;padding:28px 16px}.gmine .bkt{margin:0}.gmine .gcta{min-height:48px;font-size:15px;margin-top:8px}.gmine p{text-align:center}.gmine p{margin:0;color:var(--muted)}
 .gbtn{min-height:44px;display:flex;justify-content:center}.gor{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}.gor::before,.gor::after{content:"";flex:1;border-top:1px solid var(--line)}
 .lform .note{background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 0;font:500 18px var(--sans);color:var(--ink);box-shadow:none;outline:none}
 .lform .note:focus{border-bottom-color:var(--velvet)}
@@ -406,6 +407,8 @@ main>.day:first-child{margin-top:0;border-top:0}
 .more{margin:0 0 4px 128px}
 @media (max-width:420px){.more{margin-left:128px}}
 .v .more{margin:0}
+/* « + 9 autres expos · KW Institute… » : passe à la ligne au lieu de déborder (sinon l'iPhone dézoome toute l'app). */
+.more{white-space:normal;text-align:left;max-width:calc(100% - 144px)}.v .more{white-space:nowrap;max-width:none}
 /* Lieu non suivi : grisé, « ＋ Suivre » en rouge. */
 .sres.unf .row{opacity:1}
 .sres.unf .t,.sres.unf .v,.sres.unf .when,.sres.unf .tg{color:var(--dim)}
@@ -620,7 +623,7 @@ html{background:var(--bg)}
 #nbtn{position:relative}.ndot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--velvet);border:2px solid var(--bg)}
 .npanel{border-bottom:1.5px solid var(--ink);padding:4px 0 8px;background:var(--bg)}
 .nph{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 4px}.nph b{font:800 17px var(--sans)}
-.npanel .gh{padding:12px 16px 4px}.npanel .hint{padding:8px 16px 12px}
+.npanel .gh{padding:12px 16px 4px}.nsec .gh{padding:12px 16px 4px}.npanel .hint{padding:8px 16px 12px}
 .vtog{display:block;width:100%;margin:14px 0 0;padding:10px 0;border:0;border-top:1px solid var(--line);background:none;font:700 13.5px var(--sans);color:var(--muted);text-align:left}
 .vck.unf{color:var(--muted)}
 .vapply{position:sticky;bottom:calc(46px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;margin:12px -16px -12px;padding:12px 16px;background:var(--bg);border-top:1px solid var(--line);z-index:2}
@@ -714,7 +717,7 @@ const L = {
         smons:["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."], until:"jusqu'au", from:"dès le", end:"fin",
         loginExpired:"Le lien a expiré.", retry:"Recommencer", logout:"Se déconnecter", account:"Compte", installHint:"Sur iPhone : Partager → « Sur l'écran d'accueil » pour l'avoir comme une app.",
         cats:{ theatre:"Théâtres", optional:"Opéra & concerts", expo:"Expos", cinema:"Cinémas" }, everywhere:"Partout", areaL:"Quartier :",
-        tagline:"Vois ce qui tente tes amis à Berlin, et sortez ensemble.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"]], start:"Ton email", go:"Continuer", orEmail:"ou avec ton email", gMineT:"Tes sorties", gMineP:"Tes envies, réservations et ce que tu as vu, à retrouver ici et à partager avec tes amis. Il te faut juste un compte.", gSignin:"Se connecter", gWhy:"Connecte-toi pour garder ça : c'est gratuit et ça prend 10 secondes.", newT:"Bienvenue !", newP:(e) => `Première fois avec ${e}. Ton prénom, pour que tes amis te reconnaissent :`, sentT:"Regarde tes emails", sentP:(e) => `Lien envoyé à ${e}. Touche-le, ou tape ici le code de l'email.`, changeEmail:"changer",
+        tagline:"Vois ce qui tente tes amis à Berlin, et sortez ensemble.", thisWeek:"Cette semaine", madeIn:"fait à Berlin, entre amis", what:[["🎭", "**Théâtre** et **opéra** surtitrés **en anglais**"], ["🎬", "**Cinéma** en **version originale**"], ["🖼", "Les **expos** du moment"]], start:"Ton email", go:"Continuer", orEmail:"ou avec ton email", gMineT:"Tes sorties", gMineP:"Gratuit, avec ton email.", gSignin:"Se connecter", gWhy:"Connecte-toi pour garder ça : c'est gratuit et ça prend 10 secondes.", newT:"Bienvenue !", newP:(e) => `Première fois avec ${e}. Ton prénom, pour que tes amis te reconnaissent :`, sentT:"Regarde tes emails", sentP:(e) => `Lien envoyé à ${e}. Touche-le, ou tape ici le code de l'email.`, changeEmail:"changer",
         invitedBy:(n) => `${n} t'invite sur Berlin Encore!`, firstNamePh:"Ton prénom", joinBtn:"Créer mon compte", joinGo:"Valider", signupHint:"On t'envoie un lien par email pour confirmer. Pas de mot de passe.", linkSent:(e) => `C'est presque fini : on t'a envoyé un lien à ${e}. Ouvre l'email et touche « Confirmer mon inscription ».`, linkHint:"Rien reçu ? Regarde dans les spams, ou réessaie dans une minute.",
         haveAccount:"Se connecter", noAccount:"Pas encore de compte ? Même chose : ton email.", startHint:"Nouveau·elle ou déjà inscrit·e : on s'occupe du reste.", newAccount:"Créer ton compte", newAccountHint:"Nouvelle adresse : ajoute ton prénom.", mailFailed:"L'email n'a pas pu partir. Vérifie l'adresse ou réessaie dans un instant.", badInvite:"Ce lien d'invitation ne marche plus : demande-en un nouveau.", badName:"Indique ton prénom.",
         nowFriends:(n) => `Te voilà connecté·e à ${n}.`, loginEmailHint:"Théâtre surtitré, expos et ciné en VO, avec tes amis. Entre ton email : on t'envoie un code.", emailPh:"ton@email.com", sendCode:"Recevoir mon lien", codeSent:(e) => `Code envoyé à ${e}. Tape-le ici, ou touche le bouton dans l'email.`, codePh:"Code à 6 chiffres", signIn:"Se connecter", otherEmail:"Autre adresse",
@@ -739,7 +742,7 @@ const L = {
         smons:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], until:"until", from:"from", end:"ends",
         loginExpired:"The link expired.", retry:"Try again", logout:"Sign out", account:"Account", installHint:"On iPhone: Share → “Add to Home Screen” to use it like an app.",
         cats:{ theatre:"Theatres", optional:"Opera & concerts", expo:"Exhibitions", cinema:"Cinemas" }, everywhere:"Anywhere", areaL:"Area:",
-        tagline:"See what your friends want to see in Berlin, and go together.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"]], start:"Your email", go:"Continue", orEmail:"or with your email", gMineT:"Your outings", gMineP:"What you fancy, what you booked and what you saw, kept here and shared with your friends. You just need an account.", gSignin:"Sign in", gWhy:"Sign in to keep this: it's free and takes 10 seconds.", newT:"Welcome!", newP:(e) => `First time with ${e}. Your first name, so friends recognise you:`, sentT:"Check your email", sentP:(e) => `We sent a link to ${e}. Tap it, or type the code from the email here.`, changeEmail:"change",
+        tagline:"See what your friends want to see in Berlin, and go together.", thisWeek:"This week", madeIn:"made in Berlin, among friends", what:[["🎭", "**Theatre** and **opera** with **English surtitles**"], ["🎬", "**Films** in **original version**"], ["🖼", "Current **exhibitions**"]], start:"Your email", go:"Continue", orEmail:"or with your email", gMineT:"Your outings", gMineP:"Free, with your email.", gSignin:"Sign in", gWhy:"Sign in to keep this: it's free and takes 10 seconds.", newT:"Welcome!", newP:(e) => `First time with ${e}. Your first name, so friends recognise you:`, sentT:"Check your email", sentP:(e) => `We sent a link to ${e}. Tap it, or type the code from the email here.`, changeEmail:"change",
         invitedBy:(n) => `${n} invited you to Berlin Encore!`, firstNamePh:"Your first name", joinBtn:"Create my account", joinGo:"Confirm", signupHint:"We'll email you a link to confirm. No password.", linkSent:(e) => `Almost done: we sent a link to ${e}. Open the email and tap “Confirm my sign-up”.`, linkHint:"Nothing there? Check your spam, or try again in a minute.",
         haveAccount:"Sign in", noAccount:"New here? Same thing: your email.", startHint:"New or already signed up: we'll take care of the rest.", newAccount:"Create your account", newAccountHint:"New address: add your first name.", mailFailed:"The email couldn't be sent. Check the address or try again shortly.", badInvite:"This invite link no longer works: ask for a new one.", badName:"Please enter your first name.",
         nowFriends:(n) => `You're now connected to ${n}.`, loginEmailHint:"Surtitled theatre, exhibitions and original-version cinema, with your friends. Enter your email: we'll send you a code.", emailPh:"you@email.com", sendCode:"Email me a link", codeSent:(e) => `Code sent to ${e}. Type it here, or tap the button in the email.`, codePh:"6-digit code", signIn:"Sign in", otherEmail:"Different address",
@@ -1952,6 +1955,15 @@ function newsPanel() {
     : `<p class="hint">${esc(T.noNews)}</p>`;
   return h + `</div>`;
 }
+/** Mes sorties, tout en haut : les nouvelles (réponses, réservations, amis…). Repliable ; ouverte quand il y a du neuf. */
+function newsSection() {
+  const ns = newsOf(); if (!ns.length) return "";
+  const isNew = (n) => !n.read_at || st.inboxNew?.has(n.id), fresh = ns.filter(isNew), old = ns.filter((n) => !isNew(n));
+  const shut = st.newsOpen === undefined ? !fresh.length : !st.newsOpen;
+  let h = `<button class="day dtog" data-newsfold="1" aria-expanded="${!shut}">${esc(T.notifL)}${fresh.length ? ` <span>${esc(T.newW)} · ${fresh.length}</span>` : ""}<i class="pchev">${shut ? "▾" : "▴"}</i></button>`;
+  if (!shut) h += `<div class="nsec">${fresh.map(noteRow).join("")}${old.length ? `<div class="gh">${esc(T.earlierW)}</div>${old.map(noteRow).join("")}` : ""}</div>`;
+  return h;
+}
 /** Vu dans « Mes sorties » : lu côté serveur ; reste surligné jusqu'au prochain passage. */
 async function markRead() {
   const fresh = (S.inbox || []).filter((n) => !n.read_at && n.kind !== "friend_request" && !staleMsg(n));
@@ -2169,7 +2181,7 @@ function render() {
   const waitK = S && !S.guest ? [...(S.proposals || []).filter((p) => p.status === "open" && !p.mine && !myAns(p)).map((p) => "p" + p.id), ...liveShares().map((n) => "s" + n.id)] : [];
   let seenK; try { seenK = new Set(JSON.parse(lsGet("seenWait") || "[]")); } catch { seenK = new Set(); }
   if (st.tab === "mine" && !st.prop && waitK.some((k) => !seenK.has(k))) { waitK.forEach((k) => seenK.add(k)); lsSet("seenWait", JSON.stringify([...seenK].slice(-300))); }
-  const unread = waitK.filter((k) => !seenK.has(k)).length;
+  const unread = waitK.filter((k) => !seenK.has(k)).length + (st.tab === "mine" ? 0 : newsOf().filter((n) => !n.read_at).length);
   const reqs = S ? (S.circle?.incoming || []).length : 0;
   document.querySelectorAll(".tab").forEach((b, i) => {
     const n = b.dataset.tab === "mine" ? unread : b.dataset.tab === "set" ? reqs : 0;
@@ -2186,7 +2198,7 @@ function render() {
   if (searching) { K.hidden = true; W.hidden = true; $("nshow").hidden = true; list.innerHTML = searchView(); return; }
   if (S.guest && st.tab !== "prog") {
     K.hidden = true; W.hidden = true;
-    if (st.tab === "mine") { list.innerHTML = `<div class="gmine"><b class="ftitle">${esc(T.gMineT)}</b><p>${esc(T.gMineP)}</p><button class="act on" data-tab="set">${esc(T.gSignin)}</button></div>`; return; }
+    if (st.tab === "mine") { list.innerHTML = `<div class="gmine"><b class="ftitle">${esc(T.gMineT)}</b>${ghostTicket()}${ghostWish()}<button class="act on gcta" data-tab="set">${esc(T.gSignin)}</button><p>${esc(T.gMineP)}</p></div>`; return; }
     if (!loginCfg) { api("login/config").then((c) => { loginCfg = c; }, () => { loginCfg = { email: false }; }).then(render); list.innerHTML = ""; return; }
     const lang = `<div class="acts">${[["fr", "🇫🇷 Français"], ["en", "🇬🇧 English"]].map(([c, l]) => `<button class="act${T === L[c] ? " on" : ""}" data-loginlang="${c}">${l}</button>`).join("")}</div>`;
     list.innerHTML = `<div class="login gset">${st.why ? `<p class="gwhy">${esc(T.gWhy)}</p>` : ""}<div class="lform">${loginForm()}</div></div>` + dayHead(T.language) + lang;
@@ -2205,7 +2217,7 @@ function render() {
       const any = vs.some((v) => v.followed);
       return `<div class="cat"><b>${k === "optional" ? ICON.music : ICON[k === "cinema" ? "film" : k]} ${esc(T.cats[k])} · ${vs.filter((v) => v.followed).length}/${vs.length}</b>
         <button class="act${any ? "" : " on"}" data-sk="${k}" data-arg="${any ? "off" : "on"}">${esc(any ? T.catOff : T.catOn)}</button></div>` +
-        vs.map((v) => `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}"><div>${v.logo ? `<img class="logo" src="${API_BASE}${esc(v.logo)}" alt="">` : ""}<div>${esc(v.name)}${v.district ? `<small class="dist">${esc(v.district)}</small>` : ""}</div></div><span>${v.followed ? "✓ " + esc(T.followed) : esc(T.unfollowed)}</span></button>`).join("");
+        vs.map((v) => `<button class="line${v.followed ? " on" : ""}" data-act="s" data-id="${esc(v.id)}"><div>${v.logo ? `<img class="logo" src="${API_BASE}${esc(v.logo)}" alt="">` : ""}<div>${esc(v.name)}${v.district ? `<small class="dist">${esc(v.district)}</small>` : ""}</div></div><span class="fpill">${v.followed ? "✓ " + esc(cap(T.followed)) : "+ " + esc(T.vfFollow)}</span></button>`).join("");
     }).join("")}`;
     const thNow = (() => { try { return localStorage.getItem("theme") || "auto"; } catch { return "auto"; } })();
     const themeRow = dayHead(T.themeL) + `<div class="acts thm">${["auto", "light", "dark"].map((k) => `<button class="act ${thNow === k ? "on" : ""}" data-themeset="${k}">${esc(T.themes[k])}</button>`).join("")}</div>`;
@@ -2228,7 +2240,8 @@ function render() {
   const BASE0 = vfOn ? vfItems() : S.items;
   const BASE = st.tab === "prog" && st.ff ? BASE0.filter(friendPick) : BASE0.filter((x) => !x.ff || st.tab !== "prog");
   $("fbtn").hidden = st.tab !== "prog" || !hasFriends; $("fbtn").setAttribute("aria-label", T.ffBtn); $("fbtn").title = T.ffBtn; $("fbtn").classList.toggle("on", !!st.ff); $("fbtn").setAttribute("aria-pressed", !!st.ff);
-  { const nn = newsOf(); $("nbtn").hidden = !S || S.guest || st.tab === "set"; $("nbtn").setAttribute("aria-label", T.notifL); $("nbtn").title = T.notifL;
+  { const nn = newsOf(); $("nbtn").hidden = true;   // nouvelles : dans Mes sorties, pastille sur l’onglet
+    $("nbtn").setAttribute("aria-label", T.notifL); $("nbtn").title = T.notifL;
     $("nbtn").setAttribute("aria-expanded", !!st.npanel); $("nbtn").querySelector(".ndot").hidden = !nn.some((n) => !n.read_at); }
   $("cbtn").hidden = st.tab !== "mine"; $("cbtn").setAttribute("aria-label", T.calT); $("cbtn").title = T.calT; $("cbtn").setAttribute("aria-expanded", !!st.calShow);
   $("vbtn").hidden = st.tab !== "prog"; $("vbtn").setAttribute("aria-label", T.vfBtn); $("vbtn").title = T.vfBtn; $("vbtn").setAttribute("aria-expanded", !!st.vpanel);
@@ -2293,7 +2306,9 @@ function render() {
     $("nshow").textContent = T.nShows(nShown); $("nshow").hidden = false;
   } else {
     h = mineSections(xs); $("nshow").hidden = true;
-    list.innerHTML = offBar() + (st.npanel ? newsPanel() : "") + (h || `<div class="empty">${esc(T.emptyMine)}</div>`);
+    const news = newsSection();
+    list.innerHTML = offBar() + news + (h || (news ? "" : `<div class="empty">${esc(T.emptyMine)}</div>`));
+    if (newsOf().some((n) => !n.read_at)) markRead();
     // la barre se colle sous l'en-tête (lui aussi collant), jamais dessous
     const tp = document.querySelector(".top"); document.documentElement.style.setProperty("--toph", (tp && !tp.hidden ? tp.offsetHeight : 0) + "px");
     if (st.wkSel) { const hit = list.querySelector(".hit"); if (hit) hit.scrollIntoView({ block: "center", behavior: "smooth" }); }
@@ -2806,6 +2821,7 @@ document.addEventListener("click", (e) => {
     const go = () => { st.proposing = null; st.open = null; st.sel.clear(); st.tab = "mine"; st.pOpen = pid; render(); window.scrollTo(0, 0); };
     if (!add.length) return void go();
     return void propQuick("proposal/add", { pid, to: add.map((q) => q.id) }).then(() => { go(); notify(T.sentOk(joinNames(add.map((q) => q.name)))); }); }
+  if (d.newsfold) { stop(); const fr = newsOf().some((n) => !n.read_at || st.inboxNew?.has(n.id)); st.newsOpen = !(st.newsOpen === undefined ? fr : st.newsOpen); return void render(); }
   if (d.propsfold) { stop(); lsSet("propsShut", lsGet("propsShut") === "1" ? "0" : "1"); return void render(); }
   if (d.pqno) { stop(); st.pNo = d.pqno; return void render(); }
   if (d.pqnoback) { stop(); st.pNo = null; return void render(); }
@@ -2923,7 +2939,7 @@ window.addEventListener("online", () => { if (st.offline) tick(true); });
     ptr.classList.remove("on", "spin"); ptr.style.transform = ""; ptr.textContent = "↓"; }, { passive: true });
 })();
 /** Hors ligne : on lit (onglets, filtres, déplier une carte, liens), mais rien qui doive parler au serveur. */
-const OFF_OK = ["tab", "pqshow", "kind", "when", "tkopen", "wopen", "ptoggle", "shopen", "calshow", "cmo", "wkday", "npanel", "open", "tksyn", "propsfold", "settab", "themeset", "langset", "calfor", "dsec", "keep", "ffilt", "vpanel"];
+const OFF_OK = ["tab", "pqshow", "newsfold", "kind", "when", "tkopen", "wopen", "ptoggle", "shopen", "calshow", "cmo", "wkday", "npanel", "open", "tksyn", "propsfold", "settab", "themeset", "langset", "calfor", "dsec", "keep", "ffilt", "vpanel"];
 document.addEventListener("click", (e) => {
   if (!st.offline) return;
   const b = e.target.closest("button"); if (!b || b.closest(".offbar")) return;
