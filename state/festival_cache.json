@@ -686,5 +686,194 @@
 "at": 1795138485.098211,
 "page": null,
 "genres": []
+},
+"ae2c4b2100a4": {
+"found": {
+"fest": "Venise",
+"year": 2006,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Paprika (2006 film)",
+"genres": []
+},
+"6a1c7d0d0cbd": {
+"found": null,
+"at": 1795140323.1734712,
+"page": "Sense and Sensibility (2026 film)",
+"genres": [
+"history",
+"romance"
+]
+},
+"c275ec18be2f": {
+"found": null,
+"at": 1795140323.1734712,
+"page": null,
+"genres": []
+},
+"a0bf7ab062b5": {
+"found": null,
+"at": 1795140323.1734712,
+"page": "Digger (2026 film)",
+"genres": [
+"comedy"
+]
+},
+"ba0ae459014f": {
+"found": {
+"fest": "Berlinale",
+"year": 2025,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "My Armenian Phantoms",
+"genres": [
+"doc"
+]
+},
+"6462beb5b807": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Flesh and Fuel",
+"genres": []
+},
+"eed1366131b4": {
+"found": null,
+"at": 1795140323.1734712,
+"page": "Star Trek: First Contact",
+"genres": [
+"scifi"
+]
+},
+"dd4b9278492b": {
+"found": null,
+"at": 1795140323.1734712,
+"page": null,
+"genres": []
+},
+"7b8fb53daeb0": {
+"found": {
+"fest": "Berlinale",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Gugu's World",
+"genres": [
+"drama"
+]
+},
+"a89da7f514b0": {
+"found": null,
+"at": 1795140323.1734712,
+"page": null,
+"genres": []
+},
+"d9fd641f37b4": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "La Gradiva",
+"genres": [
+"drama"
+]
+},
+"3609723cadfe": {
+"found": null,
+"at": 1795140323.1734712,
+"page": "2026 New York Film Festival",
+"genres": []
+},
+"8d209d925866": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Death Has No Master",
+"genres": [
+"thriller"
+]
+},
+"a388db352893": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Tangles",
+"genres": [
+"animation",
+"biopic"
+]
+},
+"6ba938c28dd0": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Orange-Flavoured Wedding",
+"genres": [
+"comedy"
+]
+},
+"9bd3de64c819": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Gentle Monster (film)",
+"genres": [
+"drama"
+]
+},
+"6731f6c92bde": {
+"found": null,
+"at": 1795140323.1734712,
+"page": null,
+"genres": []
+},
+"886c0ce99738": {
+"found": null,
+"at": 1795140323.1734712,
+"page": "Bad Apples (2025 film)",
+"genres": [
+"comedy",
+"thriller"
+]
+},
+"bfda642a0027": {
+"found": null,
+"at": 1795140323.1734712,
+"page": "Fury (2025 film)",
+"genres": [
+"drama"
+]
+},
+"d4635de53ac1": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795140323.1734712,
+"page": "Elephants in the Fog",
+"genres": [
+"thriller"
+]
 }
 }
