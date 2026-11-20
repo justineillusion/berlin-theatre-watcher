@@ -102,6 +102,11 @@ export async function notifyPush(env: Env, chat: number, kind: string, from: num
     prop_cancel: { title: en ? `✕ ${who} cancelled` : `✕ ${who} a annulé`, body: title, url: `/app?p=${ref ?? ""}` },
     friend_ok: { title: en ? `🤝 ${who} accepted your request` : `🤝 ${who} a accepté ta demande`, body: en ? "You now see each other's picks" : "Vous voyez maintenant vos envies", url: "/app#set/friends" },
   };
+  // 🎟 Ouverture des ventes : le texte est déjà dans note (1re ligne = titre, 2e = mes ⭐ là-bas).
+  if (kind === "sale" || kind === "sale_open") {
+    const [head, stars] = String(note ?? "").split("\n");
+    M[kind] = { title: head, body: stars ? (en ? `Your ⭐: ${stars}` : `Tes ⭐ : ${stars}`) : (en ? "Add your ⭐ before it sells out" : "Mets tes ⭐ avant que ça parte"), url: "/app" };
+  }
   const msg = M[kind]; if (!msg) return;
   await pushTo(env, chat, { ...msg, tag: `${kind}-${ref ?? item ?? from ?? ""}` });
 }

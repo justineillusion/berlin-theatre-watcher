@@ -833,13 +833,19 @@ try {
     const mine = sends(c, OWNER)[0];
     assert.match(mine.text, /^🎟 Demain 10h : ouverture des ventes Berliner Ensemble pour avril\.\nTes ⭐ là-bas :\n• <a href="https:\/\/x\/lear00000001">King Lear<\/a>/);
     const lea = sends(c, LEA)[0];
-    if (lea) assert.match(lea.text, /^🎟 Tomorrow 10:00: Berliner Ensemble opens sales for April\.$/);   // pas de ⭐ là-bas : une ligne
+    assert.match(lea.text, /^🎟 Tomorrow 10:00: Berliner Ensemble opens sales for April\.\nYour ⭐ there:\n• <a[^>]*>Peer Gynt/);   // ne suit pas le lieu, mais une ⭐ là-bas : prévenue
+    { // l'app aussi : une ligne « sale » dans les notifications (Mes sorties) avec mes ⭐ là-bas
+      const out = execSync(`npx wrangler d1 execute theatre-bot --local --json --command "SELECT note, ref FROM notifications WHERE kind='sale' AND chat_id=${OWNER}"`).toString();
+      const row = JSON.parse(out)[0].results[0];
+      assert.equal(row.ref, "berliner-ensemble");
+      assert.match(row.note, /^🎟 Demain 10h : ouverture des ventes Berliner Ensemble pour avril\.\nKing Lear/);
+    }
     r = await api("/api/sales-tick", { now: "2030-03-04T19:20:00Z" });
     assert.equal(r.sent, 0);                                                  // une seule fois
     r = await api("/api/sales-tick", { now: "2030-03-05T09:05:00Z" });       // 10:05 Berlin
     c = take();
     assert.match(sends(c, OWNER)[0].text, /^🎟 C'est ouvert : ventes Berliner Ensemble pour avril\.\n• <a[^>]*>King Lear/);
-    assert.equal(sends(c, LEA).length, 0);                                   // rien à réserver pour elle là-bas
+    assert.match(sends(c, LEA)[0].text, /Peer Gynt/);                       // sa ⭐ là-bas
     // 14:00 Berlin, 1re ouverture du mois : « le programme d'avril est sorti » à TOUT le monde, une fois
     r = await api("/api/sales-tick", { now: "2030-03-05T13:05:00Z" });
     c = take();
