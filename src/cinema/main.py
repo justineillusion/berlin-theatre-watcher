@@ -340,7 +340,7 @@ def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]]
         if (orig.key, lang) not in analysis["pitched"]:
             (make_pitch_en if lang == "en" else make_pitch)(orig)
             analysis["pitched"].add((orig.key, lang))
-        f.pitch, f.pitch_en = orig.pitch, orig.pitch_en
+        f.pitch, f.pitch_en, f.festival = orig.pitch, orig.pitch_en, orig.festival
     for f in overflow:
         f.rejected = "hors top (plafond max_films)"
 
@@ -385,7 +385,7 @@ def _own_card(f: Film, films: Dict[str, Film]) -> dict:
     propres, pour que ni l'affichage ni « nouvelles séances » ne parlent d'un
     cinéma qu'il ne suit pas."""
     full = films.get(f.item_id(), f)
-    f.pitch, f.pitch_en = full.pitch, full.pitch_en
+    f.pitch, f.pitch_en, f.festival = full.pitch, full.pitch_en, full.festival
     return {
         "text": film_card(f, "fr"), "line": film_line(f, "fr"),
         "text_en": film_card(f, "en"), "line_en": film_line(f, "en"),
@@ -456,6 +456,12 @@ def send_multi(cfg: dict, start: date, token: str, force: bool = False, refresh:
                 if (f.key, lang) not in analysis["pitched"]:
                     (make_pitch_en if lang == "en" else make_pitch)(f)
                     analysis["pitched"].add((f.key, lang))
+        # 🏆 Festival (Cannes, Berlinale…) : article Wikipédia, en cache ; quelques secondes par film nouveau.
+        from .tags import festivals
+        fest = festivals(list(films.values()))
+        for f in films.values():
+            f.festival = fest.get(f.item_id())
+        print(f"🏆 Festivals : {sum(1 for v in fest.values() if v)}/{len(films)} film(s)")
         from ..translate import GUARD_FAILS
         print("🈯 Pitchs refusés (pas dans la langue de la fiche) : "
               + (", ".join(f"{lg} {n}" for lg, n in sorted(GUARD_FAILS.items())) or "aucun"))
