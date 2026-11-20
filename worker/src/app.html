@@ -1395,9 +1395,9 @@ function ticket(x) {
   }
   return `<div class="bkt${hit}${isOpen ? " open" : ""}" data-item="${x.id}"><button class="tkd" data-tkopen="${x.id}"><b>${d.getUTCDate()}</b><small>${esc(T.smons[d.getUTCMonth()].replace(".", "").toUpperCase())}</small><em>${esc(T.dows[d.getUTCDay()].slice(0, 3))}.</em></button>
     <div class="tkm"><span class="tke${days < 14 ? " soon" : ""}">${esc(when)}${at.length > 10 ? " · " + esc(at.slice(11, 16)) : ""}</span>
-    <button class="tkt" data-tkopen="${x.id}">${esc(x.title)}<i class="pchev">${isOpen ? "▴" : "▾"}</i></button><div class="tkv">${esc(venueLine(x))}</div>
+    <button class="tkt" data-tkopen="${x.id}">${esc(x.title)}<i class="pchev">${isOpen ? "▴" : "▾"}</i></button><a class="tkv vlink" href="${map}" data-link="1" target="_blank" rel="noopener">${esc(venueLine(x))}</a>
     <div class="tkw">${f.length ? `<span class="stack">${f.map(face).join("")}</span>${esc(T.withF)} ${esc(joinNames(f.map((p) => p.name)))}` : esc(T.alone)}</div>${more}
-    <div class="tkb"><a class="btn s" href="${map}" data-link="1" target="_blank" rel="noopener">${esc(T.mapL)}</a><button class="btn s" data-calfor="${x.id}" aria-expanded="${st.calFor === x.id}">${esc(T.addAgenda)}</button><button class="btn s" data-tkadd="${x.id}" aria-expanded="${st.tkAdd === x.id}">${esc(T.addPeople)}</button></div>
+    <div class="tkb"><button class="btn s" data-calfor="${x.id}" aria-expanded="${st.calFor === x.id}">${esc(T.addAgenda)}</button><button class="btn s" data-tkadd="${x.id}" aria-expanded="${st.tkAdd === x.id}">${esc(T.addPeople)}</button></div>
     ${st.tkAdd === x.id ? (() => { const ppl = (S.people || []).filter((p) => !f.some((q) => q.id === p.id));
       return `<div class="tkadd"><div class="pmh">${esc(T.withWhoT)}</div>${ppl.length ? `<div class="pslots">${ppl.map((p) => `<button class="pchip" data-with="${p.id}" aria-pressed="${st.withs.has(p.id)}">${esc(p.name)}</button>`).join("")}</div>
         <div class="pyn2"><button class="btn k" data-act="bd" data-id="${x.id}" data-arg="${at.replace(/\D/g, "").slice(0, 12)}"${st.withs.size ? "" : " disabled"}>${esc(T.theyCome)}</button><button class="btn" data-tkprop="${x.id}"${st.withs.size ? "" : " disabled"}>${esc(T.proposeThem)}</button></div>` : `<p class="hint">${esc(T.noFriendsYet)}</p>`}</div>`; })() : ""}
