@@ -93,7 +93,7 @@ export async function notifyPush(env: Env, chat: number, kind: string, from: num
   const when = at ? ` · ${at.slice(8, 10)}/${at.slice(5, 7)} ${at.slice(11, 16)}` : "";
   const M: Record<string, PushMsg> = {
     share: { title: en ? `💌 ${who} sent you ${title}` : `💌 ${who} t'envoie ${title}`, body: note ? `« ${note} »` : (en ? "Have a look?" : "Tu regardes ?"), url: "/app#mine/all" },
-    booked: { title: en ? `🎟 ${who} booked ${title} for you` : `🎟 ${who} a réservé ${title} pour toi`, body: (en ? "See it in My outings" : "C'est dans Mes sorties") + when, url: "/app#mine/all" },
+    booked: { title: en ? `🎟 ${who} added you: ${title}` : `🎟 ${who} t'a ajouté·e : ${title}`, body: (en ? "You're going together" : "Vous y allez ensemble") + when, url: "/app#mine/all" },
     friend_request: { title: en ? `👋 ${who} wants to add you` : `👋 ${who} veut t'ajouter`, body: en ? "Accept in Friends" : "À accepter dans Amis", url: "/app#set/friends" },
     // 🗳 Propositions : la notif ouvre la proposition (slot = créneau en clair, dans « at » pour prop_set).
     proposal: { title: en ? `💌 ${who} suggests ${title}` : `💌 ${who} te propose ${title}`, body: note ? `« ${note} »` : (en ? "Which day works for you?" : "Quel jour te va ?"), url: `/app?p=${ref ?? ""}` },
