@@ -457,14 +457,19 @@ main>.day:first-child{margin-top:0;border-top:0}
 .svenue{border-bottom:1px solid var(--line)}
 
 /* Fiche ouverte (accordéon) : filet rouge à gauche, sections en petites capitales grises. */
-.item.open{border-left:3px solid var(--velvet);background:var(--card)}
+.item.open{border-left:3px solid var(--ink);background:var(--bg)}.item.open .t{font-size:20px;line-height:1.2}
 .item.open .row{padding-left:13px}
 .detail{padding:0 16px 16px 13px;font-size:14.5px;gap:0}
 .dloc{color:var(--muted);font-size:14px;margin-top:2px}
 .ul{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .dlab{font:800 10.5px var(--sans);letter-spacing:.11em;text-transform:uppercase;color:var(--dim);margin:16px 0 7px}
-.dgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.dch{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2px 6px;min-height:0;padding:7px 9px;background:var(--bg)}
+.dline{font:600 14px var(--sans);margin:0 0 10px}.dline i{font-style:normal;color:var(--dim);margin:0 6px}
+.dgrey{margin-top:12px;display:grid;gap:3px;font:500 14px/1.5 var(--sans);color:var(--muted)}.dgrey a.ul{color:var(--ink)}
+.dsyn .dmore{display:inline;padding:0;border:0;background:none;font:700 14.5px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.dmain{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;margin-top:18px}.dmain .act{box-shadow:none;padding:12px 8px;text-align:center;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}.dmain .act.pri{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.dlinks .lnk{padding:0;font:600 13.5px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.dgrid{display:flex!important;flex-wrap:wrap;gap:6px}
+.dch{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2px 6px;min-height:0;padding:6px 10px;background:var(--bg)}
 .dch .dl{font:700 13.5px var(--sans);font-variant-numeric:tabular-nums;white-space:nowrap}
 .dch.sd .dl{text-decoration:line-through;text-decoration-color:var(--velvet)}
 .dch.sd b,.dch.sd span{text-decoration:none}.dch.sd .dl{text-decoration:line-through}
@@ -1606,13 +1611,14 @@ function dateBlock(x) {
   let shown = more ? all : all.slice(0, MAXD);
   if (!more && sel && !shown.includes(sel)) shown = [...shown.slice(0, MAXD - 1), sel];   // la date choisie reste visible
   const months = new Set(all.map((d) => d.slice(0, 7)));
+  const cins = new Set(shown.map((d) => (L.map.get(`${+d.slice(8, 10)} ${d.slice(11, 16)}`) || {}).cinema).filter(Boolean));
   let h = `<div class="dblock">`, curM = "";
   for (const d of shown) {
     const m = d.slice(0, 7);
     if (!curM) { h += `<div class="dgrid">`; curM = m; }   // pas d'intitulés de mois : la date les dit déjà
     const t = dt(d), sd = isSold(x, d), info = L.map.get(`${+d.slice(8, 10)} ${d.slice(11, 16)}`);
     const micro = "";   // la date suffit (pas de « Ce soir » en plus)
-    h += `<button class="dch${d === sel ? " on" : ""}${sd ? " sd" : ""}"${sd ? " disabled" : ` data-dsel="${x.id}|${d}"`}><span class="dl">${esc(T.dows[t.getUTCDay()].slice(0, 3))}. ${d.slice(8, 10)}/${d.slice(5, 7)}${d.length > 10 ? ` · ${esc(d.slice(11, 16))}` : ""}</span>${micro ? `<i>${esc(micro)}</i>` : ""}${L.multi && info ? `<small>${esc(info.cinema)}</small>` : ""}${sd ? `<em>${esc(T.soldShort)}</em>` : ""}</button>`;
+    h += `<button class="dch${d === sel ? " on" : ""}${sd ? " sd" : ""}"${sd ? " disabled" : ` data-dsel="${x.id}|${d}"`}><span class="dl">${esc(T.dows[t.getUTCDay()].slice(0, 3))}. ${d.slice(8, 10)}/${d.slice(5, 7)}${d.length > 10 ? ` · ${esc(d.slice(11, 16))}` : ""}</span>${micro ? `<i>${esc(micro)}</i>` : ""}${cins.size > 1 && info ? `<small>${esc(info.cinema)}</small>` : ""}${sd ? `<em>${esc(T.soldShort)}</em>` : ""}</button>`;
   }
   h += "</div>";
   if (all.length > MAXD && !more) h += `<button class="dmore" data-dmore="${x.id}">${esc(T.moreDates(all.length - MAXD))}</button>`;
@@ -1658,36 +1664,28 @@ function item(x) {
       <div class="acts">${st.writing === x.id ? "" : `<button class="act" data-writing="${x.id}">${me.comment ? T.editReview : T.writeReview}</button>`}
       <button class="act" data-act="u" data-id="${x.id}">${T.undoSeen}</button></div></div>`;
   }
-  // DATES
-  const chipsOn = s !== "seen" && x.kind !== "expo" && !st.picking && !st.proposing && !st.sharing;
-  // Expo déjà ouverte : « jusqu'au … » est déjà dans l'étiquette, pas de bloc Dates en plus.
-  if (s !== "seen" && dates) h += sec("dates") + (chipsOn ? dateBlock(x) : `<div>${x.kind === "expo" ? esc(cap(dates)) : dates}</div>`);
-  if (me.booked && s !== "seen") h += `<div class="dbk">🎟 ${esc(T.bookedT)} · ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}</div>`;
-  // INFOS : seulement ce qu'on sait (jamais de durée ni de places inventées).
-  const nkLink = (l) => { const m = l.match(/^(📰\s*)(Nachtkritik [★½☆]+)(.*)$/); const nc = (m && m[3].match(/(\d+)\s+(critiques|reviews)/)) || null;
+  // Fiche ouverte : ligne de faits, résumé, détails en gris (avec le lieu), séances, puis les amis et deux boutons.
+  const nkLink = (l) => { const m = l.match(/^(📰\s*)(Nachtkritik [★½☆]+)(.*)$/);
     return f.nkUrl && m ? `<a class="ul" href="${esc(f.nkUrl)}" data-link="1" target="_blank" rel="noopener">${esc(nkScore(m[2]).replace(/^Nachtkritik\s*/, ""))} · Nachtkritik ↗</a>` : esc(nkScore(l.replace(/^📰\s*/, "")).split(" · Buzz")[0].replace(/\s*\(\d+ (sources?|critiques?|reviews?)\)/g, "")); };
   const strip = (l) => l.replace(/^\S+\s*/, "");
   const pick1 = (e) => (f.meta.find((l) => l.startsWith(e)) || "");
-  const info = [];
   const vcode = (String(x.text || "").match(/📍[^\n]*?\((OmeU|OmU|OV|VO|muet)\)/) || [])[1] || "";
   const lang = x.kind === "film" ? (T.vWords[vcode] || "") : cap(strip(pick1("🗣")));
-  if (lang) info.push([T.iLang, esc(lang)]);
-  const withL = x.kind === "film" ? strip(pick1("🎬")).replace(/^\d{4},\s*/, "") : strip(pick1("✍️"));
-  if (withL) info.push([x.kind === "film" ? T.iBy : T.iWith, esc(withL)]);
+  const gl = x.kind === "film" ? lines.find((l) => l.startsWith("🏷")) : "", fl = x.kind === "film" ? lines.find((l) => l.startsWith("🏆")) : "";
   const dur = lines.find((l) => l.startsWith("⏱"));
-  if (dur) info.push([T.iDur, esc(strip(dur))]);
-  if (pick1("💶")) info.push([T.iPrice, esc(strip(pick1("💶")))]);
-  if (x.kind === "film") { const gl = lines.find((l) => l.startsWith("🏷")), fl = lines.find((l) => l.startsWith("🏆"));
-    if (gl) info.push([T.iGenre, esc(strip(gl))]); if (fl) info.push([T.iFest, esc(strip(fl))]); }
-  const press = f.meta.filter((l) => l.startsWith("📰")).map(nkLink);
-  const avis = [f.rating ? scTag(f) : "", ...press].filter(Boolean).join(" · ");
-  if (avis) info.push([T.iRev, avis]);
-  info.push([T.iVenue, venueRow(x)]);
-  if (info.length) h += sec("infos") + `<div class="dfacts">${info.map(([k, v]) => `<b>${esc(k)}</b><span>${v}</span>`).join("")}</div>`;
-  // RÉSUMÉ : 3 lignes, « Lire plus » déplie sur place.
+  const top = [lang, gl && strip(gl), dur && strip(dur), fl && "🏆 " + strip(fl)].filter(Boolean);
+  if (top.length) h += `<div class="dline">${top.map(esc).join('<i>·</i>')}</div>`;
   const syn = synFull(x);
-  if (syn) h += sec("syn") + `<p class="dsyn${st.synOpen === x.id ? " full" : ""}">${esc(syn)}</p>${st.synOpen === x.id ? "" : `<button class="dmore red" data-synopen="${x.id}">${esc(T.readMore)}</button>`}`;
+  if (syn) h += `<p class="dsyn${st.synOpen === x.id ? " full" : ""}">${esc(syn)}${st.synOpen === x.id ? "" : ` <button class="dmore" data-synopen="${x.id}">${esc(T.readMore)}</button>`}</p>`;
   if (x._quote) h += `<div class="quote">« ${esc(x._quote)} »</div>`;
+  const withL = x.kind === "film" ? strip(pick1("🎬")).replace(/^\d{4},\s*/, "") : strip(pick1("✍️"));
+  const press = f.meta.filter((l) => l.startsWith("📰")).map(nkLink);
+  const grey = [withL ? esc(`${x.kind === "film" ? T.iBy : T.iWith} ${withL}`) : "", f.rating ? scTag(f) : "", ...press, pick1("💶") ? esc(strip(pick1("💶"))) : ""].filter(Boolean);
+  h += `<div class="dgrey">${grey.length ? `<div>${grey.join(" · ")}</div>` : ""}<div>${venueRow(x)}</div></div>`;
+  // SÉANCES
+  const chipsOn = s !== "seen" && x.kind !== "expo" && !st.picking && !st.proposing && !st.sharing;
+  if (s !== "seen" && dates) h += sec("dates") + (chipsOn ? dateBlock(x) : `<div>${x.kind === "expo" ? esc(cap(dates)) : dates}</div>`);
+  if (me.booked && s !== "seen") h += `<div class="dbk">🎟 ${esc(T.bookedT)} · ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}</div>`;
   // ENTRE AMIS : qui est intéressé·e, qui a réservé, avis de la bande, proposition en cours.
   const fr = x.friends || [];
   const wantP = fr.filter((p) => p.star && !p.booked && !p.seen);
@@ -1721,21 +1719,20 @@ function item(x) {
       `<button class="act" data-act="bd" data-id="${x.id}" data-arg="${d.replace(/\D/g, "").slice(0, 12)}">${esc(dayLabel(d))} ${d.slice(11)}</button>`).join("")}
       ${me.booked ? `<button class="act" data-act="bx" data-id="${x.id}">${esc(T.cancelBook)}</button>` : ""}</div>`;
   } else if (s !== "seen") {
-    // ACTIONS : grille 2×2 (★ intéressé·e · 🎟 réservé · proposer · calendrier), puis les liens.
+    // ACTIONS : « Billets ↗ » et « Proposer » ; le reste en liens (le ☆ du haut suffit pour « ça me tente »).
     const sel = selDate(x), L = x.kind === "expo" ? { book: x.url, map: new Map() } : sessionLinks(x);
     const calAt = me.booked && me.booked.length >= 16 && me.booked.slice(0, 10) >= TODAY ? me.booked : sel && sel.length >= 16 ? sel : "";
     const sInfo = sel ? L.map.get(`${+sel.slice(8, 10)} ${sel.slice(11, 16)}`) : null;
     const tixUrl = (sInfo && sInfo.url) || L.book || x.url;
-    const btns = [
-      me.booked ? "" : `<button class="act${me.star ? " on" : ""}" data-act="${me.star ? "ui" : "i"}" data-id="${x.id}">${me.star ? "★" : "☆"} ${esc(T.starBtn)}</button>`,
-      x.kind !== "expo" && upcoming.length ? `<button class="act${me.booked ? " bk" : ""}" data-pick="${x.id}">🎟 ${esc(me.booked ? `${T.bookedT} · ${shortDay(me.booked)}` : T.iBooked)}</button>` : "",
-      people.length ? (sel ? `<button class="act pri" data-proposeat="${x.id}|${sel}">${esc(T.proposeOn(`${sel.slice(8, 10)}/${sel.slice(5, 7)}`))}</button>` : `<button class="act pri" data-propose="${x.id}">${esc(T.proposeF)}</button>`) : "",
-      calAt ? `<button class="act" data-calopen="${x.id}">＋ ${esc(T.calBtn)}</button>` : "",
+    const main = [
+      tixUrl ? `<a class="act pri" href="${esc(tixUrl)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tixD)} ↗</a>` : "",
+      people.length ? (sel ? `<button class="act" data-proposeat="${x.id}|${sel}">${esc(T.proposeOn(`${sel.slice(8, 10)}/${sel.slice(5, 7)}`))}</button>` : `<button class="act" data-propose="${x.id}">${esc(T.proposeF)}</button>`) : "",
     ].filter(Boolean);
-    h += sec("acts") + `<div class="dacts2">${btns.join("")}</div>`;
+    if (main.length) h += `<div class="dmain">${main.join("")}</div>`;
     if (calAt && st.calOpen === x.id) h += `<div class="dcal">${esc(T.addCal)} <a class="cal" href="${gcal(x, calAt)}" data-link="1" target="_blank" rel="noopener">Google</a> · <a class="cal" href="${API_BASE || location.origin}/app/cal/${x.id}.ics?at=${calAt.replace(/\D/g, "").slice(0, 12)}" data-link="1" target="_blank" rel="noopener">${esc(T.calOther)}</a></div>`;
     const lk = [
-      tixUrl ? `<a href="${esc(tixUrl)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tixD)} ↗</a>` : "",
+      x.kind !== "expo" && upcoming.length ? `<button class="lnk" data-pick="${x.id}">${esc(me.booked ? `🎟 ${T.bookedT} · ${shortDay(me.booked)}` : T.iBooked)}</button>` : "",
+      calAt ? `<button class="lnk" data-calopen="${x.id}">+ ${esc(T.calBtn)}</button>` : "",
       x.url && x.url !== tixUrl ? `<a href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(T.pageL[x.kind] || T.pageL.theatre)} ↗</a>` : "",
     ].filter(Boolean);
     h += `<div class="dlinks">${lk.join("")}<span class="dlr"><button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button>${s === "ignored" ? `<button class="lnk" data-act="u" data-id="${x.id}">${esc(T.unignoreL)}</button>` : `<button class="lnk" data-act="x" data-id="${x.id}">${esc(T.hideL)}</button>`}</span></div>`;
