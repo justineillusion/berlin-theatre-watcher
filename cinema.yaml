@@ -69,6 +69,10 @@ cinemas:
     source: yorck                    # Hauptstr. 116, Schöneberg
     yorck_slug: odeon
 
+  - name: Rollberg
+    source: yorck                    # Rollbergstr. 70, Neukölln (beaucoup de VO)
+    yorck_slug: rollberg
+
   - name: Wolf
     source: kinoheld                 # Weserstr. 59, Neukölln ; billetterie kinoheld
     kinoheld_cinema_id: 1856
