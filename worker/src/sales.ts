@@ -3,7 +3,7 @@
 // par chaque scan (src/sales.py). Cron du Worker toutes les 15 min (à l'heure,
 // contrairement aux crons GitHub qui dérivent de plusieurs heures).
 import { Lang, asLang, tr } from "./i18n";
-import { Env, WEB_ID_BASE, esc, send, setSetting, setting } from "./lib";
+import { Env, WEB_ID_BASE, esc, inbox, send, setSetting, setting } from "./lib";
 import { pushTo } from "./push";
 
 export interface Sale {
@@ -102,9 +102,11 @@ export async function salesTick(env: Env, now = new Date()): Promise<number> {
     await setSetting(env, key, new Date().toISOString());   // avant l'envoi : jamais deux fois
     const venue = await env.DB.prepare("SELECT name FROM venues WHERE id = ?").bind(s.venue_id).first<{ name: string }>();
     const { results: subs } = await env.DB.prepare(
-      `SELECT u.chat_id, u.lang FROM subscriptions x JOIN users u ON u.chat_id = x.chat_id AND u.active = 1
-       WHERE x.venue_id = ? LIMIT 40`,
-    ).bind(s.venue_id).all<{ chat_id: number; lang: string | null }>();
+      `SELECT u.chat_id, u.lang FROM users u WHERE u.active = 1 AND (
+         u.chat_id IN (SELECT chat_id FROM subscriptions WHERE venue_id = ?)
+         OR u.chat_id IN (SELECT r.chat_id FROM reactions r JOIN items i ON i.id = r.item_id
+                          WHERE i.venue_id = ? AND r.interested = 1 AND r.status IS NULL AND r.booked_at IS NULL)) LIMIT 80`,
+    ).bind(s.venue_id, s.venue_id).all<{ chat_id: number; lang: string | null }>();
     for (const u of subs) {
       const lang: Lang = asLang(u.lang);
       const T = tr(lang);
@@ -118,8 +120,12 @@ export async function salesTick(env: Env, now = new Date()): Promise<number> {
         if (!mine.length) continue;                          // pas de ⭐ là-bas : rien (la veille suffisait)
         text = (s.at ? T.saleOpen : T.saleToday)(esc(venue?.name ?? s.venue_id), month) + `\n${list(mine)}`;
       }
-      await send(env, u.chat_id, text);
-      n++;
+      if (u.chat_id < WEB_ID_BASE) { await send(env, u.chat_id, text); n++; }
+      // App : une ligne dans les notifications de Mes sorties + la notif du téléphone (push).
+      const head = text.split("\n")[0].replace(/<[^>]*>/g, "");
+      const stars = mine.map((m) => m.title).join(", ");
+      try { await inbox(env, u.chat_id, eve ? "sale" : "sale_open", null, null, stars ? `${head}\n${stars}` : head, s.at ?? s.day, s.venue_id); n++; }
+      catch (e) { console.log("sale inbox failed", u.chat_id, e); }
     }
   }
   return n;
