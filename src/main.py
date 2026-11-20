@@ -6,6 +6,8 @@ import os
 import re
 import sys
 import time
+
+from . import scanlog
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import List
@@ -64,10 +66,13 @@ def collect_shows(theaters: list) -> List[Show]:
             ok, found = call_with_timeout(lambda: source(theater["url"]), _VENUE_TIMEOUT_S)
         except Exception as exc:  # noqa: BLE001 — on continue sur les autres théâtres
             print(f"⚠️  {name} — échec ({exc}).")
+            scanlog.error(name, f"échec : {exc}")
             continue
         if not ok:
             print(f"⏱  {name} — pas de réponse en {_VENUE_TIMEOUT_S} s, lieu sauté ce coup-ci.")
+            scanlog.error(name, f"pas de réponse en {_VENUE_TIMEOUT_S} s")
             continue
+        scanlog.found(name, len(found))
         for show in found:
             # Liens toujours absolus (Volksbühne renvoie « /en/productions/… »).
             from urllib.parse import urljoin
@@ -83,6 +88,9 @@ def collect_shows(theaters: list) -> List[Show]:
         for show in found:
             show._venue_url = theater["url"]
         kept = [s for s in found if not is_workshop(s.title)]
+        for s in found:
+            if is_workshop(s.title):
+                scanlog.drop(name, "workshop", s.title)
         if len(kept) < len(found):
             print(f"   {name} : {len(found) - len(kept)} atelier(s) écarté(s).")
         shows.extend(kept)
@@ -332,6 +340,14 @@ def main() -> None:
 
     hits = select(all_shows, config)
     print(f"✅ {len(hits)} spectacle(s) retenu(s) (surtitres EN, non complet, filtres).")
+    # Rapport /admin : séances gardées par lieu ; pièces entièrement écartées (langue, complet, dates…).
+    kept_ids = {s.item_id() for s in hits}
+    for s in hits:
+        scanlog.kept(s.venue_name or s.theater, 1)
+    for s in all_shows:
+        if s.item_id() not in kept_ids:
+            scanlog.drop(s.venue_name or s.theater, "filtered", s.title)
+    scanlog.push("theatre")
 
     if multi:
         # Seul le texte de base dépend du scraping ; qui reçoit quoi (abonnements,

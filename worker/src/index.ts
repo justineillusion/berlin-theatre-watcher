@@ -11,6 +11,8 @@
 //   POST /api/setup     enregistre le webhook + le menu des commandes (Bearer API_TOKEN)
 import { handleUpdate } from "./bot";
 import { handleApp } from "./app";
+import ADMIN from "./admin.html";
+import { saveScanReport } from "./scanreport";
 import { Env, loadCircles, tg } from "./lib";
 import { setChatMenu, setGlobalMenus } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
@@ -34,6 +36,9 @@ export default {
     await loadCircles(env).catch((e) => console.log("circles", e));   // qui voit les ⭐ de qui (lib.ts)
     // Mini-app Telegram (page + ses deux routes, authentifiées par initData).
     if (url.pathname === "/app" || url.pathname.startsWith("/app/")) return handleApp(req, env, ctx);
+    // Santé des scans : page à part, données réservées à l'admin (POST /app/api/admin/scans).
+    if (req.method === "GET" && (url.pathname === "/admin" || url.pathname === "/admin/"))
+      return new Response(ADMIN, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex" } });
     if (req.method === "GET" && url.pathname === "/") return Response.redirect(`${url.origin}/app${url.search}`, 302);
     if (req.method !== "POST") return new Response("🎭", { status: 200 });
 
@@ -57,6 +62,7 @@ export default {
 
     switch (url.pathname) {
       case "/api/plan": return plan(env, body);
+      case "/api/scan-report": return saveScanReport(env, body);
       case "/api/render": return render(env, body);
       case "/api/sent": return sent(env, body);
       case "/api/cinema-recipients": return cinemaRecipients(env, body);

@@ -1882,10 +1882,11 @@ function adminTab() {
   const A = st.adminData;
   if (!A) { if (!st.adminLoading) { st.adminLoading = true; api("admin").then((j) => { st.adminData = j; }, () => { st.adminData = { error: 1 }; }).finally(() => { st.adminLoading = false; render(); }); } return `<p class="empty">…</p>`; }
   if (A.error) return `<p class="empty">${esc(T.error)}</p>`;
+  const scanLink = `<p><a class="ul" href="/admin" data-link="1" target="_blank" rel="noopener">Santé des scans ↗</a></p>`;
   const t = A.totals, d = (v) => v ? esc(String(v).slice(0, 10)) : "—";
   const kpi = (n, l) => `<div class="kpi"><b>${n}</b><span>${esc(l)}</span></div>`;
   const max = Math.max(1, ...A.weeks.map((w) => w.n));
-  return `<div class="kpis" style="padding:12px 0">${kpi(t.active, "inscrits")}${kpi(t.new7, "nouveaux 7 j")}${kpi(t.seen7, "actifs 7 j")}${kpi(t.web, "via le web")}${kpi(t.pending, "pas confirmés")}${kpi(t.mails24, "emails 24 h")}</div>`
+  return scanLink + `<div class="kpis" style="padding:12px 0">${kpi(t.active, "inscrits")}${kpi(t.new7, "nouveaux 7 j")}${kpi(t.seen7, "actifs 7 j")}${kpi(t.web, "via le web")}${kpi(t.pending, "pas confirmés")}${kpi(t.mails24, "emails 24 h")}</div>`
     + dayHead("Inscriptions par semaine") + `<div class="wk">${A.weeks.map((w) => `<div><i style="height:${Math.round(w.n / max * 48) + 2}px"></i><small>${esc(w.from_day.slice(5))}</small><b>${w.n}</b></div>`).join("") || "—"}</div>`
     + dayHead("Robots bloqués · 24 h") + `<p class="adm">${A.blocked.length ? A.blocked.map((b) => `${esc(b.kind)} : ${b.n}`).join(" · ") : "aucun"}</p>`
     + (A.usage ? (() => { const u = A.usage, w = u.last7 || {}, n = (v) => v ?? 0; const pct = (a, b) => b ? `${Math.round((a || 0) / b * 100)} %` : "—";

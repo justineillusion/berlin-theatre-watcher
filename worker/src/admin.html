@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Berlin Encore · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--sans:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;--ink:#111;--bg:#fff;--muted:#686e75;--dim:#a3a8ae;--line:#e6e6ea;--velvet:#d7263d;--ok:#1f8a4c;--warn:#b26b00}
+@media (prefers-color-scheme:dark){:root{--ink:#f2f2f2;--bg:#121212;--muted:#a3a8ae;--dim:#6c7178;--line:#2a2a2e}}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans);-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 60px}
+header{position:sticky;top:0;background:var(--bg);display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:18px 0 12px;border-bottom:1.5px solid var(--ink);z-index:2}
+header b{font:800 22px var(--sans);letter-spacing:-.01em}header b i{font-style:normal;color:var(--velvet)}
+header a{color:var(--muted);font-weight:600;font-size:14px}
+h2{font:800 12.5px var(--sans);letter-spacing:.11em;text-transform:uppercase;margin:28px 0 0;padding:0 0 10px;border-bottom:1.5px solid var(--ink);display:flex;justify-content:space-between;gap:8px}
+h2 small{font:600 12.5px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
+.r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.r .n{font-weight:700}.r .v{font:700 14px var(--sans);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.r .d{grid-column:1/-1;font-size:13.5px;color:var(--muted)}
+.r details summary{cursor:pointer;color:var(--muted);font-size:13.5px}.r details ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--muted)}
+.bad{color:var(--velvet)}.warn{color:var(--warn)}.good{color:var(--ok)}
+.pill{display:inline-block;font:800 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border:1.5px solid currentColor;margin-left:6px}
+.msg{padding:40px 0;color:var(--muted)}.msg a{color:var(--ink)}
+.sum{display:flex;gap:18px;flex-wrap:wrap;padding:14px 0 0;font-size:14px;color:var(--muted)}.sum b{color:var(--ink)}
+</style>
+</head>
+<body><div class="wrap">
+<header><b>Berlin Encore<i>!</i> · Admin</b><a href="/app">← App</a></header>
+<div id="out"><p class="msg">Chargement…</p></div>
+</div>
+<script>
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const REASONS = { filtered: "Écartées (pas en anglais, complet, hors dates)", hour: "Heure (avant 18:00 en semaine, 14:00 le week-end)", late: "Trop tard (après 22:00 en semaine)", workshop: "Atelier / masterclass", window: "Hors de la fenêtre", dubbed: "Doublé" };
+const ago = (at) => { const m = Math.round((Date.now() - Date.parse(String(at).replace(" ", "T") + "Z")) / 60000); return m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.round(m / 60)} h` : `il y a ${Math.round(m / 1440)} j`; };
+function runBlock(title, run) {
+  if (!run) return `<h2>${esc(title)}</h2><p class="msg">Pas encore de rapport : il arrivera au prochain scan.</p>`;
+  const vs = run.venues, errs = vs.filter((v) => v.error), zero = vs.filter((v) => !v.error && !v.kept);
+  const drops = vs.reduce((n, v) => n + Object.values(v.dropped || {}).reduce((a, l) => a + l.length, 0), 0);
+  let h = `<h2>${esc(title)}<small>${esc(ago(run.at))}</small></h2>`;
+  h += `<div class="sum"><span><b>${vs.length}</b> lieux</span><span><b>${vs.reduce((n, v) => n + v.kept, 0)}</b> gardés</span><span><b>${drops}</b> écartés</span>${errs.length ? `<span class="bad"><b>${errs.length}</b> en erreur</span>` : ""}${zero.length ? `<span class="warn"><b>${zero.length}</b> à 0</span>` : ""}</div>`;
+  const order = (v) => (v.error ? 0 : !v.kept ? 1 : v.prev != null && v.kept < v.prev * 0.5 ? 2 : 3);
+  for (const v of [...vs].sort((a, b) => order(a) - order(b) || a.venue.localeCompare(b.venue))) {
+    const drop = Object.entries(v.dropped || {}).filter(([, l]) => l.length);
+    const fell = v.prev != null && v.kept < v.prev * 0.5;
+    const flag = v.error ? `<span class="pill bad">Erreur</span>` : !v.kept ? `<span class="pill warn">0</span>` : fell ? `<span class="pill warn">En baisse</span>` : "";
+    h += `<div class="r"><span class="n">${esc(v.venue)}${flag}</span><span class="v">${v.kept}${v.prev != null && v.prev !== v.kept ? ` <small style="color:var(--dim)">(avant ${v.prev})</small>` : ""}</span>`;
+    if (v.error) h += `<div class="d bad">${esc(v.error)}</div>`;
+    if (drop.length) h += `<div class="d"><details><summary>${drop.map(([k, l]) => `${l.length} ${esc((REASONS[k] || k).split(" (")[0].toLowerCase())}`).join(" · ")}</summary>${drop.map(([k, l]) => `<b>${esc(REASONS[k] || k)}</b><ul>${l.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`).join("")}</details></div>`;
+    h += `</div>`;
+  }
+  return h;
+}
+function checksBlock(c) {
+  let h = `<h2>Contrôles<small>${c.total} fiches en ligne</small></h2>`;
+  h += `<div class="r"><span class="n">Lieux sans aucune fiche</span><span class="v ${c.empty.length ? "warn" : "good"}">${c.empty.length || "✓"}</span>${c.empty.length ? `<div class="d">${c.empty.map((v) => esc(v.name)).join(" · ")}</div>` : ""}</div>`;
+  h += `<div class="r"><span class="n">Fiches sans résumé</span><span class="v ${c.noSyn.length ? "warn" : "good"}">${c.noSyn.length || "✓"}</span>${c.noSyn.length ? `<div class="d"><details><summary>Voir la liste</summary><ul>${c.noSyn.map((i) => `<li>${esc(i.title)} · ${esc(i.venue)}</li>`).join("")}</ul></details></div>` : ""}</div>`;
+  h += `<div class="r"><span class="n">Même résumé pour des titres différents</span><span class="v ${c.dupSyn.length ? "bad" : "good"}">${c.dupSyn.length || "✓"}</span>${c.dupSyn.length ? `<div class="d">${c.dupSyn.map((g) => `<details><summary>${esc(g.items.map((i) => i.title).join(" / "))}</summary><ul><li>« ${esc(g.text)}… »</li>${g.items.map((i) => `<li>${esc(i.title)} · ${esc(i.venue)}</li>`).join("")}</ul></details>`).join("")}</div>` : ""}</div>`;
+  return h;
+}
+(async () => {
+  const out = document.getElementById("out");
+  let tok = ""; try { tok = localStorage.getItem("be_session") || ""; } catch {}
+  if (!tok) { out.innerHTML = `<p class="msg">Connecte-toi d'abord dans <a href="/app">l'app</a>, puis reviens ici.</p>`; return; }
+  try {
+    const r = await fetch("/app/api/admin/scans", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${tok}` }, body: "{}" });
+    if (r.status === 401 || r.status === 403) { out.innerHTML = `<p class="msg">Cette page est réservée à l'administratrice.</p>`; return; }
+    const j = await r.json();
+    out.innerHTML = runBlock("Scan théâtre, musique, expos", j.runs.theatre) + runBlock("Scan ciné", j.runs.cinema) + checksBlock(j.checks);
+  } catch (e) { out.innerHTML = `<p class="msg">Impossible de charger : ${esc(e.message || e)}</p>`; }
+})();
+</script>
+</body>
+</html>

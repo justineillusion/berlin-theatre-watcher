@@ -25,6 +25,7 @@ from zoneinfo import ZoneInfo
 
 import yaml
 
+from .. import scanlog
 from . import taste
 from .message import (evening_day, film_card, film_line, first_sentence, fmt_day, format_week,
                       text, week_header)
@@ -100,10 +101,12 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
                               win["start"], days), limit)
         except Exception as exc:  # noqa: BLE001 — un cinéma en panne ne bloque pas les autres
             errors.append(f"{cin.get('name')}: {exc}")
+            scanlog.error(cin["name"], str(exc))
             traceback.print_exc(file=sys.stderr)
             continue
         if not ok:
             errors.append(f"{cin.get('name')}: pas de réponse en {limit:.0f} s, cinéma sauté")
+            scanlog.error(cin["name"], f"pas de réponse en {limit:.0f} s")
             print(f"⏱  {cin.get('name')} : pas de réponse en {limit:.0f} s, cinéma sauté.", file=sys.stderr)
             continue
         # Jamais de lien mort : page du film morte -> page programme du cinéma (si elle répond), sinon rien.
@@ -120,13 +123,30 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
         later = [s for s in got if evening_day(s) > win["last"]]
         got = [s for s in got if evening_day(s) <= win["last"]]
         known_until[cin["name"]] = max((evening_day(s) for s in got), default=None)
-        screenings += [s for s in got if is_evening(s, evening_from, weekend_from) and not_too_late(s, cfg)]
-        screenings += [s for s in later if s.live_music]   # au-delà de la semaine : ciné-concerts seulement, toute heure
-        # Séries / festivals (semaine du ciné français…) : 2 semaines, mêmes règles de soirée. Les films
+        name = cin["name"]
+        scanlog.found(name, len(got) + len(later))
+
+        def keep(s: Screening) -> bool:
+            """Soirée (ou matinée du week-end), pas trop tard. Séries et festivals : toute heure, on y
+            prend des places exprès. Chaque séance écartée est notée pour /admin."""
+            if s.event:
+                return True
+            if not is_evening(s, evening_from, weekend_from):
+                scanlog.drop(name, "hour", f"{s.title} · {s.start.astimezone(_TZ):%a %d/%m %H:%M}")
+                return False
+            if not not_too_late(s, cfg):
+                scanlog.drop(name, "late", f"{s.title} · {s.start.astimezone(_TZ):%a %d/%m %H:%M}")
+                return False
+            return True
+
+        kept = [s for s in got if keep(s)]
+        kept += [s for s in later if s.live_music]   # au-delà de la semaine : ciné-concerts seulement, toute heure
+        # Séries / festivals (semaine du ciné français…) : 2 semaines, toute heure. Les films
         # habituels restent à la semaine. App seulement (le récap Telegram ne garde que la semaine).
         ev_last = win["first"] + timedelta(days=event_days - 1)
-        screenings += [s for s in later if s.event and not s.live_music and evening_day(s) <= ev_last
-                       and is_evening(s, evening_from, weekend_from) and not_too_late(s, cfg)]
+        kept += [s for s in later if s.event and not s.live_music and evening_day(s) <= ev_last]
+        scanlog.kept(name, len(kept))
+        screenings += kept
         dubbed |= {norm_title(s.original_title or s.title) for s in got if s.version == "DF"}
     return screenings, errors, dubbed, known_until
 
@@ -228,6 +248,7 @@ def analyse(cfg: dict, start: date) -> dict:
     max_age = int(cfg.get("recent_max_age", 3))
     win = window(cfg, start)
     screenings, errors, dubbed, known_until = collect(cfg, win)
+    scanlog.push("cinema")
     films = group(screenings)
     for f in films:
         f.dubbed_release = f.key in dubbed
