@@ -1,8 +1,12 @@
 {
 "5637a1ec4245": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Wildwood (film)"
+"at": 1795138485.098211,
+"page": "Wildwood (film)",
+"genres": [
+"animation",
+"fantasy"
+]
 },
 "5f6a55ee6603": {
 "found": {
@@ -10,13 +14,19 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "You Can See Everything"
+"at": 1795138485.098211,
+"page": "You Can See Everything",
+"genres": [
+"doc"
+]
 },
 "a0feb99891fc": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Sansho the Bailiff"
+"at": 1795138485.098211,
+"page": "Sansho the Bailiff",
+"genres": [
+"history"
+]
 },
 "71ca49725e41": {
 "found": {
@@ -24,18 +34,26 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "NAZA (film)"
+"at": 1795138485.098211,
+"page": "NAZA (film)",
+"genres": [
+"doc"
+]
 },
 "d5938f2f9f0b": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Casablanca (film)"
+"at": 1795138485.098211,
+"page": "Casablanca (film)",
+"genres": [
+"romance",
+"drama"
+]
 },
 "135ac1f840f0": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Dr. Strangelove"
+"at": 1795138485.098211,
+"page": "Dr. Strangelove",
+"genres": []
 },
 "8ee0276189db": {
 "found": {
@@ -43,8 +61,11 @@
 "year": 2004,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Ghost in the Shell 2: Innocence"
+"at": 1795138485.098211,
+"page": "Ghost in the Shell 2: Innocence",
+"genres": [
+"animation"
+]
 },
 "c56d39ff127d": {
 "found": {
@@ -52,8 +73,9 @@
 "year": 1987,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Wings of Desire"
+"at": 1795138485.098211,
+"page": "Wings of Desire",
+"genres": []
 },
 "0ec1c5d88140": {
 "found": {
@@ -61,18 +83,27 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "La bola negra"
+"at": 1795138485.098211,
+"page": "La bola negra",
+"genres": [
+"drama"
+]
 },
 "f733a2ef6e7f": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Eyes Wide Shut"
+"at": 1795138485.098211,
+"page": "Eyes Wide Shut",
+"genres": [
+"thriller"
+]
 },
 "315f69b68df4": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Cléo from 5 to 7"
+"at": 1795138485.098211,
+"page": "Cléo from 5 to 7",
+"genres": [
+"drama"
+]
 },
 "0b073cba078a": {
 "found": {
@@ -80,18 +111,24 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Wild Horse Nine"
+"at": 1795138485.098211,
+"page": "Wild Horse Nine",
+"genres": [
+"comedy",
+"thriller"
+]
 },
 "1f9da5e1c41e": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Berlin: Symphony of a Metropolis"
+"at": 1795138485.098211,
+"page": "Berlin: Symphony of a Metropolis",
+"genres": []
 },
 "3106fce89a22": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Vengeance Is Mine (1979 film)"
+"at": 1795138485.098211,
+"page": "Vengeance Is Mine (1979 film)",
+"genres": []
 },
 "632bb432b58b": {
 "found": null,
@@ -104,13 +141,19 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Fatherland (2026 film)"
+"at": 1795138485.098211,
+"page": "Fatherland (2026 film)",
+"genres": [
+"biopic"
+]
 },
 "3c9f6e508410": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Career Girls"
+"at": 1795138485.098211,
+"page": "Career Girls",
+"genres": [
+"comedy"
+]
 },
 "397c12b1fed1": {
 "found": {
@@ -118,8 +161,11 @@
 "year": 2025,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Broken English (2025 film)"
+"at": 1795138485.098211,
+"page": "Broken English (2025 film)",
+"genres": [
+"doc"
+]
 },
 "0612a6029ed9": {
 "found": {
@@ -127,18 +173,29 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "The Best Summer"
+"at": 1795138485.098211,
+"page": "The Best Summer",
+"genres": [
+"doc"
+]
 },
 "11db31292c48": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "I Love Boosters"
+"at": 1795138485.098211,
+"page": "I Love Boosters",
+"genres": [
+"crime",
+"comedy"
+]
 },
 "814c3fd38903": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "By Any Means (2026 film)"
+"at": 1795138485.098211,
+"page": "By Any Means (2026 film)",
+"genres": [
+"history",
+"crime"
+]
 },
 "f8c0974599b3": {
 "found": null,
@@ -152,8 +209,11 @@
 },
 "477cb8b2e739": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "The Amulet of Ogum"
+"at": 1795138485.098211,
+"page": "The Amulet of Ogum",
+"genres": [
+"drama"
+]
 },
 "002f483e84ba": {
 "found": {
@@ -161,8 +221,12 @@
 "year": 2025,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Rains Over Babel"
+"at": 1795138485.098211,
+"page": "Rains Over Babel",
+"genres": [
+"comedy",
+"fantasy"
+]
 },
 "1cd7325b867f": {
 "found": null,
@@ -181,33 +245,53 @@
 },
 "03d4fd6150b0": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "The Gold Rush"
+"at": 1795138485.098211,
+"page": "The Gold Rush",
+"genres": [
+"comedy"
+]
 },
 "cee1fe12a888": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Faust (1926 film)"
+"at": 1795138485.098211,
+"page": "Faust (1926 film)",
+"genres": [
+"fantasy"
+]
 },
 "46a7136f3cc4": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Metropolis (1927 film)"
+"at": 1795138485.098211,
+"page": "Metropolis (1927 film)",
+"genres": [
+"scifi"
+]
 },
 "5af110848449": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Modern Times (film)"
+"at": 1795138485.098211,
+"page": "Modern Times (film)",
+"genres": [
+"comedy"
+]
 },
 "201673055547": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "City Lights"
+"at": 1795138485.098211,
+"page": "City Lights",
+"genres": [
+"romance",
+"comedy"
+]
 },
 "cca895ef6751": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "The Circus (1928 film)"
+"at": 1795138485.098211,
+"page": "The Circus (1928 film)",
+"genres": [
+"romance",
+"comedy"
+]
 },
 "a0197d38cbbd": {
 "found": {
@@ -215,8 +299,12 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "No Good Men"
+"at": 1795138485.098211,
+"page": "No Good Men",
+"genres": [
+"biopic",
+"drama"
+]
 },
 "34165dc8a9fe": {
 "found": {
@@ -224,8 +312,12 @@
 "year": 2026,
 "prize": "Palme d'or"
 },
-"at": 1795137625.3605447,
-"page": "Fjord (film)"
+"at": 1795138485.098211,
+"page": "Fjord (film)",
+"genres": [
+"thriller",
+"family"
+]
 },
 "fc89fa8772f2": {
 "found": {
@@ -233,8 +325,11 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "I'll Be Gone in June"
+"at": 1795138485.098211,
+"page": "I'll Be Gone in June",
+"genres": [
+"drama"
+]
 },
 "c462eeb2bedc": {
 "found": {
@@ -242,8 +337,12 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Paper Tiger (2026 film)"
+"at": 1795138485.098211,
+"page": "Paper Tiger (2026 film)",
+"genres": [
+"crime",
+"drama"
+]
 },
 "d2e0e27f25f1": {
 "found": {
@@ -251,8 +350,11 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Rehearsals for a Revolution"
+"at": 1795138485.098211,
+"page": "Rehearsals for a Revolution",
+"genres": [
+"doc"
+]
 },
 "928e565d21ee": {
 "found": {
@@ -260,8 +362,12 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Ghost Song (film)"
+"at": 1795138485.098211,
+"page": "Ghost Song (film)",
+"genres": [
+"fantasy",
+"drama"
+]
 },
 "46f6a808bc1f": {
 "found": {
@@ -269,13 +375,17 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "The Incomer"
+"at": 1795138485.098211,
+"page": "The Incomer",
+"genres": [
+"comedy"
+]
 },
 "82fa2f532add": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "The Hunger Games: Sunrise on the Reaping"
+"at": 1795138485.098211,
+"page": "The Hunger Games: Sunrise on the Reaping",
+"genres": []
 },
 "87c012ab2510": {
 "found": {
@@ -283,8 +393,12 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Iván & Hadoum"
+"at": 1795138485.098211,
+"page": "Iván & Hadoum",
+"genres": [
+"romance",
+"drama"
+]
 },
 "a21f95478273": {
 "found": {
@@ -292,8 +406,9 @@
 "year": 2025,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Bearcave"
+"at": 1795138485.098211,
+"page": "Bearcave",
+"genres": []
 },
 "70ae71fab2eb": {
 "found": null,
@@ -312,8 +427,9 @@
 },
 "0fe16704881c": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "List of Marvel Cinematic Universe films"
+"at": 1795138485.098211,
+"page": "List of Marvel Cinematic Universe films",
+"genres": []
 },
 "4593269a20d2": {
 "found": null,
@@ -332,8 +448,12 @@
 },
 "03b67509ae67": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "Dream a Little Dream (film)"
+"at": 1795138485.098211,
+"page": "Dream a Little Dream (film)",
+"genres": [
+"fantasy",
+"romance"
+]
 },
 "24aa28b681c2": {
 "found": null,
@@ -351,13 +471,17 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Narciso (film)"
+"at": 1795138485.098211,
+"page": "Narciso (film)",
+"genres": [
+"drama"
+]
 },
 "95cb1bf94a78": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "A Soul Haunted by Painting"
+"at": 1795138485.098211,
+"page": "A Soul Haunted by Painting",
+"genres": []
 },
 "8d3c47d5892d": {
 "found": null,
@@ -390,8 +514,11 @@
 "year": 2025,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Renoir (2025 film)"
+"at": 1795138485.098211,
+"page": "Renoir (2025 film)",
+"genres": [
+"drama"
+]
 },
 "c970a90df057": {
 "found": null,
@@ -414,8 +541,11 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Flies (2026 film)"
+"at": 1795138485.098211,
+"page": "Flies (2026 film)",
+"genres": [
+"comedy"
+]
 },
 "323425b3531a": {
 "found": null,
@@ -424,8 +554,9 @@
 },
 "5ac15cb99dca": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "List of German films of the 1980s"
+"at": 1795138485.098211,
+"page": "List of German films of the 1980s",
+"genres": []
 },
 "74745f6a5516": {
 "found": {
@@ -433,8 +564,11 @@
 "year": 2026,
 "prize": null
 },
-"at": 1795137625.3605447,
-"page": "Death Has No Master"
+"at": 1795138485.098211,
+"page": "Death Has No Master",
+"genres": [
+"thriller"
+]
 },
 "dc2f546d72a2": {
 "found": null,
@@ -448,12 +582,109 @@
 },
 "d1923cdb128f": {
 "found": null,
-"at": 1795137625.3605447,
-"page": "List of horror films of 2023"
+"at": 1795138485.098211,
+"page": "List of horror films of 2023",
+"genres": []
 },
 "94b4a15c1915": {
 "found": null,
 "at": 1795137625.3605447,
 "page": null
+},
+"724a660e4a4e": {
+"found": null,
+"at": 1795138485.098211,
+"page": "A Fistful of Dollars",
+"genres": [
+"western"
+]
+},
+"bcf8cda5b5ad": {
+"found": null,
+"at": 1795138485.098211,
+"page": null,
+"genres": []
+},
+"7c93c7311488": {
+"found": {
+"fest": "Venise",
+"year": 2026,
+"prize": null
+},
+"at": 1795138485.098211,
+"page": "Primetime (film)",
+"genres": [
+"crime",
+"thriller"
+]
+},
+"f0bc897643ed": {
+"found": {
+"fest": "Sundance",
+"year": 2026,
+"prize": null
+},
+"at": 1795138485.098211,
+"page": "The Invite",
+"genres": [
+"comedy"
+]
+},
+"dbc3fc77bd3c": {
+"found": {
+"fest": "Cannes",
+"year": 2026,
+"prize": null
+},
+"at": 1795138485.098211,
+"page": "The Beloved (2026 film)",
+"genres": [
+"drama"
+]
+},
+"30ba78f887fa": {
+"found": null,
+"at": 1795138485.098211,
+"page": "A Talent for Murder (2026 film)",
+"genres": [
+"thriller"
+]
+},
+"c21ac009fa16": {
+"found": {
+"fest": "Cannes",
+"year": 2006,
+"prize": null
+},
+"at": 1795138485.098211,
+"page": "Marie Antoinette (2006 film)",
+"genres": [
+"history",
+"drama"
+]
+},
+"5427bb0a24ce": {
+"found": {
+"fest": "Berlinale",
+"year": 2008,
+"prize": "Ours d'argent"
+},
+"at": 1795138485.098211,
+"page": "Happy-Go-Lucky (2008 film)",
+"genres": [
+"comedy"
+]
+},
+"3401b604b2ff": {
+"found": null,
+"at": 1795138485.098211,
+"page": null,
+"genres": []
+},
+"541417e57585": {
+"found": null,
+"at": 1795138485.098211,
+"page": null,
+"genres": []
 }
 }
