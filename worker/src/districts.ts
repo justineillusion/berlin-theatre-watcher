@@ -29,6 +29,12 @@ export const DISTRICT: Record<string, string> = {
   "cinema-b-ware-ladenkino": "Friedrichshain",                 // Gärtnerstraße 19
   "cinema-babylon": "Mitte",                                   // Rosa-Luxemburg-Straße 30
   "cinema-kino-international": "Mitte",                        // Karl-Marx-Allee 33
+  "cinema-delphi-lux": "Charlottenburg",                       // Kantstraße 10
+  "cinema-faf": "Prenzlauer Berg",                             // Bötzowstraße 1-5
+  "cinema-passage": "Neukölln",                                // Karl-Marx-Straße 131
+  "cinema-odeon": "Schöneberg",                                // Hauptstraße 116
+  "cinema-rollberg": "Neukölln",                               // Rollbergstraße 70
+  "cinema-wolf": "Neukölln",                                   // Weserstraße 59
   "staatsoper-unter-den-linden": "Mitte",
   "deutsche-oper-berlin": "Charlottenburg",
   "komische-oper-berlin": "Charlottenburg",
