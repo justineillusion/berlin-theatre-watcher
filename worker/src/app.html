@@ -520,6 +520,14 @@ html{background:var(--bg)}
 .btn:disabled{opacity:.35}
 /* Mes sorties */
 .pcard{margin:12px 16px;border:1.5px solid var(--ink);padding:14px 16px}
+.bkt.pinv{background:var(--bg)}.bkt.pinv.todo{background:var(--gold-soft);box-shadow:3px 3px 0 var(--ink)}
+.pinv .phead .pt{margin-top:8px}.pinv .pq{margin-left:0}
+.pft{display:flex;align-items:center;gap:8px;margin-top:10px}.pdet{border:0;background:none;padding:6px 0;font:700 13.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px}.pft .btn{margin-left:auto}
+.btn.busy{opacity:.6}
+.bkt.wsh{background:var(--gold-soft)}.wst{font-style:normal;color:var(--gold);margin-left:auto;font-size:18px;line-height:1}.tkd b.wst{font-size:26px;margin:0}
+.bkt.pinv.todo{background:var(--card)}
+.pinv .pyes.one{flex-wrap:nowrap}.pinv .pyes.one .btn.k{flex:1 1 0;min-width:0}.pinv .pyes .btn:last-child:not(.k){flex:0 0 76px}.pinv .pyes:not(.one) .btn.k{flex:1 0 100%}
+.day.dtog{display:flex;align-items:baseline;gap:6px;width:100%;border-left:0;border-right:0;background:none;text-align:left;cursor:pointer;color:inherit}.day.dtog .pchev{margin-left:auto;font-size:14px}
 .pcard.todo{box-shadow:3px 3px 0 var(--ink)}
 .phead{display:block;width:100%;border:0;background:none;padding:0;text-align:left;color:var(--ink)}
 .porg{display:flex;align-items:center;gap:10px;font:500 14px var(--sans)}.porg b{font-weight:800}
@@ -565,7 +573,7 @@ html{background:var(--bg)}
 .rr{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
 .rrq{grid-column:1/-1;display:flex;align-items:center;gap:6px;margin-top:4px}.rrq span{font:600 13px var(--sans);color:var(--muted);margin-right:auto}
 .rb{width:40px;height:40px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);font:800 14px var(--sans);border-radius:0}
-.wr{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.wr{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}.wrx{flex:1 0 100%;margin-top:4px}
 .wrm{flex:1;min-width:0;border:0;background:none;padding:0;text-align:left;color:var(--ink)}
 .wrm b{display:block;font:800 15.5px/1.25 var(--sans)}.wrm span{display:block;font:500 13px var(--sans);color:var(--muted);margin-top:2px}.wrm span.red{color:var(--velvet)}
 .stack{display:inline-flex}.stack .face+.face,.stack .av+.av{margin-left:-6px}
@@ -693,7 +701,7 @@ const L = {
   fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pushT:"Notifications sur ce téléphone", pushOn:"Activées ✓", pushOff:"Désactivées", pushIos:"Sur iPhone : ajoute d'abord l'app à l'écran d'accueil (Partager → « Sur l'écran d'accueil »), puis ouvre-la de là.", pushYes:"Activer", pushNo:"Désactiver", pushTest:"M'envoyer un test", pushDenied:"Notifications bloquées : réautorise-les dans les réglages du téléphone.", pushSent:"Test envoyé ✓", pushOfferT:"Être prévenu·e sur ton téléphone ?", pushOfferP:"Quand un ami t'envoie une sortie ou réserve pour toi.", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkUseEmail:"Utiliser mon email plutôt", pkBack:"← Revenir à Face ID", pkManage:"Gérer", secT:"Notifications et connexion", pkWelcome:"Content de te revoir.", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas activé", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Tout Berlin est coché : théâtres, cinés, expos. Tu peux ne garder que tes lieux.", onbGo:"Choisir mes lieux", onbP2:"🙋 sur ce qui te tente : tes amis le verront.", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
         ibAll:(n) => `Voir tout · ${n} lu${n > 1 ? "s" : ""}`, ibLess:"Masquer les messages lus", sPh:"Pièce, film, lieu, artiste…", sNone:(q) => `Rien pour « ${q} ».`, sVenues:"Lieux", sItems:"À l'affiche", sFollow:(v) => `＋ Suivre ${v}`, week:"7 jours", thisWe:"Ce week-end", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
         star:"Ça me tente", starA:"Ça me tente", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Annuler la réservation", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
-        booked:"Réservé", wish:"Envies", done:"Vus", tonightH:"Ce soir", later:"Plus tard", toRate:"Ton avis ?", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ☆ ce qui te tente.", vfBtn:"Lieux", calT:"Calendrier", calWish:"Une envie joue", calProp:"Proposé", propsT:"Propositions", waitingN:(n) => `${n} en attente`, setT:"C’est calé", pComing:(n) => `${n} vien${/ et |, /.test(n) ? "nent" : "t"}`, yesAt:(d) => `Oui · ${d}`, yesN:(n) => `Oui pour ${n} date${n > 1 ? "s" : ""}`, pickDates:"Choisis tes dates", no:"Non", youCome:"Tu viens", details:"Détails", inDays:(n) => `Dans ${n} jours`, inWeeks:(n) => `Dans ${n} semaine${n > 1 ? "s" : ""}`, alone:"Tu y vas seule", invite:"Inviter", alsoW:(n) => `${n} aussi`, lastOn:(d) => `Dernière date : ${d}`, proposeTo:(n) => `Proposer à ${n}`, proposeB:"Proposer", addAgenda:"+ Agenda", refusedT:"Propositions refusées", missedT:"Manqués", missedP:"C’était dispo quand tu l’as ajouté.", refusedToast:"Proposition refusée", organises:"organise", tixL:"Billets", showPage:"Page du spectacle", changeDate:"Changer de date", cancelBookSure:"Sûr·e ? Toucher pour retirer", closeW:"Fermer", newW:"Nouveau", earlierW:"Plus tôt", noNews:"Rien de neuf. Les réponses de tes amis arriveront ici.", profileT:"Profil", prefsT:"Préférences", helpT:"Aide", notifL:"Notifications", notifOnSub:"Sur ce téléphone", notifOffSub:"Désactivées sur ce téléphone", pushIosShort:"Ajoute d’abord l’app à l’écran d’accueil", faceL:"Face ID", faceOffSub:"Connexion sans code email", youOrgFull:"Tu organises", howWas:"C’était comment ?", suggestsW:"te suggère", tempts:"Ça me tente", hideW:"Masquer", addPeople:"+ Amis", theyCome:"Ils viennent", proposeThem:"Leur proposer", whoComes:"Qui vient avec toi ?", withWhoT:"Avec qui ?", addThem:(n) => n ? `Ajouter ${n} personne${n > 1 ? "s" : ""}` : "Choisis qui vient", cancelW:"Annuler", noFriendsYet:"Ajoute d’abord des amis dans Réglages → Amis.", youOrganise:"organises", setDate:"Caler", seeShow:"Voir le spectacle", changeAns:"Changer ma réponse", cancelProp:"Annuler la proposition", cancelSure:"Sûr·e ? Toucher pour annuler pour tous", whoWhen:"Qui vient quand", undoBtn:"Annuler", undoStar:"Ajouté aux envies", undoUnstar:"Retiré des envies", undoHide:"Masqué", undoSeen:"Marqué comme vu", undoRate:"Note enregistrée", undoBook:"Marqué comme réservé", undoUnbook:"Réservation retirée", undoVenue:"Lieux mis à jour", vfApply:"Appliquer", vfApplyN:(n) => `Voir ${n} lieu${n > 1 ? "x" : ""}`, vfClear:"Effacer", ffBtn:"Amis", rulesT:"Ce que l’app te montre", ffNone:(w) => `Rien du côté de tes amis${w ? " " + w : ""}`, vfMine:"Mes lieux", vfOther:"Autres lieux", vfFollow:"Suivre", seeAll:"Voir tout", vfNone:(v, w) => `Rien pour ${v}${w ? " " + w : ""}`, whenW:{ tn:"ce soir", tm:"demain", we:"ce week-end", week:"ces 7 jours", all:"" }, proposeOn:(d) => `Proposer le ${d}`, tixD:"Billets", dsec:{ dates:"Dates", infos:"Infos", syn:"Résumé", friends:"Entre amis", acts:"Actions" }, mapL:"Plan", routeL:"Itinéraire", hideL:"Masquer", readMore:"Lire plus", iLang:"Langue", iWith:"Avec", iBy:"De", iDur:"Durée", iPrice:"Prix", iRev:"Avis", intN:(n) => n > 1 ? "intéressé·es" : "intéressé·e", bookedOn:(n, d) => `${n > 1 ? "ont" : "a"} réservé le ${d}`, inProp:(n) => `${n} dans la boucle`, joinProp:"Je viens", seeProp:"Voir", starBtn:"Intéressé·e", iBooked:"J'ai réservé", proposeF:"Proposer à des amis", calBtn:"Calendrier", pageL:{ theatre:"Page de la pièce", music:"Page du concert", film:"Page du film", expo:"Page de l'expo" }, wTn:"Ce soir", wTm:"Demain", wWe:"Ce week-end", wWk:"7 jours", wAll:"Tout", nShows:(n) => `${n} séance${n > 1 ? "s" : ""}`, kindL:{ theatre:"Théâtre", film:"Ciné", music:"Musique", expo:"Expo" }, untilT:(d) => `jusqu'au ${d}`, soldT:"Complet", bookedT:"Réservé", surEN:"Surtitres EN", subEN:"Sous-titres EN", noWords:"Sans paroles", venueProg:(v) => `Tout le programme · ${v}`, vWords:{ OmeU:"VO, sous-titres anglais", OmU:"Anglais (sous-titres allemands)", OV:"Version originale", VO:"Version originale", muet:"Muet" }, ov:"VO", silent:"Muet", inEN:"En anglais", themeL:"Thème", themes:{ auto:"Auto", light:"Clair", dark:"Sombre" },
+        booked:"Réservé", wish:"Envies", done:"Vus", tonightH:"Ce soir", later:"Plus tard", toRate:"Ton avis ?", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ☆ ce qui te tente.", vfBtn:"Lieux", calT:"Calendrier", calWish:"Une envie joue", calProp:"Proposé", propsT:"Propositions", waitingN:(n) => `${n} en attente`, setT:"C’est calé", pComing:(n) => `${n} vien${/ et |, /.test(n) ? "nent" : "t"}`, yesAt:(d) => `Oui · ${d}`, yesN:(n) => `Oui pour ${n} date${n > 1 ? "s" : ""}`, pickDates:"Choisis tes dates", no:"Non", youCome:"Tu viens", details:"Détails", inDays:(n) => `Dans ${n} jours`, inWeeks:(n) => `Dans ${n} semaine${n > 1 ? "s" : ""}`, alone:"Tu y vas seule", invite:"Inviter", alsoW:(n) => `${n} aussi`, lastOn:(d) => `Dernière date : ${d}`, proposeTo:(n) => `Proposer à ${n}`, proposeB:"Proposer", addAgenda:"+ Agenda", refusedT:"Propositions refusées", missedT:"Manqués", missedP:"C’était dispo quand tu l’as ajouté.", refusedToast:"Proposition refusée", organises:"organise", tixL:"Billets", showPage:"Page du spectacle", changeDate:"Changer de date", cancelBookSure:"Sûr·e ? Toucher pour retirer", closeW:"Fermer", newW:"Nouveau", earlierW:"Plus tôt", noNews:"Rien de neuf. Les réponses de tes amis arriveront ici.", profileT:"Profil", prefsT:"Préférences", helpT:"Aide", notifL:"Notifications", notifOnSub:"Sur ce téléphone", notifOffSub:"Désactivées sur ce téléphone", pushIosShort:"Ajoute d’abord l’app à l’écran d’accueil", faceL:"Face ID", faceOffSub:"Connexion sans code email", youOrgFull:"Tu organises", howWas:"C’était comment ?", suggestsW:"te suggère", tempts:"Ça me tente", hideW:"Masquer", addPeople:"+ Amis", theyCome:"Ils viennent", proposeThem:"Leur proposer", whoComes:"Qui vient avec toi ?", withWhoT:"Avec qui ?", addThem:(n) => n ? `Ajouter ${n} personne${n > 1 ? "s" : ""}` : "Choisis qui vient", cancelW:"Annuler", noFriendsYet:"Ajoute d’abord des amis dans Réglages → Amis.", youOrganise:"organises", setDate:"Confirmer", seeShow:"Voir le spectacle", changeAns:"Changer ma réponse", cancelProp:"Annuler la proposition", cancelSure:"Sûr·e ? Toucher pour annuler pour tous", whoWhen:"Qui vient quand", undoBtn:"Annuler", undoStar:"Ajouté aux envies", undoUnstar:"Retiré des envies", undoHide:"Masqué", undoSeen:"Marqué comme vu", undoRate:"Note enregistrée", undoBook:"Marqué comme réservé", undoUnbook:"Réservation retirée", undoVenue:"Lieux mis à jour", vfApply:"Appliquer", vfApplyN:(n) => `Voir ${n} lieu${n > 1 ? "x" : ""}`, vfClear:"Effacer", ffBtn:"Amis", rulesT:"Ce que l’app te montre", ffNone:(w) => `Rien du côté de tes amis${w ? " " + w : ""}`, vfMine:"Mes lieux", vfOther:"Autres lieux", vfFollow:"Suivre", seeAll:"Voir tout", vfNone:(v, w) => `Rien pour ${v}${w ? " " + w : ""}`, whenW:{ tn:"ce soir", tm:"demain", we:"ce week-end", week:"ces 7 jours", all:"" }, proposeOn:(d) => `Proposer le ${d}`, tixD:"Billets", dsec:{ dates:"Dates", infos:"Infos", syn:"Résumé", friends:"Entre amis", acts:"Actions" }, mapL:"Plan", routeL:"Itinéraire", hideL:"Masquer", readMore:"Lire plus", iLang:"Langue", iWith:"Avec", iBy:"De", iDur:"Durée", iPrice:"Prix", iRev:"Avis", intN:(n) => n > 1 ? "intéressé·es" : "intéressé·e", bookedOn:(n, d) => `${n > 1 ? "ont" : "a"} réservé le ${d}`, inProp:(n) => `${n} dans la boucle`, joinProp:"Je viens", seeProp:"Voir", starBtn:"Intéressé·e", iBooked:"J'ai réservé", proposeF:"Proposer à des amis", calBtn:"Calendrier", pageL:{ theatre:"Page de la pièce", music:"Page du concert", film:"Page du film", expo:"Page de l'expo" }, wTn:"Ce soir", wTm:"Demain", wWe:"Ce week-end", wWk:"7 jours", wAll:"Tout", nShows:(n) => `${n} séance${n > 1 ? "s" : ""}`, kindL:{ theatre:"Théâtre", film:"Ciné", music:"Musique", expo:"Expo" }, untilT:(d) => `jusqu'au ${d}`, soldT:"Complet", bookedT:"Réservé", surEN:"Surtitres EN", subEN:"Sous-titres EN", noWords:"Sans paroles", venueProg:(v) => `Tout le programme · ${v}`, vWords:{ OmeU:"VO, sous-titres anglais", OmU:"Anglais (sous-titres allemands)", OV:"Version originale", VO:"Version originale", muet:"Muet" }, ov:"VO", silent:"Muet", inEN:"En anglais", themeL:"Thème", themes:{ auto:"Auto", light:"Clair", dark:"Sombre" },
         venues:"Mes lieux", followed:"suivi", notFollowed:"—", setHint:"Pour changer : /reglages dans le chat.",
         outside:"Ouvre cette page depuis le bot Telegram.", notMember:"Commence par écrire au bot : ", error:"Impossible de charger. Réessaie.",
         myReview:"Ma critique", shared:"Depuis le groupe", send:"💌 Envoyer à…", notePh:"Un mot ? (facultatif)", weekend:"Ce week-end ?", tonight:"Ce soir ?", sendGo:"Envoyer", sentTo:"Envoyé à", forWho:"Pour qui ?", me:"Moi", withF:"avec", tapToggle:"Touche un lieu pour le suivre ou ne plus le suivre.", language:"Langue", friendsT:"Mes amis", requestsT:"Demandes reçues", suggestT:"Suggestions", via:"via", add:"Ajouter", accept:"✓ Accepter", ignoreR:"✖ Ignorer", pendingR:"demande envoyée", cancelR:"Annuler", removeF:"Retirer", sure:"Sûr·e ?", noFriends:"Pas encore d'amis ici.", inviteT:"Inviter quelqu'un", inviteHint:"Qui s'inscrit avec ton lien est connecté·e à toi. Tes amis ne voient tes envies que si vous êtes connectés.", shareLink:"Partager mon lien", copied:"Lien copié", requestSent:"Demande envoyée", circleNote:"Tu ne vois que les envies de tes amis.", unfollowed:"pas suivi", writeReview:"✍️ Écrire ma critique", editReview:"✍️ Modifier", noReview:"✍️ Pas encore de critique",
@@ -717,7 +725,7 @@ const L = {
   en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pushT:"Notifications on this phone", pushOn:"On ✓", pushOff:"Off", pushIos:"On iPhone: first add the app to your home screen (Share → “Add to Home Screen”), then open it from there.", pushYes:"Turn on", pushNo:"Turn off", pushTest:"Send me a test", pushDenied:"Notifications are blocked: allow them again in your phone settings.", pushSent:"Test sent ✓", pushOfferT:"Get notified on your phone?", pushOfferP:"When a friend sends you an outing or books for you.", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkUseEmail:"Use my email instead", pkBack:"← Back to Face ID", pkManage:"Manage", secT:"Notifications & sign-in", pkWelcome:"Good to see you again.", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Off", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"All of Berlin is on: theatres, cinemas, galleries. You can keep just your venues.", onbGo:"Pick my venues", onbP2:"🙋 what tempts you: your friends will see it.", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
         week:"7 days", thisWe:"This weekend", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"I'm interested", starA:"Interested", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Cancel booking", addCal:"📅 Add to", calOther:"iPhone / Outlook",
-        booked:"Booked", wish:"Wishlist", done:"Seen", tonightH:"Tonight", later:"Later", toRate:"Your verdict?", empty:"Nothing in this window.", emptyMine:"Nothing yet: ☆ what tempts you.", vfBtn:"Venues", calT:"Calendar", calWish:"A wish is on", calProp:"Proposed", propsT:"Proposals", waitingN:(n) => `${n} waiting`, setT:"It’s on", pComing:(n) => `${n} ${/ and |, /.test(n) ? "are" : "is"} coming`, yesAt:(d) => `Yes · ${d}`, yesN:(n) => `Yes for ${n} date${n > 1 ? "s" : ""}`, pickDates:"Pick your dates", no:"No", youCome:"You’re in", details:"Details", inDays:(n) => `In ${n} days`, inWeeks:(n) => `In ${n} week${n > 1 ? "s" : ""}`, alone:"Going solo", invite:"Invite", alsoW:(n) => `${n} too`, lastOn:(d) => `Last date: ${d}`, proposeTo:(n) => `Suggest to ${n}`, proposeB:"Suggest", addAgenda:"+ Calendar", refusedT:"Declined proposals", missedT:"Missed", missedP:"It was available when you added it.", refusedToast:"Proposal declined", organises:"is organising", tixL:"Tickets", showPage:"Show page", changeDate:"Change date", cancelBookSure:"Sure? Tap to remove", closeW:"Close", newW:"New", earlierW:"Earlier", noNews:"Nothing new. Your friends’ replies will show up here.", profileT:"Profile", prefsT:"Preferences", helpT:"Help", notifL:"Notifications", notifOnSub:"On this phone", notifOffSub:"Off on this phone", pushIosShort:"Add the app to your home screen first", faceL:"Face ID", faceOffSub:"Sign in without an email code", youOrgFull:"You’re organising", howWas:"How was it?", suggestsW:"suggests", tempts:"I’m in", hideW:"Hide", addPeople:"+ Friends", theyCome:"They’re coming", proposeThem:"Suggest to them", whoComes:"Who’s coming with you?", withWhoT:"With whom?", addThem:(n) => n ? `Add ${n} ${n > 1 ? "people" : "person"}` : "Pick who’s coming", cancelW:"Cancel", noFriendsYet:"Add friends first in Settings → Friends.", youOrganise:"are organising", setDate:"Set", seeShow:"See the show", changeAns:"Change my answer", cancelProp:"Cancel the proposal", cancelSure:"Sure? Tap to cancel for everyone", whoWhen:"Who can come when", undoBtn:"Undo", undoStar:"Added to wishlist", undoUnstar:"Removed from wishlist", undoHide:"Hidden", undoSeen:"Marked as seen", undoRate:"Rating saved", undoBook:"Marked as booked", undoUnbook:"Booking removed", undoVenue:"Venues updated", vfApply:"Apply", vfApplyN:(n) => `Show ${n} venue${n > 1 ? "s" : ""}`, vfClear:"Clear", ffBtn:"Friends", rulesT:"What the app shows you", ffNone:(w) => `Nothing from your friends${w ? " " + w : ""}`, vfMine:"My venues", vfOther:"Other venues", vfFollow:"Follow", seeAll:"See all", vfNone:(v, w) => `Nothing at ${v}${w ? " " + w : ""}`, whenW:{ tn:"tonight", tm:"tomorrow", we:"this weekend", week:"in the next 7 days", all:"" }, proposeOn:(d) => `Propose ${d}`, tixD:"Tickets", dsec:{ dates:"Dates", infos:"Info", syn:"Synopsis", friends:"Friends", acts:"Actions" }, mapL:"Map", routeL:"Directions", hideL:"Hide", readMore:"Read more", iLang:"Language", iWith:"With", iBy:"By", iDur:"Length", iPrice:"Price", iRev:"Reviews", intN:() => "interested", bookedOn:(n, d) => `booked for ${d}`, inProp:(n) => `${n} in the loop`, joinProp:"I'm in", seeProp:"Open", starBtn:"Interested", iBooked:"I booked", proposeF:"Suggest to friends", calBtn:"Calendar", pageL:{ theatre:"Play page", music:"Concert page", film:"Film page", expo:"Exhibit page" }, wTn:"Tonight", wTm:"Tomorrow", wWe:"Weekend", wWk:"7 days", wAll:"All", nShows:(n) => `${n} show${n > 1 ? "s" : ""}`, kindL:{ theatre:"Theatre", film:"Film", music:"Music", expo:"Exhibit" }, untilT:(d) => `until ${d}`, soldT:"Sold out", bookedT:"Booked", surEN:"EN surtitles", subEN:"EN subtitles", noWords:"No words", venueProg:(v) => `All of ${v}`, vWords:{ OmeU:"Original, English subtitles", OmU:"English (German subtitles)", OV:"Original version", VO:"Original version", muet:"Silent" }, ov:"Original version", silent:"Silent", inEN:"In English", themeL:"Theme", themes:{ auto:"Auto", light:"Light", dark:"Dark" },
+        booked:"Booked", wish:"Wishlist", done:"Seen", tonightH:"Tonight", later:"Later", toRate:"Your verdict?", empty:"Nothing in this window.", emptyMine:"Nothing yet: ☆ what tempts you.", vfBtn:"Venues", calT:"Calendar", calWish:"A wish is on", calProp:"Proposed", propsT:"Proposals", waitingN:(n) => `${n} waiting`, setT:"It’s on", pComing:(n) => `${n} ${/ and |, /.test(n) ? "are" : "is"} coming`, yesAt:(d) => `Yes · ${d}`, yesN:(n) => `Yes for ${n} date${n > 1 ? "s" : ""}`, pickDates:"Pick your dates", no:"No", youCome:"You’re in", details:"Details", inDays:(n) => `In ${n} days`, inWeeks:(n) => `In ${n} week${n > 1 ? "s" : ""}`, alone:"Going solo", invite:"Invite", alsoW:(n) => `${n} too`, lastOn:(d) => `Last date: ${d}`, proposeTo:(n) => `Suggest to ${n}`, proposeB:"Suggest", addAgenda:"+ Calendar", refusedT:"Declined proposals", missedT:"Missed", missedP:"It was available when you added it.", refusedToast:"Proposal declined", organises:"is organising", tixL:"Tickets", showPage:"Show page", changeDate:"Change date", cancelBookSure:"Sure? Tap to remove", closeW:"Close", newW:"New", earlierW:"Earlier", noNews:"Nothing new. Your friends’ replies will show up here.", profileT:"Profile", prefsT:"Preferences", helpT:"Help", notifL:"Notifications", notifOnSub:"On this phone", notifOffSub:"Off on this phone", pushIosShort:"Add the app to your home screen first", faceL:"Face ID", faceOffSub:"Sign in without an email code", youOrgFull:"You’re organising", howWas:"How was it?", suggestsW:"suggests", tempts:"I’m in", hideW:"Hide", addPeople:"+ Friends", theyCome:"They’re coming", proposeThem:"Suggest to them", whoComes:"Who’s coming with you?", withWhoT:"With whom?", addThem:(n) => n ? `Add ${n} ${n > 1 ? "people" : "person"}` : "Pick who’s coming", cancelW:"Cancel", noFriendsYet:"Add friends first in Settings → Friends.", youOrganise:"are organising", setDate:"Confirm", seeShow:"See the show", changeAns:"Change my answer", cancelProp:"Cancel the proposal", cancelSure:"Sure? Tap to cancel for everyone", whoWhen:"Who can come when", undoBtn:"Undo", undoStar:"Added to wishlist", undoUnstar:"Removed from wishlist", undoHide:"Hidden", undoSeen:"Marked as seen", undoRate:"Rating saved", undoBook:"Marked as booked", undoUnbook:"Booking removed", undoVenue:"Venues updated", vfApply:"Apply", vfApplyN:(n) => `Show ${n} venue${n > 1 ? "s" : ""}`, vfClear:"Clear", ffBtn:"Friends", rulesT:"What the app shows you", ffNone:(w) => `Nothing from your friends${w ? " " + w : ""}`, vfMine:"My venues", vfOther:"Other venues", vfFollow:"Follow", seeAll:"See all", vfNone:(v, w) => `Nothing at ${v}${w ? " " + w : ""}`, whenW:{ tn:"tonight", tm:"tomorrow", we:"this weekend", week:"in the next 7 days", all:"" }, proposeOn:(d) => `Propose ${d}`, tixD:"Tickets", dsec:{ dates:"Dates", infos:"Info", syn:"Synopsis", friends:"Friends", acts:"Actions" }, mapL:"Map", routeL:"Directions", hideL:"Hide", readMore:"Read more", iLang:"Language", iWith:"With", iBy:"By", iDur:"Length", iPrice:"Price", iRev:"Reviews", intN:() => "interested", bookedOn:(n, d) => `booked for ${d}`, inProp:(n) => `${n} in the loop`, joinProp:"I'm in", seeProp:"Open", starBtn:"Interested", iBooked:"I booked", proposeF:"Suggest to friends", calBtn:"Calendar", pageL:{ theatre:"Play page", music:"Concert page", film:"Film page", expo:"Exhibit page" }, wTn:"Tonight", wTm:"Tomorrow", wWe:"Weekend", wWk:"7 days", wAll:"All", nShows:(n) => `${n} show${n > 1 ? "s" : ""}`, kindL:{ theatre:"Theatre", film:"Film", music:"Music", expo:"Exhibit" }, untilT:(d) => `until ${d}`, soldT:"Sold out", bookedT:"Booked", surEN:"EN surtitles", subEN:"EN subtitles", noWords:"No words", venueProg:(v) => `All of ${v}`, vWords:{ OmeU:"Original, English subtitles", OmU:"English (German subtitles)", OV:"Original version", VO:"Original version", muet:"Silent" }, ov:"Original version", silent:"Silent", inEN:"In English", themeL:"Theme", themes:{ auto:"Auto", light:"Light", dark:"Dark" },
         venues:"My venues", followed:"followed", notFollowed:"—", setHint:"To change: /settings in the chat.",
         outside:"Open this page from the Telegram bot.", notMember:"Message the bot first: ", error:"Couldn't load. Try again.",
         myReview:"My review", shared:"From the group", send:"💌 Send to…", notePh:"Add a note? (optional)", weekend:"This weekend?", tonight:"Tonight?", sendGo:"Send", sentTo:"Sent to", forWho:"For whom?", me:"Me", withF:"with", tapToggle:"Tap a venue to follow or unfollow it.", language:"Language", friendsT:"My friends", requestsT:"Requests", suggestT:"Suggestions", via:"via", add:"Add", accept:"✓ Accept", ignoreR:"✖ Ignore", pendingR:"request sent", cancelR:"Cancel", removeF:"Remove", sure:"Sure?", noFriends:"No friends here yet.", inviteT:"Invite someone", inviteHint:"Whoever joins with your link is connected to you. Friends only see your picks once you're connected.", shareLink:"Share my link", copied:"Link copied", requestSent:"Request sent", circleNote:"You only see your friends' picks.", unfollowed:"not followed", writeReview:"✍️ Write my review", editReview:"✍️ Edit", noReview:"✍️ No review yet",
@@ -743,7 +751,7 @@ const L = {
 // 🗳 Propositions + groupes (ajoutés à part pour garder les lignes ci-dessus lisibles).
 Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", withWho:"Avec qui ?", whenQ:"Quand ? · optionnel, 1 à 3 créneaux", whenHint:"Avec des créneaux, chacun répond et tu cales la date. Sans, c'est un simple « ça te dit ? ».", proposeTo:(n) => `Proposer à ${n}`, otherDate:"Autre date", addDate:"Ajouter",
   noteQ:"Un mot ? · optionnel", propNotePh:"Ça vous tente ?", sendTo:(n) => `Envoyer à ${n}`, linkOnly:"Ou juste un lien à partager (WhatsApp…)", interestedHint:"★ Pré-cochés : intéressés.",
-  propHead:"Proposition", proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
+  propHead:"Proposition", yesIn:"Oui, je viens", endsW:"fin", unstarL:"Retirer des envies", invitesW:"t’invite", nDatesS:"dates", inviteMore:"+ Inviter", noWhy:(n) => `Un mot pour ${n} ?`, noDates:"Pas dispo ces dates", noPiece:"Ça ne me tente pas", justNo:"Juste non", sendingW:"Envoi…", sentOk:(n) => `Envoyé à ${n} ✓`, proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
   answerSend:"Envoyer ma réponse", answerUpdate:"Mettre à jour", answerHint:"Tout le monde voit les réponses. Tu peux changer d'avis tant que ce n'est pas calé.", yourName:"Ton prénom",
   setBtn:(w) => `C'est calé · ${w}`, setOther:(w) => `ou caler ${w}`, allYes:"marche pour tout le monde", cancelProp:"Annuler la proposition", shareWa:"WhatsApp", copyLink:"Copier le lien",
   saveGroupT:"Enregistrer comme groupe ?", saveGroupP:"La prochaine fois, un appui suffit pour les inviter ensemble.", groupName:"Nom du groupe", onlyYou:"Visible seulement par toi", noThanks:"Non merci",
@@ -754,7 +762,7 @@ Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", wit
   waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
 Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWho:"With whom?", whenQ:"When? · optional, 1 to 3 options", whenHint:"With options, everyone answers and you set the date. Without, it's a simple “fancy it?”.", proposeTo:(n) => `Suggest to ${n}`, otherDate:"Other date", addDate:"Add",
   noteQ:"A word? · optional", propNotePh:"Fancy it?", sendTo:(n) => `Send to ${n}`, linkOnly:"Or just a link to share (WhatsApp…)", interestedHint:"★ Pre-selected: interested.",
-  propHead:"Suggestion", proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
+  propHead:"Suggestion", yesIn:"Yes, I’m in", endsW:"ends", unstarL:"Remove from wishlist", invitesW:"invites you", nDatesS:"dates", inviteMore:"+ Invite", noWhy:(n) => `A word for ${n}?`, noDates:"Not free on these dates", noPiece:"Not my thing", justNo:"Just no", sendingW:"Sending…", sentOk:(n) => `Sent to ${n} ✓`, proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
   answerSend:"Send my answer", answerUpdate:"Update", answerHint:"Everyone sees the answers. You can change your mind until it's set.", yourName:"Your first name",
   setBtn:(w) => `It's on · ${w}`, setOther:(w) => `or set ${w}`, allYes:"works for everyone", cancelProp:"Cancel the suggestion", shareWa:"WhatsApp", copyLink:"Copy link",
   saveGroupT:"Save as a group?", saveGroupP:"Next time, one tap invites them together.", groupName:"Group name", onlyYou:"Only you can see it", noThanks:"No thanks",
@@ -1127,6 +1135,7 @@ async function act(op, id, arg, extra = {}) {
   if (st.tab === "set" && st.friend?.items) { try { st.friend = await api("friendview", { id: st.friend.id }); } catch {} }
   st.busy = false; st.picking = null; st.sharing = null; st.tkAdd = null; st.sel.clear(); st.withs.clear(); render();
   if (undo) undoBar(undo);
+  if (op === "share" && S.sent?.length) notify(T.sentOk(joinNames(S.sent)));
   // ✍️ : la critique s'écrit dans le chat, en réponse à l'invitation que le bot vient d'envoyer.
   if (op === "w" && tgApp) tgApp.showAlert(T.reviewInChat, () => tgApp.close());
 }
@@ -1260,12 +1269,12 @@ function propCard(p) {
   let foot = "";
   if (todo && st.pReans !== p.id) {
     // Un toucher suffit : « Oui · date » par créneau, ou « Non ».
-    foot = `<div class="pyes">${p.slots.map((x) => `<button class="btn k" data-pqone="${p.id}|${esc(x)}">${esc(T.yesAt(slotText(x)))}</button>`).join("")}<button class="btn" data-pqno="${p.id}">${esc(T.no)}</button></div>`;
+    foot = st.pNo === p.id ? noWhy(p, host) : `<div class="pyes${p.slots.length === 1 ? " one" : ""}">${p.slots.map((x) => `<button class="btn k" data-pqone="${p.id}|${esc(x)}">${esc(p.slots.length === 1 ? T.yesIn : T.yesAt(slotText(x)))}</button>`).join("")}<button class="btn" data-pqno="${p.id}">${esc(T.no)}</button></div>`;
   } else if (st.pReans === p.id) {
     const pick = p.slots.filter((x) => st.pa[p.id + "|" + x]);
     const chips = p.slots.length > 1 ? `<div class="pslots">${p.slots.map((x) => `<button class="pchip" data-pqpick="${p.id}|${esc(x)}" aria-pressed="${!!st.pa[p.id + "|" + x]}">${esc(slotText(x))}</button>`).join("")}</div>` : "";
     const yes = p.slots.length === 1 ? T.yesAt(slotText(p.slots[0])) : pick.length ? T.yesN(pick.length) : T.pickDates;
-    foot = chips + `<div class="pyn"><button class="btn k" data-pqyes="${p.id}"${p.slots.length > 1 && !pick.length ? " disabled" : ""}>${esc(yes)}</button><button class="btn" data-pqno="${p.id}">${esc(T.no)}</button></div>`;
+    foot = st.pNo === p.id ? noWhy(p, host) : chips + `<div class="pyn"><button class="btn k" data-pqyes="${p.id}"${p.slots.length > 1 && !pick.length ? " disabled" : ""}>${esc(yes)}</button><button class="btn" data-pqno="${p.id}">${esc(T.no)}</button></div>`;
   } else if (!open) {
     const n = p.people.length, ans = p.people.filter((q) => q.answers).length, mineYes = a ? p.slots.filter((x) => a[x] === 1) : [];
     foot = `<div class="pst">${esc(p.mine ? T.answeredN(ans, n) : saidNo(p) ? T.refusedToast : `✓ ${T.youCome}${mineYes.length ? " · " + mineYes.map(slotText).join(T.orW) : ""}`)}</div>`;
@@ -1280,30 +1289,61 @@ function propCard(p) {
     if (p.mine) acts.push(`<button class="lnk red" data-pqcancel="${p.id}">${esc(st.pCancel === p.id ? T.cancelSure : T.cancelProp)}</button>`);
     more = `<div class="pmore"><div class="pmh">${esc(T.whoWhen)}</div>${rows}${notes}<div class="pacts">${acts.join("")}</div></div>`;
   }
-  return `<div class="pcard${todo ? " todo" : ""}${open ? " open" : ""}"><button class="phead" data-ptoggle="${p.id}">
-    <span class="porg">${face(host)}<span>${host.me ? esc(T.youOrgFull) : `<b>${esc(host.name)}</b> ${esc(T.organises)}`}</span><i class="pchev">${open ? "−" : "+"}</i></span>
-    ${p.note ? `<span class="pq">« ${esc(p.note)} »</span>` : ""}
+  const tog = ` data-ptoggle="${p.id}"`, canAdd = p.mine && p.status === "open";
+  let add = "";
+  if (canAdd && st.pAdd === p.id) {
+    const ppl = (S.people || []).filter((q) => !p.people.some((r) => r.id === q.id)), pick = ppl.filter((q) => st.withs.has(q.id));
+    add = `<div class="tkadd"><div class="pmh">${esc(T.withWhoT)}</div>${ppl.length ? `<div class="pslots">${ppl.map((q) => `<button class="pchip" data-with="${q.id}" aria-pressed="${st.withs.has(q.id)}">${esc(q.name)}</button>`).join("")}</div>
+      <div class="pyes"><button class="btn k" data-pqaddgo="${p.id}"${pick.length ? "" : " disabled"}>${esc(pick.length ? T.sendTo(joinNames(pick.map((q) => q.name))) : T.withWhoT)}</button></div>` : `<p class="hint">${esc(T.noFriendsYet)}</p>`}</div>`;
+  }
+  return `<div class="bkt pinv${todo ? " todo" : ""}${open ? " open" : ""}">${stub(p.slots, tog)}<div class="tkm"><button class="phead"${tog}>
+    <span class="porg">${face(host)}<span>${host.me ? esc(T.youOrgFull) : `<b>${esc(host.name)}</b> ${esc(T.invitesW)}`}</span></span>
     <span class="pt">${esc(it.title || "")}</span><span class="pv">${esc([it.venue, p.slots.length === 1 ? slotText(p.slots[0]) : ""].filter(Boolean).join(" · "))}</span></button>
-    ${group}${foot}${more}</div>`;
+    ${p.note ? `<span class="pq">« ${esc(p.note)} »</span>` : ""}
+    ${group}${foot}
+    <div class="pft"><button class="pdet"${tog} aria-expanded="${open}">${esc(T.details)} ${open ? "▴" : "▾"}</button>${canAdd ? `<button class="btn s" data-pqadd="${p.id}" aria-expanded="${st.pAdd === p.id}">${esc(T.inviteMore)}</button>` : ""}</div>
+    ${add}${more}</div></div>`;
 }
+/** « Non » : un mot pour l'organisateur, en un toucher (ou juste non). */
+function noWhy(p, host) {
+  const b = (k, l) => `<button class="btn s" data-pqnote="${p.id}|${k}">${esc(l)}</button>`;
+  return `<div class="tkadd"><div class="pmh">${esc(T.noWhy(host.me ? T.you : host.name))}</div><div class="pslots">${b("d", T.noDates)}${b("p", T.noPiece)}${b("n", T.justNo)}</div>
+    <div class="pacts"><button class="lnk" data-pqnoback="${p.id}">${esc(T.cancelW)}</button></div></div>`;
+}
+/** Suggestions reçues encore ouvertes : 7 jours max, une par spectacle, et plus du tout si le spectacle est déjà dans mes listes. */
+const liveShares = () => { const seen = new Set();
+  return (S && !S.guest ? S.inbox || [] : []).filter((n) => { if (n.kind !== "share" || !n.item_id || staleMsg(n) || seen.has(n.item_id)) return false;
+    if (Date.now() - Date.parse(String(n.created_at).replace(" ", "T") + "Z") > 7 * 864e5) return false;
+    const x = (S.items || []).find((i) => i.id === n.item_id); if (x && state(x)) return false;
+    seen.add(n.item_id); return true; }); };
+/** Talon de carte façon billet : la date (ou le nombre de dates). */
+const stub = (slots, attr) => { if (slots.length !== 1) return `<button class="tkd pstub"${attr}><b>${slots.length || "?"}</b><small>${esc(T.nDatesS.toUpperCase())}</small></button>`;
+  const d = dt(slots[0]); return `<button class="tkd pstub"${attr}><b>${d.getUTCDate()}</b><small>${esc(T.smons[d.getUTCMonth()].replace(".", "").toUpperCase())}</small><em>${esc(T.dows[d.getUTCDay()].slice(0, 3))}.</em></button>`; };
 /** « Lyna t'envoie X » : une suggestion sans date, dans Propositions ; ★ ou Non en un toucher. */
 function shareCard(n) {
-  const x = (S.items || []).find((i) => i.id === n.item_id), starred = x && x.me && (x.me.star || x.me.booked);
+  const x = (S.items || []).find((i) => i.id === n.item_id), open = st.shOpen === n.id;
   const from = { id: n.from_id, name: n.from_name || "?" };
-  const btns = starred
-    ? `<button class="btn k" data-propose="${esc(n.item_id)}">${esc(T.proposeTo(from.name))}</button><button class="btn" data-dismiss="${n.id}">${esc(T.hideW)}</button>`
-    : `<button class="btn k" data-shstar="${n.id}|${esc(n.item_id)}">★ ${esc(T.tempts)}</button><button class="btn" data-dismiss="${n.id}">${esc(T.no)}</button>`;
-  return `<div class="pcard todo"><div class="phead"><span class="porg"><span class="face">${avatar(S.photos && S.photos[from.id], from.name, "av", from.id)}</span><span><b>${esc(from.name)}</b> ${esc(T.suggestsW)}</span></span>
+  const tog = ` data-shopen="${n.id}"`;
+  let more = "";
+  if (open) {
+    const fx = x ? facts(x) : null, next = x ? (x.dates || []).filter((v) => v.slice(0, 10) >= TODAY).sort().slice(0, 4) : [];
+    more = `<div class="tkx">${fx && fx.syn ? `<p class="tks">${esc(fx.syn)}</p>` : ""}${next.length ? `<p class="tkl">${esc(next.map(slotText).join(" · "))}</p>` : ""}
+      <div class="pacts"><button class="lnk" data-pqitem="${esc(n.item_id)}">${esc(T.seeShow)}</button></div></div>`;
+  }
+  const d = x ? (x.dates || []).filter((v) => v.slice(0, 10) >= TODAY).sort() : [];
+  return `<div class="bkt pinv todo${open ? " open" : ""}">${d.length ? stub(d.length === 1 ? d : d.slice(0, 2), tog).replace(/<b>2<\/b>/, `<b>${d.length}</b>`) : `<button class="tkd pstub"${tog}><b>★</b></button>`}
+    <div class="tkm"><button class="phead"${tog}><span class="porg"><span class="face">${avatar(S.photos && S.photos[from.id], from.name, "av", from.id)}</span><span><b>${esc(from.name)}</b> ${esc(T.suggestsW)}</span></span>
+    <span class="pt">${esc(n.title || (x && x.title) || "")}</span><span class="pv">${esc(x ? venueLine(x) : "")}</span></button>
     ${n.note ? `<span class="pq">« ${esc(n.note)} »</span>` : ""}
-    <button class="pt lnkt" data-pqitem="${esc(n.item_id)}">${esc(n.title || (x && x.title) || "")}</button><span class="pv">${esc(x ? venueLine(x) : "")}</span></div>
-    <div class="pyes">${btns}</div></div>`;
+    <div class="pyes"><button class="btn k" data-shstar="${n.id}|${esc(n.item_id)}">★ ${esc(T.tempts)}</button><button class="btn" data-dismiss="${n.id}">${esc(T.no)}</button></div>
+    <div class="pft"><button class="pdet"${tog} aria-expanded="${open}">${esc(T.details)} ${open ? "▴" : "▾"}</button></div>${more}</div></div>`;
 }
 /** « Ton avis ? » : une ligne simple, la note en un toucher. */
 function rateRow(x) {
   if (st.open === x.id) return item(x);
   const at = (x.me.booked || x.me.at || "").slice(0, 16), f = (x.friends || []).filter((p) => p.booked || p.seen);
   const face = (p) => `<span class="face">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)}</span>`;
-  return `<div class="rr" data-item="${x.id}"><button class="wrm" data-open="${x.id}"><b>${esc(x.title)}</b><span>${esc([at ? dayLabel(at.slice(0, 10)) : "", venueLine(x)].filter(Boolean).join(" · "))}</span></button>
+  return `<div class="rr" data-item="${x.id}"><button class="wrm" data-wopen="${x.id}" aria-expanded="${st.wOpen === x.id}"><b>${esc(x.title)}</b><span>${esc([at ? dayLabel(at.slice(0, 10)) : "", venueLine(x)].filter(Boolean).join(" · "))}</span></button>
     ${f.length ? `<span class="stack">${f.slice(0, 3).map(face).join("")}</span>` : ""}
     <div class="rrq"><span>${esc(T.howWas)}</span>${[1, 2, 3, 4, 5].map((n) => `<button class="rb" data-act="r" data-id="${x.id}" data-arg="${n}" aria-label="${n}/5">${n}</button>`).join("")}</div></div>`;
 }
@@ -1330,7 +1370,7 @@ function ticket(x) {
   }
   return `<div class="bkt${hit}${isOpen ? " open" : ""}" data-item="${x.id}"><button class="tkd" data-tkopen="${x.id}"><b>${d.getUTCDate()}</b><small>${esc(T.smons[d.getUTCMonth()].replace(".", "").toUpperCase())}</small><em>${esc(T.dows[d.getUTCDay()].slice(0, 3))}.</em></button>
     <div class="tkm"><span class="tke${days < 14 ? " soon" : ""}">${esc(when)}${at.length > 10 ? " · " + esc(at.slice(11, 16)) : ""}</span>
-    <button class="tkt" data-tkopen="${x.id}">${esc(x.title)}<i class="pchev">${isOpen ? "−" : "+"}</i></button><div class="tkv">${esc(venueLine(x))}</div>
+    <button class="tkt" data-tkopen="${x.id}">${esc(x.title)}<i class="pchev">${isOpen ? "▴" : "▾"}</i></button><div class="tkv">${esc(venueLine(x))}</div>
     <div class="tkw">${f.length ? `<span class="stack">${f.map(face).join("")}</span>${esc(T.withF)} ${esc(joinNames(f.map((p) => p.name)))}` : esc(T.alone)}</div>${more}
     <div class="tkb"><a class="btn s" href="${map}" data-link="1" target="_blank" rel="noopener">${esc(T.mapL)}</a><button class="btn s" data-calfor="${x.id}" aria-expanded="${st.calFor === x.id}">${esc(T.addAgenda)}</button><button class="btn s" data-tkadd="${x.id}" aria-expanded="${st.tkAdd === x.id}">${esc(T.addPeople)}</button></div>
     ${st.tkAdd === x.id ? (() => { const ppl = (S.people || []).filter((p) => !f.some((q) => q.id === p.id));
@@ -1339,14 +1379,33 @@ function ticket(x) {
     ${st.calFor === x.id ? `<div class="tkc"><a class="btn s" href="${gcal(x, at)}" data-link="1" data-cal="google" data-id="${x.id}" target="_blank" rel="noopener">Google Agenda ↗</a><a class="btn s" href="${ics}" data-link="1" data-cal="ics" data-id="${x.id}" target="_blank" rel="noopener">${esc(T.calOther)} ↗</a></div>` : ""}</div></div>`;
 }
 function wishRow(x) {
-  if (st.open === x.id) return item(x);
+  if (st.open === x.id && st.proposing === x.id) return item(x);   // « Proposer » : le formulaire vit dans la fiche
   const fr = (x.friends || []).filter((p) => p.star && !p.seen && !p.booked);
   const l = lastDate(x), urgent = l && l >= TODAY && l < plus(7);
   const face = (p) => `<span class="face">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)}</span>`;
-  const sub = fr.length ? `${T.alsoW(joinNames(fr.map((p) => p.name)))} · ${venueLine(x)}` : urgent ? T.lastOn(dayLabel(l)) : venueLine(x);
-  const hit = st.wkSel && wishDays(x).includes(st.wkSel) ? " hit" : "";
-  return `<div class="wr${hit}" data-item="${x.id}">${fr.length ? `<span class="stack">${fr.slice(0, 3).map(face).join("")}</span>` : ""}<button class="wrm" data-open="${x.id}"><b>${esc(x.title)}</b><span class="${urgent && !fr.length ? "red" : ""}">${esc(sub)}</span></button>
-    <button class="btn s${fr.length ? " k" : ""}" data-propose="${x.id}">${esc(fr.length === 1 ? T.proposeTo(fr[0].name) : T.proposeB)}</button></div>`;
+    const hit = st.wkSel && wishDays(x).includes(st.wkSel) ? " hit" : "", open = st.wOpen === x.id, tog = ` data-wopen="${x.id}"`;
+  const next = (x.dates || []).filter((v) => v.slice(0, 10) >= TODAY).sort()[0];
+  const sd = x.kind === "expo" && x.end ? x.end : next, d = sd ? dt(sd) : null;
+  const stubH = d ? `<button class="tkd"${tog}><b>${d.getUTCDate()}</b><small>${esc(T.smons[d.getUTCMonth()].replace(".", "").toUpperCase())}</small><em>${esc(x.kind === "expo" && x.end ? T.endsW : T.dows[d.getUTCDay()].slice(0, 3) + ".")}</em></button>`
+    : `<button class="tkd"${tog}><b class="wst">★</b></button>`;
+  const kick = urgent ? T.lastOn(dayLabel(l)) : (T.kindL[x.kind === "cinema" ? "film" : x.kind] || "");
+  return `<div class="bkt wsh${hit}${open ? " open" : ""}" data-item="${x.id}">${stubH}<div class="tkm">
+    <span class="tke${urgent ? " soon" : ""}">${esc(kick)}</span>
+    <button class="tkt"${tog} aria-expanded="${open}">${esc(x.title)}<i class="wst">★</i></button><div class="tkv">${esc(venueLine(x))}</div>
+    ${fr.length ? `<div class="tkw"><span class="stack">${fr.slice(0, 3).map(face).join("")}</span>${esc(T.alsoW(joinNames(fr.map((p) => p.name))))}</div>` : ""}
+    ${open ? wishMore(x) : ""}
+    <div class="pft"><button class="pdet"${tog} aria-expanded="${open}">${esc(T.details)} ${open ? "▴" : "▾"}</button><button class="btn s${fr.length ? " k" : ""}" data-propose="${x.id}">${esc(fr.length === 1 ? T.proposeTo(fr[0].name) : T.proposeB)}</button></div></div></div>`;
+}
+/** Une envie dépliée sur place : quand, de quoi ça parle, les liens, et sortir de la liste. */
+function wishMore(x) {
+  const fx = facts(x), lang = (fx.meta.find((l) => l.startsWith("🗣")) || "").replace(/^🗣\s*/, "");
+  const next = (x.dates || []).filter((v) => v.slice(0, 10) >= TODAY).sort();
+  const when = x.kind === "expo" && x.end ? T.untilT(dayLabel(x.end)) : next.slice(0, 4).map(slotText).join(" · ") + (next.length > 4 ? ` · +${next.length - 4}` : "");
+  const vo = venueOf(x), map = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(vo.name + ", Berlin")}`;
+  const tix = (x.kind === "expo" ? x.url : sessionLinks(x).book) || x.url;
+  return `<div class="tkx">${when ? `<p class="tkl">${esc(when)}</p>` : ""}${lang ? `<p class="tkl">${esc(cap(lang))}</p>` : ""}${fx.syn ? `<p class="tks${st.tkSyn === x.id ? " full" : ""}" data-tksyn="${x.id}">${esc(fx.syn)}</p>` : ""}
+    <div class="pacts">${tix ? `<a class="lnk" href="${esc(tix)}" data-link="1" target="_blank" rel="noopener">${esc(T.tixL)} ↗</a>` : ""}${x.url && x.url !== tix ? `<a class="lnk" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(T.showPage)} ↗</a>` : ""}<a class="lnk" href="${map}" data-link="1" target="_blank" rel="noopener">${esc(T.mapL)} ↗</a></div>
+    <div class="pacts"><button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button><button class="lnk red" data-act="i" data-id="${x.id}">${esc(T.unstarL)}</button></div></div>`;
 }
 function calMonth(xs) {
   const ym = addMonths(TODAY.slice(0, 7), st.mo || 0);
@@ -1380,10 +1439,14 @@ function mineSections(xs) {
   const todo = (p) => !p.mine && !myAns(p);
   const live = ps.filter((p) => !saidNo(p)).sort((a, b) => todo(b) - todo(a)), refused = ps.filter(saidNo);
   let h = st.calShow ? calMonth(xs) : "";
-  const shares = (S.inbox || []).filter((n) => n.kind === "share" && n.item_id && !staleMsg(n)
-    && Date.now() - Date.parse(String(n.created_at).replace(" ", "T") + "Z") < 30 * 864e5);
+  const shares = liveShares();
   const nWait = live.filter(todo).length + shares.length;
-  if (live.length || shares.length) h += dayHead(T.propsT, nWait ? T.waitingN(nWait) : "") + live.map(propCard).join("") + shares.map(shareCard).join("");
+  if (live.length || shares.length) {
+    // Section repliable (ouverte par défaut, mémorisée sur ce téléphone).
+    const shut = lsGet("propsShut") === "1";
+    h += `<button class="day dtog" data-propsfold="1" aria-expanded="${!shut}">${esc(T.propsT)}${nWait ? ` <span>${esc(T.waitingN(nWait))}</span>` : ""}<i class="pchev">${shut ? "▾" : "▴"}</i></button>`;
+    if (!shut) h += live.map(propCard).join("") + shares.map(shareCard).join("");
+  }
   if (coming.length) h += dayHead(T.setT) + coming.map(ticket).join("");
   if (wish.length) h += dayHead(T.wish) + wish.map(wishRow).join("");
   if (toRate.length) h += dayHead(T.toRate) + toRate.map(rateRow).join("");
@@ -2033,8 +2096,11 @@ function render() {
   $("today").textContent = `${T.dows[now.getUTCDay()].slice(0, 3)}. ${now.getUTCDate()} ${T.smons[now.getUTCMonth()]}`;
   // Pastilles rouges : « Mes sorties » = ce qu'on m'a envoyé (non lu) ; « Réglages » = demandes d'amis.
   // « Mes sorties » : ce qui attend ma réponse (propositions sans réponse + suggestions reçues).
-  const unread = S && !S.guest ? (S.proposals || []).filter((p) => p.status === "open" && !p.mine && !myAns(p)).length
-    + (S.inbox || []).filter((n) => n.kind === "share" && n.item_id && !staleMsg(n) && Date.now() - Date.parse(String(n.created_at).replace(" ", "T") + "Z") < 30 * 864e5).length : 0;
+  // La pastille s'éteint dès qu'on a vu Mes sorties ; les cartes, elles, restent en haut jusqu'à la réponse.
+  const waitK = S && !S.guest ? [...(S.proposals || []).filter((p) => p.status === "open" && !p.mine && !myAns(p)).map((p) => "p" + p.id), ...liveShares().map((n) => "s" + n.id)] : [];
+  let seenK; try { seenK = new Set(JSON.parse(lsGet("seenWait") || "[]")); } catch { seenK = new Set(); }
+  if (st.tab === "mine" && !st.prop && waitK.some((k) => !seenK.has(k))) { waitK.forEach((k) => seenK.add(k)); lsSet("seenWait", JSON.stringify([...seenK].slice(-300))); }
+  const unread = waitK.filter((k) => !seenK.has(k)).length;
   const reqs = S ? (S.circle?.incoming || []).length : 0;
   document.querySelectorAll(".tab").forEach((b, i) => {
     const n = b.dataset.tab === "mine" ? unread : b.dataset.tab === "set" ? reqs : 0;
@@ -2254,7 +2320,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.writing !== undefined) { st.writing = t.dataset.writing || null; render(); if (st.writing) setTimeout(() => $("review")?.focus(), 0); return; }
   else if (t.dataset.savereview) { const txt = $("review")?.value || ""; st.writing = null; return void act("review", t.dataset.savereview, "", { path: "review", body: { text: txt } }); }
   else if (t.dataset.note) { st.note = t.dataset.note; }
-  else if (t.dataset.share) { const n = st.note; st.note = ""; return void act("share", t.dataset.share, "", { path: "share", body: { to: [...st.sel], note: n } }); }
+  else if (t.dataset.share) { const n = st.note; st.note = ""; if (!st.busy) busyBtn(t); return void act("share", t.dataset.share, "", { path: "share", body: { to: [...st.sel], note: n } }); }
   else if (t.dataset.act === "bd") return void act("bd", t.dataset.id, t.dataset.arg, { body: { with: [...st.withs] } });
   else if (t.dataset.act) return void act(t.dataset.act, t.dataset.id, t.dataset.arg);
   else if (t.dataset.askremove) { st.confirmRemove = +t.dataset.askremove; }
@@ -2458,7 +2524,7 @@ async function sendProposal(id, linkOnly) {
       st.askGroup = { members: to, name: (S.people || []).filter((p) => to.includes(p.id)).map((p) => p.name).join(" + ").slice(0, 40) };
     st.busy = false;
     openProp(j.proposal.id, j.proposal);
-    if (linkOnly) shareProp(j.proposal);
+    if (linkOnly) shareProp(j.proposal); else if (to.length) notify(T.sentOk(joinNames((S.people || []).filter((q) => to.includes(q.id)).map((q) => q.name))));
   } catch (e) { st.busy = false; notify(e.info?.error === "bad_slots" ? T.noSlots : T.error); render(); }
 }
 const propOf = (id) => (S?.proposals || []).find((p) => p.id === id) || (st.propData && st.propData.id === id ? st.propData : null);
@@ -2575,16 +2641,18 @@ function propPage() {
   return h + `</div>`;
 }
 /** Mes sorties : Oui (créneaux cochés, ou l'unique créneau) / Non, sans ouvrir la proposition. */
+/** Envoi en cours : le bouton le dit tout de suite (l'appel réseau peut prendre une seconde). */
+function busyBtn(b) { if (!b || b.tagName !== "BUTTON") return; b.disabled = true; b.classList.add("busy"); b.textContent = T.sendingW; }
 async function propQuick(path, body) {
   if (st.busy) return; st.busy = true;
   try { const j = await api(path, body); const { proposal, ...rest } = j; S = rest; } catch { notify(T.error); }
   st.busy = false; render();
 }
-async function quickAnswer(pid, yes) {
+async function quickAnswer(pid, yes, note = "") {
   const p = (S.proposals || []).find((q) => q.id === pid); if (!p || st.busy) return;
   const answers = Object.fromEntries(p.slots.map((x) => [x, yes && (p.slots.length === 1 || st.pa[pid + "|" + x]) ? 1 : 0]));
   st.busy = true;
-  try { const j = await api("proposal/answer", { pid, answers, note: "" }); const { proposal, ...rest } = j; S = rest; tgApp?.HapticFeedback?.selectionChanged(); }
+  try { const j = await api("proposal/answer", { pid, answers, note }); const { proposal, ...rest } = j; S = rest; tgApp?.HapticFeedback?.selectionChanged(); }
   catch { notify(T.error); }
   st.busy = false; render();
   if (!yes) undoBar({ label: T.refusedToast, run: () => openProp(pid) });
@@ -2653,7 +2721,17 @@ document.addEventListener("click", (e) => {
   if (d.calshow) { stop(); st.calShow = !st.calShow; if (!st.calShow) st.wkSel = null; window.scrollTo?.(0, 0); return void render(); }
   if (d.cmo) { stop(); st.mo = (st.mo || 0) + Number(d.cmo); return void render(); }
   if (d.pqpick) { stop(); st.pa[d.pqpick] = !st.pa[d.pqpick]; return void render(); }
-  if (d.pqyes || d.pqno) { stop(); st.pReans = null; return void quickAnswer(d.pqyes || d.pqno, !!d.pqyes); }
+  if (d.wopen) { stop(); st.wOpen = st.wOpen === d.wopen ? null : d.wopen; return void render(); }
+  if (d.propsfold) { stop(); lsSet("propsShut", lsGet("propsShut") === "1" ? "0" : "1"); return void render(); }
+  if (d.pqno) { stop(); st.pNo = d.pqno; return void render(); }
+  if (d.pqnoback) { stop(); st.pNo = null; return void render(); }
+  if (d.pqnote) { stop(); const [pid, k] = d.pqnote.split("|"); st.pNo = null; st.pReans = null; return void quickAnswer(pid, false, k === "d" ? T.noDates : k === "p" ? T.noPiece : ""); }
+  if (d.pqyes) { stop(); st.pReans = null; st.pNo = null; return void quickAnswer(d.pqyes, true); }
+  if (d.shopen) { stop(); st.shOpen = st.shOpen === +d.shopen ? null : +d.shopen; return void render(); }
+  if (d.pqadd) { stop(); st.pAdd = st.pAdd === d.pqadd ? null : d.pqadd; st.withs.clear(); return void render(); }
+  if (d.pqaddgo) { stop(); if (!st.withs.size || st.busy) return; const names = (S.people || []).filter((q) => st.withs.has(q.id)).map((q) => q.name);
+    busyBtn(t); const to = [...st.withs]; st.pAdd = null; st.withs.clear();
+    return void propQuick("proposal/add", { pid: d.pqaddgo, to }).then(() => notify(T.sentOk(joinNames(names)))); }
   if (d.ptoggle) { stop(); st.pOpen = st.pOpen === d.ptoggle ? null : d.ptoggle; st.pCancel = null; return void render(); }
   if (d.pqreans) { stop(); const p = (S.proposals || []).find((q) => q.id === d.pqreans), a = p && myAns(p);
     if (p) p.slots.forEach((x) => { st.pa[p.id + "|" + x] = !!(a && a[x] === 1); }); st.pReans = d.pqreans; return void render(); }
@@ -2674,7 +2752,7 @@ document.addEventListener("click", (e) => {
   if (d.pgroup) { stop(); const g = (S.groups || []).find((y) => String(y.id) === d.pgroup); if (g) st.sel = new Set(g.members); return void render(); }
   if (d.pslot) { stop(); st.pslots.has(d.pslot) ? st.pslots.delete(d.pslot) : st.pslots.size < 3 ? st.pslots.add(d.pslot) : notify(T.noSlots); return void render(); }
   if (d.paddslot) { stop(); const v = $("pdate")?.value; if (v && v >= TODAY && st.pslots.size < 3) st.pslots.add(v); return void render(); }
-  if (d.psend) { stop(); return void sendProposal(d.psend, false); }
+  if (d.psend) { stop(); if (!st.busy) busyBtn(t); return void sendProposal(d.psend, false); }
   if (d.plinkonly) { stop(); return void sendProposal(d.plinkonly, true); }
   if (d.pback) { stop(); closeProp(); return void render(); }
   if (d.pans) { stop(); st.pa[d.pans] = st.pa[d.pans] === 1 ? 0 : 1; return void render(); }

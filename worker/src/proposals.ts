@@ -78,6 +78,34 @@ export async function createProposal(env: Env, me: Me, body: any): Promise<{ id:
   return { id };
 }
 
+/** L'organisateur ajoute des amis à une proposition ouverte : même invitation que s'ils y étaient depuis le début. */
+export async function addToProposal(env: Env, me: Me, id: string, toRaw: unknown): Promise<string | null> {
+  const p = await env.DB.prepare("SELECT * FROM proposals WHERE id = ?").bind(id).first<any>();
+  if (!p) return "not_found";
+  if (p.from_id !== me.chat_id) return "forbidden";
+  if (p.status !== "open") return "closed";
+  const { results: had } = await env.DB.prepare("SELECT chat_id, name FROM proposal_people WHERE proposal_id = ?").bind(id).all<{ chat_id: number | null; name: string }>();
+  const inIt = new Set(had.map((r) => r.chat_id));
+  const ids = (Array.isArray(toRaw) ? toRaw : []).map(Number).filter((n: number) => Number.isFinite(n) && !inIt.has(n) && n !== me.chat_id && inCircle(me.chat_id, n)).slice(0, 12);
+  if (!ids.length) return "bad_request";
+  const { results: to } = await env.DB.prepare(
+    "SELECT chat_id, first_name, lang FROM users WHERE active = 1 AND chat_id IN (SELECT value FROM json_each(?))",
+  ).bind(JSON.stringify(ids)).all<{ chat_id: number; first_name: string; lang: string | null }>();
+  if (!to.length) return "bad_request";
+  await env.DB.batch(to.map((u) => env.DB.prepare("INSERT INTO proposal_people (proposal_id, pid, chat_id, name) VALUES (?, ?, ?, ?)").bind(id, `u${u.chat_id}`, u.chat_id, u.first_name)));
+  await env.DB.prepare("UPDATE proposals SET updated_at = datetime('now') WHERE id = ?").bind(id).run();
+  const item = await itemInfo(env, p.item_id);
+  const slots: string[] = JSON.parse(p.slots || "[]");
+  for (const u of to) {
+    const lang = asLang(u.lang), L = T[lang];
+    const others = [...had.filter((r) => r.chat_id !== me.chat_id).map((r) => r.name), ...to.filter((o) => o.chat_id !== u.chat_id).map((o) => o.first_name)].map(esc);
+    await inbox(env, u.chat_id, "proposal", me.chat_id, p.item_id, p.note, null, id);
+    await send(env, u.chat_id, L.invite(esc(me.first_name), esc(item?.title ?? "?"), list(others, L), slots.map((s) => slotLabel(s, lang)).join(L.or))
+      + (p.note ? `\n💬 « ${esc(p.note)} »` : ""), { inline_keyboard: [[{ text: `💌 ${L.answer}`, url: appLink(env, `p_${id}`) }]] });
+  }
+  return null;
+}
+
 /** Une proposition telle que la page l'affiche. viewer = pid de la personne qui regarde (ou null). */
 async function shape(env: Env, id: string, viewer: string | null, lang: Lang, withIds: boolean) {
   const p = await env.DB.prepare("SELECT * FROM proposals WHERE id = ?").bind(id).first<any>();
