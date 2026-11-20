@@ -954,11 +954,11 @@ type Me = { chat_id: number; first_name: string };
 const MSG = {
   fr: {
     share: (who: string) => `💌 <b>${who}</b> a envie d'y aller : ça te dit ?`,
-    booked: (who: string, title: string, when: string) => `🎟 <b>${who}</b> a pris une place pour toi : <b>${title}</b>, ${when}.`,
+    booked: (who: string, title: string, when: string) => `🎟 <b>${who}</b> t'a ajouté·e : <b>${title}</b>, ${when}. Vous y allez ensemble !`,
   },
   en: {
     share: (who: string) => `💌 <b>${who}</b> wants to go: are you in?`,
-    booked: (who: string, title: string, when: string) => `🎟 <b>${who}</b> got you a ticket: <b>${title}</b>, ${when}.`,
+    booked: (who: string, title: string, when: string) => `🎟 <b>${who}</b> added you: <b>${title}</b>, ${when}. You're going together!`,
   },
 };
 /** Personnes actives du bot parmi `ids` (jamais soi-même), avec leur langue. */
