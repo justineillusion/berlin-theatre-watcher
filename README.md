@@ -1,40 +1,60 @@
-# 🎭 Berlin Theatre Watcher
+# 🎭 Berlin Encore!
 
-Reçois une **notification push Telegram** quand un spectacle susceptible de te
-plaire apparaît à la **Schaubühne**, au **Berliner Ensemble** ou à la
-**Volksbühne** — avec **surtitres anglais**, **pas complet**, et le **lien de
-réservation**.
+Ce qui se joue à Berlin quand on ne parle pas (assez) allemand : **théâtre et opéra avec surtitres
+anglais**, **films en VO**, **expos**, **concerts**. Et surtout : voir ce qui tente ses amis et **y aller
+ensemble**.
 
-> Version **sans clé API, 100 % gratuite**. Le scan lit directement le HTML des
-> pages « programme / English surtitles » et filtre par mots-clés. Aucun compte
-> à créer pour tester.
+- **App web** : [berlinencore.app](https://berlinencore.app) (s'installe sur l'écran d'accueil, notifications
+  push, Face ID, marche hors ligne avec les dernières données).
+- **Bot Telegram** : les mêmes données, alertes et récap ciné du dimanche.
 
-> 👥 **Nouveau : mode bande d'amis.** Invitations, choix des lieux par personne,
-> boutons ⭐ Intéressé·e / ✅ Vu / 🔕 Ignorer, notes des amis, lieux d'expo
-> (Hamburger Bahnhof, Neue Nationalgalerie, KW, C/O Berlin, Berlinische Galerie),
-> et 🎬 cinémas (Intimes, Lichtblick, B-ware! Ladenkino, Kino International, Babylon : chacun reçoit le ciné de la semaine
-> de ses cinémas, voir [`docs/cinema.md`](docs/cinema.md)).
-> Mise en service : [`worker/README.md`](worker/README.md).
+## Ce que fait l'app
+
+- **À l'affiche** : tout le programme, filtrable par type (théâtre, musique, ciné, expo), par moment
+  (ce soir, demain, week-end, 7 jours) et par lieu. Étiquettes : surtitres EN, VO, genre du film,
+  🏆 festival (Cannes, Berlinale, Venise…), complet, fin d'expo proche.
+- **Fiche** : dates, langue, prix, résumé (FR/EN), avis presse (Nachtkritik, buzz presse,
+  SensCritique / Letterboxd pour les films), lien billets, plan.
+- **Mes sorties** : propositions reçues (oui en un toucher, ou non avec une raison), billets (« C'est
+  calé »), envies, avis à donner ; calendrier du mois ; tirer vers le bas pour actualiser.
+- **Entre amis** : ★ envies visibles par les amis, propositions avec dates (l'organisateur peut inviter
+  d'autres amis en cours de route), « Ils viennent » sur un billet, notifications (🔔 + push).
+- **Lieux** (≈ 37) : Schaubühne, Berliner Ensemble, Volksbühne, Deutsches Theater, Gorki, HAU,
+  Sophiensæle, Festspiele, English Theatre, Chamäleon, ACUD ; opéras (Staatsoper, Deutsche Oper,
+  Komische Oper), Philharmonie, Staatsballett, Schokoladen, Urban Spree ; expos (Hamburger Bahnhof,
+  Neue Nationalgalerie, Gropius Bau, KW, C/O, Berlinische Galerie, Fotografiska) ; cinémas (Babylon,
+  Kino International, Delphi LUX, FaF, Passage, Odeon, Rollberg, Wolf, Intimes, Lichtblick, B-ware!).
 
 ## Comment ça marche
 
-1. **Fetch + parse** — récupère les pages des théâtres et en extrait les
-   représentations (titre, date, lieu, langue, sold-out, lien de résa) avec un
-   parser dédié par théâtre.
-2. **Filtres durs** — on ne garde que : **surtitres anglais** *et* **pas complet**.
-3. **Mots-clés** — `keywords_avoid` exclut ; `keywords_love` met en avant (⭐) les
-   spectacles qui matchent tes goûts (metteur·ses en scène, autrices/auteurs,
-   pays, thèmes).
-4. **Dédup + notif** — les nouveautés partent sur Telegram avec le lien de résa.
-   `state/seen.json` évite de te spammer deux fois.
-5. **Cron** — tourne tout seul chaque jour via GitHub Actions.
-
 ```
-config.yaml ─┐
-             ▼
-   fetch → parse → [surtitres EN + pas complet] → mots-clés → 1/pièce → Telegram
-             ▲                                                         │
-  Schaubühne, Berliner Ensemble, Volksbühne                   state/seen.json
+GitHub Actions (cron)                         Cloudflare
+  scan.yml     théâtres, opéras, expos  ─┐
+  cinema.yml   films (lun → dim)         ├─►  Worker (worker/)  ──►  D1 « theatre-bot »  ──►  app web + bot
+  critics.yml  Nachtkritik (nuit)        │      API, push, bot          items, reactions,
+  press.yml    buzz presse               ┘                              proposals, users…
+```
+
+1. **Scrapers Python** (`src/parsers/`, `src/cinema/sources/`) : un lecteur par lieu.
+2. **Règles** : théâtre seulement si surtitré EN, joué en anglais ou sans paroles ; films en VO ;
+   résumés traduits FR/EN (`state/summary_cache.json`).
+3. **Envoi au Worker** (`src/botapi.py`) : les fiches arrivent dans D1. Un lieu dont le site plante
+   garde son dernier programme ; rien n'est jamais supprimé (`last_seen` dit quand la pièce a été vue).
+4. **App** : `worker/src/app.html` (une page), API `worker/src/app.ts`.
+
+**Base de données** : Cloudflare D1 `theatre-bot` (dash.cloudflare.com → Storage & Databases → D1 →
+Console pour le SQL).
+
+**Ajouter un lieu** : un parser dans `src/parsers/` (enregistré dans `SOURCES`), une entrée dans
+`config.yaml` (ou `cinema.yaml`), le quartier dans `worker/src/districts.ts`, un test avec une page
+enregistrée dans `tests/fixtures/`. Théâtre : sa rubrique Nachtkritik dans `src/critics.py`
+(`tests/test_nachtkritik_coverage.py` échoue sinon).
+
+## Tests
+
+```bash
+python3 -m pytest -q tests          # scrapers, langues, prix, presse, festivals (≈ 110)
+cd worker && npm test               # API du Worker (47 étapes) ; npx tsc --noEmit -p . pour les types
 ```
 
 ## Tester tout de suite (aucune clé requise)
@@ -140,7 +160,7 @@ critique a moins d'un mois — la Rundschau s'étoffe après la première — pu
 
 **Seul le job de nuit `critics.yml` (04:30 UTC) va sur Nachtkritik**
 (`python -m src.critics_refresh`) : rubriques des maisons (BE, Schaubühne,
-Volksbühne, Festspiele), lecture des critiques (≤ 10 s par pièce), recherche du
+Volksbühne, Deutsches Theater, Gorki, HAU, Sophiensæle, English Theatre, Chamäleon, Festspiele), lecture des critiques (≤ 10 s par pièce), recherche du
 site seulement pour les pièces absentes des rubriques (≤ 45 s par pièce), 5 min
 en tout ; il logue la durée de chaque pièce (listing / search / missed) et le
 taux de notes, puis committe le cache. Tous les autres jobs (scan, ventes,
@@ -186,3 +206,5 @@ alertes suivantes (nouvelles dates) et dans le récap du dimanche.
 | `src/mute.py` | bouton 🔕 Ne plus suivre + `/muets` (`state/muted.json`) |
 | `src/main.py` | orchestration (`--dry-run` dispo) |
 | `.github/workflows/scan.yml` | cron quotidien |
+| `src/cinema/` | films : séances (Yorck, kinoheld, Babylon…), notes, genres et festivals (`tags.py`) |
+| `src/critics.py` / `src/press.py` | note Nachtkritik / buzz presse |
