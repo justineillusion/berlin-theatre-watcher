@@ -525,7 +525,7 @@ html{background:var(--bg)}
 .pft{display:flex;align-items:center;gap:8px;margin-top:10px}.pdet{border:0;background:none;padding:6px 0;font:700 13.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px}.pft .btn{margin-left:auto}
 .btn.busy{opacity:.6}
 .pdup{margin:10px 16px 4px;padding:12px 14px;border:1.5px solid var(--ink);background:var(--gold-soft)}.pdup b{display:block;font:800 15px var(--sans)}.pdup span{display:block;font:500 13.5px var(--sans);color:var(--muted);margin-top:2px}
-.bkt.wsh{background:var(--gold-soft)}.wst{font-style:normal;color:var(--gold);margin-left:auto;font-size:18px;line-height:1}.tkd b.wst{font-size:26px;margin:0}
+.bkt.wsh{background:var(--gold-soft)}.vlink{display:block;text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:3px}.wst{font-style:normal;color:var(--gold);margin-left:auto;font-size:18px;line-height:1}.tkd b.wst{font-size:26px;margin:0}
 .bkt.pinv.todo{background:var(--card)}
 .bkt.ghost{border-style:dashed;background:transparent;color:var(--dim)}.bkt.ghost .tkd{border-right-color:var(--faint);color:var(--faint)}.bkt.ghost .tkt{color:var(--muted);font-size:17px}
 .bkt.idea{background:transparent;border-style:dashed}.bkt.idea .wst{color:var(--faint)}
@@ -1394,11 +1394,12 @@ function wishRow(x) {
   const kick = urgent ? T.lastOn(dayLabel(l)) : (T.kindL[x.kind === "cinema" ? "film" : x.kind] || "");
   return `<div class="bkt wsh${hit}${open ? " open" : ""}" data-item="${x.id}">${stubH}<div class="tkm">
     <span class="tke${urgent ? " soon" : ""}">${esc(kick)}</span>
-    <button class="tkt"${tog} aria-expanded="${open}">${esc(x.title)}<i class="wst">★</i></button><div class="tkv">${esc(venueLine(x))}</div>
+    <button class="tkt"${tog} aria-expanded="${open}">${esc(x.title)}<i class="wst">★</i></button><a class="tkv vlink" href="${mapUrl(x)}" data-link="1" target="_blank" rel="noopener">${esc(venueLine(x))}</a>
     ${fr.length ? `<div class="tkw"><span class="stack">${fr.slice(0, 3).map(face).join("")}</span>${esc(T.alsoW(joinNames(fr.map((p) => p.name))))}</div>` : ""}
     ${open ? wishMore(x) : ""}
-    <div class="pft"><button class="pdet"${tog} aria-expanded="${open}">${esc(T.details)} ${open ? "▴" : "▾"}</button><button class="btn s${fr.length ? " k" : ""}" data-propose="${x.id}">${esc(fr.length === 1 ? T.proposeTo(fr[0].name) : T.proposeB)}</button></div></div></div>`;
+    <div class="pft"><button class="btn s${fr.length ? " k" : ""}" data-propose="${x.id}">${esc(fr.length === 1 ? T.proposeTo(fr[0].name) : T.proposeB)}</button></div></div></div>`;
 }
+const mapUrl = (x) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueOf(x).name + ", Berlin")}`;
 /** Pas encore de billet : la place qu'il prendra. */
 function ghostTicket() {
   return `<div class="bkt ghost"><div class="tkd"><b>?</b></div><div class="tkm"><span class="tke">${esc(T.ghostK)}</span><div class="tkt">${esc(T.ghostT)}</div><div class="tkv">${esc(T.ghostP)}</div></div></div>`;
@@ -1427,10 +1428,9 @@ function wishMore(x) {
   const fx = facts(x), lang = (fx.meta.find((l) => l.startsWith("🗣")) || "").replace(/^🗣\s*/, "");
   const next = (x.dates || []).filter((v) => v.slice(0, 10) >= TODAY).sort();
   const when = x.kind === "expo" && x.end ? T.untilT(dayLabel(x.end)) : next.slice(0, 4).map(slotText).join(" · ") + (next.length > 4 ? ` · +${next.length - 4}` : "");
-  const vo = venueOf(x), map = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(vo.name + ", Berlin")}`;
   const tix = (x.kind === "expo" ? x.url : sessionLinks(x).book) || x.url;
   return `<div class="tkx">${when ? `<p class="tkl">${esc(when)}</p>` : ""}${lang ? `<p class="tkl">${esc(cap(lang))}</p>` : ""}${fx.syn ? `<p class="tks${st.tkSyn === x.id ? " full" : ""}" data-tksyn="${x.id}">${esc(fx.syn)}</p>` : ""}
-    <div class="pacts">${tix ? `<a class="lnk" href="${esc(tix)}" data-link="1" target="_blank" rel="noopener">${esc(T.tixL)} ↗</a>` : ""}${x.url && x.url !== tix ? `<a class="lnk" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(T.showPage)} ↗</a>` : ""}<a class="lnk" href="${map}" data-link="1" target="_blank" rel="noopener">${esc(T.mapL)} ↗</a></div>
+    <div class="pacts">${tix ? `<a class="lnk" href="${esc(tix)}" data-link="1" target="_blank" rel="noopener">${esc(T.tixL)} ↗</a>` : ""}${x.url && x.url !== tix ? `<a class="lnk" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(T.showPage)} ↗</a>` : ""}</div>
     <div class="pacts"><button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button><button class="lnk red" data-act="i" data-id="${x.id}">${esc(T.unstarL)}</button></div></div>`;
 }
 function calMonth(xs) {
