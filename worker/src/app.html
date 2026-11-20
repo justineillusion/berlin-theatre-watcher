@@ -526,7 +526,7 @@ html{background:var(--bg)}
 .btn.busy{opacity:.6}
 .offbar{margin:0;padding:8px 16px;background:var(--ink);color:var(--bg);font:700 12.5px var(--sans);letter-spacing:.02em;text-align:center}
 .pdup{margin:10px 16px 4px;padding:12px 14px;border:1.5px solid var(--ink);background:var(--gold-soft)}.pdup b{display:block;font:800 15px var(--sans)}.pdup span{display:block;font:500 13.5px var(--sans);color:var(--muted);margin-top:2px}
-.bkt.wsh{background:var(--gold-soft)}.vlink{display:block;text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:3px}.wst{font-style:normal;color:var(--gold);margin-left:auto;font-size:18px;line-height:1}.tkd b.wst{font-size:26px;margin:0}
+.bkt.wsh{background:var(--gold-soft)}.wpr{margin-top:4px;color:var(--ink);font-weight:600}.vlink{display:block;text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:3px}.wst{font-style:normal;color:var(--gold);margin-left:auto;font-size:18px;line-height:1}.tkd b.wst{font-size:26px;margin:0}
 .bkt.pinv.todo{background:var(--card)}
 .bkt.ghost{border-style:dashed;background:transparent;color:var(--dim)}.bkt.ghost .tkd{border-right-color:var(--faint);color:var(--faint)}.bkt.ghost .tkt{color:var(--muted);font-size:17px}
 .pinv .pyes.one{flex-wrap:nowrap}.pinv .pyes.one .btn.k{flex:1 1 0;min-width:0}.pinv .pyes .btn:last-child:not(.k){flex:0 0 76px}.pinv .pyes:not(.one) .btn.k{flex:1 0 100%}
@@ -754,7 +754,7 @@ const L = {
 // 🗳 Propositions + groupes (ajoutés à part pour garder les lignes ci-dessus lisibles).
 Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", withWho:"Avec qui ?", whenQ:"Quand ? · optionnel, 1 à 3 créneaux", whenHint:"Avec des créneaux, chacun répond et tu cales la date. Sans, c'est un simple « ça te dit ? ».", proposeTo:(n) => `Proposer à ${n}`, otherDate:"Autre date", addDate:"Ajouter",
   noteQ:"Un mot ? · optionnel", propNotePh:"Ça vous tente ?", sendTo:(n) => `Envoyer à ${n}`, linkOnly:"Ou juste un lien à partager (WhatsApp…)", interestedHint:"★ Pré-cochés : intéressés.",
-  propHead:"Proposition", offT:"Hors ligne", offAt:(t) => `à jour à ${t}`, offNo:"Hors ligne : ça marchera dès que le réseau revient.", setSure:"Caler pour tous ?", alreadyP:"Tu as déjà proposé ce spectacle", addToIt:(n) => `Ajouter ${n} à cette proposition`, allIn:"Déjà invité·es", seeMine:"Voir ma proposition", ghostWK:"Tes envies", ghostWT:"Ajoute ce qui te tente", ghostWP:"Ça s’affichera ici, avec les amis tentés aussi.", ghostK:"Ton prochain billet", ghostT:"Réserve une sortie", ghostP:"Elle s’affichera ici, avec tes amis et l’agenda.", yesIn:"Oui, je viens", endsW:"fin", unstarL:"Retirer des envies", invitesW:"t’invite", nDatesS:"dates", inviteMore:"+ Inviter", noWhy:(n) => `Un mot pour ${n} ?`, noDates:"Pas dispo ces dates", noPiece:"Ça ne me tente pas", justNo:"Juste non", sendingW:"Envoi…", sentOk:(n) => `Envoyé à ${n} ✓`, proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
+  propHead:"Proposition", pressW:"Presse", offT:"Hors ligne", offAt:(t) => `à jour à ${t}`, offNo:"Hors ligne : ça marchera dès que le réseau revient.", setSure:"Caler pour tous ?", alreadyP:"Tu as déjà proposé ce spectacle", addToIt:(n) => `Ajouter ${n} à cette proposition`, allIn:"Déjà invité·es", seeMine:"Voir ma proposition", ghostWK:"Tes envies", ghostWT:"Ajoute ce qui te tente", ghostWP:"Ça s’affichera ici, avec les amis tentés aussi.", ghostK:"Ton prochain billet", ghostT:"Réserve une sortie", ghostP:"Elle s’affichera ici, avec tes amis et l’agenda.", yesIn:"Oui, je viens", endsW:"fin", unstarL:"Retirer des envies", invitesW:"t’invite", nDatesS:"dates", inviteMore:"+ Inviter", noWhy:(n) => `Un mot pour ${n} ?`, noDates:"Pas dispo ces dates", noPiece:"Ça ne me tente pas", justNo:"Juste non", sendingW:"Envoi…", sentOk:(n) => `Envoyé à ${n} ✓`, proposes:(w, t) => `${w} propose à ${t}`, proposesYou:(w, o) => `${w} te propose${o ? ` · avec ${o}` : ""}`, youPropose:(t) => `Tu proposes à ${t}`, you:"Toi", toYou:"toi", isSet:(w) => `✓ C'est calé · ${w}`, cancelledP:"Proposition annulée",
   answerSend:"Envoyer ma réponse", answerUpdate:"Mettre à jour", answerHint:"Tout le monde voit les réponses. Tu peux changer d'avis tant que ce n'est pas calé.", yourName:"Ton prénom",
   setBtn:(w) => `C'est calé · ${w}`, setOther:(w) => `ou caler ${w}`, allYes:"marche pour tout le monde", cancelProp:"Annuler la proposition", shareWa:"WhatsApp", copyLink:"Copier le lien",
   saveGroupT:"Enregistrer comme groupe ?", saveGroupP:"La prochaine fois, un appui suffit pour les inviter ensemble.", groupName:"Nom du groupe", onlyYou:"Visible seulement par toi", noThanks:"Non merci",
@@ -765,7 +765,7 @@ Object.assign(L.fr, { propose:"💌 Proposer", propT:"Proposer à des amis", wit
   waText:(t) => `On y va ? ${t} 👉`, pTitle:"Tu choisis quel jour ?", answers:"Réponses", byLink:"via le lien" });
 Object.assign(L.en, { propose:"💌 Suggest", propT:"Suggest to friends", withWho:"With whom?", whenQ:"When? · optional, 1 to 3 options", whenHint:"With options, everyone answers and you set the date. Without, it's a simple “fancy it?”.", proposeTo:(n) => `Suggest to ${n}`, otherDate:"Other date", addDate:"Add",
   noteQ:"A word? · optional", propNotePh:"Fancy it?", sendTo:(n) => `Send to ${n}`, linkOnly:"Or just a link to share (WhatsApp…)", interestedHint:"★ Pre-selected: interested.",
-  propHead:"Suggestion", offT:"Offline", offAt:(t) => `as of ${t}`, offNo:"Offline: this will work once you’re back online.", setSure:"Lock it for all?", alreadyP:"You already suggested this show", addToIt:(n) => `Add ${n} to it`, allIn:"Already invited", seeMine:"See my suggestion", ghostWK:"Your wishlist", ghostWT:"Add what tempts you", ghostWP:"It will show up here, with friends who are tempted too.", ghostK:"Your next ticket", ghostT:"Book an outing", ghostP:"It will show up here, with your friends and calendar.", yesIn:"Yes, I’m in", endsW:"ends", unstarL:"Remove from wishlist", invitesW:"invites you", nDatesS:"dates", inviteMore:"+ Invite", noWhy:(n) => `A word for ${n}?`, noDates:"Not free on these dates", noPiece:"Not my thing", justNo:"Just no", sendingW:"Sending…", sentOk:(n) => `Sent to ${n} ✓`, proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
+  propHead:"Suggestion", pressW:"Press", offT:"Offline", offAt:(t) => `as of ${t}`, offNo:"Offline: this will work once you’re back online.", setSure:"Lock it for all?", alreadyP:"You already suggested this show", addToIt:(n) => `Add ${n} to it`, allIn:"Already invited", seeMine:"See my suggestion", ghostWK:"Your wishlist", ghostWT:"Add what tempts you", ghostWP:"It will show up here, with friends who are tempted too.", ghostK:"Your next ticket", ghostT:"Book an outing", ghostP:"It will show up here, with your friends and calendar.", yesIn:"Yes, I’m in", endsW:"ends", unstarL:"Remove from wishlist", invitesW:"invites you", nDatesS:"dates", inviteMore:"+ Invite", noWhy:(n) => `A word for ${n}?`, noDates:"Not free on these dates", noPiece:"Not my thing", justNo:"Just no", sendingW:"Sending…", sentOk:(n) => `Sent to ${n} ✓`, proposes:(w, t) => `${w} suggests to ${t}`, proposesYou:(w, o) => `${w} invites you${o ? ` · with ${o}` : ""}`, youPropose:(t) => `You suggest to ${t}`, you:"You", toYou:"you", isSet:(w) => `✓ It's on · ${w}`, cancelledP:"Suggestion cancelled",
   answerSend:"Send my answer", answerUpdate:"Update", answerHint:"Everyone sees the answers. You can change your mind until it's set.", yourName:"Your first name",
   setBtn:(w) => `It's on · ${w}`, setOther:(w) => `or set ${w}`, allYes:"works for everyone", cancelProp:"Cancel the suggestion", shareWa:"WhatsApp", copyLink:"Copy link",
   saveGroupT:"Save as a group?", saveGroupP:"Next time, one tap invites them together.", groupName:"Group name", onlyYou:"Only you can see it", noThanks:"No thanks",
@@ -1412,12 +1412,25 @@ function wishRow(x) {
   const kick = urgent ? T.lastOn(dayLabel(l)) : (T.kindL[x.kind === "cinema" ? "film" : x.kind] || "");
   return `<div class="bkt wsh${hit}${open ? " open" : ""}" data-item="${x.id}">${stubH}<div class="tkm">
     <span class="tke${urgent ? " soon" : ""}">${esc(kick)}</span>
-    <button class="tkt"${tog} aria-expanded="${open}">${esc(x.title)}<i class="wst">★</i></button><a class="tkv vlink" href="${mapUrl(x)}" data-link="1" target="_blank" rel="noopener">${esc(venueLine(x))}</a>
+    <button class="tkt"${tog} aria-expanded="${open}">${esc(x.title)}<i class="wst">★</i></button><a class="tkv vlink" href="${mapUrl(x)}" data-link="1" target="_blank" rel="noopener">${esc(venueLine(x))}</a>${(() => { const pr = pressShort(x); return pr ? `<div class="tkv wpr">${esc(T.pressW)} : ${esc(pr)}</div>` : ""; })()}
     ${fr.length ? `<div class="tkw"><span class="stack">${fr.slice(0, 3).map(face).join("")}</span>${esc(T.alsoW(joinNames(fr.map((p) => p.name))))}</div>` : ""}
     ${open ? wishMore(x) : ""}
     <div class="pft"><button class="btn s${fr.length ? " k" : ""}" data-propose="${x.id}">${esc(fr.length === 1 ? T.proposeTo(fr[0].name) : T.proposeB)}</button></div></div></div>`;
 }
 const mapUrl = (x) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueOf(x).name + ", Berlin")}`;
+/** Ce qu'en dit la presse, en une ligne courte (sans liens : la fiche complète les a). */
+function pressShort(x) {
+  const f = facts(x), out = [];
+  if (f.rating) { const o = scoreVal(f.rating); out.push(`${scoreText(f.rating)}${o ? " " + o.src : ""}`); }
+  for (const l of f.meta.filter((m) => m.startsWith("📰"))) {
+    const t = l.replace(/^📰\s*/, "").replace(/<[^>]+>/g, "");
+    const nk = t.match(/Nachtkritik [★½☆]+/);
+    if (nk) out.push(nkScore(nk[0]).replace(/^Nachtkritik\s*(.*)$/, "$1 Nachtkritik"));
+    const bz = t.match(/Buzz\s*:\s*([^(·\n]+)/);
+    if (bz) out.push(bz[1].trim());
+  }
+  return out.join(" · ");
+}
 /** Pas encore de billet : la place qu'il prendra. */
 function offBar() {
   if (!st.offline) return "";
@@ -1631,7 +1644,7 @@ function item(x) {
   if (me.booked && s !== "seen") h += `<div class="dbk">🎟 ${esc(T.bookedT)} · ${esc(dayLabel(me.booked))} ${esc(me.booked.slice(11))}</div>`;
   // INFOS : seulement ce qu'on sait (jamais de durée ni de places inventées).
   const nkLink = (l) => { const m = l.match(/^(📰\s*)(Nachtkritik [★½☆]+)(.*)$/); const nc = (m && m[3].match(/(\d+)\s+(critiques|reviews)/)) || null;
-    return f.nkUrl && m ? `<a class="ul" href="${esc(f.nkUrl)}" data-link="1" target="_blank" rel="noopener">${esc(nkScore(m[2]).replace(/^Nachtkritik\s*/, ""))} · Nachtkritik ↗</a>${nc ? ` <span class="muted">(${esc(nc[0])})</span>` : ""}` : esc(nkScore(l.replace(/^📰\s*/, "")).split(" · Buzz")[0]); };
+    return f.nkUrl && m ? `<a class="ul" href="${esc(f.nkUrl)}" data-link="1" target="_blank" rel="noopener">${esc(nkScore(m[2]).replace(/^Nachtkritik\s*/, ""))} · Nachtkritik ↗</a>` : esc(nkScore(l.replace(/^📰\s*/, "")).split(" · Buzz")[0].replace(/\s*\(\d+ (sources?|critiques?|reviews?)\)/g, "")); };
   const strip = (l) => l.replace(/^\S+\s*/, "");
   const pick1 = (e) => (f.meta.find((l) => l.startsWith(e)) || "");
   const info = [];
@@ -1745,7 +1758,7 @@ function securityBlock() {
     const denied = "Notification" in window && Notification.permission === "denied";
     const can = pushSupported() && !(IOS && !STANDALONE);
     out += `<div class="fline"><div><b>🔔 ${esc(T.pushT)}</b><span>${esc(!can ? T.pushIos : denied ? T.pushDenied : st.pushHere ? T.pushOn : T.pushOff)}</span></div>
-      <div class="who">${can && !denied ? (st.pushHere ? `<button class="act" data-pushtest="1">${esc(T.pushTest)}</button><button class="act" data-pushoff="1">${esc(T.pushNo)}</button>` : `<button class="act" data-pushon="1">${esc(T.pushYes)}</button>`) : ""}</div></div>`;
+      <div class="who">${can && !denied ? (st.pushHere ? `<button class="act" data-pushoff="1">${esc(T.pushNo)}</button>` : `<button class="act" data-pushon="1">${esc(T.pushYes)}</button>`) : ""}</div></div>`;
   }
   return out ? dayHead(T.secT) + out : "";
 }
@@ -1779,7 +1792,6 @@ function accountPage(thNow) {
     const can = pushSupported() && !(IOS && !STANDALONE);
     sec.push(row(esc(T.notifL), esc(!can ? T.pushIosShort : denied ? T.pushDenied : st.pushHere ? T.notifOnSub : T.notifOffSub),
       can && !denied ? sw(st.pushHere, st.pushHere ? 'data-pushoff="1"' : 'data-pushon="1"') : sw(false, "", true)));
-    if (st.pushHere) sec.push(`<button class="rw" data-pushtest="1"><span class="rl">${esc(T.pushTest)}</span><span class="rc"><b class="chev">›</b></span></button>`);
   }
   if (PK_OK) {
     if (st.pks === undefined || st.pks === null) { if (!st.pkLoading) { st.pkLoading = true; api("passkey/list").then((j) => { st.pks = j.passkeys || []; }, () => { st.pks = []; }).finally(() => { st.pkLoading = false; render(); }); } }
