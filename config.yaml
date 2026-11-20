@@ -132,6 +132,11 @@ theaters:
     parser: english_theatre
     url: https://www.etberlin.de/calendar/
 
+  # Maison internationale (Mitte) : on garde ce qui se joue en anglais ou sans paroles : parsers/acud.py
+  - name: ACUD Theater
+    parser: acud
+    url: https://www.acud-theater.de/
+
   # --- Opéras & concerts (à la carte) -----------------------------------------
   # optional: true = lieu proposé dans /suivre mais PAS d'abonnement d'office
   # (géré côté Worker). Surtitres : voir src/parsers/opera.py.

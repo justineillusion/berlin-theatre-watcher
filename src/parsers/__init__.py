@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Callable, List
 
 from ..models import Show
-from . import (berliner_ensemble, chamaeleon, concerts, deutsches_theater, english_theatre, expos, festspiele, gorki,
+from . import (acud, berliner_ensemble, chamaeleon, concerts, deutsches_theater, english_theatre, expos, festspiele, gorki,
                hau, opera, philharmonie, schaubuehne, sophiensaele, staatsballett, volksbuehne)
 
 SOURCES: dict[str, Callable[[str], List[Show]]] = {
@@ -24,6 +24,7 @@ SOURCES: dict[str, Callable[[str], List[Show]]] = {
     "deutsches_theater": deutsches_theater.collect,
     "sophiensaele": sophiensaele.collect,
     "english_theatre": english_theatre.collect,
+    "acud": acud.collect,
     "staatsballett": staatsballett.collect,       # optional: true (danse, à la carte)
     # Opéras + concerts (optional: true dans config.yaml : pas d'abonnement d'office)
     "staatsoper": opera.staatsoper,
