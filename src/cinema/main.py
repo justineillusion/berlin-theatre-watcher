@@ -340,7 +340,7 @@ def compose(analysis: dict, cfg: dict, start: date, cinemas: Optional[List[str]]
         if (orig.key, lang) not in analysis["pitched"]:
             (make_pitch_en if lang == "en" else make_pitch)(orig)
             analysis["pitched"].add((orig.key, lang))
-        f.pitch, f.pitch_en, f.festival = orig.pitch, orig.pitch_en, orig.festival
+        f.pitch, f.pitch_en, f.festival, f.wiki_genres = orig.pitch, orig.pitch_en, orig.festival, orig.wiki_genres
     for f in overflow:
         f.rejected = "hors top (plafond max_films)"
 
@@ -385,7 +385,7 @@ def _own_card(f: Film, films: Dict[str, Film]) -> dict:
     propres, pour que ni l'affichage ni « nouvelles séances » ne parlent d'un
     cinéma qu'il ne suit pas."""
     full = films.get(f.item_id(), f)
-    f.pitch, f.pitch_en, f.festival = full.pitch, full.pitch_en, full.festival
+    f.pitch, f.pitch_en, f.festival, f.wiki_genres = full.pitch, full.pitch_en, full.festival, full.wiki_genres
     return {
         "text": film_card(f, "fr"), "line": film_line(f, "fr"),
         "text_en": film_card(f, "en"), "line_en": film_line(f, "en"),

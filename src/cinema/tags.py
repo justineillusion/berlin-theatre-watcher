@@ -3,6 +3,8 @@
 Genres : ceux des cinémas (Yorck / kinoheld, en allemand), sinon SensCritique (en français),
 ramenés à un petit vocabulaire commun, traduit fr / en.
 
+Sans genre côté cinéma ni SensCritique : la première phrase de l'article Wikipédia.
+
 Festival : lu dans l'introduction de l'article Wikipédia (anglais) du film — « It premiered at the
 2025 Cannes Film Festival, where it competed for the Palme d'Or ». On ne garde l'article que si
 l'année ET un réalisateur correspondent (sinon homonyme). Cache sur disque : une recherche par film,
@@ -60,6 +62,9 @@ def genres(film: Film, limit: int = 2) -> List[str]:
         k = _GENRE_KEYS.get(str(g).strip().lower())
         if k and k not in out:
             out.append(k)
+    # Rien côté cinéma ni SensCritique : la première phrase de Wikipédia (« a 2025 French comedy-drama film »).
+    if not out:
+        out = [k for k in (film.wiki_genres or []) if k in GENRE_LABELS]
     # « Drame » + « Comédie » côte à côte disent peu : la comédie suffit.
     if "comedy" in out and "drama" in out:
         out.remove("drama")
@@ -70,6 +75,34 @@ def genre_line(film: Film, lang: str) -> str:
     keys = genres(film)
     i = 1 if lang == "en" else 0
     return " · ".join(GENRE_LABELS[k][i] for k in keys)
+
+
+# « is a 2024 German psychological thriller film » : l'expression entre « is a(n) » et « film ».
+_WIKI_GENRES = [
+    ("doc", r"documentar"), ("animation", r"animated|animation"), ("comedy", r"comedy|comedic|satir"),
+    ("thriller", r"thriller"), ("horror", r"horror"), ("scifi", r"science[- ]fiction|sci-fi"),
+    ("fantasy", r"fantasy"), ("crime", r"crime|gangster|heist|noir"), ("war", r"\bwar\b"),
+    ("western", r"western"), ("musical", r"musical"), ("biopic", r"biographical|biopic"),
+    ("history", r"historical|period"), ("romance", r"romantic|romance"), ("action", r"action"),
+    ("adventure", r"adventure"), ("family", r"family|children's"), ("experimental", r"experimental|essay"),
+    ("drama", r"drama"),
+]
+
+
+def genres_from_intro(intro: str) -> List[str]:
+    first = re.split(r"(?<=\.)\s", (intro or "").strip(), maxsplit=1)[0]
+    m = re.search(r"\b(?:is|was) an? (.{0,120}?)\b(?:film|movie|documentary|short)\b", first, re.I)
+    if not m:
+        return []
+    phrase = m.group(1) + (" documentary" if re.search(r"documentary\s*$", m.group(0), re.I) else "")
+    hits = sorted((mm.start(), k) for k, pat in _WIKI_GENRES for mm in [re.search(pat, phrase, re.I)] if mm)
+    out: List[str] = []
+    for _, k in hits:
+        if k not in out:
+            out.append(k)
+    if "comedy" in out and "drama" in out:
+        out.remove("drama")
+    return out[:2]
 
 
 # --- Festivals -------------------------------------------------------------------------
@@ -141,11 +174,11 @@ def _lookup(client, title: str, year: Optional[int], directors: List[str]) -> Op
             continue
         if directors and not any(_plain(d).split()[-1] in low for d in directors if d.strip()):
             continue
-        return {"found": festival_from_text(intro, year), "page": hit["title"]}
+        return {"found": festival_from_text(intro, year), "page": hit["title"], "genres": genres_from_intro(intro)}
     return None
 
 
-def festivals(films: List[Film], budget_s: float = 90.0) -> Dict[str, Optional[dict]]:
+def festivals(films: List[Film], budget_s: float = 240.0) -> Dict[str, Optional[dict]]:
     """item_id -> info festival (ou None). Réseau seulement pour les films jamais cherchés."""
     cache = _load()
     out: Dict[str, Optional[dict]] = {}
@@ -153,8 +186,12 @@ def festivals(films: List[Film], budget_s: float = 90.0) -> Dict[str, Optional[d
     now = time.time()
     for f in films:
         c = cache.get(f.item_id())
-        if c and (c.get("found") or now - c.get("at", 0) < 30 * 86400):
+        # Article trouvé avant l'ajout des genres : on le relit une fois pour sa première phrase.
+        if c and "genres" not in c and c.get("page"):
+            c = None
+        if c and (c.get("found") or c.get("page") or now - c.get("at", 0) < 30 * 86400):
             out[f.item_id()] = c.get("found")
+            f.wiki_genres = c.get("genres") or []
         else:
             todo.append(f)
     if todo:
@@ -174,8 +211,10 @@ def festivals(films: List[Film], budget_s: float = 90.0) -> Dict[str, Optional[d
                     except Exception:  # noqa: BLE001 — Wikipédia lent / en panne : on réessaiera
                         continue
                     found = hit["found"] if hit else None
-                    cache[f.item_id()] = {"found": found, "at": now, "page": hit["page"] if hit else None}
+                    cache[f.item_id()] = {"found": found, "at": now, "page": hit["page"] if hit else None,
+                                          "genres": hit["genres"] if hit else []}
                     out[f.item_id()] = found
+                    f.wiki_genres = hit["genres"] if hit else []
             _CACHE.parent.mkdir(exist_ok=True)
             _CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=0))
         except Exception as exc:  # noqa: BLE001
