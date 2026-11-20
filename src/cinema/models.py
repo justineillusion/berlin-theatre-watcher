@@ -65,6 +65,7 @@ class Film:
     dropped_screenings: List[str] = field(default_factory=list)  # ex. séances en VF
     dubbed_release: bool = False     # le cinéma le passe aussi en VF (à n'importe quelle heure)
     unrated: bool = False            # aucune source n'a assez de votes pour juger
+    festival: Optional[dict] = None  # {"fest", "year", "prize"} (tags.festivals, Wikipédia)
 
     def item_id(self) -> str:
         """Id stable côté bot (items, boutons ⭐) : titre original normalisé + année.
