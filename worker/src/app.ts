@@ -517,7 +517,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     if (!recent) track(env, ctx, me.chat_id, "open", null, tgUser ? "telegram" : "web");
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
-  // Rafraîchissement en direct : la page demande l'empreinte toutes les 15 s (et au retour dans l'app), recharge si elle change.
+  // Rafraîchissement en direct : la page demande l'empreinte toutes les 60 s à 5 min selon l'activité (et au retour dans l'app), recharge si elle change.
   if (url.pathname === "/app/api/ping") return Response.json({ v: await pingStamp(env, me.chat_id) });
   if (url.pathname.startsWith("/app/api/proposal/")) {
     const what = url.pathname.slice("/app/api/proposal/".length), pid = String(body.pid ?? "");

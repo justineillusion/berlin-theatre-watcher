@@ -2882,7 +2882,12 @@ function syncThemeColor() {
   try { tgApp?.setHeaderColor(bg); tgApp?.setBackgroundColor(bg); } catch {}
 }
 syncThemeColor();
-setInterval(() => tick(), 15000);
+// Rafraîchissement économe : toutes les 60 s quand on vient de toucher l'app, toutes les 5 min sinon ;
+// tout de suite au retour dans l'app et à chaque notification (le service worker prévient). Rien quand l'app est en arrière-plan.
+let lastTouch = Date.now(), lastPing = Date.now();
+["click", "scroll", "keydown", "touchstart"].forEach((ev) => addEventListener(ev, () => { lastTouch = Date.now(); }, { passive: true, capture: true }));
+setInterval(() => { const now = Date.now(), every = now - lastTouch < 3 * 60e3 ? 60e3 : 5 * 60e3;
+  if (now - lastPing >= every) { lastPing = now; tick(); } }, 15000);
 window.addEventListener("online", () => { if (st.offline) tick(true); });
 /** Hors ligne : on lit (onglets, filtres, déplier une carte, liens), mais rien qui doive parler au serveur. */
 const OFF_OK = ["tab", "kind", "when", "tkopen", "wopen", "ptoggle", "shopen", "calshow", "cmo", "wkday", "npanel", "open", "tksyn", "propsfold", "settab", "themeset", "langset", "calfor", "dsec", "keep", "ffilt", "vpanel"];
@@ -2892,7 +2897,7 @@ document.addEventListener("click", (e) => {
   if (b.disabled || OFF_OK.some((k) => k in b.dataset) || b.classList.contains("tab") || b.id === "sbtn" || b.id === "sx") return;
   e.preventDefault(); e.stopImmediatePropagation(); notify(T.offNo);
 }, true);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { lastPing = Date.now(); tick(); } });
 if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener?.("message", (e) => { if (e.data && e.data.t === "refresh") tick(true); });
 // Ouvert par un lien de proposition : la page s'ouvre dessus une fois l'état chargé (compte ou sans compte).
 if (PROP_IN) { const wait = setInterval(() => { if (S) { clearInterval(wait); openProp(PROP_IN); } }, 150); setTimeout(() => clearInterval(wait), 20000); }
