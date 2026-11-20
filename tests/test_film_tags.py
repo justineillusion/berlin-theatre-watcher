@@ -26,3 +26,24 @@ def test_genres_from_wikipedia_first_sentence():
     assert genres_from_intro("Leica is a 2024 German documentary film about the camera.") == ["doc"]
     assert genres_from_intro("The Brutalist is a 2024 epic period drama film.") == ["history", "drama"]
     assert genres_from_intro("Berlin is the capital of Germany.") == []
+
+
+def test_series_name():
+    from src.cinema.tags import series_name
+    assert series_name("21. Around the World in 14 Films") == "Around the World in 14 Films"
+    assert series_name("Slow Sessions #4: First Cow") == "Slow Sessions"
+    assert series_name("Special Screening: Block 10") == ""
+    assert series_name("Preview: No Good Men") == "preview"
+    assert series_name("Französische Filmwoche 2026") == "Französische Filmwoche 2026"
+
+
+def test_weekend_matinee_kept():
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    from src.cinema.main import is_evening
+    from src.cinema.models import Screening
+    sat = Screening(cinema="Delphi LUX", start=datetime(2026, 11, 28, 16, 30, tzinfo=ZoneInfo("Europe/Berlin")), title="La Gradiva")
+    wed = Screening(cinema="Delphi LUX", start=datetime(2026, 11, 25, 16, 30, tzinfo=ZoneInfo("Europe/Berlin")), title="X")
+    assert is_evening(sat, "18:00", "14:00")
+    assert not is_evening(wed, "18:00", "14:00")
+    assert not is_evening(sat, "18:00")

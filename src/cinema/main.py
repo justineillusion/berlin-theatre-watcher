@@ -43,9 +43,11 @@ def load_config(path: Path = CONFIG_PATH) -> dict:
         return yaml.safe_load(fh) or {}
 
 
-def is_evening(s: Screening, evening_from: str) -> bool:
-    hh, mm = (int(x) for x in evening_from.split(":"))
+def is_evening(s: Screening, evening_from: str, weekend_from: str = "") -> bool:
+    """En semaine à partir de `evening_from` ; samedi et dimanche dès `weekend_from` (matinées)."""
     t = s.start.astimezone(_TZ)
+    frm = weekend_from if weekend_from and t.weekday() >= 5 else evening_from
+    hh, mm = (int(x) for x in frm.split(":"))
     return (t.hour, t.minute) >= (hh, mm) or t.hour < 4
 
 
@@ -77,6 +79,7 @@ def window(cfg: dict, start: date) -> dict:
 
 def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict[str, Optional[date]]]:
     evening_from = cfg.get("evening_from", "18:00")
+    weekend_from = cfg.get("weekend_from", "")
     screenings: List[Screening] = []
     dubbed: set = set()          # titres aussi programmés en VF allemande (toute heure)
     errors: List[str] = []
@@ -117,13 +120,13 @@ def collect(cfg: dict, win: dict) -> tuple[List[Screening], List[str], set, Dict
         later = [s for s in got if evening_day(s) > win["last"]]
         got = [s for s in got if evening_day(s) <= win["last"]]
         known_until[cin["name"]] = max((evening_day(s) for s in got), default=None)
-        screenings += [s for s in got if is_evening(s, evening_from) and not_too_late(s, cfg)]
+        screenings += [s for s in got if is_evening(s, evening_from, weekend_from) and not_too_late(s, cfg)]
         screenings += [s for s in later if s.live_music]   # au-delà de la semaine : ciné-concerts seulement, toute heure
         # Séries / festivals (semaine du ciné français…) : 2 semaines, mêmes règles de soirée. Les films
         # habituels restent à la semaine. App seulement (le récap Telegram ne garde que la semaine).
         ev_last = win["first"] + timedelta(days=event_days - 1)
         screenings += [s for s in later if s.event and not s.live_music and evening_day(s) <= ev_last
-                       and is_evening(s, evening_from) and not_too_late(s, cfg)]
+                       and is_evening(s, evening_from, weekend_from) and not_too_late(s, cfg)]
         dubbed |= {norm_title(s.original_title or s.title) for s in got if s.version == "DF"}
     return screenings, errors, dubbed, known_until
 

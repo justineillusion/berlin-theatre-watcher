@@ -298,12 +298,14 @@ def film_card(film: Film, lang: str = "fr") -> str:
     """Un message par film : titre (original + titre FR), année, réalisateur, ★ note liée,
     pitch, puis les séances de la semaine par cinéma."""
     lines = [f"🎬 {_names(film, True, lang)}"]
-    from .tags import festival_line, genre_line
-    g, fest = genre_line(film, lang), festival_line(film.festival, lang)
+    from .tags import festival_line, genre_line, series_line
+    g, fest, ser = genre_line(film, lang), festival_line(film.festival, lang), series_line(film, lang)
     if g:
         lines.append(f"🏷 {esc(g)}")
     if fest:
         lines.append(f"🏆 {esc(fest)}")
+    if ser:
+        lines.append(f"🎪 {esc(ser)}")
     lines += [f"📍 {x}" for x in _sessions(film, lang)]
     rating = _short_rating(film, True, lang)
     if rating != "★ ?":                    # pas de note connue : pas de ligne
