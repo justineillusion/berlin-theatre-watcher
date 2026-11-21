@@ -28,6 +28,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Dido & Aeneas",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
+  "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Sophiensæle",
   "title": "Antonia Baehr: Schreien (SCREAMING) II – Eine Forschungsreihe",
   "url": "https://sophiensaele.com/en/stueck/screaming-ii-eine-forschungsreihe",
@@ -370,30 +378,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Chamäleon Berlin",
-  "title": "Kintsugi",
-  "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
-  "opens": "2026-11-20",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Sophiensæle",
-  "title": "Unbestimmte Bewegung: daniel’s destruction",
-  "url": "https://sophiensaele.com/en/stueck/daniels-destruction",
-  "opens": "2026-11-20",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "L’incoronazione di Poppea",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
-  "opens": "2026-11-20",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "HAU Hebbel am Ufer",
   "title": "May Fall",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/aristide-rontini-skaanes-dansteater-may-fall/",
@@ -402,9 +386,9 @@
  },
  {
   "kind": "theatre",
-  "venue": "Deutsches Theater",
-  "title": "Polaris",
-  "url": "https://www.deutschestheater.de/en/program/productions/polaris",
+  "venue": "Chamäleon Berlin",
+  "title": "Kintsugi",
+  "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
   "opens": "2026-11-21",
   "aliases": []
  },
@@ -418,6 +402,14 @@
    "Die Marquise von O. und –",
    "The Marquise of O."
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Sophiensæle",
+  "title": "Unbestimmte Bewegung: daniel’s destruction",
+  "url": "https://sophiensaele.com/en/stueck/daniels-destruction",
+  "opens": "2026-11-21",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -461,6 +453,22 @@
   "venue": "Volksbühne",
   "title": "Mononoke",
   "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261122-1700/",
+  "opens": "2026-11-22",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsches Theater",
+  "title": "Polaris",
+  "url": "https://www.deutschestheater.de/en/program/productions/polaris",
+  "opens": "2026-11-22",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "L’incoronazione di Poppea",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
   "opens": "2026-11-22",
   "aliases": []
  },
@@ -535,14 +543,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Alles Glück der Welt",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261125-1830/",
-  "opens": "2026-11-25",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsches Theater",
   "title": "Die drei Leben der Hannah Arendt (The Three Escapes of Hannah Arendt)",
   "url": "https://www.deutschestheater.de/en/program/productions/die-drei-leben-der-hannah-arendt",
@@ -566,6 +566,14 @@
   "title": "Faux Real + Dance Arts Center + The Nightclubs",
   "url": "https://www.urbanspree.com/program/concerts/faux-real-urban-spree-berlin.html",
   "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Alles Glück der Welt",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261126-1900/",
+  "opens": "2026-11-26",
   "aliases": []
  },
  {
@@ -656,14 +664,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Tosca",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
-  "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Madama Butterfly",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
@@ -696,14 +696,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Die Zauberflöte",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
-  "opens": "2026-11-29",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Schaubühne",
   "title": "Bad Kingdom",
   "url": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
@@ -723,9 +715,17 @@
  },
  {
   "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Tosca",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
+  "opens": "2026-12-02",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Saba Lou (bln, r'n'b / soul / songwriter) Rec Release!",
-  "url": "https://www.schokoladen-mitte.de/?page=2#e20261202",
+  "url": "https://www.schokoladen-mitte.de/#e20261202",
   "opens": "2026-12-02",
   "aliases": []
  },
@@ -742,6 +742,14 @@
   "venue": "Maxim Gorki Theater",
   "title": "The Hearing Trumpet",
   "url": "https://www.gorki.de/en/the-hearing-trumpet",
+  "opens": "2026-12-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Die Zauberflöte",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
   "opens": "2026-12-03",
   "aliases": []
  },
@@ -833,7 +841,7 @@
  {
   "kind": "theatre",
   "venue": "Schokoladen",
-  "title": "The Magic Touch feat. The Floorettes",
+  "title": "The Magic Touch feat. The Floorettes - Ladies",
   "url": "https://www.schokoladen-mitte.de/?page=2#e20261205",
   "opens": "2026-12-05",
   "aliases": []
@@ -1248,7 +1256,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Sempf (pop-punk/ HH) + Bistro 11 (PopPunk/CollegeRock/ Bln)",
-  "url": "https://www.schokoladen-mitte.de/?page=4#e20261228",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261228",
   "opens": "2026-12-28",
   "aliases": [
    "Sempf",
@@ -1443,7 +1451,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "MIGHT (Doom/Sludge/Post-Noir, Hannover) + Alphatrip (Psychedelic Post-Rock, Berlin)",
-  "url": "https://www.schokoladen-mitte.de/?page=5#e20270114",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20270114",
   "opens": "2027-01-14",
   "aliases": [
    "MIGHT",
@@ -1644,7 +1652,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "KULK (Noise-Rock/Sludge, Norwich/UK) + tba",
-  "url": "https://www.schokoladen-mitte.de/?page=6#e20270204",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270204",
   "opens": "2027-02-04",
   "aliases": []
  },
@@ -1866,7 +1874,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "HERBST IN PEKING (dub post punk / bln) + TJ WHITE RABBIT (dub witch house / bln)",
-  "url": "https://www.schokoladen-mitte.de/?page=7#e20270220",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270220",
   "opens": "2027-02-20",
   "aliases": [
    "HERBST IN PEKING",
@@ -2124,7 +2132,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Jamie Perrett (post-punk/indie singer-songwriter, uk)",
-  "url": "https://www.schokoladen-mitte.de/?page=8#e20270322",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270322",
   "opens": "2027-03-22",
   "aliases": [
    "Jamie Perrett",
@@ -2560,7 +2568,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Dosenstolz (Punk/Dresden) + Eddie (Punk/Neuruppin)",
-  "url": "https://www.schokoladen-mitte.de/?page=9#e20270604",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270604",
   "opens": "2027-06-04",
   "aliases": [
    "Dosenstolz",
