@@ -28,14 +28,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Dido & Aeneas",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
-  "opens": "2026-11-25",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Sophiensæle",
   "title": "Antonia Baehr: Schreien (SCREAMING) II – Eine Forschungsreihe",
   "url": "https://sophiensaele.com/en/stueck/screaming-ii-eine-forschungsreihe",
@@ -413,14 +405,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "La Calisto",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-calisto.27274/",
-  "opens": "2026-11-21",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "Around the World in 80 Days",
   "url": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
@@ -539,17 +523,6 @@
   "aliases": [
    "Die Blechtrommel",
    "The Tin Drum"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Deutsches Theater",
-  "title": "Die drei Leben der Hannah Arendt (The Three Escapes of Hannah Arendt)",
-  "url": "https://www.deutschestheater.de/en/program/productions/die-drei-leben-der-hannah-arendt",
-  "opens": "2026-11-25",
-  "aliases": [
-   "Die drei Leben der Hannah Arendt",
-   "The Three Escapes of Hannah Arendt"
   ]
  },
  {
