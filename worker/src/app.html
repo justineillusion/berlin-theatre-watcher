@@ -779,7 +779,7 @@ const L = {
         badCode:(n) => `Code incorrect${n > 0 ? ` (encore ${n} essai${n > 1 ? "s" : ""})` : ""}.`, codeExpired:"Code expiré : redemande-en un.", unknownEmail:"Cette adresse n'est liée à aucun compte. Connecte-toi d'abord autrement, puis ajoute-la dans Réglages → Compte.", tooMany:"Trop de demandes : réessaie dans quelques minutes.", badEmail:"Adresse invalide.",
         setTabs:{ venues:"Lieux", friends:"Amis", account:"Compte", admin:"Admin" }, copyLink:"Copier", addFriendT:"Ajouter un ami", handlePh:"@pseudo", addBtn:"Ajouter", myHandle:(h) => `Ton pseudo : @${h}`, handleT:"Mon pseudo", handleHint:"Pour qu'on t'ajoute en ami.", handleTaken:"Ce pseudo est déjà pris.", badHandle:"3 à 20 caractères : lettres, chiffres, _ ou .", noHandle:"Personne avec ce pseudo.", reqSentTo:"Demande envoyée : elle doit l'accepter.", alreadyF:"Vous êtes déjà amis.", nowF:"Vous êtes maintenant amis.", addHow:"La personne reçoit ta demande et doit l'accepter.", backFriends:"← Mes amis", fvBooked:"Réservé", fvWish:"Envies", fvSeen:"Vu", fvEmpty:(n) => `${n} n'a encore rien mis en 🙋.`, seeWhat:"voir ses envies", shareShort:"Partager ↗", inviteHow:"Ton ami·e ouvre le lien, donne son prénom et son email : vous êtes connectés.",
         cropT:"Cadre ta photo", planIt:"Organiser", planNote:"On y va ensemble ? Quel jour te va ?", forYou:"Pour toi", dismiss:"Retirer", dismissAll:"Tout effacer", inboxT:"Notifications", close:"Fermer", inboxEmpty:"Rien pour l'instant. Quand un ami t'envoie une sortie ou te prend une place, ça arrive ici.",
-        nShare:(n, t) => `${n} t'envoie ${t}`, nBooked:(n, t, w) => `🎟 ${n} t'a ajouté·e : ${t}${w ? `, ${w}` : ""}`, nRequest:(n) => `${n} veut être ton ami·e`, nOk:(n) => `${n} a accepté ta demande`,
+        nShare:(n, t) => `${n} t'envoie ${t}`, nBooked:(n, t, w) => `🎟 ${n} t'a ajouté·e : ${t}${w ? `, ${w}` : ""}`, nRequest:(n) => `${n} veut être ton ami·e`, nOk:(n) => `${n} a accepté ta demande`, nReq:(n) => `${n} veut t'ajouter en ami·e`,
         ignoreReq:"Ignorer", now:"à l'instant", minAgo:(m) => `il y a ${m} min`, hAgo:(h) => `il y a ${h} h`, dAgo:(d) => `il y a ${d} j`,
         fbVenueT:"Un lieu manque ?", fbVenuePh:"Son nom, et le lien si tu l'as", fbT:"Une idée, un souci ?", fbPh:"Dis-moi tout", fbSend:"Envoyer", fbThanks:"Merci, c'est transmis.", photoT:"Ma photo", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
@@ -804,7 +804,7 @@ const L = {
         badCode:(n) => `Wrong code${n > 0 ? ` (${n} more tr${n > 1 ? "ies" : "y"})` : ""}.`, codeExpired:"Code expired: ask for a new one.", unknownEmail:"This address isn't linked to any account. Sign in another way first, then add it in Settings → Account.", tooMany:"Too many requests: try again in a few minutes.", badEmail:"Invalid address.",
         setTabs:{ venues:"Venues", friends:"Friends", account:"Account", admin:"Admin" }, copyLink:"Copy", addFriendT:"Add a friend", handlePh:"@username", addBtn:"Add", myHandle:(h) => `Your username: @${h}`, handleT:"My username", handleHint:"So friends can add you.", handleTaken:"This username is taken.", badHandle:"3 to 20 characters: letters, digits, _ or .", noHandle:"Nobody with that username.", reqSentTo:"Request sent: they need to accept it.", alreadyF:"You're already friends.", nowF:"You're now friends.", addHow:"They get your request and need to accept it.", backFriends:"← My friends", fvBooked:"Booked", fvWish:"Wishlist", fvSeen:"Seen", fvEmpty:(n) => `${n} hasn't starred anything yet.`, seeWhat:"see their picks", shareShort:"Share ↗", inviteHow:"Your friend opens the link, enters a name and email: you're connected.",
         cropT:"Frame your photo", planIt:"Plan it", planNote:"Shall we go together? Which day works?", forYou:"For you", dismiss:"Dismiss", dismissAll:"Clear all", inboxT:"Notifications", close:"Close", inboxEmpty:"Nothing yet. When a friend sends you an outing or books you a seat, it lands here.",
-        nShare:(n, t) => `${n} sent you ${t}`, nBooked:(n, t, w) => `🎟 ${n} added you: ${t}${w ? `, ${w}` : ""}`, nRequest:(n) => `${n} wants to be friends`, nOk:(n) => `${n} accepted your request`,
+        nShare:(n, t) => `${n} sent you ${t}`, nBooked:(n, t, w) => `🎟 ${n} added you: ${t}${w ? `, ${w}` : ""}`, nRequest:(n) => `${n} wants to be friends`, nOk:(n) => `${n} accepted your request`, nReq:(n) => `${n} wants to add you as a friend`,
         ignoreReq:"Ignore", now:"just now", minAgo:(m) => `${m} min ago`, hAgo:(h) => `${h} h ago`, dAgo:(d) => `${d} d ago`,
         fbVenueT:"A venue missing?", fbVenuePh:"Its name, and a link if you have one", fbT:"An idea, a problem?", fbPh:"Tell me everything", fbSend:"Send", fbThanks:"Thanks, it's on its way.", photoT:"My photo", photoAdd:"Add a photo", photoChange:"Change", photoDel:"Remove", badPhoto:"Couldn't read that image.", nameT:"My name", nameHint:"What your friends see.", editName:"Edit",
         emailT:"Sign-in email", emailHint:"To sign in: we send you a code there.", emailNone:"None", editEmail:"Edit", addEmail:"Add my email", emailTaken:"This address is already linked to another account.", removeEmail:"Remove", orTelegram:"or", catOn:"Follow all", catOff:"Follow none" },
@@ -2043,6 +2043,12 @@ function newsPanel() {
     : `<p class="hint">${esc(T.noNews)}</p>`;
   return h + `</div>`;
 }
+/** Mes sorties, tout en haut : les demandes d'ami à accepter (sinon on ne les voyait que dans Réglages → Amis). */
+function reqRows() {
+  const inc = (S && !S.guest && S.circle?.incoming) || [];
+  return inc.map((p) => `<div class="note-row unread">${avatar(S.photos && S.photos[p.id], p.name, "avmid", p.id)}
+    <div><div>${T.nReq(`<b>${esc(p.name)}</b>`)}</div><div class="acts"><button class="act on" data-friend="accept" data-id="${p.id}">${esc(T.accept)}</button><button class="act" data-friend="ignore" data-id="${p.id}">${esc(T.ignoreR)}</button></div></div></div>`).join("");
+}
 /** Mes sorties, tout en haut : les nouvelles (réponses, réservations, amis…). Repliable ; ouverte quand il y a du neuf. */
 function newsSection() {
   const ns = newsOf(); if (!ns.length) return "";
@@ -2094,7 +2100,9 @@ function friendsSection() {
       `<div class="fline"><button class="fname" data-friendview="${p.id}">${avatar(S.photos && S.photos[p.id], p.handle || p.name, "avmid", p.id)}<div><b>${esc(p.name)}</b><span>${esc(T.seeWhat)} ›</span></div></button><div class="who">${
         st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true) : `<button class="act" data-askremove="${p.id}">${esc(T.removeF)}</button>`}</div></div>`).join("")
     : `<p class="hint">${esc(T.noFriends)}</p>`);
-  h += c.outgoing.map((p) => line(p.name, T.pendingR, btn("remove", p.id, T.cancelR))).join("");
+  // Annuler ma demande : confirmé d'un second tap (un tap de trop l'annulait sans que l'autre la voie jamais).
+  h += c.outgoing.map((p) => line(p.name, T.pendingR, st.confirmRemove === p.id ? btn("remove", p.id, T.sure, true)
+    : `<button class="act" data-askremove="${p.id}">${esc(T.cancelR)}</button>`)).join("");
   h += dayHead(T.inviteT) + `<code class="invlink">${esc(S.invite || "")}</code>
     <div class="acts"><button class="act on" data-invite="1">${esc(T.shareShort)}</button><button class="act" data-copyinvite="1">${esc(T.copyLink)}</button></div>`;
   // Amis d'amis : discret, replié tout en bas.
@@ -2270,9 +2278,9 @@ function render() {
   let seenK; try { seenK = new Set(JSON.parse(lsGet("seenWait") || "[]")); } catch { seenK = new Set(); }
   if (st.tab === "mine" && !st.prop && waitK.some((k) => !seenK.has(k))) { waitK.forEach((k) => seenK.add(k)); lsSet("seenWait", JSON.stringify([...seenK].slice(-300))); }
   const unread = waitK.filter((k) => !seenK.has(k)).length + (st.tab === "mine" ? 0 : newsOf().filter((n) => !n.read_at).length);
-  const reqs = S ? (S.circle?.incoming || []).length : 0;
+  const reqs = S && !S.guest ? (S.circle?.incoming || []).length : 0;
   document.querySelectorAll(".tab").forEach((b, i) => {
-    const n = b.dataset.tab === "mine" ? unread : b.dataset.tab === "set" ? reqs : 0;
+    const n = b.dataset.tab === "mine" ? unread + reqs : b.dataset.tab === "set" ? reqs : 0;
     b.innerHTML = (b.dataset.tab === "set" && S?.photo ? `<img class="tabav" src="${S.photo}" alt="">` : "") + esc(T.tabs[i]) + (n ? `<i class="tabn">${n > 9 ? "9+" : n}</i>` : "");
     b.setAttribute("aria-selected", b.dataset.tab === st.tab);
   });
@@ -2394,7 +2402,7 @@ function render() {
     $("nshow").textContent = T.nShows(nShown); $("nshow").hidden = false;
   } else {
     h = mineSections(xs); $("nshow").hidden = true;
-    const news = newsSection();
+    const news = reqRows() + newsSection();
     list.innerHTML = offBar() + news + (h || (news ? "" : `<div class="empty">${esc(T.emptyMine)}</div>`));
     if (newsOf().some((n) => !n.read_at)) markRead();
     // la barre se colle sous l'en-tête (lui aussi collant), jamais dessous

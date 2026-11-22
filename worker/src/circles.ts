@@ -148,6 +148,8 @@ export async function ignoreFriend(env: Env, me: number, from: number): Promise<
 export async function removeFriend(env: Env, me: number, other: number): Promise<void> {
   const [a, b] = pair(me, other);
   await env.DB.prepare("DELETE FROM connections WHERE a = ? AND b = ?").bind(a, b).run();
+  // Demande annulée : elle disparaît aussi de chez l'autre.
+  await env.DB.prepare("DELETE FROM notifications WHERE kind = 'friend_request' AND ((chat_id = ?1 AND from_id = ?2) OR (chat_id = ?2 AND from_id = ?1))").bind(me, other).run();
 }
 
 /** Boutons ✓ / ✖ d'une demande reçue en privé. Renvoie true si `data` était pour nous. */
