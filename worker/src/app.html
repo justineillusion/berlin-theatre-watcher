@@ -722,6 +722,8 @@ html{background:var(--bg)}
    trop étroit, le second passe à la ligne. */
 .dmain,.item.open .dmain{display:flex;flex-wrap:wrap;gap:8px}
 .dmain .act,.item.open .dmain .act{flex:1 1 auto;white-space:nowrap;overflow:visible;text-overflow:clip}
+/* Créneaux d'une proposition : sur un écran étroit, « Confirmer » passe à la ligne au lieu de sortir de l'écran. */
+.psr{flex-wrap:wrap}.psr b{min-width:0;flex:1 1 120px}.psr .btn{flex:0 0 auto;max-width:100%;white-space:normal}
 </style>
 </head>
 <body>
@@ -935,6 +937,7 @@ async function api(path, extra = {}) {
   }
   const headers = { "content-type":"application/json" };
   if (WEB && TOKEN) headers.authorization = "Bearer " + TOKEN;
+  if (path === "state") extra = { ...extra, mode: navigator.standalone || window.matchMedia?.("(display-mode: standalone)").matches ? "home" : "browser" };   // app d'écran d'accueil ou navigateur (stats « open »)
   const r = await fetch(API_BASE + "/app/api/" + path, { method:"POST", headers, body: JSON.stringify({ ...(INIT ? { initData: INIT } : {}), focus: FOCUS, ...extra }) });
   const j = await r.json().catch(() => ({}));
   // Opéras et concerts (lieux « à la carte ») : rangés à part, filtre « Musique ».

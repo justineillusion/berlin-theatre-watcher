@@ -546,7 +546,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
   const focus = /^[\w-]{1,40}$/.test(String(body.focus ?? "")) ? String(body.focus) : "";
   if (url.pathname === "/app/api/state") {
     const recent = await env.DB.prepare("SELECT 1 FROM events WHERE chat_id = ? AND name = 'open' AND at > datetime('now', '-30 minutes')").bind(me.chat_id).first();
-    if (!recent) track(env, ctx, me.chat_id, "open", null, tgUser ? "telegram" : "web");
+    if (!recent) track(env, ctx, me.chat_id, "open", null, tgUser ? "telegram" : body.mode === "home" ? "web_home" : body.mode === "browser" ? "web_browser" : "web");
     return Response.json(await state(env, me.chat_id, asLang(me.lang), focus));
   }
   // Rafraîchissement en direct : la page demande l'empreinte toutes les 60 s à 5 min selon l'activité (et au retour dans l'app), recharge si elle change.
