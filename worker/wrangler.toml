@@ -14,6 +14,15 @@ crons = ["*/15 * * * *"]
 [vars]
 # À remplir : ton chat_id (= TELEGRAM_CHAT_ID actuel) et le @ du bot, sans @.
 OWNER_CHAT_ID = "2128088613"
+# Mes autres comptes (Justinetest, compte travail) : exclus des stats avec « Sans moi ».
+OWNER_ALT_IDS = "1000000009722454,1000000016392564"
+# 💾 Suivi du stockage (Stats → Stockage, alerte Telegram) : compte et base D1. Lignes lues/écrites par jour : poser le
+# secret CF_API_TOKEN (jeton « Account Analytics : Read »). Limites du forfait gratuit, à changer si passage au payant.
+CF_ACCOUNT_ID = "0be7b668e96a96a6348abc8b0c73a193"
+D1_DATABASE_ID = "7602c36b-2c7b-4168-954d-892f1eac3c31"
+D1_LIMIT_MB = "500"
+D1_READS_DAY = "5000000"
+D1_WRITES_DAY = "100000"
 BOT_USERNAME = "Justine_theatre_bot"
 # Nom court de la mini-app (BotFather /newapp) : t.me/<bot>/<nom>?startapp=<fiche>
 APP_SHORT_NAME = "Programme"

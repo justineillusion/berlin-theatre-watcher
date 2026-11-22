@@ -11,6 +11,13 @@ export interface Env {
   API_TOKEN: string;       // partagé avec le scraper GitHub Actions (secret)
   WEBHOOK_SECRET: string;  // vérifie que les updates viennent bien de Telegram (secret)
   OWNER_CHAT_ID: string;   // ton chat_id : admin du bot
+  CF_API_TOKEN?: string;   // secret (« Account Analytics : Read ») : lignes lues/écrites par jour sur D1
+  CF_ACCOUNT_ID?: string;
+  D1_DATABASE_ID?: string;
+  D1_LIMIT_MB?: string;     // limites du forfait (défaut : gratuit)
+  D1_READS_DAY?: string;
+  D1_WRITES_DAY?: string;
+  OWNER_ALT_IDS?: string;  // tes autres comptes (test, travail), séparés par des virgules : hors stats « Sans moi »
   BOT_USERNAME: string;    // sans @, pour le lien d'invitation
   APP_SHORT_NAME?: string; // mini-app (BotFather), défaut « Programme »
   TG_API?: string;         // tests uniquement (faux Telegram local)

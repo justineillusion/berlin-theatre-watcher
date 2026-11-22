@@ -31,7 +31,7 @@ import { DISTRICT } from "./districts";
 import { pushCount, pushTo, subscribe, unsubscribe } from "./push";
 import { listPasskeys, loginOptions, loginVerify, registerOptions, registerVerify, removePasskey } from "./passkeys";
 import { LOGOS } from "./web/logos";
-import { logError, recentErrors } from "./monitor";
+import { logError, recentErrors, storageReport } from "./monitor";
 import { PROP_RE, claimGuest, slotLabel, syncBooked, answerProposal, cancelProposal, addToProposal, createProposal, deleteGroup, getProposal, guestAnswer, myGroups, myProposals, pingStamp, publicProposal, saveGroup, setProposal } from "./proposals";
 
 const enc = new TextEncoder();
@@ -1160,13 +1160,32 @@ async function adminExplore(env: Env) {
     env.DB.prepare(`SELECT s.chat_id, s.venue_id FROM subscriptions s`).all<any>(),
     env.DB.prepare(`SELECT at, src, kind, path, status, ms, msg, who FROM app_errors WHERE at > datetime('now', '-30 days') ORDER BY id DESC LIMIT 2000`).all<any>(),
   ]);
+  // Notifications, Face ID, Google : par personne (comptes, pas les clés elles-mêmes).
+  const [push, pk, logins] = await Promise.all([
+    env.DB.prepare("SELECT chat_id, COUNT(*) n FROM push_subs GROUP BY chat_id").all<any>(),
+    env.DB.prepare("SELECT chat_id, COUNT(*) n FROM passkeys GROUP BY chat_id").all<any>(),
+    env.DB.prepare("SELECT chat_id, name, MIN(at) first FROM events WHERE name IN ('signup', 'login_google', 'login') AND chat_id IS NOT NULL GROUP BY chat_id, name").all<any>(),
+  ]);
+  const pushN = new Map(push.results.map((r: any) => [r.chat_id, r.n])), pkN = new Map(pk.results.map((r: any) => [r.chat_id, r.n]));
+  const first = new Map<number, Record<string, string>>();
+  for (const r of logins.results) (first.get(r.chat_id) ?? first.set(r.chat_id, {}).get(r.chat_id)!)[r.name] = r.first;
+  // Inscription : Telegram (id bot), Google (connexion Google dans la minute de l'inscription), sinon email ;
+  // inscrit·e avant le suivi (10 nov.) : inconnu.
+  const via = (u: any) => {
+    if (u.chat_id < WEB_ID_BASE) return "telegram";
+    const f = first.get(u.chat_id) || {};
+    if (!f.signup) return f.login_google && !f.login ? "google" : null;
+    return f.login_google && Math.abs(Date.parse(f.login_google + "Z") - Date.parse(f.signup + "Z")) < 120e3 ? "google" : "email";
+  };
   const uid = new Map<number, string>(users.results.map((u: any, i: number) => [u.chat_id, `u${i + 1}`]));
   const U = (c: any) => (c == null ? null : uid.get(Number(c)) ?? "?");
   const has = (t: string, re: RegExp) => re.test(t);
   return {
     now: new Date().toISOString(), owner: U(owner),
+    mine: [owner, ...String(env.OWNER_ALT_IDS || "").split(",").map((x) => Number(x.trim())).filter(Boolean)].map(U).filter((x) => x && x !== "?"),
     users: users.results.map((u: any) => ({ id: U(u.chat_id), name: u.first_name, handle: u.handle, lang: u.lang, active: !!u.active, pending: !!u.pending,
-      joined: u.joined_at, seen: u.seen_at || null, web: u.chat_id >= WEB_ID_BASE, photo: !!u.photo, invitedBy: U(u.invited_by) })),
+      joined: u.joined_at, seen: u.seen_at || null, web: u.chat_id >= WEB_ID_BASE, photo: !!u.photo, invitedBy: U(u.invited_by),
+      push: pushN.get(u.chat_id) ?? 0, faceId: pkN.get(u.chat_id) ?? 0, via: via(u), google: !!first.get(u.chat_id)?.login_google })),
     events: events.results.map((e: any) => [U(e.chat_id), e.name, e.item_id, e.target, e.at]),
     items: items.results.map((r: any) => {
       const t = String(r.text || "");
@@ -1179,6 +1198,9 @@ async function adminExplore(env: Env) {
     reactions: reac.results.map((r: any) => [U(r.chat_id), r.item_id, r.interested, r.status, r.rating, r.booked_at, r.updated_at]),
     subs: subs.results.map((s: any) => [U(s.chat_id), s.venue_id]),
     errors: errors.results,
+    storage: await storageReport(env).catch(() => null),
+    // En ligne en ce moment : app ouverte (requête au serveur) dans les 5 dernières minutes.
+    live: (await env.DB.prepare("SELECT chat_id FROM users WHERE app_seen_at > datetime('now', '-5 minutes')").all<{ chat_id: number }>()).results.map((r) => U(r.chat_id)),
   };
 }
 

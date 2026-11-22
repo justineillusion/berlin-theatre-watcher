@@ -611,6 +611,7 @@ await step("surveillance : bug vu sur un téléphone + requête refusée → not
   assert.match(alert.text, /^🚨[^\n]*\n• 🐞 Bug dans l'app/); assert.match(alert.text, /x is undefined/);
   const adm = (await post("/app/api/admin", { initData: me })).json;
   assert.ok(adm.errors.some((e) => e.kind === "js" && e.src === "client"), JSON.stringify(adm.errors));
+  assert.ok(adm.errors.some((e) => e.kind === "4xx" && e.who && /^@/.test(e.who)), "requête refusée : on sait qui " + JSON.stringify(adm.errors));
   calls.length = 0;
   await fetch(`${W}/__scheduled?cron=*/15+*+*+*+*`);
   await new Promise((ok) => setTimeout(ok, 1000));

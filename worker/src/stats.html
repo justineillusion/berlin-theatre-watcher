@@ -94,7 +94,7 @@ td a { color: var(--accent); text-decoration: none; }
     <h1><a href="/app">Berlin Encore!</a> · Stats</h1>
     <span class="sp"></span>
     <div class="chips" id="period"></div>
-    <button class="chip" id="meBtn" aria-pressed="true" title="Ne pas compter mes propres clics">Sans moi</button>
+    <button class="chip" id="meBtn" aria-pressed="true" title="Ne pas compter mes comptes (perso, test, travail)">Sans moi</button>
   </div>
   <nav id="tabs" role="tablist"></nav>
 </header>
@@ -110,7 +110,7 @@ let TOKEN = ""; try { TOKEN = localStorage.getItem("be_session") || ""; } catch 
 let D = null;
 const st = { tab: "usage", days: 30, noMe: true, ev: null, user: null, kind: "all", miss: [], venue: "", q: "", sort: {}, errKind: "all" };
 try { Object.assign(st, JSON.parse(sessionStorage.getItem("stats") || "{}")); } catch {}
-const save = () => { try { sessionStorage.setItem("stats", JSON.stringify({ tab: st.tab, days: st.days, noMe: st.noMe })); } catch {} };
+const save = () => { try { sessionStorage.setItem("stats", JSON.stringify({ tab: st.tab, days: st.days, noMe: st.noMe, pct: st.pct })); } catch {} };
 
 const EV = { open: "Ouverture de l'app", link_out: "Lien externe cliqué", venue_toggle: "Lieu suivi / plus suivi", venue_kind_toggle: "Type de lieux suivi", filter: "Filtre utilisé",
   login: "Connexion", login_google: "Connexion Google", want: "★ Envie", unwant: "Envie retirée", not_for_me: "🙅 Pas pour moi", lang: "Langue changée", share: "💌 Envoi à un ami",
@@ -131,17 +131,19 @@ async function load() {
   if (r.status === 403) return fail("Cette page est réservée à l'admin.");
   if (!r.ok) return fail("Erreur " + r.status);
   D = await r.json();
+  D.me = new Set(D.mine || [D.owner]);
   D.uById = new Map(D.users.map((u) => [u.id, u]));
   D.itemById = new Map(D.items.map((x) => [x.id, x]));
   render();
 }
 function fail(m) { $("#main").innerHTML = `<div class="msg">${esc(m)}<br><br><a href="/app">Ouvrir l'app</a></div>`; }
+const isMe = (id) => !!id && D.me.has(id);
 const who = (id) => { const u = D.uById.get(id); return u ? u.name + (u.handle ? " @" + u.handle : "") : id ? "?" : "anonyme"; };
 const dayKey = (at) => String(at).slice(0, 10);
 function sinceKey(days) { return new Date(Date.now() - days * 864e5).toISOString().slice(0, 19).replace("T", " "); }
 function evs() {
   const s = sinceKey(st.days);
-  return D.events.filter((e) => e[4] >= s && !(st.noMe && e[0] === D.owner));
+  return D.events.filter((e) => e[4] >= s && !(st.noMe && isMe(e[0])));
 }
 function daysList(n) { const out = []; for (let i = n - 1; i >= 0; i--) out.push(new Date(Date.now() - i * 864e5).toISOString().slice(0, 10)); return out; }
 
@@ -151,15 +153,17 @@ function showTip(e, html) { tip.innerHTML = html; tip.style.display = "block"; c
 document.addEventListener("mousemove", (e) => { const t = e.target.closest?.("[data-tip]"); if (t) showTip(e, t.dataset.tip); else tip.style.display = "none"; });
 document.addEventListener("touchstart", (e) => { const t = e.target.closest?.("[data-tip]"); if (t) { const p = e.touches[0]; showTip({ clientX: p.clientX, clientY: p.clientY }, t.dataset.tip); } else tip.style.display = "none"; }, { passive: true });
 
+const short = (v) => v >= 1e6 ? (v / 1e6).toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " M" : v >= 1e4 ? Math.round(v / 1e3) + " k" : v >= 1e3 ? (v / 1e3).toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " k" : String(v);
 /** Barres par jour (une série) : axe 0 → max arrondi, 3 lignes de grille, étiquettes de dates espacées. */
 function dayBars(series, label) {
-  const W = Math.max(280, Math.min(1140, ($("#main").clientWidth || 640) - 64)), H = 160, L = 28, B = 22, T = 6, n = series.length;
+  const W = Math.max(280, Math.min(1140, ($("#main").clientWidth || 640) - 64)), H = 160, L = 38, B = 22, T = 6, n = series.length;
   const max = Math.max(1, ...series.map((s) => s.v));
-  const step = max <= 4 ? 1 : Math.ceil(max / 4 / (max > 40 ? 10 : 1)) * (max > 40 ? 10 : 1);
+  // Pas « rond » (1, 2, 5 × 10ⁿ) pour ~4 graduations ; libellés courts (12 k, 1,2 M).
+  const raw = Math.max(1, max / 4), mag = 10 ** Math.floor(Math.log10(raw)), step = [1, 2, 5, 10].map((m) => m * mag).find((x) => x >= raw);
   const top = Math.ceil(max / step) * step;
   const y = (v) => T + (H - T - B) * (1 - v / top), bw = (W - L) / n, gap = n > 60 ? 1 : 2;
   let g = "";
-  for (let v = 0; v <= top; v += step) g += `<line class="gl" x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L - 4}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
+  for (let v = 0; v <= top; v += step) g += `<line class="gl" x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L - 4}" y="${y(v) + 3}" text-anchor="end">${short(v)}</text>`;
   const every = Math.ceil(n / Math.max(3, Math.floor(W / 80)));
   series.forEach((s, i) => {
     const x = L + i * bw, h = y(0) - y(s.v), d = new Date(s.d + "T12:00:00Z");
@@ -189,22 +193,31 @@ const ago = (at) => { if (!at) return "—"; const d = (Date.now() - Date.parse(
 const dshort = (at) => at ? new Date(String(at).replace(" ", "T") + (String(at).length > 10 ? "Z" : "T12:00:00Z")).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : "—";
 
 // --- onglets -------------------------------------------------------------
-const TABS = [["usage", "Usage"], ["people", "Personnes"], ["content", "Contenu"], ["venues", "Lieux"], ["errors", "Erreurs"]];
+const TABS = [["usage", "Usage"], ["people", "Personnes"], ["content", "Contenu"], ["venues", "Lieux"], ["errors", "Erreurs"], ["storage", "Stockage"]];
 function render() {
   save();
   $("#period").innerHTML = [7, 30, 90].map((d) => `<button class="chip" data-days="${d}" aria-pressed="${st.days === d}">${d} j</button>`).join("");
   $("#meBtn").setAttribute("aria-pressed", st.noMe);
   $("#tabs").innerHTML = TABS.map(([k, t]) => `<button role="tab" data-tab="${k}" aria-selected="${st.tab === k}">${t}</button>`).join("");
-  $("#main").innerHTML = ({ usage, people, content, venues, errors })[st.tab]();
+  $("#main").innerHTML = ({ usage, people, content, venues, errors, storage })[st.tab]();
 }
 
+/** Pic de simultanés par jour : max, sur les quarts d'heure du jour, des personnes distinctes actives. */
+function peak(E, days) {
+  const q = new Map();
+  for (const e of E) { if (!e[0]) continue; const k = String(e[4]).slice(0, 14) + String(Math.floor(+String(e[4]).slice(14, 16) / 15)); (q.get(k) || q.set(k, new Set()).get(k)).add(e[0]); }
+  const best = new Map(); for (const [k, set] of q) { const d = k.slice(0, 10); best.set(d, Math.max(best.get(d) || 0, set.size)); }
+  return days.map((d) => ({ d, v: best.get(d) || 0 }));
+}
+const liveN = () => (D.live || []).filter((id) => !(st.noMe && isMe(id))).length;
 function usage() {
   const E = evs(), days = daysList(st.days);
   const per = (filter) => { const m = new Map(days.map((d) => [d, new Set()])); for (const e of E) if (filter(e) && m.has(dayKey(e[4]))) m.get(dayKey(e[4])).add(e[0] || "anon:" + e[4]); return days.map((d) => ({ d, v: m.get(d).size })); };
   const cnt = (filter) => { const m = new Map(days.map((d) => [d, 0])); for (const e of E) if (filter(e) && m.has(dayKey(e[4]))) m.set(dayKey(e[4]), m.get(dayKey(e[4])) + 1); return days.map((d) => ({ d, v: m.get(d) })); };
   const actives = new Set(E.filter((e) => e[0]).map((e) => e[0]));
   const s = sinceKey(st.days);
-  const newU = D.users.filter((u) => u.active && !u.pending && u.joined >= s);
+  const real = D.users.filter((u) => u.active && !u.pending && !(st.noMe && isMe(u.id)));
+  const newU = real.filter((u) => u.joined >= s);
   const n = (name) => E.filter((e) => e[1] === name).length;
   const opens = E.filter((e) => e[1] === "open");
   const modes = {}; for (const e of opens) { const k = e[3] || "web"; modes[k] = (modes[k] || 0) + 1; }
@@ -216,13 +229,15 @@ function usage() {
   const ev = st.ev;
   return `
   <div class="tiles">
+    <div class="tile"><span>En ligne maintenant</span><b>${fmt(liveN())}</b><small>pic sur la période : ${fmt(Math.max(0, ...peak(E, days).map((x) => x.v)))} en même temps</small></div>
     <div class="tile"><span>Personnes actives</span><b>${fmt(actives.size)}</b><small>au moins une action, ${st.days} j</small></div>
-    <div class="tile"><span>Nouveaux inscrits</span><b>${fmt(newU.length)}</b><small>${fmt(D.users.filter((u) => u.active && !u.pending).length)} au total</small></div>
+    <div class="tile"><span>Nouveaux inscrits</span><b>${fmt(newU.length)}</b><small>${fmt(real.length)} au total</small></div>
     <div class="tile"><span>Ouvertures</span><b>${fmt(opens.length)}</b><small>${fmt(new Set(opens.map((e) => e[0])).size)} personnes</small></div>
     <div class="tile"><span>★ Envies</span><b>${fmt(n("want"))}</b><small>🙅 ${fmt(n("not_for_me"))}</small></div>
     <div class="tile"><span>🎟 Réservés</span><b>${fmt(n("book"))}</b><small>✅ vus ${fmt(n("seen"))}</small></div>
     <div class="tile"><span>🗳 Propositions</span><b>${fmt(n("proposal"))}</b><small>${fmt(n("proposal_answer"))} réponses · 💌 ${fmt(n("share"))}</small></div>
   </div>
+  <div class="card"><h2>Utilisateurs simultanés : pic par jour</h2><p class="sub">Le plus grand nombre de personnes actives dans le même quart d'heure. En ce moment : <b>${fmt(liveN())}</b> (app ouverte dans les 5 dernières minutes).</p>${dayBars(peak(E, days), "en même temps au plus")}</div>
   <div class="card"><h2>Personnes actives par jour</h2><p class="sub">Personnes différentes ayant fait au moins une action ce jour-là.</p>${dayBars(per(() => true), "personnes")}</div>
   <div class="card"><h2>${ev ? esc(evName(ev)) : "Toutes les actions"} par jour</h2><p class="sub">${ev ? `<button class="chip" data-ev="">× Toutes les actions</button>` : "Touche une action dans le tableau ci-dessous pour ne voir qu'elle."}</p>${dayBars(cnt((e) => !ev || e[1] === ev), ev ? "fois" : "actions")}</div>
   <div class="grid2">
@@ -242,8 +257,9 @@ function people() {
   const acts = {}, last = {}; for (const e of E) { if (!e[0]) continue; acts[e[0]] = (acts[e[0]] || 0) + 1; }
   for (const e of D.events) if (e[0]) last[e[0]] = e[4];
   const opensBy = {}; for (const e of D.events) if (e[1] === "open" && e[0]) opensBy[e[0]] = e[3];
-  const rows = D.users.filter((u) => !(st.noMe && u.id === D.owner)).map((u) => ({ ...u, label: who(u.id), acts: acts[u.id] || 0, w: R[u.id]?.w || 0, b: R[u.id]?.b || 0, s: R[u.id]?.s || 0,
-    venues: subsN[u.id] || 0, lastAct: last[u.id] || u.seen || "", via: u.invitedBy ? who(u.invitedBy) : "", where: opensBy[u.id] || "" }));
+  const rows = D.users.filter((u) => !(st.noMe && isMe(u.id))).map((u) => ({ ...u, label: who(u.id), acts: acts[u.id] || 0, w: R[u.id]?.w || 0, b: R[u.id]?.b || 0, s: R[u.id]?.s || 0,
+    venues: subsN[u.id] || 0, lastAct: last[u.id] || u.seen || "", where: opensBy[u.id] || "",
+    signup: ({ telegram: "Telegram", google: "Google", email: "Email" })[u.via] || "" }));
   const W = { telegram: "Telegram", web_home: "📱 accueil", web_browser: "navigateur", web: "web" };
   const u = st.user && D.uById.get(st.user);
   let detail = "";
@@ -253,11 +269,21 @@ function people() {
       ${dayBars(daysList(st.days).map((d) => ({ d, v: mine.filter((e) => dayKey(e[4]) === d).length })), "actions")}
       <div class="tl">${mine.map((e) => { const x = e[2] && D.itemById.get(e[2]); return `<div><time>${esc(String(e[4]).slice(5, 16))}</time><span>${esc(evName(e[1]))}${x ? ` · <a href="${esc(x.url || "#")}" target="_blank" rel="noopener">${esc(x.title)}</a>` : e[2] ? ` · <span class="faint">${esc(e[2])}</span>` : ""}${e[3] && e[1] !== "open" ? ` <span class="pill">${esc(e[3])}</span>` : ""}</span></div>`; }).join("") || `<p class="muted">Aucune action suivie (90 j).</p>`}</div></div>`;
   }
-  return detail + `<div class="card"><h2>Personnes</h2><p class="sub">Touche une ligne pour sa chronologie. Actions = ${st.days} derniers jours ; envies, réservés, vus = depuis toujours.</p>${table("people", [
+  const tot = rows.filter((r) => r.active && !r.pending), cntOf = (f) => tot.filter(f).length;
+  const tiles = `<div class="tiles">
+    <div class="tile"><span>🔔 Notifications</span><b>${cntOf((r) => r.push)}</b><small>sur ${tot.length} comptes actifs</small></div>
+    <div class="tile"><span>Face ID</span><b>${cntOf((r) => r.faceId)}</b><small>sur ${tot.length}</small></div>
+    <div class="tile"><span>Inscrits avec Google</span><b>${cntOf((r) => r.via === "google")}</b><small>email ${cntOf((r) => r.via === "email")} · Telegram ${cntOf((r) => r.via === "telegram")} · inconnu ${cntOf((r) => !r.via)}</small></div>
+    <div class="tile"><span>Se connectent avec Google</span><b>${cntOf((r) => r.google)}</b><small>au moins une fois</small></div>
+  </div>`;
+  return tiles + detail + `<div class="card"><h2>Personnes</h2><p class="sub">Touche une ligne pour sa chronologie. Actions = ${st.days} derniers jours ; envies, réservés, vus = depuis toujours.</p>${table("people", [
     { k: "label", t: "Qui", html: (r) => `${esc(r.label)}${r.pending ? ` <span class="pill">non confirmé</span>` : !r.active ? ` <span class="pill">parti</span>` : ""}` },
     { k: "joined", t: "Inscrit", html: (r) => dshort(r.joined) }, { k: "lastAct", t: "Dernière action", html: (r) => ago(r.lastAct) },
     { k: "acts", t: "Actions", num: true }, { k: "w", t: "★", num: true }, { k: "b", t: "🎟", num: true }, { k: "s", t: "✅", num: true }, { k: "venues", t: "Lieux", num: true },
-    { k: "where", t: "Ouvre via", html: (r) => esc(W[r.where] || "") }, { k: "via", t: "Invité·e par" },
+    { k: "where", t: "Ouvre via", html: (r) => esc(W[r.where] || "") },
+    { k: "push", t: "🔔 Notifs", num: true, html: (r) => r.push ? `✓${r.push > 1 ? " ×" + r.push : ""}` : `<span class="faint">—</span>` },
+    { k: "faceId", t: "Face ID", num: true, html: (r) => r.faceId ? `✓${r.faceId > 1 ? " ×" + r.faceId : ""}` : `<span class="faint">—</span>` },
+    { k: "signup", t: "Inscription", html: (r) => r.signup ? esc(r.signup) + (r.google && r.via !== "google" ? ` <span class="pill">Google ensuite</span>` : "") : `<span class="faint">avant suivi</span>` },
   ], rows, { click: "user", sort: { k: "lastAct", d: -1 }, sel: (r) => r.id === st.user })}</div>`;
 }
 
@@ -270,7 +296,8 @@ function content() {
   const mx = Object.keys(KIND).filter((k) => D.items.some((x) => x.kind === k)).map((k) => {
     const xs = D.items.filter((x) => x.kind === k);
     return `<tr><th style="position:static">${KIND[k]} <span class="faint">${xs.length}</span></th>${Object.keys(MISS).map((m) => { const app = xs.filter((x) => applies(x, m)); const n = app.filter((x) => !x.has[m]).length;
-      return app.length ? `<td class="cell" data-cell="${k}:${m}" data-tip="${esc(`<b>${KIND[k]}</b> sans ${MISS[m].toLowerCase()} : ${n} / ${app.length}`)}" style="background:${n ? `color-mix(in srgb, var(--bad) ${Math.round(8 + 50 * n / app.length)}%, transparent)` : "transparent"}">${n ? n : `<span class="okb">✓</span>`}</td>` : `<td class="faint" style="text-align:right">—</td>`; }).join("")}</tr>`;
+      const p = Math.round((100 * n) / (app.length || 1));
+      return app.length ? `<td class="cell" data-cell="${k}:${m}" data-tip="${esc(`<b>${KIND[k]}</b> sans ${MISS[m].toLowerCase()} : ${n} / ${app.length} (${p} %)`)}" style="background:${n ? `color-mix(in srgb, var(--bad) ${Math.round(8 + 50 * n / app.length)}%, transparent)` : "transparent"}">${n ? (st.pct ? `${n === app.length ? 100 : Math.max(1, Math.min(99, p))} %` : n) : `<span class="okb">✓</span>`}</td>` : `<td class="faint" style="text-align:right">—</td>`; }).join("")}</tr>`;
   }).join("");
   const q = st.q.trim().toLowerCase();
   const rows = D.items.filter((x) => (st.kind === "all" || x.kind === st.kind) && (!st.venue || x.venue === st.venue)
@@ -279,7 +306,8 @@ function content() {
   const want = {}; for (const [, i, w] of D.reactions) if (w) want[i] = (want[i] || 0) + 1;
   rows.forEach((r) => (r.want = want[r.id] || 0));
   const bare = D.items.filter((x) => x.kind === "film" && !x.has.syn && !x.has.crit && !x.has.genre).length;
-  return `<div class="card"><h2>Ce qui manque sur les fiches à l'affiche</h2><p class="sub">Nombre de fiches sans l'info. Touche une case pour lister ces fiches.</p>
+  return `<div class="card"><h2>Ce qui manque sur les fiches à l'affiche</h2><p class="sub">${st.pct ? "Part des fiches sans l'info" : "Nombre de fiches sans l'info"}. Touche une case pour lister ces fiches.</p>
+    <div class="chips" style="margin-bottom:8px"><button class="chip" data-pct="0" aria-pressed="${!st.pct}">Nombre</button><button class="chip" data-pct="1" aria-pressed="${!!st.pct}">%</button></div>
     <div class="tw"><table class="mx"><thead><tr><th style="position:static"></th>${Object.values(MISS).map((t) => `<th class="num" style="position:static;cursor:default">${t}</th>`).join("")}</tr></thead><tbody>${mx}</tbody></table></div></div>
   <div class="card">
     <div class="filters">
@@ -303,8 +331,8 @@ function content() {
 }
 
 function venues() {
-  const subs = {}; for (const [u, v] of D.subs) if (!(st.noMe && u === D.owner)) subs[v] = (subs[v] || 0) + 1;
-  const want = {}; for (const [u, i, w] of D.reactions) if (w && !(st.noMe && u === D.owner)) { const x = D.itemById.get(i); if (x) want[x.venueId] = (want[x.venueId] || 0) + 1; }
+  const subs = {}; for (const [u, v] of D.subs) if (!(st.noMe && isMe(u))) subs[v] = (subs[v] || 0) + 1;
+  const want = {}; for (const [u, i, w] of D.reactions) if (w && !(st.noMe && isMe(u))) { const x = D.itemById.get(i); if (x) want[x.venueId] = (want[x.venueId] || 0) + 1; }
   const clicks = {}; for (const e of evs()) if (e[1] === "link_out" && e[2]) { const x = D.itemById.get(e[2]); if (x) clicks[x.venueId] = (clicks[x.venueId] || 0) + 1; }
   const by = {};
   for (const x of D.items) { const r = (by[x.venueId] = by[x.venueId] || { id: x.venueId, venue: x.venue, kinds: new Set(), n: 0, inc: 0 }); r.n++; r.kinds.add(KIND[x.kind] || x.kind);
@@ -330,6 +358,26 @@ function errors() {
   ], rows, { sort: { k: "at", d: -1 } }) : `<p class="muted">Aucune erreur sur 30 jours.</p>`}</div>`;
 }
 
+function storage() {
+  const S = D.storage;
+  if (!S) return `<div class="msg">Stockage indisponible.</div>`;
+  const L = S.limits, H = S.hist || [], last = [...H].reverse().find((h) => h.mb) || {};
+  const y = H.filter((h) => h.reads != null), lastU = y[y.length - 1] || {};
+  const maxR = Math.max(0, ...y.slice(-7).map((h) => h.reads || 0)), maxW = Math.max(0, ...y.slice(-7).map((h) => h.writes || 0));
+  const p = (a, b) => (b ? Math.round((1000 * a) / b) / 10 : 0);
+  const gauge = (v, max) => `<div style="height:8px;background:var(--line);border-radius:4px;margin-top:6px"><div style="height:8px;width:${Math.min(100, (100 * v) / max)}%;background:${v / max > 0.8 ? "var(--bad)" : v / max > 0.6 ? "var(--warn)" : "var(--accent)"};border-radius:4px"></div></div>`;
+  const days = H.slice(-30);
+  return `<div class="tiles">
+    <div class="tile"><span>💾 Taille de la base</span><b>${last.mb != null ? last.mb + " Mo" : "—"}</b><small>${p(last.mb || 0, L.mb)} % de ${fmt(L.mb)} Mo</small>${gauge(last.mb || 0, L.mb)}</div>
+    <div class="tile"><span>📖 Lignes lues (pire jour, 7 j)</span><b>${S.analytics ? fmt(maxR) : "—"}</b><small>${S.analytics ? `${p(maxR, L.reads)} % de ${fmt(L.reads)} / jour` : "jeton manquant (voir plus bas)"}</small>${S.analytics ? gauge(maxR, L.reads) : ""}</div>
+    <div class="tile"><span>✍️ Lignes écrites (pire jour, 7 j)</span><b>${S.analytics ? fmt(maxW) : "—"}</b><small>${S.analytics ? `${p(maxW, L.writes)} % de ${fmt(L.writes)} / jour` : "jeton manquant"}</small>${S.analytics ? gauge(maxW, L.writes) : ""}</div>
+  </div>
+  <div class="card"><h2>Alerte</h2><p class="sub" style="margin:0">Message Telegram du bot (une fois par jour) si la base dépasse 80 % de sa taille max, ou si une journée dépasse 70 % des lignes lues ou écrites autorisées. Limites du forfait gratuit Cloudflare ; vérifié toutes les 6 h.${S.analytics ? "" : "<br><br>Pour suivre aussi les lignes lues/écrites : créer un jeton Cloudflare « Account Analytics : Read », puis <code>npx wrangler secret put CF_API_TOKEN</code>."}</p></div>
+  ${S.analytics && days.some((h) => h.reads != null) ? `<div class="card"><h2>Lignes lues par jour</h2><p class="sub">Limite : ${fmt(L.reads)} par jour.</p>${dayBars(days.map((h) => ({ d: h.d, v: h.reads || 0 })), "lignes lues")}</div>
+  <div class="card"><h2>Lignes écrites par jour</h2><p class="sub">Limite : ${fmt(L.writes)} par jour.</p>${dayBars(days.map((h) => ({ d: h.d, v: h.writes || 0 })), "lignes écrites")}</div>` : ""}
+  <div class="card"><h2>Lignes par table</h2><p class="sub">Ce qui occupe la base.</p>${table("tables", [{ k: "t", t: "Table" }, { k: "n", t: "Lignes", num: true, html: (r) => fmt(r.n) }], S.tables, { sort: { k: "n", d: -1 } })}</div>`;
+}
+
 // --- interactions --------------------------------------------------------
 document.addEventListener("click", (e) => {
   const t = e.target.closest("button, th[data-sort], tr[data-ev], tr[data-user], tr[data-venue], td[data-cell]");
@@ -347,6 +395,7 @@ document.addEventListener("click", (e) => {
   else if ("miss" in d) st.miss = !d.miss ? [] : st.miss.includes(d.miss) ? st.miss.filter((m) => m !== d.miss) : [...st.miss, d.miss];
   else if (d.preset === "bare") { st.kind = "film"; st.miss = ["syn", "crit", "genre"]; st.venue = ""; }
   else if (d.errk) st.errKind = d.errk;
+  else if (d.pct) st.pct = d.pct === "1";
   else return;
   render();
 });

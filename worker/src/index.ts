@@ -18,7 +18,7 @@ import { setChatMenu, setGlobalMenus } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
 import { salesTick } from "./sales";
 import { dailyTick } from "./daily";
-import { alertErrors, monitored } from "./monitor";
+import { alertErrors, monitored, storageCheck } from "./monitor";
 
 function authorized(req: Request, env: Env): boolean {
   return !!env.API_TOKEN && req.headers.get("authorization") === `Bearer ${env.API_TOKEN}`;
@@ -31,6 +31,7 @@ export default {
     ctx.waitUntil(salesTick(env).then(() => undefined).catch((e) => console.log("sales tick failed", e)));
     ctx.waitUntil(dailyTick(env).then(() => undefined).catch((e) => console.log("daily tick failed", e)));
     ctx.waitUntil(alertErrors(env).then(() => undefined).catch((e) => console.log("alert errors failed", e)));
+    ctx.waitUntil(storageCheck(env).catch((e) => console.log("storage check failed", e)));
   },
 
   // Chaque requête passe par la surveillance (monitor.ts) : plantages, erreurs et lenteurs notés, alerte par le cron.
