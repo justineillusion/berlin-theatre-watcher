@@ -362,81 +362,9 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Philharmoniker",
-  "title": "Maxim Emelyanychev conducts Mendelssohn, Mozart and Haydn",
-  "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57060/",
-  "opens": "2026-11-19",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "HAU Hebbel am Ufer",
-  "title": "May Fall",
-  "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/aristide-rontini-skaanes-dansteater-may-fall/",
-  "opens": "2026-11-21",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Chamäleon Berlin",
   "title": "Kintsugi",
   "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
-  "opens": "2026-11-21",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Deutsches Theater",
-  "title": "Die Marquise von O. und – (The Marquise of O.)",
-  "url": "https://www.deutschestheater.de/en/program/productions/die-marquise-von-o-und",
-  "opens": "2026-11-21",
-  "aliases": [
-   "Die Marquise von O. und –",
-   "The Marquise of O."
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Sophiensæle",
-  "title": "Unbestimmte Bewegung: daniel’s destruction",
-  "url": "https://sophiensaele.com/en/stueck/daniels-destruction",
-  "opens": "2026-11-21",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Deutsche Oper Berlin",
-  "title": "Around the World in 80 Days",
-  "url": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
-  "opens": "2026-11-21",
-  "aliases": [
-   "In 80 Tagen um die Welt"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Schokoladen",
-  "title": "Awesome Scampis (ska- + pop-punk) + Buster Beat (ska)",
-  "url": "https://www.schokoladen-mitte.de/#e20261121",
-  "opens": "2026-11-21",
-  "aliases": [
-   "Awesome Scampis",
-   "ska- + pop-punk) + Buster Beat (ska"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Urban Spree",
-  "title": "WISBORG Phantomschmerz Tour - BERLIN | Special Guest: The Fright",
-  "url": "https://www.urbanspree.com/program/concerts/wisborg-phantomschmerz-tour-berlin-special-guest-the-fright.html",
-  "opens": "2026-11-21",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Mononoke",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261122-1700/",
   "opens": "2026-11-22",
   "aliases": []
  },
@@ -450,6 +378,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Sophiensæle",
+  "title": "Unbestimmte Bewegung: daniel’s destruction",
+  "url": "https://sophiensaele.com/en/stueck/daniels-destruction",
+  "opens": "2026-11-22",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "L’incoronazione di Poppea",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
@@ -458,12 +394,12 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Eugene Onegin",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/eugene-onegin/",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Around the World in 80 Days",
+  "url": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
   "opens": "2026-11-22",
   "aliases": [
-   "Eugen Onegin"
+   "In 80 Tagen um die Welt"
   ]
  },
  {
@@ -740,7 +676,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "The Wants (post-punk, nyc) & Schnallo (wave, bln)",
-  "url": "https://www.schokoladen-mitte.de/?page=2#e20261203",
+  "url": "https://www.schokoladen-mitte.de/#e20261203",
   "opens": "2026-12-03",
   "aliases": [
    "The Wants",
@@ -996,6 +932,16 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Eugene Onegin",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/eugene-onegin/",
+  "opens": "2026-12-12",
+  "aliases": [
+   "Eugen Onegin"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Urban Spree",
   "title": "TWIN NOIR + HINFORT",
   "url": "https://www.urbanspree.com/program/concerts/twin-noir-hinfort-urban-spree,-berlin.html",
@@ -1012,6 +958,14 @@
    "Kabale und Liebe",
    "Intrigue and Love"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Mononoke",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261215-1830/",
+  "opens": "2026-12-15",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1338,17 +1292,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Echnaton (Akhnaten)",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
-  "opens": "2027-01-09",
-  "aliases": [
-   "Echnaton",
-   "Akhnaten"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Rat Hole (punk from england) + Not The Ones (punk from east-berlin)",
   "url": "https://www.schokoladen-mitte.de/?page=4#e20270109",
@@ -1414,6 +1357,17 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Echnaton (Akhnaten)",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
+  "opens": "2027-01-14",
+  "aliases": [
+   "Echnaton",
+   "Akhnaten"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Kirill Petrenko opens the Biennale of the Berliner Philharmoniker",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57088/",
@@ -1443,7 +1397,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Angelika Express (indie punk, köln) + Power Müsli of Death (punkrock, berlin)",
-  "url": "https://www.schokoladen-mitte.de/?page=5#e20270116",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20270116",
   "opens": "2027-01-16",
   "aliases": [
    "Angelika Express",
@@ -1643,7 +1597,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Mahler/Fondermann & the beast (Indie_Punk/HH) + Litbarski (Punk/Bln)",
-  "url": "https://www.schokoladen-mitte.de/?page=6#e20270206",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270206",
   "opens": "2027-02-06",
   "aliases": [
    "Mahler/Fondermann & the beast",
@@ -1858,7 +1812,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Honig & Meursault - stupid love tour 2027! (2x folk / indie-pop / songwriter)",
-  "url": "https://www.schokoladen-mitte.de/?page=7#e20270222",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270222",
   "opens": "2027-02-22",
   "aliases": [
    "Honig & Meursault - stupid love tour 2027!",
@@ -2136,7 +2090,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Desperate Journalist (post-punk/indie-rock, london)",
-  "url": "https://www.schokoladen-mitte.de/?page=8#e20270327",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270327",
   "opens": "2027-03-27",
   "aliases": [
    "Desperate Journalist",
