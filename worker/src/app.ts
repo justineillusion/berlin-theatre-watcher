@@ -24,6 +24,7 @@ import { Env, Item, WEB_ID_BASE, esc, getItem, inbox, setting, getReaction, inCi
 import { acceptFriend, codeOwner, connect, circleState, ignoreFriend, inviteMessage, removeFriend, requestFriend } from "./circles";
 import { Lang, asLang, tr } from "./i18n";
 import PAGE from "./app.html";
+import STATS from "./stats.html";
 import { adminScans } from "./scanreport";
 import { webAsset } from "./web/assets";
 import { DISTRICT } from "./districts";
@@ -401,6 +402,8 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
   if (req.method === "GET" && (url.pathname === "/app" || url.pathname === "/app/")) {
     return new Response(await withPreview(env, url), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
   }
+  // 📊 Stats (la propriétaire) : page à part ; les données passent par /app/api/admin/explore (même session).
+  if (req.method === "GET" && url.pathname === "/app/stats") return new Response(STATS, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex" } });
   const cal = url.pathname.match(/^\/app\/cal\/([A-Za-z0-9_-]{1,40})\.ics$/);
   if (req.method === "GET" && cal) return calendarFile(env, cal[1], url.searchParams.get("at") || "");
   if (req.method === "GET") return webAsset(url.pathname) ?? new Response("not found", { status: 404 });
@@ -598,6 +601,10 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
   if (url.pathname === "/app/api/admin/scans") {
     if (!isAdmin(env, me.chat_id)) return Response.json({ error: "forbidden" }, { status: 403 });
     return Response.json(await adminScans(env));
+  }
+  if (url.pathname === "/app/api/admin/explore") {
+    if (!isAdmin(env, me.chat_id)) return Response.json({ error: "forbidden" }, { status: 403 });
+    return Response.json(await adminExplore(env));
   }
   if (url.pathname === "/app/api/admin") {
     if (!isAdmin(env, me.chat_id)) return Response.json({ error: "forbidden" }, { status: 403 });
@@ -1134,6 +1141,45 @@ async function adminCompleteness(env: Env) {
     // Durée : sans objet pour une expo.
     missing: Object.fromEntries(Object.entries(k.miss).filter(([c]) => !(c === "dur" && k.kind === "expo")).map(([c, xs]) => [c, { n: xs.length, items: xs.sort((a, b) => a.venue.localeCompare(b.venue)).slice(0, 80) }])),
   }));
+}
+
+/** 📊 Stats : les données brutes (90 jours), la page les découpe (jours, personnes, lieux, fiches incomplètes).
+ *  Les personnes sont des numéros courts (u1, u2…) + prénom/pseudo : jamais d'email ni de chat_id. */
+async function adminExplore(env: Env) {
+  const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
+  const owner = Number(env.OWNER_CHAT_ID || 0);
+  const [users, events, items, reac, subs, errors] = await Promise.all([
+    env.DB.prepare(`SELECT chat_id, first_name, handle, lang, active, pending, joined_at, invited_by, email IS NOT NULL AS web_email,
+        MAX(COALESCE(app_seen_at, ''), COALESCE(bot_seen_at, '')) AS seen_at, photo IS NOT NULL AS photo FROM users ORDER BY joined_at`).all<any>(),
+    env.DB.prepare(`SELECT chat_id, name, item_id, target, at FROM events WHERE at > datetime('now', '-90 days') ORDER BY id LIMIT 50000`).all<any>(),
+    env.DB.prepare(`SELECT i.id, i.kind, i.title, i.url, i.venue_id, v.name AS venue, v.optional, i.text, i.dates, i.sold, i.start_date, i.end_date, i.last_seen
+      FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+      WHERE (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now') ELSE i.last_seen >= ?1 END)
+        AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now'))`).bind(since).all<any>(),
+    env.DB.prepare(`SELECT chat_id, item_id, interested, status, rating, booked_at, updated_at FROM reactions`).all<any>(),
+    env.DB.prepare(`SELECT s.chat_id, s.venue_id FROM subscriptions s`).all<any>(),
+    env.DB.prepare(`SELECT at, src, kind, path, status, ms, msg, who FROM app_errors WHERE at > datetime('now', '-30 days') ORDER BY id DESC LIMIT 2000`).all<any>(),
+  ]);
+  const uid = new Map<number, string>(users.results.map((u: any, i: number) => [u.chat_id, `u${i + 1}`]));
+  const U = (c: any) => (c == null ? null : uid.get(Number(c)) ?? "?");
+  const has = (t: string, re: RegExp) => re.test(t);
+  return {
+    now: new Date().toISOString(), owner: U(owner),
+    users: users.results.map((u: any) => ({ id: U(u.chat_id), name: u.first_name, handle: u.handle, lang: u.lang, active: !!u.active, pending: !!u.pending,
+      joined: u.joined_at, seen: u.seen_at || null, web: u.chat_id >= WEB_ID_BASE, photo: !!u.photo, invitedBy: U(u.invited_by) })),
+    events: events.results.map((e: any) => [U(e.chat_id), e.name, e.item_id, e.target, e.at]),
+    items: items.results.map((r: any) => {
+      const t = String(r.text || "");
+      return { id: r.id, kind: r.optional && r.kind !== "film" && r.kind !== "expo" ? "music" : r.kind, title: r.title, url: r.url, venue: r.venue, venueId: r.venue_id,
+        dates: JSON.parse(r.dates || "[]").length, next: (JSON.parse(r.dates || "[]") as string[]).filter((d) => d >= new Date().toISOString().slice(0, 10)).sort()[0] || r.start_date || null,
+        end: r.end_date || null, sold: JSON.parse(r.sold || "[]").length,
+        has: { syn: has(t, /📝/), price: has(t, /💶/), dur: r.kind === "expo" ? null : has(t, /⏱/), crit: has(t, /★\s*\d|📰|Nachtkritik/),
+          genre: r.kind === "film" ? has(t, /🏷/) : null, lang: has(t, /🗣|\((OmeU|OmU|OV|VO|muet)\)/), url: !!r.url } };
+    }),
+    reactions: reac.results.map((r: any) => [U(r.chat_id), r.item_id, r.interested, r.status, r.rating, r.booked_at, r.updated_at]),
+    subs: subs.results.map((s: any) => [U(s.chat_id), s.venue_id]),
+    errors: errors.results,
+  };
 }
 
 /** Admin : usage (réactions, lieux suivis, ce qui plaît), comptes actifs seulement. */

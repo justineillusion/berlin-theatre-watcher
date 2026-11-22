@@ -2034,7 +2034,7 @@ function adminTab() {
   const A = st.adminData;
   if (!A) { if (!st.adminLoading) { st.adminLoading = true; api("admin").then((j) => { st.adminData = j; }, () => { st.adminData = { error: 1 }; }).finally(() => { st.adminLoading = false; render(); }); } return `<p class="empty">…</p>`; }
   if (A.error) return `<p class="empty">${esc(T.error)}</p>`;
-  const scanLink = `<p><a class="ul" href="/admin" data-link="1" target="_blank" rel="noopener">Santé des scans ↗</a></p>`;
+  const scanLink = `<p><a class="ul" href="/admin" data-link="1" target="_blank" rel="noopener">Santé des scans ↗</a> · <a class="ul" href="/app/stats" data-link="1" target="_blank" rel="noopener">📊 Stats détaillées ↗</a></p>`;
   const t = A.totals, d = (v) => v ? esc(String(v).slice(0, 10)) : "—";
   const kpi = (n, l) => `<div class="kpi"><b>${n}</b><span>${esc(l)}</span></div>`;
   const max = Math.max(1, ...A.weeks.map((w) => w.n));

@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Stats · Berlin Encore!</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f5f2; --surface: #fcfcfb; --line: #e4e2dc; --text: #0b0b0b; --muted: #52514e; --faint: #8a8985;
+  --accent: #2a78d6; --accent-soft: #e3eefb; --bad: #c63b3a; --bad-soft: #fbe7e6; --ok: #0e7a3a; --warn: #a86a00;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --line: #2f2e2b; --text: #f0efec; --muted: #c3c2b7; --faint: #8d8c84;
+    --accent: #3987e5; --accent-soft: #1d2b3d; --bad: #e66767; --bad-soft: #3a1f1f; --ok: #3bbf6e; --warn: #e0a42e;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --surface: #1a1a19; --line: #2f2e2b; --text: #f0efec; --muted: #c3c2b7; --faint: #8d8c84;
+  --accent: #3987e5; --accent-soft: #1d2b3d; --bad: #e66767; --bad-soft: #3a1f1f; --ok: #3bbf6e; --warn: #e0a42e;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 12px 16px 0; }
+.top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+h1 { font-size: 18px; margin: 0; }
+h1 a { color: inherit; text-decoration: none; }
+.sp { flex: 1; }
+nav { display: flex; gap: 4px; overflow-x: auto; margin-top: 10px; }
+nav button { border: 0; background: none; color: var(--muted); padding: 8px 12px; font: inherit; font-weight: 600; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; }
+nav button[aria-selected="true"] { color: var(--text); border-color: var(--accent); }
+main { padding: 16px; max-width: 1200px; margin: 0 auto; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.chip { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 999px; padding: 4px 10px; font: inherit; font-size: 13px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip small { opacity: .75; }
+.filters { display: flex; gap: 10px 16px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.filters label { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+input[type=search], select { font: inherit; padding: 5px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--text); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.tile b { display: block; font-size: 24px; font-variant-numeric: tabular-nums; }
+.tile span { color: var(--muted); font-size: 12px; }
+.tile small { color: var(--faint); font-size: 12px; }
+.card { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
+.card h2 { font-size: 14px; margin: 0 0 2px; }
+.card .sub { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.grid2 .card { margin-bottom: 0; }
+.chart { position: relative; }
+.chart svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+.chart .ax { fill: var(--faint); font-size: 11px; }
+.chart .gl { stroke: var(--line); stroke-width: 1; }
+.chart .bar { fill: var(--accent); }
+.chart .hit { fill: transparent; cursor: default; }
+.chart .hit:hover + .bar, .chart .bar.hl { opacity: .7; }
+.tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); font-size: 12px; padding: 5px 8px; border-radius: 6px; z-index: 20; white-space: nowrap; display: none; }
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; background: var(--surface); }
+th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.click { cursor: pointer; }
+tr.click:hover td { background: var(--accent-soft); }
+tr.sel td { background: var(--accent-soft); }
+td a { color: var(--accent); text-decoration: none; }
+.miss { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 6px; background: var(--bad-soft); color: var(--bad); margin: 1px 2px 1px 0; white-space: nowrap; }
+.okb { color: var(--ok); font-size: 12px; }
+.muted { color: var(--muted); }
+.faint { color: var(--faint); }
+.mx td.cell { cursor: pointer; text-align: right; font-variant-numeric: tabular-nums; }
+.mx td.cell:hover { outline: 2px solid var(--accent); outline-offset: -2px; }
+.hbar { display: grid; grid-template-columns: minmax(90px, 180px) 1fr auto; gap: 4px 8px; align-items: center; font-size: 13px; }
+.hbar .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hbar .trk { height: 10px; }
+.hbar .fill { height: 10px; background: var(--accent); border-radius: 0 4px 4px 0; min-width: 2px; }
+.hbar .v { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; }
+.tl { font-size: 13px; }
+.tl div { padding: 3px 0; border-bottom: 1px dashed var(--line); display: flex; gap: 10px; }
+.tl time { color: var(--faint); font-variant-numeric: tabular-nums; min-width: 110px; }
+.msg { padding: 40px 16px; text-align: center; color: var(--muted); }
+.cnt { color: var(--muted); font-size: 12px; margin: 0 0 8px; }
+.pill { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 5px; }
+@media (max-width: 600px) { .top h1 { font-size: 16px; } .tw table { min-width: 560px; }  main { padding: 12px 16px; } .tile b { font-size: 20px; } th, td { padding: 6px 5px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1><a href="/app">Berlin Encore!</a> · Stats</h1>
+    <span class="sp"></span>
+    <div class="chips" id="period"></div>
+    <button class="chip" id="meBtn" aria-pressed="true" title="Ne pas compter mes propres clics">Sans moi</button>
+  </div>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<main id="main"><div class="msg">Chargement…</div></main>
+<div class="tip" id="tip"></div>
+<script>
+"use strict";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (n) => (n ?? 0).toLocaleString("fr-FR");
+const pct = (a, b) => (b ? Math.round((100 * a) / b) : 0) + " %";
+let TOKEN = ""; try { TOKEN = localStorage.getItem("be_session") || ""; } catch {}
+let D = null;
+const st = { tab: "usage", days: 30, noMe: true, ev: null, user: null, kind: "all", miss: [], venue: "", q: "", sort: {}, errKind: "all" };
+try { Object.assign(st, JSON.parse(sessionStorage.getItem("stats") || "{}")); } catch {}
+const save = () => { try { sessionStorage.setItem("stats", JSON.stringify({ tab: st.tab, days: st.days, noMe: st.noMe })); } catch {} };
+
+const EV = { open: "Ouverture de l'app", link_out: "Lien externe cliqué", venue_toggle: "Lieu suivi / plus suivi", venue_kind_toggle: "Type de lieux suivi", filter: "Filtre utilisé",
+  login: "Connexion", login_google: "Connexion Google", want: "★ Envie", unwant: "Envie retirée", not_for_me: "🙅 Pas pour moi", lang: "Langue changée", share: "💌 Envoi à un ami",
+  friend_accept: "Ami accepté", friend_remove: "Ami retiré", proposal: "🗳 Proposition créée", proposal_answer: "🗳 Réponse à une proposition", proposal_add: "🗳 Amis ajoutés",
+  proposal_set: "🗳 Date fixée", rate: "Note donnée", review: "Critique écrite", seen: "✅ Vu", book: "🎟 Réservé", signup: "Inscription", calendar_add: "Ajout au calendrier",
+  push_on: "Notifications activées", passkey_add: "Face ID ajouté", photo: "Photo ajoutée", feedback: "Retour envoyé", invite_share: "Lien d'invitation partagé", undo: "Annuler" };
+const evName = (n) => EV[n] || n;
+const KIND = { theatre: "Théâtre", film: "Film", expo: "Expo", music: "Musique" };
+const MISS = { syn: "Résumé", price: "Prix", dur: "Durée", crit: "Critique", genre: "Genre", lang: "Langue", url: "Lien" };
+
+// --- données -------------------------------------------------------------
+async function load() {
+  if (!TOKEN) return fail("Connecte-toi d'abord dans l'app sur ce navigateur, puis reviens ici.");
+  let r;
+  try { r = await fetch("/app/api/admin/explore", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + TOKEN }, body: "{}" }); }
+  catch { return fail("Réseau indisponible."); }
+  if (r.status === 401) return fail("Session expirée : reconnecte-toi dans l'app, puis reviens ici.");
+  if (r.status === 403) return fail("Cette page est réservée à l'admin.");
+  if (!r.ok) return fail("Erreur " + r.status);
+  D = await r.json();
+  D.uById = new Map(D.users.map((u) => [u.id, u]));
+  D.itemById = new Map(D.items.map((x) => [x.id, x]));
+  render();
+}
+function fail(m) { $("#main").innerHTML = `<div class="msg">${esc(m)}<br><br><a href="/app">Ouvrir l'app</a></div>`; }
+const who = (id) => { const u = D.uById.get(id); return u ? u.name + (u.handle ? " @" + u.handle : "") : id ? "?" : "anonyme"; };
+const dayKey = (at) => String(at).slice(0, 10);
+function sinceKey(days) { return new Date(Date.now() - days * 864e5).toISOString().slice(0, 19).replace("T", " "); }
+function evs() {
+  const s = sinceKey(st.days);
+  return D.events.filter((e) => e[4] >= s && !(st.noMe && e[0] === D.owner));
+}
+function daysList(n) { const out = []; for (let i = n - 1; i >= 0; i--) out.push(new Date(Date.now() - i * 864e5).toISOString().slice(0, 10)); return out; }
+
+// --- graphiques ----------------------------------------------------------
+const tip = $("#tip");
+function showTip(e, html) { tip.innerHTML = html; tip.style.display = "block"; const r = tip.getBoundingClientRect(); let x = e.clientX + 12, y = e.clientY - r.height - 10; if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 12; if (y < 4) y = e.clientY + 14; tip.style.left = x + "px"; tip.style.top = y + "px"; }
+document.addEventListener("mousemove", (e) => { const t = e.target.closest?.("[data-tip]"); if (t) showTip(e, t.dataset.tip); else tip.style.display = "none"; });
+document.addEventListener("touchstart", (e) => { const t = e.target.closest?.("[data-tip]"); if (t) { const p = e.touches[0]; showTip({ clientX: p.clientX, clientY: p.clientY }, t.dataset.tip); } else tip.style.display = "none"; }, { passive: true });
+
+/** Barres par jour (une série) : axe 0 → max arrondi, 3 lignes de grille, étiquettes de dates espacées. */
+function dayBars(series, label) {
+  const W = Math.max(280, Math.min(1140, ($("#main").clientWidth || 640) - 64)), H = 160, L = 28, B = 22, T = 6, n = series.length;
+  const max = Math.max(1, ...series.map((s) => s.v));
+  const step = max <= 4 ? 1 : Math.ceil(max / 4 / (max > 40 ? 10 : 1)) * (max > 40 ? 10 : 1);
+  const top = Math.ceil(max / step) * step;
+  const y = (v) => T + (H - T - B) * (1 - v / top), bw = (W - L) / n, gap = n > 60 ? 1 : 2;
+  let g = "";
+  for (let v = 0; v <= top; v += step) g += `<line class="gl" x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L - 4}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
+  const every = Math.ceil(n / Math.max(3, Math.floor(W / 80)));
+  series.forEach((s, i) => {
+    const x = L + i * bw, h = y(0) - y(s.v), d = new Date(s.d + "T12:00:00Z");
+    const lab = d.toLocaleDateString("fr-FR", { day: "numeric", month: "short", timeZone: "UTC" });
+    const wd = d.toLocaleDateString("fr-FR", { weekday: "short", timeZone: "UTC" });
+    if (s.v > 0) g += `<path class="bar" d="M${x + gap / 2},${y(0)} v${-Math.max(h - 2, 0)} q0,-2 2,-2 h${Math.max(bw - gap - 4, 0)} q2,0 2,2 v${Math.max(h - 2, 0)} z"/>`;
+    g += `<rect class="hit" x="${x}" y="${T}" width="${bw}" height="${H - T - B}" data-tip="${esc(`<b>${wd} ${lab}</b> · ${s.v} ${label}`)}"/>`;
+    if (i % every === 0) g += `<text class="ax" x="${x + bw / 2}" y="${H - 6}" text-anchor="middle">${lab}</text>`;
+  });
+  return `<div class="chart"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(label)} par jour">${g}</svg></div>`;
+}
+/** Barres horizontales (classements). */
+function hbars(rows, onclick) {
+  const max = Math.max(1, ...rows.map((r) => r.v));
+  return `<div class="hbar">${rows.map((r) => `<span class="lab" title="${esc(r.k)}">${r.link ? `<a href="${esc(r.link)}" target="_blank" rel="noopener">${esc(r.k)}</a>` : esc(r.k)}</span><div class="trk"><div class="fill" style="width:${(100 * r.v) / max}%"></div></div><span class="v">${fmt(r.v)}${r.sub ? ` <span class="faint">${esc(r.sub)}</span>` : ""}</span>`).join("")}</div>`;
+}
+/** Tableau triable : cols = [{k, t, num?, html?(row)}]. */
+function table(id, cols, rows, opts = {}) {
+  const s = st.sort[id] || opts.sort || { k: cols[0].k, d: 1 };
+  const val = (r, k) => r[k] ?? (cols.find((c) => c.k === k)?.num ? -1 : "");
+  rows = rows.slice().sort((a, b) => { const x = val(a, s.k), y = val(b, s.k); return (typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), "fr")) * s.d; });
+  const lim = opts.limit || 400;
+  return `<p class="cnt">${fmt(rows.length)} ligne${rows.length > 1 ? "s" : ""}${rows.length > lim ? ` · ${lim} premières` : ""}</p><div class="tw"><table><thead><tr>${cols.map((c) => `<th class="${c.num ? "num" : ""}" data-sort="${id}:${c.k}">${esc(c.t)}${s.k === c.k ? (s.d > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr></thead><tbody>${
+    rows.slice(0, lim).map((r) => `<tr${opts.click ? ` class="click${opts.sel && opts.sel(r) ? " sel" : ""}" data-${opts.click}="${esc(r[opts.key || "id"])}"` : ""}>${cols.map((c) => `<td class="${c.num ? "num" : ""}">${c.html ? c.html(r) : esc(r[c.k] ?? "")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+const ago = (at) => { if (!at) return "—"; const d = (Date.now() - Date.parse(String(at).replace(" ", "T") + "Z")) / 864e5; return d < 1 ? "aujourd'hui" : d < 2 ? "hier" : `il y a ${Math.floor(d)} j`; };
+const dshort = (at) => at ? new Date(String(at).replace(" ", "T") + (String(at).length > 10 ? "Z" : "T12:00:00Z")).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : "—";
+
+// --- onglets -------------------------------------------------------------
+const TABS = [["usage", "Usage"], ["people", "Personnes"], ["content", "Contenu"], ["venues", "Lieux"], ["errors", "Erreurs"]];
+function render() {
+  save();
+  $("#period").innerHTML = [7, 30, 90].map((d) => `<button class="chip" data-days="${d}" aria-pressed="${st.days === d}">${d} j</button>`).join("");
+  $("#meBtn").setAttribute("aria-pressed", st.noMe);
+  $("#tabs").innerHTML = TABS.map(([k, t]) => `<button role="tab" data-tab="${k}" aria-selected="${st.tab === k}">${t}</button>`).join("");
+  $("#main").innerHTML = ({ usage, people, content, venues, errors })[st.tab]();
+}
+
+function usage() {
+  const E = evs(), days = daysList(st.days);
+  const per = (filter) => { const m = new Map(days.map((d) => [d, new Set()])); for (const e of E) if (filter(e) && m.has(dayKey(e[4]))) m.get(dayKey(e[4])).add(e[0] || "anon:" + e[4]); return days.map((d) => ({ d, v: m.get(d).size })); };
+  const cnt = (filter) => { const m = new Map(days.map((d) => [d, 0])); for (const e of E) if (filter(e) && m.has(dayKey(e[4]))) m.set(dayKey(e[4]), m.get(dayKey(e[4])) + 1); return days.map((d) => ({ d, v: m.get(d) })); };
+  const actives = new Set(E.filter((e) => e[0]).map((e) => e[0]));
+  const s = sinceKey(st.days);
+  const newU = D.users.filter((u) => u.active && !u.pending && u.joined >= s);
+  const n = (name) => E.filter((e) => e[1] === name).length;
+  const opens = E.filter((e) => e[1] === "open");
+  const modes = {}; for (const e of opens) { const k = e[3] || "web"; modes[k] = (modes[k] || 0) + 1; }
+  const MODE = { telegram: "Telegram", web_home: "Écran d'accueil", web_browser: "Navigateur", web: "Web (avant suivi)" };
+  const byName = {}; for (const e of E) { const k = e[1]; (byName[k] = byName[k] || { k, n: 0, u: new Set() }).n++; if (e[0]) byName[k].u.add(e[0]); }
+  const evRows = Object.values(byName).map((r) => ({ id: r.k, name: evName(r.k), n: r.n, u: r.u.size }));
+  const links = {}; for (const e of E) if (e[1] === "link_out") links[e[3] || "?"] = (links[e[3] || "?"] || 0) + 1;
+  const items = {}; for (const e of E) if (e[2] && ["want", "book", "share", "proposal", "link_out", "seen"].includes(e[1])) items[e[2]] = (items[e[2]] || 0) + 1;
+  const ev = st.ev;
+  return `
+  <div class="tiles">
+    <div class="tile"><span>Personnes actives</span><b>${fmt(actives.size)}</b><small>au moins une action, ${st.days} j</small></div>
+    <div class="tile"><span>Nouveaux inscrits</span><b>${fmt(newU.length)}</b><small>${fmt(D.users.filter((u) => u.active && !u.pending).length)} au total</small></div>
+    <div class="tile"><span>Ouvertures</span><b>${fmt(opens.length)}</b><small>${fmt(new Set(opens.map((e) => e[0])).size)} personnes</small></div>
+    <div class="tile"><span>★ Envies</span><b>${fmt(n("want"))}</b><small>🙅 ${fmt(n("not_for_me"))}</small></div>
+    <div class="tile"><span>🎟 Réservés</span><b>${fmt(n("book"))}</b><small>✅ vus ${fmt(n("seen"))}</small></div>
+    <div class="tile"><span>🗳 Propositions</span><b>${fmt(n("proposal"))}</b><small>${fmt(n("proposal_answer"))} réponses · 💌 ${fmt(n("share"))}</small></div>
+  </div>
+  <div class="card"><h2>Personnes actives par jour</h2><p class="sub">Personnes différentes ayant fait au moins une action ce jour-là.</p>${dayBars(per(() => true), "personnes")}</div>
+  <div class="card"><h2>${ev ? esc(evName(ev)) : "Toutes les actions"} par jour</h2><p class="sub">${ev ? `<button class="chip" data-ev="">× Toutes les actions</button>` : "Touche une action dans le tableau ci-dessous pour ne voir qu'elle."}</p>${dayBars(cnt((e) => !ev || e[1] === ev), ev ? "fois" : "actions")}</div>
+  <div class="grid2">
+    <div class="card"><h2>Actions</h2><p class="sub">${st.days} derniers jours. Touche une ligne pour la courbe.</p>${table("ev", [{ k: "name", t: "Action" }, { k: "n", t: "Fois", num: true }, { k: "u", t: "Personnes", num: true }], evRows, { click: "ev", sort: { k: "n", d: -1 }, sel: (r) => r.id === ev })}</div>
+    <div>
+      <div class="card"><h2>D'où on ouvre l'app</h2><p class="sub">Suivi de l'écran d'accueil depuis le 22 nov.</p>${hbars(Object.entries(modes).sort((a, b) => b[1] - a[1]).map(([k, v]) => ({ k: MODE[k] || k, v, sub: pct(v, opens.length) })))}</div>
+      <div class="card" style="margin-top:16px"><h2>Liens cliqués vers</h2><p class="sub">Billetteries, pages des lieux, critiques.</p>${hbars(Object.entries(links).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, v]) => ({ k, v })))}</div>
+      <div class="card" style="margin-top:16px"><h2>Fiches les plus actives</h2><p class="sub">Envies, réservations, envois, propositions, liens.</p>${hbars(Object.entries(items).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([id, v]) => { const x = D.itemById.get(id); return { k: x ? x.title : id + " (terminé)", v, link: x?.url, sub: x ? x.venue : "" }; }))}</div>
+    </div>
+  </div>`;
+}
+
+function people() {
+  const E = evs(), s = sinceKey(st.days);
+  const subsN = {}; for (const [u] of D.subs) subsN[u] = (subsN[u] || 0) + 1;
+  const R = {}; for (const [u, , i, status, rating, booked] of D.reactions) { const r = (R[u] = R[u] || { w: 0, b: 0, s: 0, n: 0 }); if (i) r.w++; if (booked) r.b++; if (status === "seen") r.s++; if (status === "ignored") r.n++; }
+  const acts = {}, last = {}; for (const e of E) { if (!e[0]) continue; acts[e[0]] = (acts[e[0]] || 0) + 1; }
+  for (const e of D.events) if (e[0]) last[e[0]] = e[4];
+  const opensBy = {}; for (const e of D.events) if (e[1] === "open" && e[0]) opensBy[e[0]] = e[3];
+  const rows = D.users.filter((u) => !(st.noMe && u.id === D.owner)).map((u) => ({ ...u, label: who(u.id), acts: acts[u.id] || 0, w: R[u.id]?.w || 0, b: R[u.id]?.b || 0, s: R[u.id]?.s || 0,
+    venues: subsN[u.id] || 0, lastAct: last[u.id] || u.seen || "", via: u.invitedBy ? who(u.invitedBy) : "", where: opensBy[u.id] || "" }));
+  const W = { telegram: "Telegram", web_home: "📱 accueil", web_browser: "navigateur", web: "web" };
+  const u = st.user && D.uById.get(st.user);
+  let detail = "";
+  if (u) {
+    const mine = D.events.filter((e) => e[0] === u.id).slice(-150).reverse();
+    detail = `<div class="card"><h2>${esc(who(u.id))}</h2><p class="sub">Inscrit·e le ${dshort(u.joined)} · ${u.web ? "web" : "Telegram"} · langue ${esc(u.lang)}${u.invitedBy ? " · invité·e par " + esc(who(u.invitedBy)) : ""} · <button class="chip" data-user="">× Fermer</button></p>
+      ${dayBars(daysList(st.days).map((d) => ({ d, v: mine.filter((e) => dayKey(e[4]) === d).length })), "actions")}
+      <div class="tl">${mine.map((e) => { const x = e[2] && D.itemById.get(e[2]); return `<div><time>${esc(String(e[4]).slice(5, 16))}</time><span>${esc(evName(e[1]))}${x ? ` · <a href="${esc(x.url || "#")}" target="_blank" rel="noopener">${esc(x.title)}</a>` : e[2] ? ` · <span class="faint">${esc(e[2])}</span>` : ""}${e[3] && e[1] !== "open" ? ` <span class="pill">${esc(e[3])}</span>` : ""}</span></div>`; }).join("") || `<p class="muted">Aucune action suivie (90 j).</p>`}</div></div>`;
+  }
+  return detail + `<div class="card"><h2>Personnes</h2><p class="sub">Touche une ligne pour sa chronologie. Actions = ${st.days} derniers jours ; envies, réservés, vus = depuis toujours.</p>${table("people", [
+    { k: "label", t: "Qui", html: (r) => `${esc(r.label)}${r.pending ? ` <span class="pill">non confirmé</span>` : !r.active ? ` <span class="pill">parti</span>` : ""}` },
+    { k: "joined", t: "Inscrit", html: (r) => dshort(r.joined) }, { k: "lastAct", t: "Dernière action", html: (r) => ago(r.lastAct) },
+    { k: "acts", t: "Actions", num: true }, { k: "w", t: "★", num: true }, { k: "b", t: "🎟", num: true }, { k: "s", t: "✅", num: true }, { k: "venues", t: "Lieux", num: true },
+    { k: "where", t: "Ouvre via", html: (r) => esc(W[r.where] || "") }, { k: "via", t: "Invité·e par" },
+  ], rows, { click: "user", sort: { k: "lastAct", d: -1 }, sel: (r) => r.id === st.user })}</div>`;
+}
+
+function content() {
+  const kinds = ["all", ...Object.keys(KIND).filter((k) => D.items.some((x) => x.kind === k))];
+  const applies = (x, m) => x.has[m] !== null && x.has[m] !== undefined;
+  const missing = (x) => Object.keys(MISS).filter((m) => applies(x, m) && !x.has[m]);
+  const venuesL = [...new Set(D.items.map((x) => x.venue))].sort((a, b) => a.localeCompare(b, "fr"));
+  // Matrice type × manque : clic = filtre.
+  const mx = Object.keys(KIND).filter((k) => D.items.some((x) => x.kind === k)).map((k) => {
+    const xs = D.items.filter((x) => x.kind === k);
+    return `<tr><th style="position:static">${KIND[k]} <span class="faint">${xs.length}</span></th>${Object.keys(MISS).map((m) => { const app = xs.filter((x) => applies(x, m)); const n = app.filter((x) => !x.has[m]).length;
+      return app.length ? `<td class="cell" data-cell="${k}:${m}" data-tip="${esc(`<b>${KIND[k]}</b> sans ${MISS[m].toLowerCase()} : ${n} / ${app.length}`)}" style="background:${n ? `color-mix(in srgb, var(--bad) ${Math.round(8 + 50 * n / app.length)}%, transparent)` : "transparent"}">${n ? n : `<span class="okb">✓</span>`}</td>` : `<td class="faint" style="text-align:right">—</td>`; }).join("")}</tr>`;
+  }).join("");
+  const q = st.q.trim().toLowerCase();
+  const rows = D.items.filter((x) => (st.kind === "all" || x.kind === st.kind) && (!st.venue || x.venue === st.venue)
+    && st.miss.every((m) => applies(x, m) && !x.has[m]) && (!q || (x.title + " " + x.venue).toLowerCase().includes(q)))
+    .map((x) => ({ ...x, kindL: KIND[x.kind] || x.kind, nMiss: missing(x).length, missL: missing(x) }));
+  const want = {}; for (const [, i, w] of D.reactions) if (w) want[i] = (want[i] || 0) + 1;
+  rows.forEach((r) => (r.want = want[r.id] || 0));
+  const bare = D.items.filter((x) => x.kind === "film" && !x.has.syn && !x.has.crit && !x.has.genre).length;
+  return `<div class="card"><h2>Ce qui manque sur les fiches à l'affiche</h2><p class="sub">Nombre de fiches sans l'info. Touche une case pour lister ces fiches.</p>
+    <div class="tw"><table class="mx"><thead><tr><th style="position:static"></th>${Object.values(MISS).map((t) => `<th class="num" style="position:static;cursor:default">${t}</th>`).join("")}</tr></thead><tbody>${mx}</tbody></table></div></div>
+  <div class="card">
+    <div class="filters">
+      <label>Type</label><div class="chips">${kinds.map((k) => `<button class="chip" data-kind="${k}" aria-pressed="${st.kind === k}">${k === "all" ? "Tout" : KIND[k]}</button>`).join("")}</div>
+    </div>
+    <div class="filters">
+      <label>Sans</label><div class="chips">${Object.entries(MISS).map(([m, t]) => `<button class="chip" data-miss="${m}" aria-pressed="${st.miss.includes(m)}">${t}</button>`).join("")}
+        <button class="chip" data-preset="bare" title="Films sans résumé, sans critique et sans genre">Films sans rien <small>${bare}</small></button>${st.miss.length ? `<button class="chip" data-miss="">× Effacer</button>` : ""}</div>
+    </div>
+    <div class="filters">
+      <select id="venueSel"><option value="">Tous les lieux</option>${venuesL.map((v) => `<option${v === st.venue ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>
+      <input type="search" id="q" placeholder="Chercher un titre…" value="${esc(st.q)}">
+    </div>
+    ${table("items", [
+      { k: "title", t: "Titre", html: (r) => r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>` : esc(r.title) },
+      { k: "venue", t: "Lieu" }, { k: "kindL", t: "Type" }, { k: "next", t: "Prochaine", html: (r) => r.next ? dshort(r.next) : r.end ? "jusqu'au " + dshort(r.end) : "—" },
+      { k: "dates", t: "Dates", num: true }, { k: "want", t: "★", num: true },
+      { k: "nMiss", t: "Manque", html: (r) => r.missL.length ? r.missL.map((m) => `<span class="miss">${MISS[m]}</span>`).join("") : `<span class="okb">complet</span>` },
+    ], rows, { sort: { k: "nMiss", d: -1 } })}
+  </div>`;
+}
+
+function venues() {
+  const subs = {}; for (const [u, v] of D.subs) if (!(st.noMe && u === D.owner)) subs[v] = (subs[v] || 0) + 1;
+  const want = {}; for (const [u, i, w] of D.reactions) if (w && !(st.noMe && u === D.owner)) { const x = D.itemById.get(i); if (x) want[x.venueId] = (want[x.venueId] || 0) + 1; }
+  const clicks = {}; for (const e of evs()) if (e[1] === "link_out" && e[2]) { const x = D.itemById.get(e[2]); if (x) clicks[x.venueId] = (clicks[x.venueId] || 0) + 1; }
+  const by = {};
+  for (const x of D.items) { const r = (by[x.venueId] = by[x.venueId] || { id: x.venueId, venue: x.venue, kinds: new Set(), n: 0, inc: 0 }); r.n++; r.kinds.add(KIND[x.kind] || x.kind);
+    if (Object.keys(MISS).some((m) => x.has[m] === false)) r.inc++; }
+  const rows = Object.values(by).map((r) => ({ ...r, kinds: [...r.kinds].join(", "), subs: subs[r.id] || 0, want: want[r.id] || 0, clicks: clicks[r.id] || 0, incP: Math.round((100 * r.inc) / r.n) }));
+  return `<div class="card"><h2>Lieux</h2><p class="sub">Fiches à l'affiche, part incomplète (au moins une info manque), qui suit le lieu, envies en cours et liens cliqués (${st.days} j). Touche un lieu pour voir ses fiches.</p>${table("venues", [
+    { k: "venue", t: "Lieu" }, { k: "kinds", t: "Type" }, { k: "n", t: "Fiches", num: true }, { k: "incP", t: "Incomplètes", num: true, html: (r) => `${r.incP} %` },
+    { k: "subs", t: "Suivi par", num: true }, { k: "want", t: "★", num: true }, { k: "clicks", t: "Clics", num: true },
+  ], rows, { click: "venue", key: "venue", sort: { k: "n", d: -1 } })}</div>`;
+}
+
+function errors() {
+  const L = { "5xx": "💥 Plantage serveur", "4xx": "⚠️ Requête refusée", slow_api: "🐢 Serveur lent", js: "🐞 Bug dans l'app", network: "📡 Réseau", slow_load: "🐢 Chargement lent" };
+  const all = D.errors, kinds = ["all", ...new Set(all.map((e) => e.kind))];
+  const rows = all.filter((e) => st.errKind === "all" || e.kind === st.errKind).map((e) => ({ ...e, kindL: L[e.kind] || e.kind }));
+  const days = daysList(30), m = new Map(days.map((d) => [d, 0])); for (const e of rows) if (m.has(dayKey(e.at))) m.set(dayKey(e.at), m.get(dayKey(e.at)) + 1);
+  return `<div class="card"><h2>Erreurs par jour</h2><p class="sub">30 derniers jours. Les alertes Telegram partent toujours pour 💥 🐞 et 🐢 chargement, et seulement à partir de 10 pour le reste.</p>
+    <div class="filters"><div class="chips">${kinds.map((k) => `<button class="chip" data-errk="${k}" aria-pressed="${st.errKind === k}">${k === "all" ? "Tout" : L[k] || k} <small>${k === "all" ? all.length : all.filter((e) => e.kind === k).length}</small></button>`).join("")}</div></div>
+    ${dayBars(days.map((d) => ({ d, v: m.get(d) })), "erreurs")}</div>
+  <div class="card">${rows.length ? table("errs", [
+    { k: "at", t: "Quand", html: (r) => esc(String(r.at).slice(5, 16)) }, { k: "kindL", t: "Type" }, { k: "path", t: "Où", html: (r) => `<code>${esc(r.path || "")}</code>` },
+    { k: "status", t: "Code", num: true }, { k: "ms", t: "ms", num: true }, { k: "who", t: "Qui" }, { k: "msg", t: "Message", html: (r) => `<span class="muted">${esc(String(r.msg || "").slice(0, 160))}</span>` },
+  ], rows, { sort: { k: "at", d: -1 } }) : `<p class="muted">Aucune erreur sur 30 jours.</p>`}</div>`;
+}
+
+// --- interactions --------------------------------------------------------
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("button, th[data-sort], tr[data-ev], tr[data-user], tr[data-venue], td[data-cell]");
+  if (!t || e.target.closest("a")) return;
+  const d = t.dataset;
+  if (d.tab) { st.tab = d.tab; scrollTo(0, 0); }
+  else if (d.days) st.days = +d.days;
+  else if (t.id === "meBtn") st.noMe = !st.noMe;
+  else if (d.sort) { const [id, k] = d.sort.split(":"); const cur = st.sort[id]; st.sort[id] = { k, d: cur && cur.k === k ? -cur.d : (k === "title" || k === "venue" || k === "label" || k === "name") ? 1 : -1 }; }
+  else if ("ev" in d) st.ev = d.ev && d.ev !== st.ev ? d.ev : null;
+  else if ("user" in d) st.user = d.user && d.user !== st.user ? d.user : null;
+  else if ("venue" in d && t.tagName === "TR") { st.tab = "content"; st.venue = d.venue; st.kind = "all"; st.miss = []; st.q = ""; }
+  else if (d.cell) { const [k, m] = d.cell.split(":"); st.kind = k; st.miss = [m]; st.venue = ""; st.q = ""; }
+  else if (d.kind) st.kind = d.kind;
+  else if ("miss" in d) st.miss = !d.miss ? [] : st.miss.includes(d.miss) ? st.miss.filter((m) => m !== d.miss) : [...st.miss, d.miss];
+  else if (d.preset === "bare") { st.kind = "film"; st.miss = ["syn", "crit", "genre"]; st.venue = ""; }
+  else if (d.errk) st.errKind = d.errk;
+  else return;
+  render();
+});
+document.addEventListener("change", (e) => { if (e.target.id === "venueSel") { st.venue = e.target.value; render(); } });
+let qT; document.addEventListener("input", (e) => { if (e.target.id !== "q") return; clearTimeout(qT); qT = setTimeout(() => { st.q = e.target.value; const pos = e.target.selectionStart; render(); const i = $("#q"); i.focus(); i.setSelectionRange(pos, pos); }, 200); });
+let rT, lastW = innerWidth; addEventListener("resize", () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rT); rT = setTimeout(() => D && render(), 150); });
+load();
+</script>
+</body>
+</html>

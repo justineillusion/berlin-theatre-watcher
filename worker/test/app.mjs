@@ -617,5 +617,18 @@ await step("surveillance : bug vu sur un téléphone + requête refusée → not
   assert.ok(!calls.some((c) => /problème/.test(c.text || "")), "pas de seconde alerte pour les mêmes erreurs");
 });
 
+await step("📊 stats : page servie, données pour l'admin seulement, sans email ni chat_id", async () => {
+  const page = await fetch(`${W}/app/stats`);
+  assert.equal(page.status, 200); assert.match(await page.text(), /<title>Stats · Berlin Encore!<\/title>/);
+  assert.equal((await post("/app/api/admin/explore", { initData: joss })).status, 403);
+  const x = (await post("/app/api/admin/explore", { initData: me })).json;
+  assert.ok(x.users.length >= 3 && x.events.length && x.items.length && x.owner, Object.keys(x).join());
+  const raw = JSON.stringify(x);
+  assert.ok(!/@[\w.-]+\.\w{2,}/.test(raw.replace(/"handle":"[^"]*"/g, "")), "aucun email");
+  assert.ok(!raw.includes(String(ME)), "aucun chat_id");
+  assert.ok(x.items.every((i) => typeof i.has.syn === "boolean"));
+  if (process.env.STATS_OUT) writeFileSync(process.env.STATS_OUT, raw);
+});
+
 console.log(`\n${ok} étapes OK`);
 dev.kill(); tgServer.close(); rmSync(STATE, { recursive: true, force: true }); rmSync(`${STATE}-seed.sql`, { force: true });
