@@ -30,6 +30,7 @@ import { DISTRICT } from "./districts";
 import { pushCount, pushTo, subscribe, unsubscribe } from "./push";
 import { listPasskeys, loginOptions, loginVerify, registerOptions, registerVerify, removePasskey } from "./passkeys";
 import { LOGOS } from "./web/logos";
+import { logError, recentErrors } from "./monitor";
 import { PROP_RE, claimGuest, slotLabel, syncBooked, answerProposal, cancelProposal, addToProposal, createProposal, deleteGroup, getProposal, guestAnswer, myGroups, myProposals, pingStamp, publicProposal, saveGroup, setProposal } from "./proposals";
 
 const enc = new TextEncoder();
@@ -405,6 +406,17 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
   if (req.method === "GET") return webAsset(url.pathname) ?? new Response("not found", { status: 404 });
   if (req.method === "OPTIONS") return cors(req, new Response(null, { status: 204 }));
   if (req.method !== "POST") return new Response("not found", { status: 404 });
+  // Ce que voient les téléphones (bug JavaScript, réseau, chargement lent) : noté pour l'alerte, sans compte requis.
+  if (url.pathname === "/app/api/clientlog") {
+    const ip = req.headers.get("cf-connecting-ip") || "";
+    if (await tooMany(env, `clog:${ip}`, 30, 10)) return cors(req, Response.json({ ok: false }, { status: 429 }));
+    const b: any = await req.json().catch(() => ({}));
+    const kind = String(b.kind ?? "");
+    if (!["js", "network", "slow_load", "slow_api"].includes(kind)) return cors(req, Response.json({ ok: false }, { status: 400 }));
+    logError(env, ctx, { src: "client", kind, path: String(b.path ?? ""), ms: Number.isFinite(+b.ms) ? Math.round(+b.ms) : null,
+      status: Number.isFinite(+b.status) ? +b.status : null, msg: String(b.msg ?? ""), who: String(b.who ?? ""), ua: req.headers.get("user-agent") });
+    return cors(req, Response.json({ ok: true }));
+  }
   return cors(req, await api(req, env, ctx, url));
 }
 
@@ -1091,6 +1103,7 @@ async function adminStats(env: Env) {
     weeks: weeks.results, blocked: blocked.results, feedback: feedback.results,
     ...(await adminUsage(env)),
     completeness: await adminCompleteness(env),
+    errors: await recentErrors(env),
     users: users.results.map((u: any) => ({ ...u, web: u.chat_id >= WEB_ID_BASE, chat_id: undefined })),
   };
 }

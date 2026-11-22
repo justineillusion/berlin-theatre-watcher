@@ -18,6 +18,7 @@ import { setChatMenu, setGlobalMenus } from "./i18n";
 import { cinemaDone, cinemaRecipients, filmPlan, plan, render, sent } from "./scan";
 import { salesTick } from "./sales";
 import { dailyTick } from "./daily";
+import { alertErrors, monitored } from "./monitor";
 
 function authorized(req: Request, env: Env): boolean {
   return !!env.API_TOKEN && req.headers.get("authorization") === `Bearer ${env.API_TOKEN}`;
@@ -29,9 +30,16 @@ export default {
     await loadCircles(env);   // qui voit les ⭐ de qui (lib.ts)
     ctx.waitUntil(salesTick(env).then(() => undefined).catch((e) => console.log("sales tick failed", e)));
     ctx.waitUntil(dailyTick(env).then(() => undefined).catch((e) => console.log("daily tick failed", e)));
+    ctx.waitUntil(alertErrors(env).then(() => undefined).catch((e) => console.log("alert errors failed", e)));
   },
 
+  // Chaque requête passe par la surveillance (monitor.ts) : plantages, erreurs et lenteurs notés, alerte par le cron.
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    return monitored(req, env, ctx, () => route(req, env, ctx));
+  },
+};
+
+async function route(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
     // Qui voit les ⭐ de qui (lib.ts) : relit toutes les amitiés, donc seulement pour les requêtes qui s'en servent.
     // Pas pour les pages, images, fichiers .ics (GET) ni pour le ping de rafraîchissement (chaque minute, par personne).
@@ -94,5 +102,4 @@ export default {
       }
     }
     return new Response("not found", { status: 404 });
-  },
-};
+}

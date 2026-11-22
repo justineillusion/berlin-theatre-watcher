@@ -935,6 +935,21 @@ function offSave(j) {
   clearTimeout(OFF.t); OFF.t = setTimeout(() => { const { proposal, ...rest } = j; offPut({ at: Date.now(), S: rest }); }, 1000);
 }
 const isNetErr = (e) => !e || e.status == null || e.status === 0 && e.message !== "guest";
+/** Surveillance : ce qui va mal sur le téléphone part au serveur (alerte Telegram à la propriétaire). Une fois par souci et par visite, 10 max. */
+const CLOG = new Set();
+function clientLog(kind, msg, extra = {}) {
+  try {
+    const key = kind + "|" + String(msg).slice(0, 80);
+    if (CLOG.has(key) || CLOG.size >= 10) return; CLOG.add(key);
+    const where = (typeof st !== "undefined" && st) ? [st.tab, st.setTab, st.prop ? "prop" : ""].filter(Boolean).join("/") : "";
+    fetch(API_BASE + "/app/api/clientlog", { method: "POST", keepalive: true, headers: { "content-type": "application/json" },
+      body: JSON.stringify({ kind, msg: String(msg).slice(0, 400), path: extra.path || where, ms: extra.ms, status: extra.status, who: (typeof S !== "undefined" && S && S.handle) ? "@" + S.handle : "" }) }).catch(() => {});
+  } catch {}
+}
+addEventListener("error", (e) => { if (!e.message || /^Script error/.test(e.message)) return;   // extensions, scripts d'ailleurs
+  clientLog("js", `${e.message} @${String(e.filename || "").split("/").pop()}:${e.lineno}:${e.colno}`); });
+addEventListener("unhandledrejection", (e) => { const r = e.reason; if (!r || r.message === "guest" || r.name === "AbortError" || r.status) return;
+  clientLog("js", `${r.message || r} ${String(r.stack || "").split("\n")[1] || ""}`.trim()); });
 async function api(path, extra = {}) {
   if (S?.guest && !/^(guest|login\/|passkey\/login\/|invite\/info|teaser|proposal\/public|proposal\/guest|search)/.test(path)) {
     if (path === "track") return {};
@@ -943,7 +958,12 @@ async function api(path, extra = {}) {
   const headers = { "content-type":"application/json" };
   if (WEB && TOKEN) headers.authorization = "Bearer " + TOKEN;
   if (path === "state") extra = { ...extra, mode: navigator.standalone || window.matchMedia?.("(display-mode: standalone)").matches ? "home" : "browser" };   // app d'écran d'accueil ou navigateur (stats « open »)
-  const r = await fetch(API_BASE + "/app/api/" + path, { method:"POST", headers, body: JSON.stringify({ ...(INIT ? { initData: INIT } : {}), focus: FOCUS, ...extra }) });
+  const t0 = performance.now();
+  let r;
+  try { r = await fetch(API_BASE + "/app/api/" + path, { method:"POST", headers, body: JSON.stringify({ ...(INIT ? { initData: INIT } : {}), focus: FOCUS, ...extra }) }); }
+  catch (e) { if (navigator.onLine !== false && path !== "ping") clientLog("network", e.message || "fetch failed", { path: "/app/api/" + path }); throw e; }
+  const ms = performance.now() - t0;
+  if (ms > 6000 && path !== "ping") clientLog("slow_api", `${Math.round(ms)} ms`, { path: "/app/api/" + path, ms });   // vu du téléphone (réseau compris)
   const j = await r.json().catch(() => ({}));
   // Opéras et concerts (lieux « à la carte ») : rangés à part, filtre « Musique ».
   if (j && Array.isArray(j.items) && Array.isArray(j.venues)) {
@@ -1177,6 +1197,8 @@ async function load() {
   GUEST = null;
   try {
     S = await api("state"); T = L[S.lang] || L.fr; document.documentElement.lang = S.lang;
+    // Ouverture de l'app jusqu'aux données : plus de 8 s, c'est trop (noté pour l'alerte).
+    { const ms = performance.now(); if (ms > 8000) clientLog("slow_load", `${Math.round(ms)} ms jusqu'au programme`, { path: "load", ms }); }
     if (WEB && INVITE) {   // déjà inscrit·e, ouvre le lien de quelqu'un : connectés
       const code = INVITE; INVITE = ""; history.replaceState(null, "", location.pathname);
       try { const j = await api("friend", { op: "invite", code }); S = j; if (j.result === "connected") notify(T.nowFriends(j.inviter)); } catch {}
@@ -1984,6 +2006,14 @@ function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() - Date.parse(String(ts).replace(" ", "T") + "Z")) / 60000));
   return m < 1 ? T.now : m < 60 ? T.minAgo(m) : m < 1440 ? T.hAgo(Math.round(m / 60)) : T.dAgo(Math.round(m / 1440));
 }
+/** Admin : erreurs et lenteurs des dernières 24 h (serveur et téléphones), regroupées. L'alerte Telegram part du cron. */
+function errorsHtml(E) {
+  if (!E) return "";
+  const KL = { "5xx": "💥 Erreur serveur", "4xx": "⚠️ Requête refusée", slow_api: "🐢 Serveur lent", js: "🐞 Bug dans l'app", network: "📡 Réseau", slow_load: "🐢 Chargement lent" };
+  if (!E.length) return dayHead("Erreurs · 24 h") + `<p class="adm">Rien à signaler ✓</p>`;
+  return dayHead("Erreurs · 24 h") + E.map((e) => `<details class="cpd"><summary><span>${esc(KL[e.kind] || e.kind)} <small>${esc([e.status, e.path].filter(Boolean).join(" "))}</small></span><b>${e.n}</b><i>${esc(ago(e.last))}</i></summary>
+    <ul>${e.msg ? `<li>${esc(e.msg)}</li>` : ""}${e.ms ? `<li><small>jusqu'à ${(e.ms / 1000).toFixed(1)} s</small></li>` : ""}${e.who ? `<li><small>${esc(e.who)}</small></li>` : ""}<li><small>${e.src === "client" ? "vu sur un téléphone" : "côté serveur"}</small></li></ul></details>`).join("");
+}
 /** Admin : fiches à l'affiche incomplètes, par type ; chaque nombre se déplie sur la liste (titre · lieu). */
 function completenessHtml(C) {
   if (!C || !C.length) return "";
@@ -2005,6 +2035,7 @@ function adminTab() {
   const max = Math.max(1, ...A.weeks.map((w) => w.n));
   return scanLink + `<div class="kpis" style="padding:12px 0">${kpi(t.active, "inscrits")}${kpi(t.new7, "nouveaux 7 j")}${kpi(t.seen7, "actifs 7 j")}${kpi(t.web, "via le web")}${kpi(t.pending, "pas confirmés")}${kpi(t.mails24, "emails 24 h")}</div>`
     + dayHead("Inscriptions par semaine") + `<div class="wk">${A.weeks.map((w) => `<div><i style="height:${Math.round(w.n / max * 48) + 2}px"></i><small>${esc(w.from_day.slice(5))}</small><b>${w.n}</b></div>`).join("") || "—"}</div>`
+    + errorsHtml(A.errors)
     + completenessHtml(A.completeness)
     + dayHead("Robots bloqués · 24 h") + `<p class="adm">${A.blocked.length ? A.blocked.map((b) => `${esc(b.kind)} : ${b.n}`).join(" · ") : "aucun"}</p>`
     + (A.usage ? (() => { const u = A.usage, w = u.last7 || {}, n = (v) => v ?? 0; const pct = (a, b) => b ? `${Math.round((a || 0) / b * 100)} %` : "—";

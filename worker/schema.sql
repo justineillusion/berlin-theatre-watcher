@@ -301,3 +301,20 @@ CREATE INDEX IF NOT EXISTS scan_reports_kind_at ON scan_reports (kind, at);
 CREATE INDEX IF NOT EXISTS connections_b ON connections (b);
 CREATE INDEX IF NOT EXISTS notifications_from ON notifications (from_id, kind, created_at);
 CREATE INDEX IF NOT EXISTS items_last_seen ON items (last_seen);
+
+-- Surveillance (migrations/023).
+CREATE TABLE IF NOT EXISTS app_errors (
+  id       INTEGER PRIMARY KEY AUTOINCREMENT,
+  at       TEXT NOT NULL DEFAULT (datetime('now')),
+  src      TEXT NOT NULL,              -- server | client
+  kind     TEXT NOT NULL,              -- 5xx | 4xx | slow_api | js | network | slow_load
+  path     TEXT,
+  status   INTEGER,
+  ms       INTEGER,
+  msg      TEXT,
+  who      TEXT,                       -- @pseudo si connu
+  ua       TEXT,
+  alerted  INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS app_errors_at ON app_errors (at);
+CREATE INDEX IF NOT EXISTS app_errors_alerted ON app_errors (alerted, at);

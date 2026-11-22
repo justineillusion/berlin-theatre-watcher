@@ -54,7 +54,7 @@ INSERT INTO subscriptions (chat_id, venue_id, primed) VALUES (666, 'be', 1);`;
 writeFileSync(`${STATE}-seed.sql`, seed);
 d1(`--file=${STATE}-seed.sql`);
 
-const dev = spawn("npx", ["wrangler", "dev", "--local", "--persist-to", STATE, "--port", String(W_PORT)], { stdio: ["ignore", "pipe", "pipe"] });
+const dev = spawn("npx", ["wrangler", "dev", "--local", "--test-scheduled", "--persist-to", STATE, "--port", String(W_PORT)], { stdio: ["ignore", "pipe", "pipe"] });
 let log = ""; dev.stdout.on("data", (d) => (log += d)); dev.stderr.on("data", (d) => (log += d));
 for (let i = 0; ; i++) { try { await fetch(W); break; } catch { if (i > 60) throw new Error(log); } await new Promise((r) => setTimeout(r, 500)); }
 
@@ -595,6 +595,26 @@ await step("🎟 heure disparue du programme : rattachée à la séance du même
   assert.equal(item(s, "p1").me.booked, d);
   const js = (await post("/app/api/state", { initData: joss })).json;
   assert.equal(item(js, "p1").friends.find((f) => f.id === ME).booked, d);
+});
+
+await step("surveillance : bug vu sur un téléphone + requête refusée → notés, une alerte Telegram à la propriétaire, puis plus rien", async () => {
+  let r = await post("/app/api/clientlog", { kind: "js", msg: "TypeError: x is undefined @app:12:3", path: "mine", who: "@prince" });
+  assert.equal(r.status, 200);
+  assert.equal((await post("/app/api/clientlog", { kind: "nimporte" })).status, 400);
+  await post("/app/api/group/save", { initData: me, name: "Solo", members: [555] });   // 400 inattendu, noté
+  await new Promise((ok) => setTimeout(ok, 300));
+  calls.length = 0;
+  await fetch(`${W}/__scheduled?cron=*/15+*+*+*+*`);
+  await new Promise((ok) => setTimeout(ok, 1500));
+  const alert = calls.find((c) => c.method === "sendMessage" && String(c.chat_id) === String(ME) && /Berlin Encore! : \d+ problème/.test(c.text || ""));
+  assert.ok(alert, JSON.stringify(calls.map((c) => c.text)).slice(0, 500));
+  assert.match(alert.text, /^🚨[^\n]*\n• 🐞 Bug dans l'app/); assert.match(alert.text, /x is undefined/);
+  const adm = (await post("/app/api/admin", { initData: me })).json;
+  assert.ok(adm.errors.some((e) => e.kind === "js" && e.src === "client"), JSON.stringify(adm.errors));
+  calls.length = 0;
+  await fetch(`${W}/__scheduled?cron=*/15+*+*+*+*`);
+  await new Promise((ok) => setTimeout(ok, 1000));
+  assert.ok(!calls.some((c) => /problème/.test(c.text || "")), "pas de seconde alerte pour les mêmes erreurs");
 });
 
 console.log(`\n${ok} étapes OK`);
