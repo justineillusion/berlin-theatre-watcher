@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1795265885.509517,
+    "at": 1795351849.1912687,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1795265930.552528,
+    "at": 1795351894.6679707,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/chamaeleon-berlin": {
    "0": {
-    "at": 1795265925.5003886,
+    "at": 1795351889.7267773,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -1022,7 +1022,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin": {
    "0": {
-    "at": 1795265899.6071262,
+    "at": 1795351863.4526117,
     "items": [
      {
       "date": "7. November 2026.",
@@ -1824,7 +1824,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/english-theatre-berlin": {
    "0": {
-    "at": 1795265922.5736377,
+    "at": 1795351886.8750083,
     "items": [
      {
       "date": "Berlin, 31. Mai 2018.",
@@ -1858,7 +1858,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin": {
    "0": {
-    "at": 1795265913.1422727,
+    "at": 1795351876.8471048,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -2560,7 +2560,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin": {
    "0": {
-    "at": 1795265906.2037044,
+    "at": 1795351870.3590474,
     "items": [
      {
       "date": "5. September 2026.",
@@ -3362,7 +3362,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1795265878.9860187,
+    "at": 1795351842.481035,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -4164,7 +4164,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin": {
    "0": {
-    "at": 1795265919.2390804,
+    "at": 1795351884.0105624,
     "items": [
      {
       "date": "13. Februar 2026.",
@@ -4449,7 +4449,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1795265892.4890466,
+    "at": 1795351856.2488174,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -5452,7 +5452,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/rosa-l-deutsches-theater-berlin-anica-tomic-bringt-ein-luxemburg-biopic-auf-die-buehne": {
-   "at": 1795265935.005724,
+   "at": 1795351898.7784224,
    "published": 1794074995.0,
    "scores": [
     0.0,
@@ -5469,7 +5469,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/antigone-der-abschied-alexander-zeldins-familiendrama-um-abschied-trauer-und-verdraengung": {
-   "at": 1795265934.9544692,
+   "at": 1795351898.8196795,
    "published": 1793025056.0,
    "scores": [
     -0.8462,
@@ -5592,8 +5592,38 @@
  },
  "searches": {
   "20 Minuten": {
-   "at": 1795008189.756458,
+   "at": 1795351971.5257416,
    "results": [
+    [
+     "I miss you Beaver Creek – Theater Magdeburg – Bastian Reiber inszeniert einen Abend über das Theater als waghalsige Bergbesteigung",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen-anhalt/magdeburg/theater-magdeburg/i-miss-you-beaver-creek-theater-magdeburg",
+     "2026-11-22T10:04:47+01:00"
+    ],
+    [
+     "Bambi – Münchner Residenztheater – Schorsch Kamerun bringt Felix Saltens Roman als bunte Gegenwarts-Revue auf die Bühne",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/muenchen/residenztheater/bambi-muenchner-residenztheater-schorsch-kamerun-bringt-felix-saltens-roman-auf-die-buehne",
+     "2026-11-22T09:10:03+01:00"
+    ],
+    [
+     "Draußen vor der Tür – Thalia Theater Hamburg – Ran Chai Bar-zvi versetzt Wolfgang Borcherts Kriegsheimkehrerstück in den heutigen Büroalltag",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/thalia-theater-hamburg/draussen-vor-der-tuer",
+     "2026-11-22T07:44:39+01:00"
+    ],
+    [
+     "Treulose – Burgtheater Wien – Matthias Rippert inszeniert Ingmar Bergmans Betrugsdrama",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/treulose-burgtheater-wien-matthias-rippert-inszeniert-ingmar-bergman",
+     "2026-11-21T08:40:43+01:00"
+    ],
+    [
+     "Biedermann und die Brandstifter – Theater Aachen – Lily Kuhlmann holt Max Frischs Dauerbrenner-Drama stimmig ins Heute",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/aachen/theater-aachen/biedermann-und-die-brandstifter-theater-aachen-lily-kuhlmann-holt-max-frischs-dauerbrenner-drama-stimmig-ins-heute",
+     "2026-11-21T08:25:39+01:00"
+    ],
+    [
+     "was übrig bleibt haha  – Nationaltheater Mannheim – Hausautorin Barbi Marković mit paneuropäiscen Verfalls-Szenarien",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/mannheim/nationaltheater-mannheim/was-uebrig-bleibt-haha-nationaltheater-mannheim-hausautorin-barbi-markovic-mit-paneuropaeiscen-verfalls-szenarien",
+     "2026-11-21T07:52:16+01:00"
+    ],
     [
      "Der kleine Prinz / Kleine Prinzen – Schauspielhaus Zürich & Theater Basel – Antú Romero Nunes erkundet den berühmten Stoff von Antoine de Saint-Exupéry",
      "https://nachtkritik.de/nachtkritiken/schweiz/nordwestschweiz/basel/theater-basel/der-kleine-prinz-kleine-prinzen-schauspielhaus-zuerich-theater-basel-antu-romero-nunes-saint-exupery",
@@ -6033,46 +6063,11 @@
      "Meine Kirschen, mein Garten, mein Geld – Theater Bonn – Rebekka David zeigt Tschechows versetzt Tschechow ins Zeitalter neoliberaler Selbstausbeutung",
      "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bonn/schauspiel-bonn/meine-kirschen-mein-garten-mein-geld-theater-bonn-rebekka-david-zeigt-tschechows-versetzt-tschechow-ins-zeitalter-neoliberaler-selbstausbeutung",
      "2026-09-20T08:38:47+02:00"
-    ],
-    [
-     "Die Holländerinnen – Theater Magdeburg – Clara Weyde wagt die Uraufführung von Dorothee Elmigers preisgekrönten Roman",
-     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen-anhalt/magdeburg/theater-magdeburg/die-hollaenderinnen-theater-magdeburg-clara-weyde-wagt-die-urauffuehrung-von-dorothee-elmigers-preisgekroenten-roman",
-     "2026-09-20T08:28:06+02:00"
-    ],
-    [
-     "Der aufhaltsame Aufstieg des Arturo Ui – Landestheater Niederöstereich – Zum Intendanzstart lässt Patricia Nickel-Dönicke elf Regisseur*innen Brecht inszenieren",
-     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/niederoesterreich/st-poelten/landestheater-niederoesterreich/der-aufhaltsame-aufstieg-des-arturo-ui-landestheater-niederoestereich-zum-intendanzstart-laesst-patricia-nickel-doenicke-neun-regisseur-innen-brecht-inszenieren",
-     "2026-09-20T07:06:30+02:00"
-    ],
-    [
-     "Prinz Friedrich von Homburg – Düsseldorfer Schauspielhaus – Ulrich Rasche verdoppelt zum Start der neuen Intendanz den Prinzen",
-     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/duesseldorf/duesseldorfer-schauspielhaus/prinz-friedrich-von-homburg-duesseldorfer-schauspielhaus-ulrich-rasche",
-     "2026-09-19T08:56:27+02:00"
-    ],
-    [
-     "Spaceman – Theater Ulm – Greta Călinescu eröffnet ihre Intendanz mit der Adaption des Romans \"Spaceman of Bohemia\" von Jaroslav Kalfař",
-     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/ulm/theater-ulm/spaceman-theater-ulm-greta-calinescu-eroeffnet-ihre-intendanz-mit-der-adaption-des-romans-spaceman-of-bohemia-von-jaroslav-kalfar",
-     "2026-09-19T08:48:26+02:00"
-    ],
-    [
-     "Angelaland – Hessisches Landestheater Marburg – Eva Lange verabschiedet sich mit Juliane Hendes' Liederabend vom nostalgischen Blick auf die Ära Merkel",
-     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/marburg/hessisches-landestheater-marburg/angelaland-eva-lange-verabschiedet-sich-mit-juliane-hendes-liederabend-vom-nostalgischen-blick-auf-die-aera-merkel",
-     "2026-09-19T08:23:24+02:00"
-    ],
-    [
-     "Dieses Stück geht schief – Staatstheater Braunschweig – Antje Thoms gibt ihren Einstand als Schauspieldirektorin mit einer aberwitzigen Meta-Orgie",
-     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/braunschweig/staatstheater-braunschweig/dieses-stueck-geht-schief-staatstheater-braunschweig-antje-thoms",
-     "2026-09-19T07:56:57+02:00"
-    ],
-    [
-     "I. Grief. Different. – Theater Bremen – Miriam Ibrahim inszeniert die Uraufführung eines Texts von Ralph Tharayil",
-     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/bremen/schauspiel-bremen/i-grief-different-theater-bremen-miriam-ibrahim-ralph-tharayil",
-     "2026-09-19T07:30:54+02:00"
     ]
    ]
   },
   "20 Minuten Volksbühne": {
-   "at": 1795008218.132899,
+   "at": 1795352006.8859274,
    "results": [
     [
      "Mata Leão – Volksbühne am Rosa-Luxemburg-Platz Berlin – Davi Pontes und Wallace Ferreira zelebrieren Tanz als Selbstverteidigung",
@@ -6829,11 +6824,11 @@
    ]
   },
   "Archives of Feelings": {
-   "at": 1795008139.0027397,
+   "at": 1795351919.3495271,
    "results": []
   },
   "Archives of Feelings Berliner Festspiele": {
-   "at": 1795008164.1872725,
+   "at": 1795351947.8020914,
    "results": []
   },
   "Awesome Scampis": {
@@ -7284,7 +7279,7 @@
    "results": []
   },
   "Berlin Review x Volksbühne Volksbühne": {
-   "at": 1795008199.18533,
+   "at": 1795351943.308795,
    "results": []
   },
   "Bragolin + Carrellee": {
@@ -7683,7 +7678,7 @@
    ]
   },
   "Die Seherin Schaubühne": {
-   "at": 1795008193.0448928,
+   "at": 1795351976.2177448,
    "results": []
   },
   "Die Wildente": {
@@ -7821,7 +7816,7 @@
    "results": []
   },
   "Disrupt the Default Volksbühne": {
-   "at": 1795008169.2110686,
+   "at": 1795351945.3295639,
    "results": []
   },
   "Dive into You": {
@@ -8212,7 +8207,7 @@
    "results": []
   },
   "Fiddler! One Night Only": {
-   "at": 1795008193.399064,
+   "at": 1795351965.7152922,
    "results": []
   },
   "Fiddler! One Night Only HAU": {
@@ -8224,7 +8219,7 @@
    "results": []
   },
   "Good Vibes Only": {
-   "at": 1795008219.9863687,
+   "at": 1795351999.6363146,
    "results": [
     [
      "Dark Star – René Pollesch verabschiedet sich stilecht von der Berliner Volksbühne",
@@ -8613,7 +8608,7 @@
    "results": []
   },
   "Jazz at Berlin Philharmonic“Conversations”": {
-   "at": 1795008294.8381233,
+   "at": 1795352081.5849342,
    "results": []
   },
   "Justices": {
@@ -8627,7 +8622,7 @@
    ]
   },
   "KIDS": {
-   "at": 1795008173.0412192,
+   "at": 1795351948.211134,
    "results": [
     [
      "Der kleine Prinz / Kleine Prinzen – Schauspielhaus Zürich & Theater Basel – Antú Romero Nunes erkundet den berühmten Stoff von Antoine de Saint-Exupéry",
@@ -9372,7 +9367,7 @@
    ]
   },
   "Kintsugi": {
-   "at": 1795008222.021878,
+   "at": 1795351997.7137501,
    "results": [
     [
      "reEDOcate me! – Floating University Berlin – Ein postfossiler Themenpark von raumlaborberlin und les dramaturx",
@@ -9419,7 +9414,7 @@
    "results": []
   },
   "L’incoronazione di Poppea": {
-   "at": 1795008230.744983,
+   "at": 1795352010.0068326,
    "results": []
   },
   "MAMI": {
@@ -10735,7 +10730,7 @@
    "results": []
   },
   "Rome with Kirill Petrenko and Ottorino Respighi": {
-   "at": 1795008318.3356805,
+   "at": 1795352110.552396,
    "results": []
   },
   "SPK + ALVAR": {
@@ -10887,7 +10882,7 @@
    ]
   },
   "The Seer": {
-   "at": 1795008161.184766,
+   "at": 1795351940.5579824,
    "results": [
     [
      "Die Deutsche Bahn AG – Schauspiel Köln – Calle Fuhr erzählt die Skandalgeschichte von Deutschlands mutmaßlich unpünktlichstem Mobilitätsunternehmen",
@@ -11122,7 +11117,7 @@
    ]
   },
   "Tool-Party #4": {
-   "at": 1795008127.5519922,
+   "at": 1795351905.7642004,
    "results": []
   },
   "Tool-Party #4 HAU": {
