@@ -877,6 +877,7 @@ const monthName = (d) => cap(new Intl.DateTimeFormat(T === L.en ? "en-GB" : "fr-
 
 function next(x) {
   if (x._at) return x._at;   // ligne « Complets » : la séance complète affichée
+  if (x._rep) return (x.dates || []).filter((d) => d.slice(0, 10) === x._rep && !isSold(x, d)).sort()[0] || null;   // film répété : sa 1re séance de ce jour
   const from = FROM();
   if (x.kind === "expo") return x.end && x.end.slice(0, 10) < from ? null : x.start && x.start > from ? x.start : from;
   // Réservé : la séance réservée, pas la prochaine date de la pièce.
@@ -1345,6 +1346,10 @@ function gcal(x, at) {
 }
 function moreDates(x) {
   if (st.tab !== "prog" || x.kind === "expo" || x._at || st.dateCell) return "";
+  if (x._rep) {   // film répété chaque jour : les autres séances de ce jour
+    const more = (x.dates || []).filter((d) => d.slice(0, 10) === x._rep && !isSold(x, d)).sort().slice(1).map((d) => d.slice(11, 16));
+    return more.length ? ` · <span class="more">${esc(more.join(", "))}</span>` : "";
+  }
   const n = (x.dates || []).filter((d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when] && !isSold(x, d)).length - 1;
   return n > 0 ? ` · <span class="more">${esc(T.moreDates(n))}</span>` : "";
 }
@@ -1751,10 +1756,10 @@ function mark(x) {
   return `<button class="mark${on ? " on" : ""}" data-act="${on ? "ui" : "i"}" data-id="${x.id}" aria-pressed="${on}" aria-label="${esc(T.starA)}">${on ? "★" : "☆"}</button>`;
 }
 function item(x) {
-  const open = st.open === x.id, s = state(x), me = x.me || {};
+  const open = st.open === x.id && (!x._rep || st.openDay === x._rep), s = state(x), me = x.me || {};
   const soldNow = st.tab === "prog" && isSold(x, next(x));
   const ot = origTitle(x), sold = soldNow || !!(x._at && isSold(x, x._at));
-  let h = `<div class="item${open ? " open" : ""}${sold ? " soldout soldnow" : ""}" data-item="${x.id}"><button class="row${st.tab !== "prog" || st.dateCell ? " dc" : ""}" data-open="${x.id}" aria-expanded="${open}">
+  let h = `<div class="item${open ? " open" : ""}${sold ? " soldout soldnow" : ""}" data-item="${x.id}"><button class="row${st.tab !== "prog" || st.dateCell ? " dc" : ""}" data-open="${x.id}"${x._rep ? ` data-day="${x._rep}"` : ""} aria-expanded="${open}">
     <div class="when">${whenCell(x)}</div><div class="kd">${esc((T.kindL || {})[x.kind] || "")}</div>
     <div><div class="kdo">${esc((T.kindL || {})[x.kind] || "")}</div><div class="t"><span class="tt">${esc(x.title)}</span>${ot ? `<span class="ot"> / ${esc(ot)}</span>` : ""}</div>${open ? "" : `<div class="v">${[st.grouped ? "" : esc(venueLine(x)), esc(liveTag(x))].filter(Boolean).join(" · ") + moreDates(x)}</div>`}${tagsHtml(x, sold, open)}${open ? "" : (s === "seen" ? reviewBlock(x, false) : socialLine(x)) + (s === "seen" ? "" : propLine(x)) + (x._quote ? `<div class="quote fv">« ${esc(x._quote)} »</div>` : "")}</div>
     </button>${mark(x)}`;
@@ -2439,8 +2444,18 @@ function render() {
     // Dans chaque jour, ce qui tente mes amis (ou moi) d'abord, puis l'heure.
     const shows = xs.filter((x) => x.kind !== "expo").sort((a, b) => next(a).localeCompare(next(b)) || a.title.localeCompare(b.title));   // l'heure fait l'ordre (colonne heure)
     const expos = xs.filter((x) => x.kind === "expo").sort((a, b) => (a.end || "9").localeCompare(b.end || "9"));
+    // Un film figure sous chaque jour où il passe (avec ses séances de ce jour) : mardi montre tout ce qui passe mardi.
+    // Une pièce, elle, reste à sa prochaine date. Réservé : à la séance réservée seulement.
+    const perDay = (x) => {
+      if (x.kind !== "film" || (x.me && x.me.booked && x.me.booked.slice(0, 10) >= FROM())) return [x];
+      const days = [...new Set((x.dates || []).filter((d) => d.slice(0, 10) >= FROM() && d.slice(0, 10) < LIMIT[st.when] && !isSold(x, d)).map((d) => d.slice(0, 10)))].sort();
+      return days.length > 1 ? days.map((d) => ({ ...x, _rep: d })) : [x];
+    };
+    const rows = shows.flatMap(perDay).sort((a, b) => next(a).localeCompare(next(b)) || a.title.localeCompare(b.title));
+    // Fiche ouverte depuis ailleurs (notification, recherche) : on l'ouvre à son 1er jour.
+    if (st.open && !rows.some((x) => x.id === st.open && x._rep === st.openDay)) { const f = rows.find((x) => x.id === st.open && x._rep); if (f) st.openDay = f._rep; }
     let cur = "";
-    for (const x of shows) { const d = next(x).slice(0, 10); if (d !== cur) { h += feedHead(d); cur = d; } h += unf(x, item(x)); }
+    for (const x of rows) { const d = next(x).slice(0, 10); if (d !== cur) { h += feedHead(d); cur = d; } h += unf(x, item(x)); }
     nShown = shows.length + expos.length + (focused ? 1 : 0);
     if (expos.length) h += dayHead(T.expos, T.exposNote) + exposByVenue(expos);
     // « Voir les complets » : les pièces sans séance libre dans la période, à leur 1re date complète, grisées, en bas.
@@ -2617,7 +2632,7 @@ document.addEventListener("click", (e) => {
     st.wkMonth = !st.wkMonth;
   }
   else if (t.dataset.wkday) { st.wkSel = st.wkSel === t.dataset.wkday ? null : t.dataset.wkday; }
-  else if (t.dataset.open) { st.open = st.open === t.dataset.open ? null : t.dataset.open; st.picking = null; st.sharing = null; st.sent = null; }
+  else if (t.dataset.open) { const day = t.dataset.day || null; st.open = st.open === t.dataset.open && (!day || st.openDay === day) ? null : t.dataset.open; st.openDay = day; st.picking = null; st.sharing = null; st.sent = null; }
   else return;
   render();
 });
