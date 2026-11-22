@@ -874,9 +874,10 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
         OR i.id IN (SELECT item_id FROM reactions WHERE chat_id = ?1 AND (interested = 1 OR status = 'seen'))
         OR i.id = ?3   -- fiche ouverte depuis une annonce du groupe (même hors de mes lieux)
         -- Filtre « Amis » : ce qui tente / est réservé par mes connexions, même hors de mes lieux (à l'affiche).
-        OR (i.id IN (SELECT r.item_id FROM reactions r JOIN connections c ON c.status = 'ok'
-                      AND ((c.a = ?1 AND c.b = r.chat_id) OR (c.b = ?1 AND c.a = r.chat_id))
-                     WHERE r.interested = 1 AND (r.status IS NULL OR r.status NOT IN ('seen', 'ignored')))
+        -- Part de mes connexions (index), puis leurs réactions : jamais toute la table reactions.
+        OR (i.id IN (SELECT r.item_id FROM connections c JOIN reactions r ON r.chat_id = (CASE WHEN c.a = ?1 THEN c.b ELSE c.a END)
+                     WHERE (c.a = ?1 OR c.b = ?1) AND c.status = 'ok'
+                       AND r.interested = 1 AND (r.status IS NULL OR r.status NOT IN ('seen', 'ignored')))
             AND (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now')
                       ELSE i.last_seen >= ?2 END)
             AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now')))
@@ -896,17 +897,34 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     else (friends.get(r.item_id) ?? friends.set(r.item_id, []).get(r.item_id)!)
       .push({ id: r.chat_id, name: r.first_name, star: r.interested && r.status !== "seen" ? 1 : 0, booked: r.booked_at, seen: r.status === "seen" ? 1 : 0, rating: r.rating, comment: r.comment });
   }
-  const { results: venues } = await env.DB.prepare(
-    `SELECT v.id, v.name, v.kind, v.optional, EXISTS (SELECT 1 FROM subscriptions s WHERE s.chat_id = ? AND s.venue_id = v.id) AS followed
-     FROM venues v WHERE v.active = 1 ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
-  ).bind(chat).all<any>();
+  // Requêtes indépendantes en parallèle : D1 est à un aller-retour réseau, les enchaîner additionnait les latences.
+  const [{ results: venues }, circle, invite, salesRaw, handle, meRow, { results: notes }, { results: sentRows }, push, proposals, groups] = await Promise.all([
+    env.DB.prepare(
+      `SELECT v.id, v.name, v.kind, v.optional, EXISTS (SELECT 1 FROM subscriptions s WHERE s.chat_id = ? AND s.venue_id = v.id) AS followed
+       FROM venues v WHERE v.active = 1 ORDER BY CASE v.kind WHEN 'theatre' THEN 0 WHEN 'expo' THEN 1 ELSE 2 END, v.position`,
+    ).bind(chat).all<any>(),
+    // « Envoyer à » / « + Joss » : mes connexions seulement.
+    circleState(env, chat),
+    inviteMessage(env, chat, lang),
+    // Prochaines ouvertes de billetterie (src/sales.py), pour les lieux que je suis.
+    env.DB.prepare("SELECT value FROM settings WHERE key = 'sales'").first<{ value: string }>().then((r) => r?.value),
+    ensureHandle(env, chat),
+    env.DB.prepare("SELECT email, first_name, photo FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null; first_name: string; photo: string | null }>(),
+    env.DB.prepare(
+      `SELECT n.id, n.kind, n.from_id, u.first_name AS from_name, n.item_id, i.title, n.note, n.at, n.ref, n.created_at, n.read_at
+       FROM notifications n LEFT JOIN users u ON u.chat_id = n.from_id LEFT JOIN items i ON i.id = n.item_id
+       WHERE n.chat_id = ? ORDER BY n.id DESC LIMIT 40`).bind(chat).all<any>(),
+    // 💌 Ce que j'ai suggéré (sans date) ces 7 derniers jours : visible chez moi aussi, pas seulement chez les amis.
+    env.DB.prepare(
+      `SELECT n.item_id, i.title, u.first_name AS to_name, n.chat_id AS to_id, n.note, n.created_at FROM notifications n
+       JOIN items i ON i.id = n.item_id LEFT JOIN users u ON u.chat_id = n.chat_id
+       WHERE n.from_id = ? AND n.kind = 'share' AND n.created_at > datetime('now', '-7 days') ORDER BY n.id DESC LIMIT 30`).bind(chat).all<any>(),
+    pushCount(env, chat),
+    myProposals(env, chat, lang),
+    myGroups(env, chat),
+  ]);
   const followedIds = new Set(venues.filter((v: any) => v.followed).map((v: any) => v.id));
-  // « Envoyer à » / « + Joss » : mes connexions seulement.
-  const circle = await circleState(env, chat);
   const people = circle.friends;
-  const invite = await inviteMessage(env, chat, lang);
-  // Prochaines ouvertes de billetterie (src/sales.py), pour les lieux que je suis.
-  const salesRaw = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'sales'").first<{ value: string }>())?.value;
   let sales: { venue: string; day: string; at: string | null; month: string }[] = [];
   try {
     const names = new Map(venues.filter((v: any) => v.followed).map((v: any) => [v.id, v.name]));
@@ -915,22 +933,11 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
       .map((x) => ({ venue: String(names.get(x.venue_id)), day: x.day, at: x.hour_known && x.at ? String(x.at).slice(11, 16) : null, month: x.month }))
       .sort((a, b) => a.day.localeCompare(b.day));
   } catch { /* calendrier illisible : on n'affiche rien */ }
-  const handle = await ensureHandle(env, chat);
-  const meRow = await env.DB.prepare("SELECT email, first_name, photo FROM users WHERE chat_id = ?").bind(chat).first<{ email: string | null; first_name: string; photo: string | null }>();
   // Photos de mes connexions (et la mienne) : la page les met à la place des prénoms.
   const { results: pics } = await env.DB.prepare(
     "SELECT chat_id, photo FROM users WHERE photo IS NOT NULL AND active = 1 AND chat_id IN (SELECT value FROM json_each(?))",
   ).bind(JSON.stringify([chat, ...circle.friends.map((f: any) => f.id)])).all<{ chat_id: number; photo: string }>();
   const myEmail = meRow?.email ?? null;
-  const { results: notes } = await env.DB.prepare(
-    `SELECT n.id, n.kind, n.from_id, u.first_name AS from_name, n.item_id, i.title, n.note, n.at, n.ref, n.created_at, n.read_at
-     FROM notifications n LEFT JOIN users u ON u.chat_id = n.from_id LEFT JOIN items i ON i.id = n.item_id
-     WHERE n.chat_id = ? ORDER BY n.id DESC LIMIT 40`).bind(chat).all<any>();
-  // 💌 Ce que j'ai suggéré (sans date) ces 7 derniers jours : visible chez moi aussi, pas seulement chez les amis.
-  const { results: sentRows } = await env.DB.prepare(
-    `SELECT n.item_id, i.title, u.first_name AS to_name, n.chat_id AS to_id, n.note, n.created_at FROM notifications n
-     JOIN items i ON i.id = n.item_id LEFT JOIN users u ON u.chat_id = n.chat_id
-     WHERE n.from_id = ? AND n.kind = 'share' AND n.created_at > datetime('now', '-7 days') ORDER BY n.id DESC LIMIT 30`).bind(chat).all<any>();
   const sentMap = new Map<string, any>();
   for (const r of sentRows) {
     const g = sentMap.get(r.item_id) ?? { item_id: r.item_id, title: r.title, note: r.note, created_at: r.created_at, to: [] as { id: number; name: string }[] };
@@ -942,7 +949,7 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     sentShares: [...sentMap.values()],
     admin: isAdmin(env, chat) || undefined,
     vapid: env.VAPID_PRIVATE_KEY ? env.VAPID_PUBLIC_KEY : undefined,
-    push: await pushCount(env, chat),
+    push,
     inbox: notes,
     email: myEmail,
     name: meRow?.first_name ?? "",
@@ -954,8 +961,8 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     people,
     circle,
     invite: (invite.match(/https:\/\/\S+/) || [""])[0],   // le lien seul (le message autour est pour le chat)
-    proposals: await myProposals(env, chat, lang),
-    groups: await myGroups(env, chat),
+    proposals,
+    groups,
     // ff = là seulement grâce aux amis (lieu non suivi, pas de réaction à moi) : montré par le filtre « Amis », pas dans le fil.
     items: items.map((i) => ({ ...shapeItem(i, mine.get(i.id), friends.get(i.id) ?? [], lang),
       ...(!followedIds.has(i.venue_id) && !mine.has(i.id) && i.id !== focus && (friends.get(i.id) ?? []).some((f) => f.star) ? { ff: 1 } : {}) })),

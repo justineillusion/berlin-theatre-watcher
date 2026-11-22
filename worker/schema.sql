@@ -296,3 +296,8 @@ CREATE TABLE IF NOT EXISTS scan_reports (
   at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS scan_reports_kind_at ON scan_reports (kind, at);
+
+-- Index des requêtes chaudes (migrations/022).
+CREATE INDEX IF NOT EXISTS connections_b ON connections (b);
+CREATE INDEX IF NOT EXISTS notifications_from ON notifications (from_id, kind, created_at);
+CREATE INDEX IF NOT EXISTS items_last_seen ON items (last_seen);

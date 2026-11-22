@@ -2719,7 +2719,7 @@ function draftFrom(p) {
   st.pa = me && me.answers ? { ...me.answers } : {}; st.pnote = (me && me.note) || "";
 }
 async function openProp(id, data) {
-  st.prop = id; st.open = null; st.proposing = null; st.pconfirm = false; st.pdetail = !!S?.guest;   // arrivé·e par le lien : le spectacle d'abord
+  st.prop = id; st.open = null; st.proposing = null; st.pconfirm = false; st.pdetail = true;   // la fiche (résumé compris) ouverte d'emblée ; le titre la replie
   if (S?.guest && !loginCfg) api("login/config").then((c) => { loginCfg = c; if (st.prop === id) render(); }, () => {});
   if (data) st.propData = data;
   let p = propOf(id);
@@ -2760,12 +2760,10 @@ function bestSlot(p) {
   return { slot: best, yes: n, all: p.people.filter((x) => x.answers).every((x) => x.answers[best]) && p.people.every((x) => x.answers) };
 }
 /** Détails de la fiche dans une proposition (toucher le titre) : mêmes lignes que la carte. */
-function propDetail(it) {
-  const f = facts({ text: it.text, kind: it.kind === "cinema" ? "film" : it.kind });
-  let h = `<div class="pdetail">`;
-  if (f.rating) h += `<div>${esc(f.rating)}</div>`;
-  h += f.meta.filter((l) => !l.startsWith("📍")).map((l) => `<div class="m">${esc(l)}</div>`).join("");
-  if (f.syn) h += `<div class="syn">${esc(f.syn)}${f.syn.length >= 420 ? "…" : ""}</div>`;
+function propDetail(it, id) {
+  // Même bloc que les cartes du programme et de Mes sorties : genre · durée, résumé (Lire plus ▾), avec, notes, presse, prix.
+  const x = (S.items || []).find((i) => i.id === id) || { id, kind: it.kind === "cinema" ? "film" : it.kind, text: it.text, title: it.title, url: it.url, venue: it.venue };
+  let h = `<div class="pdetail">` + infoBlock(x, { venue: false });
   if (it.url) h += `<a class="tix" href="${esc(it.url)}" data-link="1" target="_blank" rel="noopener">${esc(it.kind === "expo" ? T.tixExpo : T.tix)} ↗</a>`;
   return h + `</div>`;
 }
@@ -2784,7 +2782,7 @@ function propPage() {
     <div class="pfrom">${face(host)}<div>${p.mine ? esc(T.youPropose(toNames || "…")) : esc(T.proposesYou(host.name, withNames))}</div></div>
     <h2 class="ptitle"><button class="ptbtn" data-pdetail="1" aria-expanded="${!!st.pdetail}">${esc(p.item ? p.item.title : "")} <span>${st.pdetail ? "▴" : "▾"}</span></button></h2>
     <div class="v">${esc(p.item ? p.item.venue : "")}${p.item && p.item.kind === "expo" && p.item.end ? ` · ${esc(T.until)} ${esc(shortDay(p.item.end))}` : ""}</div>
-    ${st.pdetail && p.item ? propDetail(p.item) : ""}
+    ${st.pdetail && p.item ? propDetail(p.item, p.item_id) : ""}
     ${p.note ? `<div class="quote">« ${esc(p.note)} »</div>` : ""}
     ${p.status === "set" ? `<div class="pset">${esc(T.isSet(slotText(p.chosen)))}</div>` : p.status === "cancelled" ? `<div class="pcan">${esc(T.cancelledP)}</div>` : ""}`;
   // Arrivé·e par le lien, sans compte : d'abord « Toi, c'est ? », puis on coche sa ligne.

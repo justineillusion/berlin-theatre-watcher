@@ -65,10 +65,27 @@ def genres(film: Film, limit: int = 2) -> List[str]:
     # Rien côté cinéma ni SensCritique : la première phrase de Wikipédia (« a 2025 French comedy-drama film »).
     if not out:
         out = [k for k in (film.wiki_genres or []) if k in GENRE_LABELS]
+    # Toujours rien : ce que le cinéma écrit lui-même (« Kurzfilme » dans le titre, « Le documentaire montre… »).
+    if not out:
+        out = explicit_genres(film)
     # « Drame » + « Comédie » côte à côte disent peu : la comédie suffit.
     if "comedy" in out and "drama" in out:
         out.remove("drama")
     return out[:limit]
+
+
+_SHORT_RE = re.compile(r"\bkurzfilm|\bcourts?[- ]m[ée]trages?\b|\bshort films?\b|\bshorts programme?\b", re.I)
+_DOC_RE = re.compile(r"\bdocumentaire\b|\bdokumentarfilm|\bdokumentation\b|\bdocumentary\b", re.I)
+
+
+def explicit_genres(film: Film) -> List[str]:
+    """Genre écrit en toutes lettres par le cinéma (titre ou résumé) : jamais déduit de l'histoire."""
+    text = " ".join(x for x in (film.title, film.original_title, film.pitch, film.pitch_en) if x)
+    if _SHORT_RE.search(text):
+        return ["short"]
+    if _DOC_RE.search(text):
+        return ["doc"]
+    return []
 
 
 def genre_line(film: Film, lang: str) -> str:

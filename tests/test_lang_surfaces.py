@@ -149,3 +149,15 @@ def test_film_card_runtime():
     f.screenings[0].runtime = 118
     assert "⏱ 1 h 58" in cm.film_card(f, "fr")
     assert "⏱ 1h 58" in cm.film_card(f, "en")
+
+
+def test_genre_only_when_the_cinema_writes_it():
+    """Sans genre (cinéma, SensCritique, Wikipédia) : « Kurzfilme » / « documentaire » écrits par le cinéma suffisent ; sinon rien."""
+    from src.cinema.tags import genre_line
+    s = _film().screenings[0]
+    def film(title, pitch=None):
+        sc = Screening(**{**s.__dict__, "title": title, "genres": []})
+        return Film(key=title, screenings=[sc], pitch=pitch)
+    assert genre_line(film("Os Braigs Brothers Kurzfilme mit Gästen"), "fr") == "Court métrage"
+    assert genre_line(film("Amuleto", "Le documentaire montre comment des artistes…"), "fr") == "Documentaire"
+    assert genre_line(film("Nagi Notes", "Il suit le sculpteur Yoriko, porteur d'une perte…"), "fr") == ""

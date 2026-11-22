@@ -33,7 +33,9 @@ export default {
 
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
-    await loadCircles(env).catch((e) => console.log("circles", e));   // qui voit les ⭐ de qui (lib.ts)
+    // Qui voit les ⭐ de qui (lib.ts) : relit toutes les amitiés, donc seulement pour les requêtes qui s'en servent.
+    // Pas pour les pages, images, fichiers .ics (GET) ni pour le ping de rafraîchissement (chaque minute, par personne).
+    if (req.method === "POST" && url.pathname !== "/app/api/ping") await loadCircles(env).catch((e) => console.log("circles", e));
     // Mini-app Telegram (page + ses deux routes, authentifiées par initData).
     if (url.pathname === "/app" || url.pathname.startsWith("/app/")) return handleApp(req, env, ctx);
     // Santé des scans : page à part, données réservées à l'admin (POST /app/api/admin/scans).
