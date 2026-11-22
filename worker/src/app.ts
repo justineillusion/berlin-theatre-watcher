@@ -30,7 +30,7 @@ import { DISTRICT } from "./districts";
 import { pushCount, pushTo, subscribe, unsubscribe } from "./push";
 import { listPasskeys, loginOptions, loginVerify, registerOptions, registerVerify, removePasskey } from "./passkeys";
 import { LOGOS } from "./web/logos";
-import { PROP_RE, answerProposal, cancelProposal, addToProposal, createProposal, deleteGroup, getProposal, guestAnswer, myGroups, myProposals, pingStamp, publicProposal, saveGroup, setProposal } from "./proposals";
+import { PROP_RE, claimGuest, slotLabel, syncBooked, answerProposal, cancelProposal, addToProposal, createProposal, deleteGroup, getProposal, guestAnswer, myGroups, myProposals, pingStamp, publicProposal, saveGroup, setProposal } from "./proposals";
 
 const enc = new TextEncoder();
 // Empreinte de la page (change à chaque déploiement qui la modifie) : la page compare et se recharge.
@@ -398,7 +398,7 @@ async function ensureHandle(env: Env, chat: number): Promise<string> {
 export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(req.url);
   if (req.method === "GET" && (url.pathname === "/app" || url.pathname === "/app/")) {
-    return new Response(PAGE_BUILT, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+    return new Response(await withPreview(env, url), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
   }
   const cal = url.pathname.match(/^\/app\/cal\/([A-Za-z0-9_-]{1,40})\.ics$/);
   if (req.method === "GET" && cal) return calendarFile(env, cal[1], url.searchParams.get("at") || "");
@@ -406,6 +406,37 @@ export async function handleApp(req: Request, env: Env, ctx: ExecutionContext): 
   if (req.method === "OPTIONS") return cors(req, new Response(null, { status: 204 }));
   if (req.method !== "POST") return new Response("not found", { status: 404 });
   return cors(req, await api(req, env, ctx, url));
+}
+
+/** Lien partagé (WhatsApp, Signal, SMS, mail…) : l'aperçu montre le spectacle et qui propose, pas une page anonyme.
+ *  /app?p=<proposition> : « Justine te propose KIDS » · lieu · dates ; /app?item=<fiche> : titre · lieu. */
+async function withPreview(env: Env, url: URL): Promise<string> {
+  const pid = url.searchParams.get("p") || "", iid = url.searchParams.get("item") || "";
+  let title = "", desc = "";
+  try {
+    if (PROP_RE.test(pid)) {
+      const r = await env.DB.prepare(
+        `SELECT i.title, v.name AS venue, u.first_name AS who, p.slots, p.note FROM proposals p JOIN items i ON i.id = p.item_id
+         JOIN venues v ON v.id = i.venue_id LEFT JOIN users u ON u.chat_id = p.from_id WHERE p.id = ?`,
+      ).bind(pid).first<{ title: string; venue: string; who: string | null; slots: string; note: string | null }>();
+      if (r) {
+        const en = /^en\b/i.test(url.searchParams.get("lang") || "");
+        const slots = (JSON.parse(r.slots || "[]") as string[]).map((x) => slotLabel(x, en ? "en" : "fr"));
+        title = en ? `${r.who || "A friend"} invites you: ${r.title}` : `${r.who || "Un·e ami·e"} te propose : ${r.title}`;
+        desc = [r.venue, slots.join(en ? " or " : " ou "), r.note ? `« ${r.note} »` : ""].filter(Boolean).join(" · ");
+      }
+    } else if (/^[\w-]{1,40}$/.test(iid)) {
+      const r = await env.DB.prepare("SELECT i.title, v.name AS venue FROM items i JOIN venues v ON v.id = i.venue_id WHERE i.id = ?").bind(iid).first<{ title: string; venue: string }>();
+      if (r) { title = r.title; desc = `${r.venue} · Berlin Encore!`; }
+    }
+  } catch { /* aperçu facultatif */ }
+  if (!title) return PAGE_BUILT;
+  const a = (v: string) => esc(v).replace(/"/g, "&quot;");
+  const meta = `<meta property="og:site_name" content="Berlin Encore!"><meta property="og:type" content="website">`
+    + `<meta property="og:title" content="${a(title)}"><meta property="og:description" content="${a(desc)}">`
+    + `<meta property="og:url" content="${a(url.toString())}"><meta property="og:image" content="${a(url.origin)}/app/icon-512.png">`
+    + `<meta name="twitter:card" content="summary">`;
+  return PAGE_BUILT.replace("<title>Berlin Encore!</title>", `<title>${esc(title)} · Berlin Encore!</title>${meta}`);
 }
 
 /** « Ajouter au calendrier » : un .ics pour une séance (données publiques : titre, lieu, heure).
@@ -533,7 +564,8 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     else if (what === "set") { err = await setProposal(env, me, pid, String(body.slot ?? "")); track(env, ctx, me.chat_id, "proposal_set", null, null); }
     else if (what === "cancel") err = await cancelProposal(env, me, pid);
     else if (what === "add") { err = await addToProposal(env, me, pid, body.to); track(env, ctx, me.chat_id, "proposal_add", null, `to:${Array.isArray(body.to) ? body.to.length : 0}`); }
-    else if (what !== "get") return new Response("not found", { status: 404 });
+    else if (what === "get") await claimGuest(env, me, pid, String(body.key ?? ""));
+    else return new Response("not found", { status: 404 });
     if (err) return Response.json({ error: err }, { status: err === "not_found" ? 404 : err === "forbidden" ? 403 : 400 });
     const id = created ?? pid;
     return Response.json({ ...(await state(env, me.chat_id, lang, focus)), proposal: await getProposal(env, me.chat_id, id, lang) });
@@ -591,6 +623,7 @@ async function api(req: Request, env: Env, ctx: ExecutionContext, url: URL): Pro
     if (op === "bd" && Array.isArray(body.with) && body.with.length) {
       await bookFor(env, me, id, arg, body.with.map(Number).filter(Number.isFinite).slice(0, 8));
     }
+    if (op === "bd") await syncBooked(env, id, [me.chat_id, ...(Array.isArray(body.with) ? body.with.map(Number).filter(Number.isFinite).slice(0, 8) : [])]);
     track(env, ctx, me.chat_id, OP_EVENT[op] ?? op, op === "s" || op === "l" ? null : id, op === "s" ? id : op === "bd" ? `with:${Array.isArray(body.with) ? body.with.length : 0}` : arg || null);
     // La langue a pu changer (« l ») : on la relit.
     const lang = op === "l" ? asLang(id) : asLang(me.lang);
@@ -893,8 +926,20 @@ async function state(env: Env, chat: number, lang: "fr" | "en", focus = "") {
     `SELECT n.id, n.kind, n.from_id, u.first_name AS from_name, n.item_id, i.title, n.note, n.at, n.ref, n.created_at, n.read_at
      FROM notifications n LEFT JOIN users u ON u.chat_id = n.from_id LEFT JOIN items i ON i.id = n.item_id
      WHERE n.chat_id = ? ORDER BY n.id DESC LIMIT 40`).bind(chat).all<any>();
+  // 💌 Ce que j'ai suggéré (sans date) ces 7 derniers jours : visible chez moi aussi, pas seulement chez les amis.
+  const { results: sentRows } = await env.DB.prepare(
+    `SELECT n.item_id, i.title, u.first_name AS to_name, n.chat_id AS to_id, n.note, n.created_at FROM notifications n
+     JOIN items i ON i.id = n.item_id LEFT JOIN users u ON u.chat_id = n.chat_id
+     WHERE n.from_id = ? AND n.kind = 'share' AND n.created_at > datetime('now', '-7 days') ORDER BY n.id DESC LIMIT 30`).bind(chat).all<any>();
+  const sentMap = new Map<string, any>();
+  for (const r of sentRows) {
+    const g = sentMap.get(r.item_id) ?? { item_id: r.item_id, title: r.title, note: r.note, created_at: r.created_at, to: [] as { id: number; name: string }[] };
+    if (!g.to.some((t: any) => t.id === r.to_id)) g.to.push({ id: r.to_id, name: r.to_name || "?" });
+    sentMap.set(r.item_id, g);
+  }
   return {
     lang,
+    sentShares: [...sentMap.values()],
     admin: isAdmin(env, chat) || undefined,
     vapid: env.VAPID_PRIVATE_KEY ? env.VAPID_PUBLIC_KEY : undefined,
     push: await pushCount(env, chat),

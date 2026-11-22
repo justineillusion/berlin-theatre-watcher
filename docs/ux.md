@@ -145,3 +145,22 @@ Menu « / » (privé, fr/en) : **/programme** (à l'affiche), **/sorties** (« M
   gérés dans Réglages → Amis.
 - Rafraîchissement en direct : empreinte `/app/api/ping` toutes les 15 s (app visible), au retour dans l'app,
   et à chaque notification push (le service worker prévient la page). Jamais pendant une saisie.
+
+## Retours du 2026-11-22 (lien partagé, invitations, cartes)
+
+- **Lien partagé** : toujours `https://berlinencore.app/app?p=<id>` (même depuis Telegram). Bouton « Partager ↗ »
+  = feuille de partage du téléphone (n'importe quelle app), sinon Telegram, sinon lien copié. Jamais « WhatsApp ».
+  Aperçu du lien (og:title) : « Justine te propose : KIDS » · lieu · date · mot. Android : l'app installée s'ouvre
+  (`handle_links`). iPhone : Safari garde toujours les liens (limite d'iOS) → la page du lien se suffit à elle-même.
+- **Ouvert sans compte** : la marque en haut, le spectacle déplié, « Toi, c'est ? » avant la grille, puis
+  « La retrouver dans tes sorties » (Google / email). Une fois connecté·e, la réponse donnée par le lien devient
+  celle du compte (même appareil) et l'invitation se rouvre.
+- **Billet pris** pendant une invitation (soi-même, ou ajouté·e par un ami) : la réponse passe à « oui » pour ce
+  créneau ; 🎟 « a son billet » à côté du prénom ; bouton « 🎟 J'ai mon billet » après un oui.
+- **💌 sans date** : visible aussi chez qui l'envoie (« Tu as suggéré à Joss », 7 jours).
+- **Cartes** : même contenu à l'accueil et dans Mes sorties (langue · genre · durée, résumé avec « Lire plus ▾ »,
+  avec qui, notes et critiques, prix). Titre au même endroit replié / déplié (type au-dessus du titre).
+  Retoucher le titre replie toute la carte (agenda compris). « + Agenda » seulement une fois réservé.
+- **Lien « Page de la pièce / du film »** seulement s'il mène à cette fiche ; sinon « Programme · Lieu ».
+- **Tirer pour actualiser** : un filet en haut de l'écran, pas de pastille.
+- **Compte** : « Mon prénom » modifiable (ce que les amis voient).

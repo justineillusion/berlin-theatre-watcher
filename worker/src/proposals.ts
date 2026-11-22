@@ -113,6 +113,12 @@ async function shape(env: Env, id: string, viewer: string | null, lang: Lang, wi
   const item = await itemInfo(env, p.item_id);
   const { results } = await env.DB.prepare("SELECT * FROM proposal_people WHERE proposal_id = ? ORDER BY rowid").bind(id).all<Row>();
   const from = results.find((r) => r.chat_id === p.from_id);
+  // 🎟 Qui a déjà son billet (et pour quand) : affiché sur l'invitation à côté de la réponse.
+  const accts = results.filter((r) => r.chat_id != null).map((r) => r.chat_id);
+  const { results: bk } = accts.length ? await env.DB.prepare(
+    "SELECT chat_id, booked_at FROM reactions WHERE item_id = ? AND booked_at IS NOT NULL AND chat_id IN (SELECT value FROM json_each(?))",
+  ).bind(p.item_id, JSON.stringify(accts)).all<{ chat_id: number; booked_at: string }>() : { results: [] as { chat_id: number; booked_at: string }[] };
+  const bookedOf = new Map(bk.map((b) => [b.chat_id, b.booked_at]));
   return {
     id: p.id, item_id: p.item_id, note: p.note, slots: JSON.parse(p.slots), chosen: p.chosen, status: p.status,
     created_at: p.created_at, updated_at: p.updated_at,
@@ -124,6 +130,7 @@ async function shape(env: Env, id: string, viewer: string | null, lang: Lang, wi
       pid: r.pid === viewer ? r.pid : undefined, me: r.pid === viewer, name: r.name, guest: r.chat_id == null,
       ...(withIds && r.chat_id != null ? { id: r.chat_id } : {}),
       host: r.chat_id === p.from_id, answers: r.answers ? JSON.parse(r.answers) : null, note: r.note,
+      booked: (r.chat_id != null && bookedOf.get(r.chat_id)) || null,
     })),
     joined: !!viewer && results.some((r) => r.pid === viewer),
     labels: Object.fromEntries((JSON.parse(p.slots) as string[]).map((s) => [s, slotLabel(s, lang)])),
@@ -148,6 +155,22 @@ export const getProposal = (env: Env, chat: number, id: string, lang: Lang) => s
 export async function publicProposal(env: Env, id: string, key: string, lang: Lang) {
   const viewer = /^[a-f0-9]{32}$/.test(key) ? "g" + (await sha("prop:" + key)).slice(0, 24) : null;
   return shape(env, id, viewer, lang, false);
+}
+
+/** Répondu par le lien sans compte, puis connecté·e (Google, email) sur ce même appareil :
+ *  la réponse « invitée » devient celle du compte (même ligne, même place dans la liste). */
+export async function claimGuest(env: Env, me: Me, id: string, key: string): Promise<void> {
+  if (!/^[a-f0-9]{32}$/.test(key)) return;
+  const gpid = "g" + (await sha("prop:" + key)).slice(0, 24);
+  const g = await env.DB.prepare("SELECT 1 FROM proposal_people WHERE proposal_id = ? AND pid = ?").bind(id, gpid).first();
+  if (!g) return;
+  const mine = await env.DB.prepare("SELECT answers FROM proposal_people WHERE proposal_id = ? AND pid = ?").bind(id, `u${me.chat_id}`).first<{ answers: string | null }>();
+  if (mine?.answers) { await env.DB.prepare("DELETE FROM proposal_people WHERE proposal_id = ? AND pid = ?").bind(id, gpid).run(); return; }
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM proposal_people WHERE proposal_id = ? AND pid = ?").bind(id, `u${me.chat_id}`),
+    env.DB.prepare("UPDATE proposal_people SET pid = ?, chat_id = ?, name = ? WHERE proposal_id = ? AND pid = ?").bind(`u${me.chat_id}`, me.chat_id, me.first_name, id, gpid),
+    env.DB.prepare("UPDATE proposals SET updated_at = datetime('now') WHERE id = ?").bind(id),
+  ]);
 }
 
 function cleanAnswers(raw: any, slots: string[]) {
@@ -192,6 +215,31 @@ export async function guestAnswer(env: Env, id: string, key: string, name: unkno
   ]);
   if (!had?.answers) await inbox(env, p.from_id, "prop_answer", null, p.item_id, who, null, id);
   return null;
+}
+
+/** 🎟 Billet pris (par moi, ou par un ami qui m'a ajouté·e) pendant qu'une proposition est ouverte :
+ *  ma réponse passe à « oui » pour ce créneau. L'invitation ne reste pas « en attente » chez quelqu'un qui a déjà sa place. */
+export async function syncBooked(env: Env, itemId: string, chats: number[]): Promise<void> {
+  if (!chats.length) return;
+  const { results } = await env.DB.prepare(
+    `SELECT pp.proposal_id, pp.pid, pp.answers, p.slots, r.booked_at FROM proposal_people pp
+     JOIN proposals p ON p.id = pp.proposal_id AND p.status = 'open' AND p.item_id = ?1
+     JOIN reactions r ON r.chat_id = pp.chat_id AND r.item_id = ?1 AND r.booked_at IS NOT NULL
+     WHERE pp.chat_id IN (SELECT value FROM json_each(?2))`,
+  ).bind(itemId, JSON.stringify(chats)).all<{ proposal_id: string; pid: string; answers: string | null; slots: string; booked_at: string }>();
+  const stmts: D1PreparedStatement[] = [];
+  for (const r of results) {
+    const slots: string[] = JSON.parse(r.slots || "[]");
+    const slot = slots.find((s) => s === r.booked_at || (s.length === 10 && s === r.booked_at.slice(0, 10)));
+    if (!slot) continue;
+    const a = r.answers ? JSON.parse(r.answers) : Object.fromEntries(slots.map((s) => [s, 0]));
+    if (a[slot] === 1) continue;
+    a[slot] = 1;
+    stmts.push(env.DB.prepare("UPDATE proposal_people SET answers = ?, answered_at = COALESCE(answered_at, datetime('now')) WHERE proposal_id = ? AND pid = ?")
+      .bind(JSON.stringify(a), r.proposal_id, r.pid));
+    stmts.push(env.DB.prepare("UPDATE proposals SET updated_at = datetime('now') WHERE id = ?").bind(r.proposal_id));
+  }
+  if (stmts.length) await env.DB.batch(stmts);
 }
 
 /** « C'est calé » (la personne qui propose) : 🎟 pour chaque compte qui a dit oui à ce créneau ; prévenus. */
