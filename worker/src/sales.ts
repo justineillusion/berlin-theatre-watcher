@@ -4,7 +4,6 @@
 // contrairement aux crons GitHub qui dérivent de plusieurs heures).
 import { Lang, asLang, tr } from "./i18n";
 import { Env, WEB_ID_BASE, esc, inbox, send, setSetting, setting } from "./lib";
-import { pushTo } from "./push";
 
 export interface Sale {
   venue_id: string;
@@ -76,7 +75,7 @@ ${tail}
 <a href="${app}">Berlin Encore!</a>`;
       try {
         if (u.chat_id < WEB_ID_BASE) { await send(env, u.chat_id, text); n++; }
-        n += await pushTo(env, u.chat_id, { title: head, body: tail, url: "/app", tag: `programme-${month}` });
+        // Pas de notif téléphone : elles sont réservées à ce que font les amis (promesse de la carte « Être prévenu·e »).
       } catch (e) { console.log("programme notif failed", u.chat_id, e); }
     }
   }

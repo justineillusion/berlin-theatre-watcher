@@ -1,7 +1,7 @@
 # CRM — Berlin Encore!
 
 What the app sends, when, and to whom. Update this file whenever a message is added, changed or removed.
-Channels: **Telegram** (bot users), **push** (phones that enabled notifications), **inbox** (the Notifications
+Channels: **Telegram** (bot users), **push** (phones that enabled notifications; friends' activity only, as the in-app card promises), **inbox** (the Notifications
 section at the top of Mes sorties, kept 7 days; counts in the Mes sorties tab badge).
 
 ## 1. Messages that exist today
@@ -17,10 +17,10 @@ Calendar from `src/sales.py` (rules per venue, page announcements win), stored i
 Venues covered: Schaubühne (1st of the month, 11:00), Berliner Ensemble (3rd of the previous month, 10:00),
 Volksbühne (1st working day, hour not published).
 - `sale` — **the day before, from 19:00 Berlin**: « 🎟 Demain 11h : ouverture des ventes Schaubühne pour janvier »,
-  plus my ⭐ there. To everyone who follows the venue **or** has a ⭐ there. Telegram + inbox + push.
+  plus my ⭐ there. To everyone who follows the venue **or** has a ⭐ there. Telegram + inbox (no phone push: push is friends only).
 - `sale_open` — at opening time (09:00 if unknown), within 3 h: « 🎟 C'est ouvert », only to people with a ⭐ there.
 - `programme` — 14:00 on the first opening day of a month: « 🗓 Le programme de janvier est sorti », to all users.
-  Telegram + push.
+  Telegram only (no phone push: push is friends only).
 - Each send is keyed in `settings` (`sale_sent:…`, `programme_sent:…`): never twice.
 
 ### Shows (Python scan → `worker/src/scan.ts`, Telegram)

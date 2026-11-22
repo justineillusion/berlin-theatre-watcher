@@ -716,6 +716,12 @@ html{background:var(--bg)}
 .ptr{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:3px;z-index:60;background:var(--ink);transform:scaleX(0);transform-origin:left;opacity:0;pointer-events:none;transition:opacity .15s}
 .ptr.on{opacity:.5}.ptr.spin{opacity:1;animation:ptrb 1s ease-in-out infinite}
 @keyframes ptrb{0%{transform:scaleX(0);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}51%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+/* Envie dépliée : même fiche qu'À l'affiche, alignée sous le titre (le talon de date tient la marge). */
+.wsh .detail{padding:6px 0 4px;gap:0}
+/* Boutons d'action d'une fiche dépliée (partout) : chacun prend la largeur de son texte, jamais coupé par « … » ;
+   trop étroit, le second passe à la ligne. */
+.dmain,.item.open .dmain{display:flex;flex-wrap:wrap;gap:8px}
+.dmain .act,.item.open .dmain .act{flex:1 1 auto;white-space:nowrap;overflow:visible;text-overflow:clip}
 </style>
 </head>
 <body>
@@ -759,7 +765,7 @@ if (tgApp) {
 }
 
 const L = {
-  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pushT:"Notifications sur ce téléphone", pushOn:"Activées ✓", pushOff:"Désactivées", pushIos:"Sur iPhone : ajoute d'abord l'app à l'écran d'accueil (Partager → « Sur l'écran d'accueil »), puis ouvre-la de là.", pushYes:"Activer", pushNo:"Désactiver", pushTest:"M'envoyer un test", pushDenied:"Notifications bloquées : réautorise-les dans les réglages du téléphone.", pushSent:"Test envoyé ✓", pushOfferT:"Être prévenu·e sur ton téléphone ?", pushOfferP:"Quand un ami t'envoie une sortie ou réserve pour toi.", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkUseEmail:"Utiliser mon email plutôt", pkBack:"← Revenir à Face ID", pkManage:"Gérer", secT:"Notifications et connexion", pkWelcome:"Content de te revoir.", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas activé", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Tout Berlin est coché : théâtres, cinés, expos. Tu peux ne garder que tes lieux.", onbGo:"Choisir mes lieux", onbP2:"🙋 sur ce qui te tente : tes amis le verront.", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
+  fr: { tabs:["À l'affiche","Mes sorties","Réglages"], all:"Tout", theatre:"Théâtre", film:"Ciné", expo:"Expos", music:"Musique", pushT:"Notifications sur ce téléphone", pushOn:"Activées ✓", pushOff:"Désactivées", pushIos:"Sur iPhone : ajoute d'abord l'app à l'écran d'accueil (Partager → « Sur l'écran d'accueil »), puis ouvre-la de là.", pushYes:"Activer", pushNo:"Désactiver", pushTest:"M'envoyer un test", pushDenied:"Notifications bloquées : réautorise-les dans les réglages du téléphone.", pushSent:"Test envoyé ✓", pushOfferT:"Être prévenu·e sur ton téléphone ?", pushOfferP:"Seulement quand un·e ami·e te propose une sortie, répond à tes propositions ou t'ajoute en ami·e. Jamais de programme ni de pub.", pushOfferIos:"Sur iPhone, ajoute d'abord l'app à l'écran d'accueil : Partager → « Sur l'écran d'accueil », puis ouvre-la depuis l'icône et touche Activer ici.", pkLogin:"Se connecter avec Face ID", pkOr:"ou avec ton email", pkUseEmail:"Utiliser mon email plutôt", pkBack:"← Revenir à Face ID", pkManage:"Gérer", secT:"Notifications et connexion", pkWelcome:"Content de te revoir.", pkOfferT:"Face ID la prochaine fois ?", pkOfferP:"Plus de code par email : un regard et c'est ouvert. Ton visage reste sur ton téléphone, l'app ne le voit jamais.", pkYes:"Activer", pkLater:"Plus tard", pkT:"Face ID / empreinte", pkNone:"Pas activé", pkOn:(d) => `Activé sur : ${d}`, pkAdd:"Activer sur cet appareil", pkDel:"Retirer", pkDone:"Face ID activé ✓", pkFail:"Face ID n'a pas marché. Le code par email reste là.", onbT:"Bienvenue !", onbP:"Tout Berlin est coché : théâtres, cinés, expos. Tu peux ne garder que tes lieux.", onbGo:"Choisir mes lieux", onbP2:"🙋 sur ce qui te tente : tes amis le verront.", whyMusic:"Musique : opéras surtitrés en anglais (Staatsoper, Deutsche Oper, Komische Oper) et concerts de la Philharmonie.",
         ibAll:(n) => `Voir tout · ${n} lu${n > 1 ? "s" : ""}`, ibLess:"Masquer les messages lus", sPh:"Pièce, film, lieu, artiste…", sNone:(q) => `Rien pour « ${q} ».`, sVenues:"Lieux", sItems:"À l'affiche", sFollow:(v) => `＋ Suivre ${v}`, week:"7 jours", thisWe:"Ce week-end", month:"Ce mois", any:"Tout", today:"Aujourd'hui", tomorrow:"Demain", expos:"Expos en cours", exposNote:"par lieu", moreExpos:(n, v) => `+ ${n} autre${n > 1 ? "s" : ""} expo${n > 1 ? "s" : ""} · ${v}`, lessExpos:"Réduire",
         star:"Ça me tente", starA:"Ça me tente", book:"🎟 Réservé", seen:"✅ Vu", ignore:"🙅 Pas pour moi", unignore:"↩︎ Finalement si", site:"Site ↗", pick:"Quelle séance ?", cancelBook:"Retirer de mes billets", addCal:"📅 Ajouter à", calOther:"iPhone / Outlook",
         booked:"Réservé", wish:"Envies", done:"Vus", tonightH:"Ce soir", later:"Plus tard", toRate:"Ton avis ?", empty:"Rien dans ce créneau.", emptyMine:"Rien ici pour l'instant : ☆ ce qui te tente.", vfBtn:"Lieux", calT:"Calendrier", calWish:"Une envie joue", calProp:"Proposé", propsT:"Propositions", waitingN:(n) => `${n} en attente`, setT:"C’est calé", pComing:(n) => `${n} vien${/ et |, /.test(n) ? "nent" : "t"}`, yesAt:(d) => `Oui · ${d}`, yesN:(n) => `Oui pour ${n} date${n > 1 ? "s" : ""}`, pickDates:"Choisis tes dates", no:"Non", youCome:"Tu viens", details:"Détails", inDays:(n) => `Dans ${n} jours`, inWeeks:(n) => `Dans ${n} semaine${n > 1 ? "s" : ""}`, alone:"Tu y vas seule", invite:"Inviter", alsoW:(n) => `${n} aussi`, lastOn:(d) => `Dernière date : ${d}`, proposeTo:(n) => `Proposer à ${n}`, proposeB:"Proposer", addAgenda:"+ Agenda", refusedT:"Propositions refusées", missedT:"Manqués", missedP:"C’était dispo quand tu l’as ajouté.", refusedToast:"Proposition refusée", organises:"organise", tixL:"Billets", showPage:"Page du spectacle", changeDate:"Changer de date", cancelBookSure:"Retirer de l’app ? Le théâtre garde ta réservation", closeW:"Fermer", newW:"Nouveau", earlierW:"Plus tôt", noNews:"Rien de neuf. Les réponses de tes amis arriveront ici.", profileT:"Profil", prefsT:"Préférences", helpT:"Aide", notifL:"Notifications", notifOnSub:"Sur ce téléphone", notifOffSub:"Désactivées sur ce téléphone", pushIosShort:"Ajoute d’abord l’app à l’écran d’accueil", faceL:"Face ID", faceOffSub:"Connexion sans code email", youOrgFull:"Tu organises", howWas:"C’était comment ?", suggestsW:"te suggère", tempts:"Ça me tente", hideW:"Masquer", addPeople:"+ Amis", theyCome:"Ils viennent", proposeThem:"Leur proposer", whoComes:"Qui vient avec toi ?", withWhoT:"Avec qui ?", addThem:(n) => n ? `Ajouter ${n} personne${n > 1 ? "s" : ""}` : "Choisis qui vient", cancelW:"Annuler", noFriendsYet:"Ajoute d’abord des amis dans Réglages → Amis.", youOrganise:"organises", setDate:"Confirmer", seeShow:"Voir le spectacle", changeAns:"Changer ma réponse", cancelProp:"Annuler la proposition", cancelSure:"Sûr·e ? Toucher pour annuler pour tous", whoWhen:"Qui vient quand", undoBtn:"Annuler", undoStar:"Ajouté aux envies", undoUnstar:"Retiré des envies", undoHide:"Masqué", undoSeen:"Marqué comme vu", undoRate:"Note enregistrée", undoBook:"Marqué comme réservé", undoUnbook:"Retiré de mes billets", undoVenue:"Lieux mis à jour", vfApply:"Appliquer", vfApplyN:(n) => `Voir ${n} lieu${n > 1 ? "x" : ""}`, vfClear:"Effacer", ffBtn:"Amis", rulesT:"Ce que l’app te montre", ffNone:(w) => `Rien du côté de tes amis${w ? " " + w : ""}`, vfMine:"Mes lieux", vfOther:"Autres lieux", vfFollow:"Suivre", seeAll:"Voir tout", vfNone:(v, w) => `Rien pour ${v}${w ? " " + w : ""}`, whenW:{ tn:"ce soir", tm:"demain", we:"ce week-end", week:"ces 7 jours", all:"" }, proposeOn:(d) => `Proposer le ${d}`, tixD:"Billets", dsec:{ dates:"Séances", infos:"Infos", syn:"Résumé", friends:"Entre amis", acts:"Actions" }, mapL:"Plan", routeL:"Itinéraire", hideL:"Masquer", readMore:"Lire plus", iLang:"Langue", iVenue:"Lieu", iWith:"Avec", iBy:"De", iDur:"Durée", iPrice:"Prix", iRev:"Avis", intN:(n) => n > 1 ? "intéressé·es" : "intéressé·e", bookedOn:(n, d) => `${n > 1 ? "ont" : "a"} réservé le ${d}`, inProp:(n) => `${n} dans la boucle`, joinProp:"Je viens", seeProp:"Voir", starBtn:"Intéressé·e", iBooked:"J'ai réservé", proposeF:"Proposer à des amis", saleStars:"Tes ⭐ :", calBtn:"Agenda", pageL:{ theatre:"Page de la pièce", music:"Page du concert", film:"Page du film", expo:"Page de l'expo" }, wTn:"Ce soir", wTm:"Demain", wWe:"Ce week-end", wWk:"7 jours", wAll:"Tout", nShows:(n) => `${n} séance${n > 1 ? "s" : ""}`, kindL:{ theatre:"Théâtre", film:"Ciné", music:"Musique", expo:"Expo" }, untilT:(d) => `jusqu'au ${d}`, soldT:"Complet", bookedT:"Réservé", surEN:"Surtitres EN", subEN:"Sous-titres EN", noWords:"Sans paroles", venueProg:(v) => `Tout le programme · ${v}`, vWords:{ OmeU:"VO, sous-titres anglais", OmU:"Anglais (sous-titres allemands)", OV:"Version originale", VO:"Version originale", muet:"Muet" }, ov:"VO", silent:"Muet", inEN:"En anglais", themeL:"Thème", themes:{ auto:"Auto", light:"Clair", dark:"Sombre" },
@@ -783,7 +789,7 @@ const L = {
         ignoreReq:"Ignorer", now:"à l'instant", minAgo:(m) => `il y a ${m} min`, hAgo:(h) => `il y a ${h} h`, dAgo:(d) => `il y a ${d} j`,
         fbVenueT:"Un lieu manque ?", fbVenuePh:"Son nom, et le lien si tu l'as", fbT:"Une idée, un souci ?", fbPh:"Dis-moi tout", fbSend:"Envoyer", fbThanks:"Merci, c'est transmis.", photoT:"Ma photo", photoAdd:"Ajouter une photo", photoChange:"Changer", photoDel:"Retirer", badPhoto:"Image illisible.", nameT:"Mon prénom", nameHint:"Ce que tes amis voient.", editName:"Modifier",
         emailT:"Email de connexion", emailHint:"Pour te connecter : on t'y envoie un code.", emailNone:"Aucun", editEmail:"Modifier", addEmail:"Ajouter mon email", emailTaken:"Cette adresse est déjà liée à un autre compte.", removeEmail:"Retirer", orTelegram:"ou", catOn:"Tout suivre", catOff:"Ne rien suivre" },
-  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pushT:"Notifications on this phone", pushOn:"On ✓", pushOff:"Off", pushIos:"On iPhone: first add the app to your home screen (Share → “Add to Home Screen”), then open it from there.", pushYes:"Turn on", pushNo:"Turn off", pushTest:"Send me a test", pushDenied:"Notifications are blocked: allow them again in your phone settings.", pushSent:"Test sent ✓", pushOfferT:"Get notified on your phone?", pushOfferP:"When a friend sends you an outing or books for you.", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkUseEmail:"Use my email instead", pkBack:"← Back to Face ID", pkManage:"Manage", secT:"Notifications & sign-in", pkWelcome:"Good to see you again.", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Off", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"All of Berlin is on: theatres, cinemas, galleries. You can keep just your venues.", onbGo:"Pick my venues", onbP2:"🙋 what tempts you: your friends will see it.", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
+  en: { tabs:["On now","My outings","Settings"], all:"All", theatre:"Theatre", film:"Cinema", expo:"Exhibits", music:"Music", pushT:"Notifications on this phone", pushOn:"On ✓", pushOff:"Off", pushIos:"On iPhone: first add the app to your home screen (Share → “Add to Home Screen”), then open it from there.", pushYes:"Turn on", pushNo:"Turn off", pushTest:"Send me a test", pushDenied:"Notifications are blocked: allow them again in your phone settings.", pushSent:"Test sent ✓", pushOfferT:"Get notified on your phone?", pushOfferP:"Only when a friend suggests an outing, answers your proposals or adds you as a friend. Never listings or ads.", pushOfferIos:"On iPhone, first add the app to your home screen: Share → “Add to Home Screen”, then open it from the icon and tap Turn on here.", pkLogin:"Sign in with Face ID", pkOr:"or with your email", pkUseEmail:"Use my email instead", pkBack:"← Back to Face ID", pkManage:"Manage", secT:"Notifications & sign-in", pkWelcome:"Good to see you again.", pkOfferT:"Face ID next time?", pkOfferP:"No more email codes: one glance and you're in. Your face stays on your phone; the app never sees it.", pkYes:"Turn on", pkLater:"Later", pkT:"Face ID / fingerprint", pkNone:"Off", pkOn:(d) => `On for: ${d}`, pkAdd:"Turn on for this device", pkDel:"Remove", pkDone:"Face ID is on ✓", pkFail:"Face ID didn't work. The email code is still there.", onbT:"Welcome!", onbP:"All of Berlin is on: theatres, cinemas, galleries. You can keep just your venues.", onbGo:"Pick my venues", onbP2:"🙋 what tempts you: your friends will see it.", whyMusic:"Music: operas with English surtitles (Staatsoper, Deutsche Oper, Komische Oper) and Philharmonie concerts.",
         week:"7 days", thisWe:"This weekend", month:"This month", any:"All", today:"Today", tomorrow:"Tomorrow", expos:"Exhibitions on", exposNote:"by venue", moreExpos:(n, v) => `+ ${n} more at ${v}`, lessExpos:"Show less",
         star:"I'm interested", starA:"Interested", book:"🎟 Booked", seen:"✅ Seen", ignore:"🙅 Not for me", unignore:"↩︎ Actually yes", site:"Site ↗", pick:"Which show?", cancelBook:"Remove from my tickets", addCal:"📅 Add to", calOther:"iPhone / Outlook",
         booked:"Booked", wish:"Wishlist", done:"Seen", tonightH:"Tonight", later:"Later", toRate:"Your verdict?", empty:"Nothing in this window.", emptyMine:"Nothing yet: ☆ what tempts you.", vfBtn:"Venues", calT:"Calendar", calWish:"A wish is on", calProp:"Proposed", propsT:"Proposals", waitingN:(n) => `${n} waiting`, setT:"It’s on", pComing:(n) => `${n} ${/ and |, /.test(n) ? "are" : "is"} coming`, yesAt:(d) => `Yes · ${d}`, yesN:(n) => `Yes for ${n} date${n > 1 ? "s" : ""}`, pickDates:"Pick your dates", no:"No", youCome:"You’re in", details:"Details", inDays:(n) => `In ${n} days`, inWeeks:(n) => `In ${n} week${n > 1 ? "s" : ""}`, alone:"Going solo", invite:"Invite", alsoW:(n) => `${n} too`, lastOn:(d) => `Last date: ${d}`, proposeTo:(n) => `Suggest to ${n}`, proposeB:"Suggest", addAgenda:"+ Calendar", refusedT:"Declined proposals", missedT:"Missed", missedP:"It was available when you added it.", refusedToast:"Proposal declined", organises:"is organising", tixL:"Tickets", showPage:"Show page", changeDate:"Change date", cancelBookSure:"Remove from the app? The venue keeps your booking", closeW:"Close", newW:"New", earlierW:"Earlier", noNews:"Nothing new. Your friends’ replies will show up here.", profileT:"Profile", prefsT:"Preferences", helpT:"Help", notifL:"Notifications", notifOnSub:"On this phone", notifOffSub:"Off on this phone", pushIosShort:"Add the app to your home screen first", faceL:"Face ID", faceOffSub:"Sign in without an email code", youOrgFull:"You’re organising", howWas:"How was it?", suggestsW:"suggests", tempts:"I’m in", hideW:"Hide", addPeople:"+ Friends", theyCome:"They’re coming", proposeThem:"Suggest to them", whoComes:"Who’s coming with you?", withWhoT:"With whom?", addThem:(n) => n ? `Add ${n} ${n > 1 ? "people" : "person"}` : "Pick who’s coming", cancelW:"Cancel", noFriendsYet:"Add friends first in Settings → Friends.", youOrganise:"are organising", setDate:"Confirm", seeShow:"See the show", changeAns:"Change my answer", cancelProp:"Cancel the proposal", cancelSure:"Sure? Tap to cancel for everyone", whoWhen:"Who can come when", undoBtn:"Undo", undoStar:"Added to wishlist", undoUnstar:"Removed from wishlist", undoHide:"Hidden", undoSeen:"Marked as seen", undoRate:"Rating saved", undoBook:"Marked as booked", undoUnbook:"Removed from my tickets", undoVenue:"Venues updated", vfApply:"Apply", vfApplyN:(n) => `Show ${n} venue${n > 1 ? "s" : ""}`, vfClear:"Clear", ffBtn:"Friends", rulesT:"What the app shows you", ffNone:(w) => `Nothing from your friends${w ? " " + w : ""}`, vfMine:"My venues", vfOther:"Other venues", vfFollow:"Follow", seeAll:"See all", vfNone:(v, w) => `Nothing at ${v}${w ? " " + w : ""}`, whenW:{ tn:"tonight", tm:"tomorrow", we:"this weekend", week:"in the next 7 days", all:"" }, proposeOn:(d) => `Propose ${d}`, tixD:"Tickets", dsec:{ dates:"Dates", infos:"Info", syn:"Synopsis", friends:"Friends", acts:"Actions" }, mapL:"Map", routeL:"Directions", hideL:"Hide", readMore:"Read more", iLang:"Language", iVenue:"Venue", iWith:"With", iBy:"By", iDur:"Length", iPrice:"Price", iRev:"Reviews", intN:() => "interested", bookedOn:(n, d) => `booked for ${d}`, inProp:(n) => `${n} in the loop`, joinProp:"I'm in", seeProp:"Open", starBtn:"Interested", iBooked:"I booked", proposeF:"Suggest to friends", saleStars:"Your ⭐:", calBtn:"Calendar", pageL:{ theatre:"Play page", music:"Concert page", film:"Film page", expo:"Exhibit page" }, wTn:"Tonight", wTm:"Tomorrow", wWe:"Weekend", wWk:"7 days", wAll:"All", nShows:(n) => `${n} show${n > 1 ? "s" : ""}`, kindL:{ theatre:"Theatre", film:"Film", music:"Music", expo:"Exhibit" }, untilT:(d) => `until ${d}`, soldT:"Sold out", bookedT:"Booked", surEN:"EN surtitles", subEN:"EN subtitles", noWords:"No words", venueProg:(v) => `All of ${v}`, vWords:{ OmeU:"Original, English subtitles", OmU:"English (German subtitles)", OV:"Original version", VO:"Original version", muet:"Silent" }, ov:"Original version", silent:"Silent", inEN:"In English", themeL:"Theme", themes:{ auto:"Auto", light:"Light", dark:"Dark" },
@@ -1398,10 +1404,12 @@ function noWhy(p, host) {
     <div class="pacts"><button class="lnk" data-pqnoback="${p.id}">${esc(T.cancelW)}</button></div></div>`;
 }
 /** Suggestions reçues encore ouvertes : 7 jours max, une par spectacle, et plus du tout si le spectacle est déjà dans mes listes. */
+/** Encore à l'affiche : une séance à venir (expo : pas encore finie). Une suggestion pour un spectacle passé n'a plus rien à proposer. */
+const stillOn = (x) => !!x && (x.kind === "expo" ? !x.end || x.end >= TODAY : (x.dates || []).some((d) => d.slice(0, 10) >= TODAY));
 const liveShares = () => { const seen = new Set();
   return (S && !S.guest ? S.inbox || [] : []).filter((n) => { if (n.kind !== "share" || !n.item_id || staleMsg(n) || seen.has(n.item_id)) return false;
     if (Date.now() - Date.parse(String(n.created_at).replace(" ", "T") + "Z") > 7 * 864e5) return false;
-    const x = (S.items || []).find((i) => i.id === n.item_id); if (x && state(x)) return false;
+    const x = (S.items || []).find((i) => i.id === n.item_id); if (x && state(x)) return false; if (x && !stillOn(x)) return false;
     seen.add(n.item_id); return true; }); };
 /** 💌 Ce que j'ai suggéré sans date : la même carte que chez l'ami·e, de mon côté. */
 function sentCard(g) {
@@ -1473,7 +1481,7 @@ function ticket(x) {
     ${st.calFor === x.id ? `<div class="tkc"><a class="btn s" href="${gcal(x, at)}" data-link="1" data-cal="google" data-id="${x.id}" target="_blank" rel="noopener">Google Agenda ↗</a><a class="btn s" href="${ics}" data-link="1" data-cal="ics" data-id="${x.id}" target="_blank" rel="noopener">${esc(T.calOther)} ↗</a></div>` : ""}</div></div>`;
 }
 function wishRow(x) {
-  if (st.open === x.id && st.proposing === x.id) return item(x);   // « Proposer » : le formulaire vit dans la fiche
+  if (st.open === x.id && (st.proposing === x.id || st.picking === x.id)) return item(x);   // « Proposer » / « J'ai mon billet » : le formulaire vit dans la fiche
   const fr = (x.friends || []).filter((p) => p.star && !p.seen && !p.booked);
   const l = lastDate(x), urgent = l && l >= TODAY && l < plus(7);
   const face = (p) => `<span class="face">${avatar(S.photos && S.photos[p.id], p.name, "av", p.id)}</span>`;
@@ -1485,10 +1493,9 @@ function wishRow(x) {
   const kick = urgent ? T.lastOn(dayLabel(l)) : (T.kindL[x.kind === "cinema" ? "film" : x.kind] || "");
   return `<div class="bkt wsh${hit}${open ? " open" : ""}" data-item="${x.id}">${stubH}<div class="tkm">
     <span class="tke${urgent ? " soon" : ""}">${esc(kick)}</span>
-    <button class="tkt"${tog} aria-expanded="${open}">${esc(x.title)}<i class="wst">★</i></button><a class="tkv vlink" href="${mapUrl(x)}" data-link="1" target="_blank" rel="noopener">${esc(venueLine(x))}</a>${(() => { const pr = pressShort(x); return pr ? `<div class="tkv wpr">${esc(T.pressW)} : ${esc(pr)}</div>` : ""; })()}
+    <button class="tkt"${tog} aria-expanded="${open}">${esc(x.title)}<i class="wst">★</i></button><a class="tkv vlink" href="${mapUrl(x)}" data-link="1" target="_blank" rel="noopener">${esc(venueLine(x))}</a>${(() => { const pr = open ? "" : pressShort(x); return pr ? `<div class="tkv wpr">${esc(T.pressW)} : ${esc(pr)}</div>` : ""; })()}
     ${fr.length ? `<div class="tkw"><span class="stack">${fr.slice(0, 3).map(face).join("")}</span>${esc(T.alsoW(joinNames(fr.map((p) => p.name))))}</div>` : ""}
-    ${open ? wishMore(x) : ""}
-    <div class="pft"><button class="btn s${fr.length ? " k" : ""}" data-propose="${x.id}">${esc(fr.length === 1 ? T.proposeTo(fr[0].name) : T.proposeB)}</button></div></div></div>`;
+    ${open ? wishMore(x) : `<div class="pft"><button class="btn s${fr.length ? " k" : ""}" data-propose="${x.id}">${esc(fr.length === 1 ? T.proposeTo(fr[0].name) : T.proposeB)}</button></div>`}</div></div>`;
 }
 /** « Page de la pièce / du film » seulement si le lien mène vraiment à cette fiche. Un lien partagé par plusieurs fiches,
  *  la page d'accueil ou la page programme du lieu (B-ware!, Intimes, Wolf, Schokoladen…) s'appelle « Programme · Lieu ». */
@@ -1537,12 +1544,22 @@ function showMini(x) {
     <div class="pacts">${tix ? `<a class="lnk" href="${esc(tix)}" data-link="1" target="_blank" rel="noopener">${esc(T.tixL)} ↗</a>` : ""}${x.url && (x.kind !== "expo" || x.url !== tix) ? `<a class="lnk" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(pageLabel(x))} ↗</a>` : ""}</div></div>`;
 }
 function wishMore(x) {
-  const next = (x.dates || []).filter((v) => v.slice(0, 10) >= TODAY).sort();
-  const when = x.kind === "expo" && x.end ? T.untilT(dayLabel(x.end)) : next.slice(0, 4).map(slotText).join(" · ") + (next.length > 4 ? ` · +${next.length - 4}` : "");
-  const tix = (x.kind === "expo" ? x.url : sessionLinks(x).book) || x.url;
-  return `<div class="tkx">${when ? `<p class="tkl">${esc(when)}</p>` : ""}${infoBlock(x, { venue: false })}
-    <div class="pacts">${tix ? `<a class="lnk" href="${esc(tix)}" data-link="1" target="_blank" rel="noopener">${esc(T.tixL)} ↗</a>` : ""}${x.url && (x.kind !== "expo" || x.url !== tix) ? `<a class="lnk" href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(pageLabel(x))} ↗</a>` : ""}</div>
-    <div class="pacts"><button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button><button class="lnk red" data-act="i" data-id="${x.id}">${esc(T.unstarL)}</button></div></div>`;
+  // Même fiche dépliée qu'À l'affiche, dans le même ordre : infos (le lieu est déjà sous le titre), séances en puces
+  // (une rangée, +n, toucher choisit), « Billets ↗ » de la séance choisie, puis les liens. Rien n'est dit deux fois.
+  const sec = (k) => `<div class="dlab">${esc(T.dsec[k])}</div>`;
+  const expoD = x.kind === "expo" ? [x.start && x.start > TODAY ? `${T.from} ${shortDay(x.start)}` : "", x.end ? `${T.until} ${shortDay(x.end)}` : ""].filter(Boolean).join(", ") : "";
+  const dates = x.kind === "expo" ? (expoD ? `<div>${esc(cap(expoD))}</div>` : "") : dateBlock(x);
+  const sel = selDate(x), L = x.kind === "expo" ? { book: x.url, map: new Map() } : sessionLinks(x);
+  const sInfo = sel ? L.map.get(`${+sel.slice(8, 10)} ${sel.slice(11, 16)}`) : null;
+  const tixUrl = (sInfo && sInfo.url) || L.book || x.url;
+  const upcoming = (x.dates || []).some((d) => d.slice(0, 10) >= TODAY);
+  const lk = [
+    x.kind !== "expo" && upcoming ? `<button class="lnk" data-pick="${x.id}">${esc(T.iBooked)}</button>` : "",
+    x.url && (x.kind !== "expo" || x.url !== tixUrl) ? `<a href="${esc(x.url)}" data-link="1" target="_blank" rel="noopener">${esc(pageLabel(x))} ↗</a>` : "",
+  ].filter(Boolean);
+  return `<div class="detail">${infoBlock(x, { venue: false })}${dates ? sec("dates") + dates : ""}
+    <div class="dmain">${tixUrl ? `<a class="act pri" href="${esc(tixUrl)}" data-link="1" target="_blank" rel="noopener">${esc(x.kind === "expo" ? T.tixExpo : T.tixD)} ↗</a>` : ""}${(S.people || []).length ? (sel ? `<button class="act" data-proposeat="${x.id}|${sel}">${esc(T.proposeF)}</button>` : `<button class="act" data-propose="${x.id}">${esc(T.proposeF)}</button>`) : ""}</div>
+    <div class="dlinks">${lk.join("")}<span class="dlr"><button class="lnk" data-act="v" data-id="${x.id}">${esc(T.seenL)}</button><button class="lnk" data-act="i" data-id="${x.id}">${esc(T.unstarL)}</button></span></div></div>`;
 }
 function calMonth(xs) {
   const ym = addMonths(TODAY.slice(0, 7), st.mo || 0);
@@ -1577,7 +1594,7 @@ function mineSections(xs) {
   const live = ps.filter((p) => !saidNo(p)).sort((a, b) => todo(b) - todo(a)), refused = ps.filter(saidNo);
   let h = st.calShow ? calMonth(xs) : "";
   const shares = liveShares();
-  const sent = (S.sentShares || []).filter((g) => { const x = (S.items || []).find((i) => i.id === g.item_id); return !x || !["booked", "seen"].includes(state(x)); });
+  const sent = (S.sentShares || []).filter((g) => { const x = (S.items || []).find((i) => i.id === g.item_id); return stillOn(x) && !["booked", "seen"].includes(state(x)); });
   const nWait = live.filter(todo).length + shares.length;
   if (live.length || shares.length || sent.length) {
     // Section repliable (ouverte par défaut, mémorisée sur ce téléphone).
@@ -2043,6 +2060,15 @@ function newsPanel() {
     : `<p class="hint">${esc(T.noNews)}</p>`;
   return h + `</div>`;
 }
+/** Carte « Être prévenu·e » : tant que je n'ai aucun téléphone abonné, en haut d'À l'affiche et de Mes sorties.
+ *  iPhone dans Safari : la marche à suivre (l'écran d'accueil d'abord), sans bouton qui ne marcherait pas. */
+function pushCard() {
+  if (!S || S.guest || S.push || !WEB || !S.vapid || lsGet("pushCardX")) return "";
+  if (typeof Notification !== "undefined" && Notification.permission === "denied") return "";
+  const iosWeb = IOS && !STANDALONE, can = pushSupported() && !iosWeb;
+  if (!iosWeb && !(can && st.pushHere === false)) return "";
+  return `<div class="onb"><div><b>🔔 ${esc(T.pushOfferT)}</b>${esc(T.pushOfferP)}${iosWeb ? `<p class="onb2">${esc(T.pushOfferIos)}</p>` : `<br><button class="go" data-pushon="1">${esc(T.pushYes)} ›</button>`}</div><button class="x" data-pushcardx="1" aria-label="${esc(T.pkLater)}">✕</button></div>`;
+}
 /** Mes sorties, tout en haut : les demandes d'ami à accepter (sinon on ne les voyait que dans Réglages → Amis). */
 function reqRows() {
   const inc = (S && !S.guest && S.circle?.incoming) || [];
@@ -2392,8 +2418,7 @@ function render() {
     let onb = false; try { onb = !S.guest && !localStorage.getItem("onbDone") && !S.items.some((x) => x.me && (x.me.star || x.me.booked || x.me.status)); } catch {}
     const pkHtml = st.pkOffer ? `<div class="onb"><div><b>🔒 ${esc(T.pkOfferT)}</b>${esc(T.pkOfferP)}<br><button class="go" data-pkadd="1">${esc(T.pkYes)} ›</button> &nbsp; <button class="go" style="color:var(--muted)" data-pklater="1">${esc(T.pkLater)}</button></div></div>` : "";
     if (st.pushHere === undefined && pushSupported()) pushState().then(render);
-    const pushOffer = false && pushSupported() && !(IOS && !STANDALONE) && st.pushHere === false && !lsGet("pushAsked") && Notification.permission === "default";
-    const pushHtml = pushOffer ? `<div class="onb"><div><b>🔔 ${esc(T.pushOfferT)}</b>${esc(T.pushOfferP)}<br><button class="go" data-pushon="1">${esc(T.pushYes)} ›</button> &nbsp; <button class="go" style="color:var(--muted)" data-pushlater="1">${esc(T.pkLater)}</button></div></div>` : "";
+    const pushHtml = pushCard();
     const onbHtml = pushHtml + pkHtml + (st.pkOffer ? "" : onb ? `<div class="onb"><div><b>${esc(T.onbT)}</b>${esc(T.onbP)}<br><button class="go" data-onbgo="1">${esc(T.onbGo)} ›</button><p class="onb2">${esc(T.onbP2)}</p></div><button class="x" data-onbx="1" aria-label="OK">✕</button></div>` : "");
     const vfTop = vfBar();
     const emptyH = vfOn ? (st.vfLoading && !st.vfData ? `<div class="msg">…</div>` : `<div class="empty">${esc(T.vfNone(vfNames(), T.whenW[st.when] || ""))}<br><button class="act vall" data-when="all">${esc(T.seeAll)}</button></div>`)
@@ -2402,7 +2427,8 @@ function render() {
     $("nshow").textContent = T.nShows(nShown); $("nshow").hidden = false;
   } else {
     h = mineSections(xs); $("nshow").hidden = true;
-    const news = reqRows() + newsSection();
+    if (st.pushHere === undefined && pushSupported()) pushState().then(render);
+    const news = pushCard() + reqRows() + newsSection();
     list.innerHTML = offBar() + news + (h || (news ? "" : `<div class="empty">${esc(T.emptyMine)}</div>`));
     if (newsOf().some((n) => !n.read_at)) markRead();
     // la barre se colle sous l'en-tête (lui aussi collant), jamais dessous
@@ -2439,9 +2465,10 @@ document.addEventListener("click", (e) => {
     else if (st.pks && !st.pks.length) { lsSet("pkAsked", "1"); pkRegister().then(() => { st.pks = null; notify(T.pkDone); render(); }, () => {}); }
     else lsSet("pkAsked", "1");
   }
-  const pu = e.target.closest("[data-pushon], [data-pushoff], [data-pushtest], [data-pushlater]");
+  const pu = e.target.closest("[data-pushon], [data-pushoff], [data-pushtest], [data-pushlater], [data-pushcardx]");
   if (pu) {
     e.preventDefault(); e.stopPropagation();
+    if (pu.dataset.pushcardx) { lsSet("pushCardX", "1"); return void render(); }
     if (pu.dataset.pushlater) { lsSet("pushAsked", "1"); return void render(); }
     if (pu.dataset.pushtest) { api("push/test", { title: "Berlin Encore! 🎭", text: T.pushSent }).then((j) => notify(j.sent ? T.pushSent : T.pkFail), () => {}); return; }
     (pu.dataset.pushoff ? pushOff() : pushOn()).then(() => render(), (err) => { lsSet("pushAsked", "1"); notify(err?.name === "Denied" ? T.pushDenied : T.error); render(); });
@@ -2493,7 +2520,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.sk) return void act("sk", t.dataset.sk, t.dataset.arg, { body: { area: st.setArea } });
   else if (t.dataset.hidesold) { st.hideSold = !st.hideSold; if (!st.hideSold) setTimeout(() => document.querySelector(".soldfoot")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }
   else if (t.dataset.when) st.when = t.dataset.when;
-  else if (t.dataset.pick) { st.picking = st.picking === t.dataset.pick ? null : t.dataset.pick; st.sharing = null; st.withs.clear(); }
+  else if (t.dataset.pick) { st.picking = st.picking === t.dataset.pick ? null : t.dataset.pick; st.sharing = null; st.withs.clear(); if (st.picking && t.closest(".wsh")) st.open = st.picking; }
   else if (t.dataset.sharing) { st.sharing = st.sharing === t.dataset.sharing ? null : t.dataset.sharing; st.picking = null; st.sel.clear(); }
   else if (t.dataset.sel) { const n = +t.dataset.sel; st.sel.has(n) ? st.sel.delete(n) : st.sel.add(n); }
   else if (t.dataset.with) { const n = +t.dataset.with; st.withs.has(n) ? st.withs.delete(n) : st.withs.add(n); }
