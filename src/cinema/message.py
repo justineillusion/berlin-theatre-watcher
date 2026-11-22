@@ -306,6 +306,9 @@ def film_card(film: Film, lang: str = "fr") -> str:
         lines.append(f"🏆 {esc(fest)}")
     if ser:
         lines.append(f"🎪 {esc(ser)}")
+    if film.runtime:                       # « ⏱ 1 h 58 » : l'app le met dans la ligne langue · genre · durée
+        h, m = divmod(film.runtime, 60)
+        lines.append(f"⏱ {h} h {m:02d}" if h and lang == "fr" else f"⏱ {h}h {m:02d}" if h else f"⏱ {m} min")
     lines += [f"📍 {x}" for x in _sessions(film, lang)]
     rating = _short_rating(film, True, lang)
     if rating != "★ ?":                    # pas de note connue : pas de ligne

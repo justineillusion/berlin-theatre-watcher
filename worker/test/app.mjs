@@ -151,7 +151,7 @@ await step("🎟 pour moi + Joss : réservé chez lui aussi", async () => {
   assert.equal(r.status, 200);
   const f = item(r.json, "p2").friends.find((x) => x.name === "Joss");
   assert.equal(f.booked, `${day(3)} 19:00`);
-  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id == 555 && /got you a ticket/.test(c.text)));
+  assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id == 555 && /added you/.test(c.text)));
 });
 await step("Réglages : ne plus suivre puis resuivre un lieu", async () => {
   let s = await act("s", "kw");
@@ -548,6 +548,35 @@ await step("🗳 proposer : invités prévenus (app + Telegram), réponses visib
   assert.ok(js.inbox.some((n) => n.kind === "prop_cancel" && n.ref === pid));
   assert.ok(calls.some((c) => c.method === "sendMessage" && c.chat_id === 555 && /cancelled/.test(c.text)));
   assert.equal((await post("/app/api/proposal/set", { initData: me, pid, slot: s1 })).status, 400);
+});
+await step("🗳 billet pris pendant une invitation → « oui » + 🎟 ; réponse par le lien reprise à la connexion ; 💌 envoyées visibles ; aperçu du lien", async () => {
+  const lyna = initData({ id: 666, first_name: "Lyna" });
+  const s1 = `${day(3)} 19:00`;
+  let r = await post("/app/api/proposal/create", { initData: me, id: "p2", to: [555, 666], slots: [s1] });
+  assert.equal(r.status, 200, JSON.stringify(r.json)); const pid = r.json.proposal.id;
+  // Justine prend sa place et y ajoute Joss (« Ils viennent ») : l'invitation de Joss n'est plus « en attente ».
+  r = await post("/app/api/act", { initData: me, op: "bd", id: "p2", arg: s1.replace(/\D/g, ""), with: [555] });
+  assert.equal(r.status, 200);
+  const P = r.json.proposals.find((p) => p.id === pid), jo = P.people.find((x) => x.name === "Joss");
+  assert.deepEqual(jo.answers, { [s1]: 1 }); assert.equal(jo.booked, s1);
+  assert.equal(P.people.find((x) => x.name === "Lyna").answers, null);
+  // Lyna répond d'abord par le lien (sans compte), puis se connecte sur le même appareil : une seule ligne, la sienne.
+  const key = "cd".repeat(16);
+  assert.equal((await post("/app/api/proposal/guest", { id: pid, key, name: "Ly", answers: { [s1]: 1 } })).status, 200);
+  r = await post("/app/api/proposal/get", { initData: lyna, pid, key });
+  assert.equal(r.status, 200);
+  const ppl = r.json.proposal.people;
+  assert.equal(ppl.length, 3); assert.ok(!ppl.some((x) => x.guest)); assert.deepEqual(ppl.find((x) => x.me).answers, { [s1]: 1 });
+  // L'aperçu du lien partagé dit qui propose quoi.
+  const html = await (await fetch(`${W}/app?p=${pid}`)).text();
+  assert.match(html, /og:title" content="Justine te propose : /);
+  assert.ok(!(await (await fetch(`${W}/app`)).text()).includes("og:title"));
+  await post("/app/api/proposal/cancel", { initData: me, pid });
+  // 💌 sans date : la suggestion apparaît aussi chez moi.
+  r = await post("/app/api/share", { initData: me, id: "p2", to: [666] });
+  assert.equal(r.status, 200);
+  const g = r.json.sentShares.find((x) => x.item_id === "p2");
+  assert.ok(g && g.to.some((t) => t.id === 666), JSON.stringify(r.json.sentShares));
 });
 await step("groupes privés : enregistrés, ≥ 2 connexions, jamais visibles par les membres ; retirés", async () => {
   assert.equal((await post("/app/api/group/save", { initData: me, name: "Solo", members: [555] })).status, 400);

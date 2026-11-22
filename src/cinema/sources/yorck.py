@@ -133,5 +133,6 @@ def fetch(cfg: dict, start: date, days: int) -> List[Screening]:
             description=_strip(info.get("about")),
             tags=[x.lower() for x in formats],
             event=event,
+            runtime=int(info["runtime"]) if str(info.get("runtime") or "").isdigit() and 30 <= int(info["runtime"]) <= 400 else None,
         ))
     return out

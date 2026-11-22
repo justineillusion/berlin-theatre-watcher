@@ -28,6 +28,7 @@ class Screening:
     tags: List[str] = field(default_factory=list)        # flags kinoheld, tags Babylon…
     live_music: bool = False         # ciné-concert (muet + orgue/orchestre)
     event: bool = False              # séance d'une série / d'un festival (Französische Filmwoche…)
+    runtime: Optional[int] = None    # durée en minutes, si le cinéma la donne (Yorck)
 
 
 @dataclass
@@ -116,6 +117,10 @@ class Film:
     @property
     def directors(self) -> List[str]:
         return self._first("directors") or (self.senscritique.directors if self.senscritique else []) or []
+
+    @property
+    def runtime(self) -> Optional[int]:
+        return self._first("runtime")
 
     @property
     def best_score(self) -> float:

@@ -140,3 +140,12 @@ if __name__ == "__main__":
         if name.startswith("test_") and callable(fn):
             fn()
             print("ok", name)
+
+
+def test_film_card_runtime():
+    """Durée donnée par le cinéma (Yorck) : une ligne ⏱ que l'app montre avec langue et genre ; rien si inconnue."""
+    f = _film()
+    assert "⏱" not in cm.film_card(f, "fr")
+    f.screenings[0].runtime = 118
+    assert "⏱ 1 h 58" in cm.film_card(f, "fr")
+    assert "⏱ 1h 58" in cm.film_card(f, "en")

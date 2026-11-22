@@ -10,9 +10,14 @@ const MANIFEST = {
   name: "Berlin Encore!",
   short_name: "Encore!",
   description: "Théâtre surtitré, expos et ciné en VO à Berlin, avec tes amis.",
+  id: "/app",
   start_url: "/app",
   scope: "/app",
   display: "standalone",
+  // Android (Chrome) : un lien berlinencore.app/app?… s'ouvre dans l'app installée plutôt que dans le navigateur.
+  // (iPhone : Safari garde toujours les liens ; la page d'accueil du lien fait le reste.)
+  handle_links: "preferred",
+  launch_handler: { client_mode: ["navigate-existing", "auto"] },
   background_color: "#ffffff",
   theme_color: "#ffffff",
   icons: [
