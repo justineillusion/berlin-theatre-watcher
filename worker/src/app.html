@@ -724,6 +724,11 @@ html{background:var(--bg)}
 .dmain .act,.item.open .dmain .act{flex:1 1 auto;white-space:nowrap;overflow:visible;text-overflow:clip}
 /* Créneaux d'une proposition : sur un écran étroit, « Confirmer » passe à la ligne au lieu de sortir de l'écran. */
 .psr{flex-wrap:wrap}.psr b{min-width:0;flex:1 1 120px}.psr .btn{flex:0 0 auto;max-width:100%;white-space:normal}
+/* Admin · fiches incomplètes */
+.cpl{padding:10px 0;border-bottom:1px solid var(--line)}.cpl>b{font-size:15px}
+.cpd summary{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer;list-style:none}.cpd summary::-webkit-details-marker{display:none}
+.cpd summary span{flex:1}.cpd summary b{min-width:36px;text-align:right}.cpd summary i{min-width:44px;text-align:right;font-style:normal;color:var(--muted);font-size:13px}
+.cpd ul{margin:0 0 8px;padding-left:18px;font-size:13.5px}.cpd small{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -1979,6 +1984,16 @@ function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() - Date.parse(String(ts).replace(" ", "T") + "Z")) / 60000));
   return m < 1 ? T.now : m < 60 ? T.minAgo(m) : m < 1440 ? T.hAgo(Math.round(m / 60)) : T.dAgo(Math.round(m / 1440));
 }
+/** Admin : fiches à l'affiche incomplètes, par type ; chaque nombre se déplie sur la liste (titre · lieu). */
+function completenessHtml(C) {
+  if (!C || !C.length) return "";
+  const KL = { theatre: "Théâtre", film: "Cinéma", expo: "Expos", dance: "Danse", opera: "Opéra", concert: "Concerts" };
+  const CL = [["syn", "sans résumé"], ["price", "sans prix"], ["dur", "sans durée"], ["crit", "sans critique"]];
+  const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+  return dayHead("Fiches incomplètes · à l'affiche") + C.map((k) => `<div class="cpl"><b>${esc(KL[k.kind] || k.kind)}</b> <span class="adm">${k.n} fiches</span>${CL.map(([c, l]) => {
+      const m = k.missing[c]; if (!m) return "";
+      return `<details class="cpd"><summary><span>${esc(l)}</span><b>${m.n}</b><i>${pct(m.n, k.n)} %</i></summary>${m.items.length ? `<ul>${m.items.map((x) => `<li>${esc(x.title)} <small>· ${esc(x.venue)}</small></li>`).join("")}${m.n > m.items.length ? `<li><small>… et ${m.n - m.items.length} autres</small></li>` : ""}</ul>` : ""}</details>`; }).join("")}</div>`).join("");
+}
 /** Admin (propriétaire) : inscrits, activité, robots bloqués, retours. Chargé à l'ouverture de l'onglet. */
 function adminTab() {
   const A = st.adminData;
@@ -1990,6 +2005,7 @@ function adminTab() {
   const max = Math.max(1, ...A.weeks.map((w) => w.n));
   return scanLink + `<div class="kpis" style="padding:12px 0">${kpi(t.active, "inscrits")}${kpi(t.new7, "nouveaux 7 j")}${kpi(t.seen7, "actifs 7 j")}${kpi(t.web, "via le web")}${kpi(t.pending, "pas confirmés")}${kpi(t.mails24, "emails 24 h")}</div>`
     + dayHead("Inscriptions par semaine") + `<div class="wk">${A.weeks.map((w) => `<div><i style="height:${Math.round(w.n / max * 48) + 2}px"></i><small>${esc(w.from_day.slice(5))}</small><b>${w.n}</b></div>`).join("") || "—"}</div>`
+    + completenessHtml(A.completeness)
     + dayHead("Robots bloqués · 24 h") + `<p class="adm">${A.blocked.length ? A.blocked.map((b) => `${esc(b.kind)} : ${b.n}`).join(" · ") : "aucun"}</p>`
     + (A.usage ? (() => { const u = A.usage, w = u.last7 || {}, n = (v) => v ?? 0; const pct = (a, b) => b ? `${Math.round((a || 0) / b * 100)} %` : "—";
         const vmax = Math.max(1, ...A.venues.map((v) => v.n));

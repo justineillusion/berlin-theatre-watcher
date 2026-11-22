@@ -1090,8 +1090,37 @@ async function adminStats(env: Env) {
     },
     weeks: weeks.results, blocked: blocked.results, feedback: feedback.results,
     ...(await adminUsage(env)),
+    completeness: await adminCompleteness(env),
     users: users.results.map((u: any) => ({ ...u, web: u.chat_id >= WEB_ID_BASE, chat_id: undefined })),
   };
+}
+
+/** Admin : fiches à l'affiche (mêmes règles que le programme) auxquelles il manque résumé, prix, durée ou critique, par type. */
+async function adminCompleteness(env: Env) {
+  const since = (await env.DB.prepare("SELECT value FROM settings WHERE key = 'current_since'").first<{ value: string }>())?.value ?? "";
+  const { results } = await env.DB.prepare(
+    `SELECT i.kind, i.title, v.name AS venue, i.text FROM items i JOIN venues v ON v.id = i.venue_id AND v.active = 1
+     WHERE (CASE WHEN i.kind = 'film' THEN (SELECT MAX(value) FROM json_each(i.dates)) >= date('now') ELSE i.last_seen >= ?1 END)
+       AND (i.kind != 'expo' OR i.end_date IS NULL OR i.end_date = '' OR i.end_date >= date('now'))`,
+  ).bind(since).all<{ kind: string; title: string; venue: string; text: string | null }>();
+  const checks: Record<string, (t: string) => boolean> = {
+    syn: (t) => t.includes("📝"),
+    price: (t) => t.includes("💶"),
+    dur: (t) => t.includes("⏱"),
+    crit: (t) => /★\s*\d|📰|Nachtkritik/.test(t),
+  };
+  const kinds = new Map<string, { kind: string; n: number; miss: Record<string, { title: string; venue: string }[]> }>();
+  for (const r of results) {
+    const k = kinds.get(r.kind) ?? kinds.set(r.kind, { kind: r.kind, n: 0, miss: { syn: [], price: [], dur: [], crit: [] } }).get(r.kind)!;
+    k.n++;
+    const t = r.text || "";
+    for (const [c, ok] of Object.entries(checks)) if (!ok(t) && !(c === "dur" && r.kind === "expo")) k.miss[c].push({ title: r.title, venue: r.venue });
+  }
+  return [...kinds.values()].sort((a, b) => b.n - a.n).map((k) => ({
+    kind: k.kind, n: k.n,
+    // Durée : sans objet pour une expo.
+    missing: Object.fromEntries(Object.entries(k.miss).filter(([c]) => !(c === "dur" && k.kind === "expo")).map(([c, xs]) => [c, { n: xs.length, items: xs.sort((a, b) => a.venue.localeCompare(b.venue)).slice(0, 80) }])),
+  }));
 }
 
 /** Admin : usage (réactions, lieux suivis, ce qui plaît), comptes actifs seulement. */
