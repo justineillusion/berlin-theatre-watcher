@@ -352,6 +352,38 @@ def summary_from_html(theater: str, html: str, anchor: Optional[str] = None) -> 
     return _trim(text) if text else None
 
 
+# Pages anglaises parfois vides (Deutsches Theater : menu seul, ~400 caractères) alors que la
+# page allemande a résumé, durée… : on lit alors la version allemande (traduite ensuite).
+_GERMAN_TWIN = {
+    "Deutsches Theater": ("/en/program/productions/", "/programm/produktionen/"),
+}
+
+
+def german_twin(theater: str, url: Optional[str]) -> Optional[str]:
+    rule = _GERMAN_TWIN.get(theater)
+    return url.replace(rule[0], rule[1], 1) if rule and url and rule[0] in url else None
+
+
+# « Dauer 2 Stunden 45 Minuten », « Duration: 1 h 30 min », « Dauer ca. 100 Minuten » :
+# seulement juste après le mot Dauer/Duration (jamais deviné ailleurs sur la page).
+_DUR_KEY = r"(?:Spiel)?[Dd]auer|Duration|Running time|Length"
+_DUR_HM = re.compile(rf"\b(?:{_DUR_KEY})\s*:?\s*(?:ca\.?|approx\.?|about|etwa)?\s*(\d{{1,2}})\s*(?:Stunden?|Std\.?|hours?|hrs?|h)\b\.?"
+                     r"(?:\s*(?:und|and|,)?\s*(\d{1,2})\s*(?:Minuten|Min\.?|minutes?|mins?)\b)?", re.I)
+_DUR_M = re.compile(rf"\b(?:{_DUR_KEY})\s*:?\s*(?:ca\.?|approx\.?|about|etwa)?\s*(\d{{2,3}})\s*(?:Minuten|Min\.?|minutes?|mins?)\b", re.I)
+
+
+def duration_minutes(text: Optional[str]) -> Optional[int]:
+    """Durée (minutes) écrite par le lieu sur la page, ou None."""
+    if not text:
+        return None
+    m = _DUR_HM.search(text)
+    mins = int(m.group(1)) * 60 + int(m.group(2) or 0) if m else None
+    if mins is None:
+        m = _DUR_M.search(text)
+        mins = int(m.group(1)) if m else None
+    return mins if mins and 15 <= mins <= 600 else None
+
+
 def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Optional[str]]:
     """Renvoie (résumé, texte brut de la page) en une seule requête.
 
@@ -366,7 +398,17 @@ def fetch_details(theater: str, url: Optional[str]) -> Tuple[Optional[str], Opti
         return None, None
     anchor = url.split("#", 1)[1] if "#" in url else None
     page_text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
-    return summary_from_html(theater, html, anchor), page_text
+    summary = summary_from_html(theater, html, anchor)
+    twin = german_twin(theater, url)
+    if twin and (not summary or not duration_minutes(page_text)):
+        try:
+            de = fetch_html(twin)
+            de_text = BeautifulSoup(de, "html.parser").get_text(" ", strip=True)
+            summary = summary or summary_from_html(theater, de)
+            page_text = f"{page_text} {de_text}"
+        except Exception:  # noqa: BLE001
+            pass
+    return summary, page_text
 
 
 def fetch_summary(theater: str, url: Optional[str]) -> Optional[str]:

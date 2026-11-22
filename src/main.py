@@ -22,7 +22,7 @@ from .state import load_seen, save_seen
 from .language import detect as detect_language
 from .mute import filter_muted, load_muted, mute_keyboard, sync as sync_muted
 from .critics import fetch_rating
-from .summary import fetch_details, is_synopsis
+from .summary import duration_minutes, fetch_details, is_synopsis
 from .translate import GUARD_FAILS, in_lang, looks_english, looks_french, to_english, to_french
 from .budget import call_with_timeout, map_with_budget
 
@@ -201,6 +201,8 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
             c = None                       # traductions d'avant le correctif (une autre langue gardait l'ancien texte)
         if c and not c.get("src") and c.get("at", "") < retry_after:
             c = None                       # pas de résumé il y a > 2 jours (page en panne, extracteur ajouté) : on relit
+        if c and "dur" not in c and show.kind != "expo":
+            c = None                       # durée pas encore lue (ajoutée nov. 2026) : on relit la page, sans retraduire
         if c and c.get("at", "") >= fresh_after and all(c.get(lg) is not None for lg in langs):
             return c
         summary, page_text = fetch_details(show.theater, show.url)
@@ -212,15 +214,16 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
         out["tx"] = 1
         # Traduction ratée (= texte d'origine renvoyé) : pas mise en cache, on
         # retentera ; l'affichage se rabat sur le texte d'origine.
-        if "fr" in langs:
+        if "fr" in langs and out.get("fr") is None:
             fr = to_french(summary, keep=[show.title, *_aliases(show)])
             out["fr"] = "" if not summary else (fr if fr and (fr != summary or looks_french(summary)) else None)
-        if "en" in langs:
+        if "en" in langs and out.get("en") is None:
             en = to_english(summary, keep=[show.title, *_aliases(show)])
             out["en"] = "" if not summary else (en if en and (en != summary or looks_english(summary)) else None)
         # Concerts (Philharmonie) : ni langue de plateau ni surtitres à afficher.
         if show.kind != "expo" and show.production_type != "Concert":
             out["spoken"], out["surtitles"] = detect_language(show.languages, page_text, show.has_english_surtitles)
+        out["dur"] = duration_minutes(page_text) if show.kind != "expo" else None
         out["at"] = datetime.now(timezone.utc).isoformat()
         out["v"] = _SUMMARY_VERSION
         time.sleep(1.0)                    # la traduction gratuite rate-limite les rafales
@@ -239,6 +242,7 @@ def enrich(shows: List[Show], digest: bool = False, langs: tuple = ("fr",)) -> N
             show.summary_en = in_lang(out.get("en"), "en", count=False) or in_lang(out.get("src"), "en")
         if show.kind != "expo":
             show.spoken_language, show.surtitles = out.get("spoken"), out.get("surtitles")
+            show.duration_min = out.get("dur")
     _save_summary_cache(cache)
     # Métrique : pages sans vrai résumé (générique seul ou rien), par lieu.
     from collections import Counter

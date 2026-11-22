@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional
@@ -44,11 +45,20 @@ def _page(url: str) -> dict:
 
 
 def _film(slug: str) -> dict:
+    """Fiche d'un film (résumé, durée, réalisateur…). 3 essais : un raté (Yorck limite les
+    rafales) laissait le film avec son seul titre — sans résumé, durée ni genre."""
     if slug not in _films:
-        try:
-            _films[slug] = (_page(f"{_BASE}/filme/{slug}").get("film") or {}).get("fields") or {}
-        except Exception:  # noqa: BLE001 — sans fiche, on garde le titre allemand
-            _films[slug] = {}
+        err = None
+        for wait in (0, 2, 6):
+            time.sleep(wait)
+            try:
+                _films[slug] = (_page(f"{_BASE}/filme/{slug}").get("film") or {}).get("fields") or {}
+                break
+            except Exception as e:  # noqa: BLE001
+                err = e
+        else:
+            print(f"   ⚠️  yorck : fiche « {slug} » illisible ({type(err).__name__}: {str(err)[:80]}) — titre seul")
+            _films[slug] = {}              # sans fiche, on garde le titre allemand
     return _films[slug]
 
 
@@ -101,7 +111,7 @@ def fetch(cfg: dict, start: date, days: int) -> List[Screening]:
             if sf.get("startTime") and in_window(sf["startTime"]):
                 wanted.append((f.get("slug") or "", f.get("title") or "", None,
                                datetime.fromisoformat(sf["startTime"]), sf.get("formats") or [], False))
-    with ThreadPoolExecutor(max_workers=6) as ex:
+    with ThreadPoolExecutor(max_workers=3) as ex:
         list(ex.map(_film, sorted({w[0] for w in wanted if w[0]})))
 
     out: List[Screening] = []

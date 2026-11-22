@@ -40,6 +40,7 @@ class Show:
     price_max: Optional[float] = None
     all_sold: bool = False                # toutes les dates surtitrées sont complètes (carte « Complet »)
     price_from: bool = False              # le site ne donne que le minimum (« dès 28 € »)
+    duration_min: Optional[int] = None    # durée écrite sur la page du lieu (« Dauer 2 Stunden »)
 
     def key(self) -> str:
         """Identité d'une PIÈCE (pour la déduplication : 1 alerte par pièce)."""

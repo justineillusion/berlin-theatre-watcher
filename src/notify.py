@@ -343,6 +343,9 @@ def format_show(show: Show, lang: str = "fr") -> str:
     spoken = " · ".join(p for p in _labels(show, lang) if p)
     if spoken:
         lines.append(f"🗣 {_esc(spoken)}")
+    if show.duration_min:                  # « ⏱ 2 h 45 » : l'app la met dans la ligne langue · durée
+        h, m = divmod(show.duration_min, 60)
+        lines.append(f"⏱ {h} h {m:02d}" if h and not en else f"⏱ {h}h {m:02d}" if h else f"⏱ {m} min")
     press = press_line(show, lang)
     if press:
         lines.append(press)
