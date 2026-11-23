@@ -25,12 +25,14 @@
 "v": 3
 },
 "03bfbfb2aac8": {
-"at": "2026-11-19T23:15:53.233556+00:00",
+"at": "2026-11-23T16:12:17.150897+00:00",
+"dur": null,
 "en": "With stunning natural imagery and attention to every detail, Barrie Kosky presents Tchaikovsky’s soulful drama about the hopes, longings, and failures of four young people who come to realize in the end that happiness was almost within reach. When the poet Lensky visits his fiancée Olga and brings along his mysterious friend Eugene Onegin, Olga’s introverted sister Tatyana is immediately hooked. But Onegin rejects her advances.",
-"fr": "Avec des images naturelles époustouflantes et une attention portée à chaque détail, Barrie Kosky présente le drame émouvant de Tchaïkovski sur les espoirs, les aspirations et les échecs de quatre jeunes qui finissent par se rendre compte que le bonheur était presque à leur portée. Lorsque le poète Lensky rend visite à sa fiancée Olga et amène avec lui son mystérieux ami Eugène Onéguine, Tatiana, la sœur introvertie d'Olga, tombe immédiatement sous son charme. Mais Oneguine repousse ses avances.",
+"fr": "Avec des images naturelles époustouflantes et une attention portée à chaque détail, Barrie Kosky présente le drame émouvant de Tchaïkovski sur les espoirs, les désirs et les échecs de quatre jeunes qui réalisent finalement que le bonheur était presque à leur portée. Lorsque le poète Lensky rend visite à sa fiancée Olga et amène son mystérieux ami Eugene Onegin, Tatiana, la sœur introvertie d'Olga, devient immédiatement accro. Mais Onéguine rejette ses avances.",
 "spoken": null,
 "src": "With stunning natural imagery and attention to every detail, Barrie Kosky presents Tchaikovsky’s soulful drama about the hopes, longings, and failures of four young people who come to realize in the end that happiness was almost within reach. When the poet Lensky visits his fiancée Olga and brings along his mysterious friend Eugene Onegin, Olga’s introverted sister Tatyana is immediately hooked. But Onegin rejects her advances.",
 "surtitles": "surtitres anglais",
+"tx": 1,
 "u": "https://www.komische-oper-berlin.de/en/what/a-z/eugene-onegin/",
 "v": 3
 },
@@ -51,12 +53,15 @@
 "v": 3
 },
 "07ef689e76dc": {
-"at": "2026-11-10T23:54:04.728608+00:00",
+"at": "2026-11-23T16:12:37.766217+00:00",
+"dur": null,
 "en": "Who has the right to which land? Sophie Yukiko and ZOE take the figure of the witch as their starting point and, through voguing, reimagine her as a figure of resistance. “BODEN” tells a story of dispossession, exclusion and the search for a sense of belonging. The feminist activist and author Silvia Federici describes how the era of the European witch hunts brought about a fundamental shift in attitudes towards land, community, property and soil.",
 "fr": "Qui a droit à quelle terre ? Sophie Yukiko et ZOE prennent comme point de départ la figure de la sorcière et, à travers le voguing, la réimaginent comme une figure de résistance. « BODEN » raconte une histoire de dépossession, d'exclusion et de recherche d'un sentiment d'appartenance. La militante féministe et auteure Silvia Federici décrit comment l'ère de la chasse aux sorcières européenne a entraîné un changement fondamental dans les attitudes à l'égard de la terre, de la communauté, de la propriété et du sol.",
 "spoken": "En allemand et anglais",
 "src": "Who has the right to which land? Sophie Yukiko and ZOE take the figure of the witch as their starting point and, through voguing, reimagine her as a figure of resistance. “BODEN” tells a story of dispossession, exclusion and the search for a sense of belonging. The feminist activist and author Silvia Federici describes how the era of the European witch hunts brought about a fundamental shift in attitudes towards land, community, property and soil.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/sophie-yukiko-zoe-boden/",
 "v": 3
 },
 "07f9e7514bdf": {
@@ -169,12 +174,15 @@
 "v": 3
 },
 "0d57839cfba8": {
-"at": "2026-11-18T22:38:04.211356+00:00",
+"at": "2026-11-23T16:08:07.135950+00:00",
+"dur": null,
 "en": "In an age of blasphemous obscenity, false idol worship, and profane consumerism, where are we to turn except our (suspiciously silent but definitely trans) Lord and Savior, the Girlboss-in-Chief, GOD? Yea, though we walk through the shadow of yet another CDU-SPD Bundesregierung, we shall fear no evil, but rather plunge headfirst into the sacred mysteries to ask: why do religions that profess forgiveness produce so many followers who hate us?",
-"fr": "À une époque d'obscénité blasphématoire, de culte de fausses idoles et de consumérisme profane, vers qui pouvons-nous nous tourner, sinon vers notre Seigneur et Sauveur (suspectement silencieux mais assurément trans), la Girlboss en chef, DIEU ? Oui, même si nous marchons dans l'ombre d'un énième gouvernement fédéral CDU-SPD, nous ne craindrons aucun mal, mais nous nous plongerons plutôt tête la première dans les mystères sacrés pour demander : pourquoi les religions qui professent le pardon engendrent-elles tant d'adeptes qui nous détestent ?",
+"fr": "À une époque d’obscénités blasphématoires, de faux culte des idoles et de consumérisme profane, vers qui devons-nous nous tourner, à part notre Seigneur et Sauveur (suspectement silencieux mais définitivement trans), la patronne en chef, DIEU ? Oui, même si nous marchons dans l’ombre d’un autre Bundesregierung CDU-SPD, nous ne craindrons aucun mal, mais plutôt plongerons la tête la première dans les mystères sacrés pour nous demander : pourquoi les religions qui professent le pardon produisent-elles autant d’adeptes qui nous détestent ?",
 "spoken": "En anglais",
 "src": "In an age of blasphemous obscenity, false idol worship, and profane consumerism, where are we to turn except our (suspiciously silent but definitely trans) Lord and Savior, the Girlboss-in-Chief, GOD? Yea, though we walk through the shadow of yet another CDU-SPD Bundesregierung, we shall fear no evil, but rather plunge headfirst into the sacred mysteries to ask: why do religions that profess forgiveness produce so many followers who hate us?",
 "surtitles": null,
+"tx": 1,
+"u": "https://sophiensaele.com/en/stueck/queer-and-present-dangersgod",
 "v": 3
 },
 "0db08de2c6a1": {
@@ -203,10 +211,13 @@
 "v": 3
 },
 "11102946cb6c": {
-"at": "2026-11-10T23:29:07.446976+00:00",
+"at": "2026-11-23T16:11:43.985139+00:00",
+"dur": 105,
 "en": "To mark the 200 th anniversary of Beethoven’s death, the Quatuor Ébène continues its Beethoven cycle, presenting a programme that spans the full breadth of Beethoven’s artistic development. In the early String Quartets, Op. 18, Beethoven still draws inspiration from his teacher Joseph Haydn, yet already reveals an unmistakable voice. The sixth quartet in Opus 18 is distinguished by its wide range of moods – from melancholy to exuberance.",
 "fr": "À l’occasion du 200 e anniversaire de la mort de Beethoven, le Quatuor Ébène poursuit son cycle Beethoven en présentant un programme qui couvre toute l’étendue de l’évolution artistique de Beethoven. Dans les premiers Quatuors à cordes, op. 18, Beethoven s'inspire toujours de son professeur Joseph Haydn, mais révèle déjà une voix incomparable. Le sixième quatuor de l'opus 18 se distingue par sa large gamme d'ambiances – de la mélancolie à l'exubérance.",
 "src": "To mark the 200 th anniversary of Beethoven’s death, the Quatuor Ébène continues its Beethoven cycle, presenting a programme that spans the full breadth of Beethoven’s artistic development. In the early String Quartets, Op. 18, Beethoven still draws inspiration from his teacher Joseph Haydn, yet already reveals an unmistakable voice. The sixth quartet in Opus 18 is distinguished by its wide range of moods – from melancholy to exuberance.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57073/",
 "v": 3
 },
 "11ad0af46177": {
@@ -343,21 +354,27 @@
 "v": 3
 },
 "1779f46f0212": {
-"at": "2026-11-18T22:37:34.369790+00:00",
+"at": "2026-11-23T16:12:50.227847+00:00",
+"dur": null,
 "en": "On a deep purple carpet, partner dances take shape and come undone, as joy and pleasure take on darker tones. In “all over you”, Sheena McGrandles and Eli Cohen explore forms of lesbian eroticism and desire, navigating the tensions between attraction, hesitation and refusal. “all over you” explores lesbian possibility through intimate queer friendships and queer literary forms: circular, porous, delightfully volatile. Partner dances emerge and fray.",
-"fr": "Sur un tapis d'un violet profond, des danses en couple prennent forme et se défont, tandis que la joie et le plaisir se parent de teintes plus sombres. Dans « all over you », Sheena McGrandles et Eli Cohen explorent des formes d'érotisme et de désir lesbiens, en naviguant entre les tensions de l'attirance, de l'hésitation et du refus. « all over you » explore les possibilités lesbiennes à travers des amitiés queer intimes et des formes littéraires queer : circulaires, poreuses, délicieusement volatiles. Les danses en couple apparaissent et se délitent.",
+"fr": "Sur un tapis violet profond, les danses en couple se dessinent et se défont, tandis que la joie et le plaisir prennent des tonalités plus sombres. Dans « all over you », Sheena McGrandles et Eli Cohen explorent les formes de l'érotisme et du désir lesbiens, naviguant dans les tensions entre attraction, hésitation et refus. « all over you » explore les possibilités lesbiennes à travers des amitiés queer intimes et des formes littéraires queer : circulaires, poreuses, délicieusement volatiles. Des danses partenaires émergent et s'effilochent.",
 "spoken": "Aucune langue requise (danse)",
 "src": "On a deep purple carpet, partner dances take shape and come undone, as joy and pleasure take on darker tones. In “all over you”, Sheena McGrandles and Eli Cohen explore forms of lesbian eroticism and desire, navigating the tensions between attraction, hesitation and refusal. “all over you” explores lesbian possibility through intimate queer friendships and queer literary forms: circular, porous, delightfully volatile. Partner dances emerge and fray.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/sheena-mcgrandles-all-over-you/",
 "v": 3
 },
 "187edc7e747d": {
-"at": "2026-11-18T22:38:16.983897+00:00",
+"at": "2026-11-23T16:08:34.147250+00:00",
+"dur": null,
 "en": "Expect a dazzling mix of GLAMOUR, music, raw vulnerability, and genuine COMMUNITY vibes. We’re here to smash stereotypes, spotlight healthcare struggles, and build a tribe that gets it.",
-"fr": "Attendez-vous à un mélange éblouissant de GLAMOUR, de musique, de vulnérabilité brute et d’une véritable ambiance COMMUNAUTAIRE. Nous sommes là pour briser les stéréotypes, mettre en lumière les difficultés liées aux soins de santé et créer une communauté qui comprend ces enjeux.",
+"fr": "Attendez-vous à un mélange éblouissant de GLAMOUR, de musique, de vulnérabilité brute et de véritables vibrations COMMUNAUTAIRES. Nous sommes ici pour briser les stéréotypes, mettre en lumière les difficultés rencontrées en matière de soins de santé et construire une tribu qui comprend.",
 "spoken": "En anglais et allemand",
 "src": "Expect a dazzling mix of GLAMOUR, music, raw vulnerability, and genuine COMMUNITY vibes. We’re here to smash stereotypes, spotlight healthcare struggles, and build a tribe that gets it.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.etberlin.de/production/sick-and-tired/",
 "v": 3
 },
 "18dfc9150f1a": {
@@ -379,12 +396,15 @@
 "v": 3
 },
 "1b3082b7d726": {
-"at": "2026-11-18T22:39:19.843319+00:00",
+"at": "2026-11-23T16:09:26.026787+00:00",
+"dur": 90,
 "en": "How we deal with those who have committed violent crimes remains a question that lays bare the woundedness of our society. How will future generations look back on the way we punish today? Recap. In 2021, Die Brieffreundschaft premiered at Sophiensæle. markus&markustheaterkollektiv struck up correspondences with four women serving life sentences for murder. The letters were the only means of developing the production together, and at the same time its central stylistic device.",
-"fr": "La manière dont nous traitons les personnes ayant commis des crimes violents reste une question qui met à nu les blessures de notre société. Comment les générations futures jugeront-elles la manière dont nous punissons aujourd'hui ? Récapitulatif. En 2021, Die Brieffreundschaft a été présentée en première au Sophiensæle. markus&markustheaterkollektiv a entamé une correspondance avec quatre femmes condamnées à la réclusion à perpétuité pour meurtre. Les lettres étaient le seul moyen d'élaborer la production ensemble et, en même temps, son principal procédé stylistique.",
+"fr": "La manière dont nous traitons ceux qui ont commis des crimes violents reste une question qui met en lumière les blessures de notre société. Quel regard les générations futures porteront-elles sur la façon dont nous punissons aujourd’hui ? Résumer. En 2021, Die Brieffreundschaft a été créée à Sophiensæle. markus&markustheaterkollektiv a noué des correspondances avec quatre femmes purgeant des peines d'emprisonnement à perpétuité pour meurtre. Les lettres étaient le seul moyen de développer la production ensemble, et en même temps son dispositif stylistique central.",
 "spoken": null,
 "src": "How we deal with those who have committed violent crimes remains a question that lays bare the woundedness of our society. How will future generations look back on the way we punish today? Recap. In 2021, Die Brieffreundschaft premiered at Sophiensæle. markus&markustheaterkollektiv struck up correspondences with four women serving life sentences for murder. The letters were the only means of developing the production together, and at the same time its central stylistic device.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://sophiensaele.com/en/stueck/die-brieffreundschaft-ii",
 "v": 3
 },
 "1be3355d8d95": {
@@ -397,10 +417,13 @@
 "v": 3
 },
 "1c0d8c55d6c4": {
-"at": "2026-11-10T23:28:49.056995+00:00",
+"at": "2026-11-23T16:09:29.036827+00:00",
+"dur": 105,
 "en": "Rome – city of the Caesars and gladiators, heart of Christendom, home of public spectacle. A city of glittering fountains, mysterious catacombs and grand parks shaded by pines. With his trilogy Fontane di Roma , Feste romane and Pini di Roma , Ottorino Respighi created a musical homage to the Eternal City – from antiquity to his own era. The three works trace its history, its landscape and its myth.",
 "fr": "Rome – ville des Césars et des gladiateurs, cœur de la chrétienté, patrie du spectacle public. Une ville de fontaines scintillantes, de catacombes mystérieuses et de grands parcs ombragés de pins. Avec sa trilogie Fontane di Roma, Feste romane et Pini di Roma, Ottorino Respighi a créé un hommage musical à la Ville éternelle – de l'Antiquité à son époque. Les trois œuvres retracent son histoire, son paysage et son mythe.",
 "src": "Rome – city of the Caesars and gladiators, heart of Christendom, home of public spectacle. A city of glittering fountains, mysterious catacombs and grand parks shaded by pines. With his trilogy Fontane di Roma , Feste romane and Pini di Roma , Ottorino Respighi created a musical homage to the Eternal City – from antiquity to his own era. The three works trace its history, its landscape and its myth.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57063/",
 "v": 3
 },
 "1c89bc9dd1b8": {
@@ -447,9 +470,10 @@
 "v": 3
 },
 "20098a5636db": {
-"at": "2026-11-20T00:15:57.732167+00:00",
+"at": "2026-11-23T16:09:32.216544+00:00",
+"dur": null,
 "en": "OBI BLANCHE and KRISTINA TICA met in Linz, Austria, during an unexpected B2B DJ set and quickly recognised a shared language in self-built instruments, minimal beats, and raw melodic structures. In 2024, they formalised their collaboration under the concept of #postdigitalpunk, a platform merging DIY instrument building, minimal songs of melankolika and somatic performance. Their live set moves between dance floor momentum and tangible experimentation with self-built guitars.",
-"fr": "OBI BLANCHE et KRISTINA TICA se sont rencontrées à Linz, en Autriche, lors d’un set DJ B2B inattendu et ont rapidement reconnu un langage commun dans les instruments de fabrication artisanale, les rythmes minimalistes et les structures mélodiques brutes. En 2024, elles ont officialisé leur collaboration sous le concept de #postdigitalpunk, une plateforme alliant la fabrication d’instruments faits maison, des chansons minimalistes de melankolika et des performances somatiques. Leur set live oscille entre l’énergie de la piste de danse et l’expérimentation concrète avec des guitares fabriquées par leurs soins.",
+"fr": "OBI BLANCHE et KRISTINA TICA se sont rencontrés à Linz, en Autriche, lors d'un DJ set B2B inattendu et ont rapidement reconnu un langage commun composé d'instruments auto-construits, de rythmes minimaux et de structures mélodiques brutes. En 2024, ils officialisent leur collaboration sous le concept de #postdigitalpunk, une plateforme fusionnant construction d'instruments DIY, chansons minimales de melankolika et performance somatique. Leur set live oscille entre l'élan de la piste de danse et l'expérimentation tangible avec des guitares auto-construites.",
 "src": "OBI BLANCHE and KRISTINA TICA met in Linz, Austria, during an unexpected B2B DJ set and quickly recognised a shared language in self-built instruments, minimal beats, and raw melodic structures. In 2024, they formalised their collaboration under the concept of #postdigitalpunk, a platform merging DIY instrument building, minimal songs of melankolika and somatic performance. Their live set moves between dance floor momentum and tangible experimentation with self-built guitars.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/#e20261126",
@@ -481,12 +505,15 @@
 "v": 3
 },
 "21e2bc6dce4a": {
-"at": "2026-11-11T00:04:42.472093+00:00",
+"at": "2026-11-23T16:10:57.049041+00:00",
+"dur": null,
 "en": "Depending on the demand for their work, the penniless poet Rodolfo and his three witty artist friends live either in destitution or in the lap of luxury, squandering their money. When their neighbour Mimì appears in their garret one day, Rodolfo falls in love with the fragile young woman at first sight. But in the face of Mimì’s illness, the struggling artists are caught up in harsh reality.",
-"fr": "En fonction de la demande pour leur travail, le poète sans le sou Rodolfo et ses trois amis artistes spirituels vivent soit dans le dénuement, soit dans le luxe, gaspillant leur argent. Lorsque leur voisin Mimì apparaît dans leur mansarde un jour, Rodolfo tombe amoureux de la jeune femme fragile à première vue. Mais face à la maladie de Mimì, les artistes en difficulté sont pris dans une dure réalité.",
+"fr": "Selon la demande pour leurs œuvres, le poète sans le sou Rodolfo et ses trois amis artistes pleins d'esprit vivent soit dans la misère, soit dans le luxe, dilapidant leur argent. Lorsqu'un jour leur voisine Mimì apparaît dans leur mansarde, Rodolfo tombe amoureux de la jeune femme fragile au premier regard. Mais face à la maladie de Mimì, les artistes en difficulté se retrouvent pris dans une dure réalité.",
 "spoken": null,
 "src": "Depending on the demand for their work, the penniless poet Rodolfo and his three witty artist friends live either in destitution or in the lap of luxury, squandering their money. When their neighbour Mimì appears in their garret one day, Rodolfo falls in love with the fragile young woman at first sight. But in the face of Mimì’s illness, the struggling artists are caught up in harsh reality.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-boheme.24/",
 "v": 3
 },
 "2468a6b934a0": {
@@ -497,21 +524,25 @@
 "v": 3
 },
 "251b47506377": {
-"at": "2026-11-20T01:20:52.210718+00:00",
-"en": "On November 24th, YAKAMA celebrates its LOSLASSEN RELEASESHOW at the Chocolate Berlin. The friendly acts Absteige and NOBIS are there, completing the line-up. YAKAMA moves somewhere between dark wave, dreamy indie and electronic influences - emotional honesty accompanied by cold synths and echoing guitars. The sound creates an atmospheric, multi-layered world full of closeness but also distance at the same time. Music that leaves space for feelings and thoughts.",
-"fr": "Le 24 novembre, YAKAMA célèbre son LOSLASSEN RELEASESHOW au Chocolate Berlin. Les groupes amicaux Absteige et NOBIS sont là et complètent le line-up. YAKAMA évolue quelque part entre la dark wave, les influences indie rêveuses et électroniques - une honnêteté émotionnelle accompagnée de synthés froids et de guitares résonnantes. Le son crée un monde atmosphérique à plusieurs niveaux, plein de proximité mais aussi de distance en même temps. Une musique qui laisse de la place aux sentiments et aux pensées.",
+"at": "2026-11-23T16:09:12.095066+00:00",
+"dur": null,
+"en": "On November 24th, YAKAMA will celebrate its LET GO RELEASE SHOW at Chocolate Berlin. The friendly acts Absteige and NOBIS are there, completing the line-up. YAKAMA moves somewhere between dark wave, dreamy indie and electronic influences - emotional honesty accompanied by cold synths and echoing guitars. The sound creates an atmospheric, multi-layered world full of closeness but also distance at the same time. Music that leaves room for feelings and thoughts.",
+"fr": "Le 24 novembre, YAKAMA fêtera son LET GO RELEASE SHOW au Chocolate Berlin. Les sympathiques groupes Absteige et NOBIS sont là et complètent le line-up. YAKAMA évolue quelque part entre la dark wave, les influences indie rêveuses et électroniques - une honnêteté émotionnelle accompagnée de synthés froids et de guitares résonantes. Le son crée un monde atmosphérique à plusieurs niveaux, plein de proximité mais aussi de distance en même temps. Une musique qui laisse place aux sentiments et aux pensées.",
 "src": "Am 24. November feiert YAKAMA seine LOSLASSEN RELEASESHOW im Schokoladen Berlin. Mit dabei sind die befreundeten Acts ABSTEIGE und NOBIS, die das Line-up komplettieren. YAKAMA bewegt sich irgendwo zwischen Dark Wave, verträumtem Indie und elektronischen Einflüssen - emotionale Ehrlichkeit, untermalt von kalten Synths und hallenden Gitarren. Der Sound erschafft eine atmosphärische, vielschichtige Welt voller Nähe, gleichzeitig aber auch Distanz. Musik, die Raum für Gefühle und Gedanken lässt.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/#e20261124",
 "v": 3
 },
 "255cb3efb993": {
-"at": "2026-11-11T00:36:48.185205+00:00",
+"at": "2026-11-23T16:09:01.616208+00:00",
+"dur": 110,
 "en": "2026 sees one of Canada’s most exciting contemporary circus companies, Machine De Cirque, make their Chamäleon debut with one of their most ambitious works, Kintsugi. Drawing inspiration from the Japanese art of kintsugi, in which broken ceramics are repaired with gold to emphasise how we are made stronger and more beautiful by our damage, the show stretches the boundaries of circus storytelling.",
-"fr": "2026 voit l'une des compagnies de cirque contemporaines les plus excitantes du Canada, Machine De Cirque, faire ses débuts à Chamäleon avec l'une de ses œuvres les plus ambitieuses, Kintsugi. S'inspirant de l'art japonais de Kintsugi, dans lequel les céramiques brisées sont réparées avec de l'or pour souligner comment nous sommes rendus plus forts et plus beaux par nos dommages, le spectacle repousse les limites de la narration de cirque.",
+"fr": "En 2026, l’une des compagnies de cirque contemporaines les plus passionnantes du Canada, Machine De Cirque, fera ses débuts à Chamäleon avec l’une de ses œuvres les plus ambitieuses, Kintsugi. S'inspirant de l'art japonais Kintsugi, dans lequel les céramiques brisées sont réparées avec de l'or pour souligner à quel point nos dégâts nous rendent plus forts et plus beaux, le spectacle repousse les limites de la narration du cirque.",
 "spoken": "Aucune langue requise (cirque)",
 "src": "2026 sees one of Canada’s most exciting contemporary circus companies, Machine De Cirque, make their Chamäleon debut with one of their most ambitious works, Kintsugi. Drawing inspiration from the Japanese art of kintsugi, in which broken ceramics are repaired with gold to emphasise how we are made stronger and more beautiful by our damage, the show stretches the boundaries of circus storytelling.",
 "surtitles": null,
+"tx": 1,
+"u": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
 "v": 3
 },
 "259700642dc6": {
@@ -522,28 +553,37 @@
 "v": 3
 },
 "25b4290d2f7c": {
-"at": "2026-11-10T23:29:17.261030+00:00",
+"at": "2026-11-23T16:12:40.768747+00:00",
+"dur": 105,
 "en": "A Christmas oratorio in the French style. In L’Enfance du Christ , Hector Berlioz tells the story of events following the birth of Jesus: the visit of the Three Wise Men to the cruel King Herod, and the flight of the Holy Family to Egypt, where they finally find refuge. Berlioz’s music combines operatic drama with quiet devotion, radiant orchestral colours with magnificent choral writing. The work brought the composer great acclaim.",
 "fr": "Un oratorio de Noël à la française. Dans L'Enfance du Christ, Hector Berlioz raconte les événements qui ont suivi la naissance de Jésus : la visite des Rois Mages au cruel roi Hérode, et la fuite de la Sainte Famille en Égypte, où ils trouvent enfin refuge. La musique de Berlioz allie le drame lyrique à une dévotion tranquille, des couleurs orchestrales rayonnantes à une magnifique écriture chorale. L'œuvre a valu au compositeur un grand succès.",
 "src": "A Christmas oratorio in the French style. In L’Enfance du Christ , Hector Berlioz tells the story of events following the birth of Jesus: the visit of the Three Wise Men to the cruel King Herod, and the flight of the Holy Family to Egypt, where they finally find refuge. Berlioz’s music combines operatic drama with quiet devotion, radiant orchestral colours with magnificent choral writing. The work brought the composer great acclaim.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57079/",
 "v": 3
 },
 "27ba45fe352b": {
-"at": "2026-11-18T22:40:26.153330+00:00",
+"at": "2026-11-23T16:12:24.337914+00:00",
+"dur": null,
 "en": "Life could actually be wonderful, were it not for the difference in their social standing: Luise is of the middle classes and Ferdinand is of the nobility. With unexpected force, this love gives rise to a social conflict that extends right into the ranks of the most powerful, revealing just how political love is. Schiller dissects love and its limits mercilessly and with great tension.",
 "fr": "La vie pourrait en réalité être merveilleuse sans la différence de leur statut social : Luise est issue de la bourgeoisie et Ferdinand est de la noblesse. Avec une force inattendue, cet amour suscite un conflit social qui s'étend jusque dans les rangs des plus puissants, révélant à quel point l'amour est politique. Schiller décortique l'amour et ses limites sans pitié et avec beaucoup de tension.",
 "spoken": null,
 "src": "Life could actually be wonderful, were it not for the difference in their social standing: Luise is of the middle classes and Ferdinand is of the nobility. With unexpected force, this love gives rise to a social conflict that extends right into the ranks of the most powerful, revealing just how political love is. Schiller dissects love and its limits mercilessly and with great tension.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.deutschestheater.de/en/program/productions/kabale-und-liebe",
 "v": 3
 },
 "2857e080e1cb": {
-"at": "2026-11-18T22:37:38.495705+00:00",
+"at": "2026-11-23T16:08:58.933521+00:00",
+"dur": null,
 "en": "Kat Válastur’s work brings to the stage the ruins of a world considered obsolete. The rural, the mystical, and the connection between the South and spiritual life are transferred to the stage through a mythological construction that mixes the archaic with science fiction. In “Dive into You,” the choreographer and performer hybridizes the figure and function of archaic female oracles with the photosynthetic processes and growth of trees.",
-"fr": "L'œuvre de Kat Válastur met en scène les ruines d'un monde considéré comme obsolète. Le monde rural, le mystique et le lien entre le Sud et la vie spirituelle sont transposés sur scène par le biais d'une construction mythologique qui mêle l'archaïque à la science-fiction. Dans « Dive into You », la chorégraphe et interprète hybride la figure et la fonction des oracles féminins archaïques avec les processus de photosynthèse et la croissance des arbres.",
+"fr": "Le travail de Kat Válastur met en scène les ruines d’un monde jugé obsolète. Le rural, le mystique et le lien entre le Sud et la vie spirituelle sont transférés sur scène à travers une construction mythologique qui mêle l'archaïque et la science-fiction. Dans « Dive into You », le chorégraphe et interprète hybride la figure et la fonction des oracles féminins archaïques avec les processus photosynthétiques et la croissance des arbres.",
 "spoken": "Aucune langue requise (danse)",
 "src": "Kat Válastur’s work brings to the stage the ruins of a world considered obsolete. The rural, the mystical, and the connection between the South and spiritual life are transferred to the stage through a mythological construction that mixes the archaic with science fiction. In “Dive into You,” the choreographer and performer hybridizes the figure and function of archaic female oracles with the photosynthetic processes and growth of trees.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/kat-valastur-dive-into-you/",
 "v": 3
 },
 "2a922a272321": {
@@ -591,7 +631,8 @@
 "v": 3
 },
 "2dce20f71279": {
-"at": "2026-11-21T13:37:00.130379+00:00",
+"at": "2026-11-23T16:12:20.166872+00:00",
+"dur": null,
 "en": "aufnahme + wiedergabe presents Twin Noir(live) 2 Punks And A Tape Machine www.twinnoir.com Hinfort [Young And Cold] Post Punk / Dark Wave www.hinfort.bandcamp.com Berlin-based project TWIN NOIR transforms analog rawness into urban ecstasy. Somewhere between alternative, electro, and modern post-punk elements, they create a sound that gets under your skin. Driving rhythms, striking guitars, and melancholic tones merge into a distinctive style.",
 "fr": "aufnahme + wiedergabe présente Twin Noir (live) 2 Punks And A Tape Machine www.twinnoir.com Hinfort [Young And Cold] Post Punk / Dark Wave www.hinfort.bandcamp.com Le projet berlinois TWIN NOIR transforme la crudité analogique en extase urbaine. Entre éléments alternatifs, électro et post-punk modernes, ils créent un son qui vous met sous la peau. Des rythmes entraînants, des guitares saisissantes et des tons mélancoliques se fondent dans un style distinctif.",
 "spoken": null,
@@ -613,12 +654,15 @@
 "v": 3
 },
 "2e7201bd4c89": {
-"at": "2026-11-19T14:34:48.532072+00:00",
+"at": "2026-11-23T16:08:51.810939+00:00",
+"dur": 120,
 "en": "The world is in turmoil. Not only are the harbingers of the French Revolution shaking society with class struggles and violence, but the family order of the old Earl of Moor is also threatening to collapse. Franz, the second-born son, feels cheated of his father's favor and wants revenge. He devises a plot against his older, favored brother Karl, who is then disowned by his father. Hurt by his father's rejection, Karl joins a band of robbers to fight against injustice in society.",
-"fr": "Le monde est en ébullition. Non seulement les précurseurs de la Révolution française ébranlent la société avec des luttes de classes et de la violence, mais l’ordre familial du vieux comte de Moor menace également de s’effondrer. Franz, le deuxième fils, se sent trompé par la faveur de son père et veut se venger. Il conçoit un complot contre son frère aîné et préféré Karl, qui est ensuite désavoué par son père. Blessé par le rejet de son père, Karl rejoint une bande de voleurs pour lutter contre l'injustice de la société.",
+"fr": "Le monde est en ébullition. Non seulement les précurseurs de la Révolution française ébranlent la société avec des luttes de classes et de la violence, mais l’ordre familial du vieux comte de Moor menace également de s’effondrer. Franz, le deuxième fils, se sent trompé par la faveur de son père et veut se venger. Il conçoit un complot contre son frère aîné préféré, Karl, qui est ensuite désavoué par son père. Blessé par le rejet de son père, Karl rejoint une bande de voleurs pour lutter contre l'injustice de la société.",
 "spoken": null,
 "src": "The world is in turmoil. Not only are the harbingers of the French Revolution shaking society with class struggles and violence, but the family order of the old Earl of Moor is also threatening to collapse. Franz, the second-born son, feels cheated of his father's favor and wants revenge. He devises a plot against his older, favored brother Karl, who is then disowned by his father. Hurt by his father's rejection, Karl joins a band of robbers to fight against injustice in society.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.deutschestheater.de/en/program/productions/die-raeuber",
 "v": 3
 },
 "30454156a657": {
@@ -633,7 +677,8 @@
 "v": 3
 },
 "304bcb228884": {
-"at": "2026-11-21T13:36:51.896205+00:00",
+"at": "2026-11-23T16:11:10.514222+00:00",
+"dur": null,
 "en": "Initially coming from the DIY hardcore scene, Coilguns have crafted since then their very own blend of punk and extatic noise-rock. The history of the band is deeply bound to the development of guitarist Jona Nido’s own label – Humus Records – that now gathers up to 150 releases from Swiss artists of all sonic horizons.",
 "fr": "Initialement issu de la scène DIY hardcore, Coilguns a depuis créé son propre mélange de punk et de noise-rock extatique. L’histoire du groupe est profondément liée au développement du propre label du guitariste Jona Nido – Humus Records – qui rassemble aujourd’hui jusqu’à 150 albums d’artistes suisses de tous horizons sonores.",
 "spoken": null,
@@ -644,12 +689,15 @@
 "v": 3
 },
 "307bd30ca065": {
-"at": "2026-11-11T00:04:50.280857+00:00",
+"at": "2026-11-23T16:07:08.270863+00:00",
+"dur": null,
 "en": "It was his first great success, in a sense, his breakthrough: Nabucco. Premiered at Milan’s Scala in the spring of 1842, this work marks the start of the brilliant career of Giuseppe Verdi, who would become the leading Italian opera composer, going virtually unrivalled for decades.",
-"fr": "Ce fut son premier grand succès, en un sens, sa percée : Nabucco. Créée à la Scala de Milan au printemps 1842, cette œuvre marque le début de la brillante carrière de Giuseppe Verdi, qui deviendra le premier compositeur d'opéra italien, sans égal pendant des décennies.",
+"fr": "C'était son premier grand succès, en un sens, sa percée : Nabucco. Créée à la Scala de Milan au printemps 1842, cette œuvre marque le début de la brillante carrière de Giuseppe Verdi, qui deviendra le principal compositeur d’opéra italien, pratiquement sans égal pendant des décennies.",
 "spoken": "En italien",
 "src": "It was his first great success, in a sense, his breakthrough: Nabucco. Premiered at Milan’s Scala in the spring of 1842, this work marks the start of the brilliant career of Giuseppe Verdi, who would become the leading Italian opera composer, going virtually unrivalled for decades.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/nabucco.15505/",
 "v": 3
 },
 "309d28d5dc48": {
@@ -677,6 +725,18 @@
 "u": "https://www.schokoladen-mitte.de/?page=4#e20270112",
 "v": 3
 },
+"32ff6b7aff6a": {
+"at": "2026-11-23T16:07:10.924327+00:00",
+"dur": null,
+"en": "URBAN SPREE KLUBNACHT x RECESS Urban Spree Klubnacht joins forces with Recess for a special night dedicated to underground electronic music, sonic exploration and hypnotic dancefloor experiences. On November 27, from 23:59 to 07:00, the Klub welcomes a lineup of artists connected by a shared interest in pushing beyond conventional club sounds, moving between deep and dubby techno, experimental textures, broken rhythms and hypnotic grooves.",
+"fr": "Urban Spree KLUBNACHT x RECESS Urban Spree Klubnacht s'associe à Recess pour une soirée spéciale dédiée à la musique électronique underground, à l'exploration sonore et aux expériences de dancefloor hypnotiques. Le 27 novembre, de 23h59 à 07h00, le Klub accueille une programmation d'artistes liés par un intérêt commun à dépasser les sons de club conventionnels, évoluant entre techno deep et dubby, textures expérimentales, rythmes brisés et grooves hypnotiques.",
+"spoken": null,
+"src": "URBAN SPREE KLUBNACHT x RECESS Urban Spree Klubnacht joins forces with Recess for a special night dedicated to underground electronic music, sonic exploration and hypnotic dancefloor experiences. On November 27, from 23:59 to 07:00, the Klub welcomes a lineup of artists connected by a shared interest in pushing beyond conventional club sounds, moving between deep and dubby techno, experimental textures, broken rhythms and hypnotic grooves.",
+"surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.urbanspree.com/program/concerts/urban-spree-klubnacht-x-recess.html",
+"v": 3
+},
 "33bbcd99c6e3": {
 "at": "2026-11-20T01:22:49.432065+00:00",
 "en": "The multi-award-winning ballet Nureyev, choreographed by Yuri Possokhov, composed by Ilya Demutsky and staged by visionary director Kirill Serebrennikov, premiered in December 2017 at Moscow’s world-famous Bolshoi Theatre. Even before its debut, the work caused a stir internationally. In its 25/26 season, the Staatsballett Berlin brought this extraordinary production to the stage for the first time outside Russia.",
@@ -696,25 +756,32 @@
 "v": 3
 },
 "3479a28e35b0": {
-"at": "2026-11-10T23:53:48.382306+00:00",
+"at": "2026-11-23T16:08:19.235539+00:00",
+"dur": null,
 "en": "“Fiddler! One Night Only!” is a new version of the 2023 show “Fiddler! A Musical” , focusing on music in a conversational setting. Subversive and funny, minimalist and poppy, Jewish and universal, it draws a line from folk traditions of the past into a strange, and hopefully better, future.",
 "fr": "\"Fiddler! One Night Only!\" est une nouvelle version du spectacle 2023 « Fiddler! A Musical », axée sur la musique dans un cadre conversationnel. Subversif et drôle, minimaliste et pop, juif et universel, il trace une ligne entre les traditions folkloriques du passé et un avenir étrange et, espérons-le, meilleur.",
 "spoken": "En anglais et yiddish",
 "src": "“Fiddler! One Night Only!” is a new version of the 2023 show “Fiddler! A Musical” , focusing on music in a conversational setting. Subversive and funny, minimalist and poppy, Jewish and universal, it draws a line from folk traditions of the past into a strange, and hopefully better, future.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/ariel-efraim-ashbel-and-friends-fiddler-one-night-only/",
 "v": 3
 },
 "3546ca5361da": {
-"at": "2026-11-18T22:39:54.386873+00:00",
+"at": "2026-11-23T16:10:54.070967+00:00",
+"dur": null,
 "en": "New York-based artist Barnett Cohen comes to Sophiensæle for the first time. In their works, Cohen combines text-based scores and choreography into a total work of art. By weaving original writing with found language from text messages, dating apps, speculative fiction, queer theory, and poetry, splintering linear time, gender, and sexuality into elusive forms, figureless existences, and subversive calls to action.",
 "fr": "L'artiste new-yorkais Barnett Cohen vient à Sophiensæle pour la première fois. Dans leurs œuvres, Cohen combine des partitions textuelles et une chorégraphie en une œuvre d'art totale. En tissant une écriture originale avec un langage trouvé à partir de messages texte, d'applications de rencontres, de fiction spéculative, de théorie queer et de poésie, divisant le temps linéaire, le genre et la sexualité en formes insaisissables, existences sans figure et appels à l'action subversifs.",
 "spoken": "Aucune langue requise",
 "src": "New York-based artist Barnett Cohen comes to Sophiensæle for the first time. In their works, Cohen combines text-based scores and choreography into a total work of art. By weaving original writing with found language from text messages, dating apps, speculative fiction, queer theory, and poetry, splintering linear time, gender, and sexuality into elusive forms, figureless existences, and subversive calls to action.",
 "surtitles": null,
+"tx": 1,
+"u": "https://sophiensaele.com/en/stueck/pain-is-a-cave",
 "v": 3
 },
 "3639106e9aab": {
-"at": "2026-11-20T01:22:44.168638+00:00",
+"at": "2026-11-23T16:07:15.573334+00:00",
+"dur": 120,
 "en": "Her life reads like a crime novel made up of many lives: Königsberg in the 1910s, her student years with Heidegger and Jaspers, Berlin in the 1920s, Paris in the 1930s, escapes and friendships, New York in the 1950s and 1960s. The wars and totalitarian regimes of the 20th century shaped and preoccupied her. Her main political work, The Origins of Totalitarianism , made her famous overnight in 1951.",
 "fr": "Sa vie se lit comme un roman policier composé de plusieurs vies : Königsberg dans les années 1910, ses années d'études chez Heidegger et Jaspers, Berlin dans les années 1920, Paris dans les années 1930, les évasions et les amitiés, New York dans les années 1950 et 1960. Les guerres et les régimes totalitaires du XXe siècle l’ont façonnée et préoccupée. Son principal ouvrage politique, Les Origines du totalitarisme, la rendit célèbre du jour au lendemain en 1951.",
 "spoken": null,
@@ -741,9 +808,10 @@
 "v": 3
 },
 "38c358916d9f": {
-"at": "2026-11-20T00:16:41.138125+00:00",
+"at": "2026-11-23T16:11:28.268861+00:00",
+"dur": null,
 "en": "TWINS IN COLOUR are three people who found each other in 2025 in Leipzig/Germany to create a particular sound of dark/psych/synth pop. Over layers of synthesizers, noises, guitars and reverb-soaked vocals they tell stories of the moon, the ocean floor and all the other things that live within us. — n0t herethere is a Berlin-based independent artist making dark electronic music, trip-hop and experimental pop.",
-"fr": "Twins in Colour, ce sont trois personnes qui se sont rencontrées en 2025 à Leipzig, en Allemagne, pour créer un son particulier de dark/psych/synth pop. Sur des couches de synthétiseurs, de bruits, de guitares et de voix imprégnées de réverbération, ils racontent des histoires sur la lune, les fonds marins et toutes les autres choses qui vivent en nous. — n0t herethere est un artiste indépendant basé à Berlin qui compose de la musique électronique sombre, du trip-hop et de la pop expérimentale.",
+"fr": "Twins in Colour, ce sont trois personnes qui se sont rencontrées en 2025 à Leipzig/Allemagne pour créer un son particulier de pop dark/psych/synth. Sur des couches de synthétiseurs, de bruits, de guitares et de voix imprégnées de réverbération, ils racontent des histoires sur la lune, le fond de l'océan et toutes les autres choses qui vivent en nous. — Il n'existe pas ici d'artiste indépendant basé à Berlin qui fait de la musique électronique sombre, du trip-hop et de la pop expérimentale.",
 "src": "TWINS IN COLOUR are three people who found each other in 2025 in Leipzig/Germany to create a particular sound of dark/psych/synth pop. Over layers of synthesizers, noises, guitars and reverb-soaked vocals they tell stories of the moon, the ocean floor and all the other things that live within us. — n0t herethere is a Berlin-based independent artist making dark electronic music, trip-hop and experimental pop.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/?page=2#e20261207",
@@ -783,6 +851,16 @@
 "surtitles": "surtitres allemands et anglais",
 "v": 3
 },
+"39a5c9482063": {
+"at": "2026-11-23T16:07:17.690429+00:00",
+"dur": null,
+"en": "",
+"fr": "",
+"src": null,
+"tx": 1,
+"u": "https://www.urbanspree.com/program/concerts/kkuba102.html",
+"v": 3
+},
 "3b7b9c4dcec2": {
 "at": "2026-11-10T23:32:08.379243+00:00",
 "en": "This concert brings the Berliner Philharmoniker Ensembles’ Beethoven series to a close with two of the composer’s most popular chamber works: the “Gassenhauer Trio”, with its ingenious variations on a popular operatic hit, and his Septet in E-flat major. Both works combine melodic invention with wit and elegance.",
@@ -791,7 +869,8 @@
 "v": 3
 },
 "3c17028bb48b": {
-"at": "2026-11-22T13:29:48.050610+00:00",
+"at": "2026-11-23T16:11:45.792231+00:00",
+"dur": null,
 "en": "",
 "fr": "",
 "src": null,
@@ -897,7 +976,8 @@
 "v": 3
 },
 "4335286b55cf": {
-"at": "2026-11-20T01:20:56.431085+00:00",
+"at": "2026-11-23T16:11:01.615681+00:00",
+"dur": null,
 "en": "\"A hit on the snare, a dull bang. The band starts up again and I fall to the ground. I come back to consciousness outside with my arms in the pool. I was just watching BeiNedarf in a small, smoky basement. I was supposed to join them as a drummer and promptly, as a greeting, I had the bass and the bass player smacked in the face. Apparently that's how it works at wild punk shows in small basements, when the bass player jumps from the bass drum into the audience.",
 "fr": "\"Un coup sur la caisse claire, un bang sourd. Le groupe recommence et je tombe au sol. Je reprends conscience dehors, les bras dans la piscine. Je regardais BeiNedarf dans un petit sous-sol enfumé. J'étais censé les rejoindre en tant que batteur et aussitôt, en guise de salutation, j'ai fait gifler le bassiste et le bassiste. Apparemment, c'est comme ça que ça marche lors des concerts de punk sauvage dans les petits sous-sols, quand le bassiste le joueur saute de la grosse caisse dans le public.",
 "src": "„Ein Schlag auf die Snare, ein dumpfer Knall. Die Band setzt wieder ein und ich geh zu Boden.Ich komme draußen mit den Armen im Pool wieder zu Bewusstsein. Gerade habe ich mir BeiBedarf in einem kleinen verrauchten Keller angeguckt. Bei denen soll ich als Drummereinsteigen und hab prompt, quasi zur Begrüßung, den Bass, samt Bassisten insGesicht geknallt bekommen. Anscheinend läuft das so bei wilden Punk Shows in kleinenKellern, wenn der Bassist von der Bassdrum ins Publikum springt.",
@@ -940,7 +1020,8 @@
 "v": 3
 },
 "474423c7c3e3": {
-"at": "2026-11-20T16:14:26.469472+00:00",
+"at": "2026-11-23T16:12:07.912427+00:00",
+"dur": null,
 "en": "The year is coming to an end and Christmas is just around the corner. That's why, at the end of this year, let's come together again and ring in the Christmas season and the end of this year with Jamaican grooves. As you know, comes Wood In Di Fire, with Jamaican jazz and solid reggae grooves that turn the chocolate into a live dancehall session. What started as a jam project between musicians from various Berlin bands has developed into a permanent formation.",
 "fr": "L'année touche à sa fin et Noël approche à grands pas. C'est pourquoi, à la fin de cette année, retrouvons-nous à nouveau et célébrons la période de Noël et la fin de cette année avec des rythmes jamaïcains. Comme vous le savez, arrive Wood In Di Fire, avec du jazz jamaïcain et de solides grooves reggae qui transforment le chocolat en une session de dancehall live. Ce qui a commencé comme un projet de jam entre musiciens de différents groupes berlinois est devenu une formation permanente.",
 "src": "Das Jahr geht zu Ende und Weihnachten steht vor der Tür. Deshalb lasst uns, am Ende dieses Jahres, nochmal zusammen kommen und mit jamaikanischen Grooves die Weihnachtszeit und das Ende dieses Jahres einläuten. Wie ihr wisst, kommt Wood In Di Fire, mit Jamaican Jazz und handfesten Reggae-Grooves, die den Schokoladen in eine Live-Dancehall-Sessions verwandeln. Was als Jam-Projekt von Musikern aus verschiedenen Berliner Bands begann, hat sich zur festen Formation entwickelt.",
@@ -972,12 +1053,15 @@
 "v": 3
 },
 "4e0224202fa0": {
-"at": "2026-11-11T00:04:00.451165+00:00",
+"at": "2026-11-23T16:08:40.666174+00:00",
+"dur": 210,
 "en": "A contemporary and topical opera for our time: When US President Richard Nixon lands on Chinese soil one foggy February morning in 1972, the world holds its collective breath. After decades of silence, the rival powers are starting to come together. A momentous instant in diplomatic history and a superlative media spectacle unfolds as cameras and microphones follow Nixon and Mao Zedong constantly.",
-"fr": "Un opéra contemporain et d'actualité pour notre temps : lorsque le président américain Richard Nixon atterrit sur le sol chinois un matin brumeux de février 1972, le monde retient son souffle collectif. Après des décennies de silence, les puissances rivales commencent à se rassembler. Un moment capital dans l'histoire diplomatique et un spectacle médiatique superlatif se déroulent alors que des caméras et des microphones suivent constamment Nixon et Mao Zedong.",
+"fr": "Un opéra contemporain et d'actualité : lorsque le président américain Richard Nixon atterrit sur le sol chinois par un matin brumeux de février 1972, le monde retient son souffle collectif. Après des décennies de silence, les puissances rivales commencent à se rassembler. Un moment capital dans l’histoire diplomatique et un spectacle médiatique exceptionnel se déroule alors que les caméras et les microphones suivent constamment Nixon et Mao Zedong.",
 "spoken": "En anglais",
 "src": "A contemporary and topical opera for our time: When US President Richard Nixon lands on Chinese soil one foggy February morning in 1972, the world holds its collective breath. After decades of silence, the rival powers are starting to come together. A momentous instant in diplomatic history and a superlative media spectacle unfolds as cameras and microphones follow Nixon and Mao Zedong constantly.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/nixon-in-china.1385484",
 "v": 3
 },
 "4e339344d5af": {
@@ -990,21 +1074,27 @@
 "v": 3
 },
 "4e5f3262fb93": {
-"at": "2026-11-08T15:16:34.711367+00:00",
+"at": "2026-11-23T16:08:01.543914+00:00",
+"dur": null,
 "en": "A barrage of disorienting news is coming from the AI frontier – the hardest problems in mathematics, it seems, have been solved, human labour is automated at light speed, and humanity is said to have a 10 to 15 per cent chance of extinction in the next couple of years – or was it before the end of next year?",
-"fr": "Un déluge de nouvelles désorientantes nous parvient en provenance de la frontière de l’IA – les problèmes mathématiques les plus difficiles semblent avoir été résolus, le travail humain est automatisé à la vitesse de la lumière et l’humanité aurait 10 à 15 % de chances de s’éteindre dans les deux prochaines années – ou était-ce avant la fin de l’année prochaine ?",
+"fr": "Une avalanche de nouvelles désorientantes nous parviennent de la frontière de l’IA – les problèmes mathématiques les plus difficiles semblent avoir été résolus, le travail humain est automatisé à la vitesse de la lumière et l’humanité aurait 10 à 15 % de chances de disparaître dans les deux prochaines années – ou était-ce avant la fin de l’année prochaine ?",
 "spoken": "En anglais",
 "src": "A barrage of disorienting news is coming from the AI frontier – the hardest problems in mathematics, it seems, have been solved, human labour is automated at light speed, and humanity is said to have a 10 to 15 per cent chance of extinction in the next couple of years – or was it before the end of next year?",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.volksbuehne-berlin.de/en/series-and-projects/berlin-review-x-volksbuehne-fire-from-all-sides/berlin-review-x-volksbuehne-fire-from-all-sides-3/",
 "v": 3
 },
 "4ef7bf47fc87": {
-"at": "2026-11-10T23:28:07.510688+00:00",
-"en": "In this video, Bára Gísladóttir describes her new opera Good Vibes Only as a rapid flow of threads all around us, and then entering smaller worlds … stormy worlds, worlds of birds, worlds of heavy material. Get to know the Icelandic composer.",
-"fr": "Dans cette vidéo, Bára Gísladóttir décrit son nouvel opéra Good Vibes Only comme un flux rapide de fils tout autour de nous, puis pénétrant dans des mondes plus petits… des mondes orageux, des mondes d'oiseaux, des mondes de matériaux lourds. Apprenez à connaître le compositeur islandais.",
+"at": "2026-11-23T16:08:43.717034+00:00",
+"dur": 80,
+"en": "A digital labyrinth: Tens of thousands of digital posts are made around the world every second. Posts are put up, Tweets are written, videos are uploaded. Two thirds of the global population regularly uses social media, and almost half use them every day. A flow of information crashes against our brains, forcing us to make decisions on unrestricted paths through the ever-expanding digital jungle.",
+"fr": "Un labyrinthe numérique : des dizaines de milliers de publications numériques sont publiées chaque seconde dans le monde. Des messages sont publiés, des tweets sont rédigés, des vidéos sont téléchargées. Les deux tiers de la population mondiale utilisent régulièrement les réseaux sociaux, et près de la moitié les utilisent quotidiennement. Un flux d’informations s’abat sur notre cerveau, nous obligeant à prendre des décisions sans restriction à travers la jungle numérique en constante expansion.",
 "spoken": "En anglais",
-"src": "In this video, Bára Gísladóttir describes her new opera Good Vibes Only as a rapid flow of threads all around us, and then entering smaller worlds … stormy worlds, worlds of birds, worlds of heavy material. Get to know the Icelandic composer.",
+"src": "A digital labyrinth: Tens of thousands of digital posts are made around the world every second. Posts are put up, Tweets are written, videos are uploaded. Two thirds of the global population regularly uses social media, and almost half use them every day. A flow of information crashes against our brains, forcing us to make decisions on unrestricted paths through the ever-expanding digital jungle.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/good-vibes-only.1386831",
 "v": 3
 },
 "4f1310ae628a": {
@@ -1023,16 +1113,20 @@
 "v": 3
 },
 "4f63b1afa7a1": {
-"at": "2026-11-11T00:04:30.748746+00:00",
+"at": "2026-11-23T16:10:17.520237+00:00",
+"dur": null,
 "en": "When the revolutionary and painter Mario Cavaradossi secretly attempts to help a political fugitive to escape the city of Rome, his lover, the famed singer Floria Tosca, believes he is cheating on her with another woman. Her jealousy is exploited by Scarpia, the unscrupulous chief of police, in order to help him capture Cavaradossi. Scarpia then makes Tosca an offer: if she gives herself to him for one night, he will release her lover.",
-"fr": "Lorsque le révolutionnaire et peintre Mario Cavaradossi tente secrètement d'aider un fugitif politique à s'échapper de la ville de Rome, son amant, la célèbre chanteuse Floria Tosca, croit qu'il la trompe avec une autre femme. Sa jalousie est exploitée par Scarpia, le chef de la police sans scrupules, afin de l'aider à capturer Cavaradossi. Scarpia fait alors une offre à Tosca : si elle se donne à lui pour une nuit, il libérera son amant.",
+"fr": "Lorsque le révolutionnaire et peintre Mario Cavaradossi tente secrètement d'aider un fugitif politique à s'échapper de la ville de Rome, son amante, la célèbre chanteuse Floria Tosca, croit qu'il la trompe avec une autre femme. Sa jalousie est exploitée par Scarpia, le chef de la police sans scrupules, pour l'aider à capturer Cavaradossi. Scarpia fait alors une offre à Tosca : si elle se donne à lui pour une nuit, il libérera son amant.",
 "spoken": "En italien",
 "src": "When the revolutionary and painter Mario Cavaradossi secretly attempts to help a political fugitive to escape the city of Rome, his lover, the famed singer Floria Tosca, believes he is cheating on her with another woman. Her jealousy is exploited by Scarpia, the unscrupulous chief of police, in order to help him capture Cavaradossi. Scarpia then makes Tosca an offer: if she gives herself to him for one night, he will release her lover.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
 "v": 3
 },
 "51214737ddf7": {
-"at": "2026-11-20T01:20:48.465445+00:00",
+"at": "2026-11-23T16:08:55.611020+00:00",
+"dur": null,
 "en": "\"Weird anti-folk with a beard, guitar and harmonica. You'll fall in love with it!\" \"Wonderfully disrespectful, simply splendidly done. The Black Elephant Band is something like the Ramones of folk!\" \"Dorky, loveable and highly entertaining lo-fi gems!\" + Having rocked the shit hard with our punk band Tungsten Tips for the last few years, we decided to throw together a few tunes and venture into the stripped down, and slightly more daunting world of acoustic shenanigans.",
 "fr": "\"Un anti-folk bizarre avec une barbe, une guitare et un harmonica. Vous allez en tomber amoureux !\" \" Merveilleusement irrespectueux, tout simplement magnifiquement réalisé. Le Black Elephant Band est un peu comme les Ramones du folk ! \" \"Des joyaux lo-fi idiots, adorables et très divertissants !\" + Après avoir secoué la merde avec notre groupe punk Tungsten Tips ces dernières années, nous avons décidé de rassembler quelques morceaux et de nous aventurer dans le monde dépouillé et légèrement plus intimidant des manigances acoustiques.",
 "src": "\"Schräger Antifolk mit Bart, Klampfe und Mundharmonika. Zum Verlieben!\" \"Herrlich respektlos, einfach grandios hingerotzt. Die Black Elephant Band ist so etwas wie die Ramones des Folk!\" \"Dorky, loveable and highly entertaining lo-fi gems!\" + Having rocked the shit hard with our punk band Tungsten Tips for the last few years, we decided to throw together a few tunes and venture into the stripped down, and slightly more daunting world of acoustic shenanigans.",
@@ -1041,7 +1135,8 @@
 "v": 3
 },
 "51caebae6e57": {
-"at": "2026-11-22T13:29:46.277772+00:00",
+"at": "2026-11-23T16:11:36.956330+00:00",
+"dur": null,
 "en": "",
 "fr": "",
 "src": null,
@@ -1057,12 +1152,15 @@
 "v": 3
 },
 "52faca0d1279": {
-"at": "2026-11-18T22:38:08.890224+00:00",
+"at": "2026-11-23T16:08:21.858661+00:00",
+"dur": null,
 "en": "In 遊戯 (Yugi) no.3 , Hanako Hayakawa traces the political aesthetics of cuteness in a society driven by the demand for attention. Here, cuteness becomes both a necessary performance and a strategy for survival. Hayakawa’s body becomes a site where genealogies of girlhood—from contemporary manga and anime to Madame Hanako of Japonism and the twentieth-century educational dance magazine 遊戯と唱歌 —are reimagined as tactical forms of subjectivity.",
-"fr": "Dans 遊戯 (Yugi) n° 3, Hanako Hayakawa retrace l’esthétique politique de la mignonnerie dans une société mue par la quête d’attention. Ici, la mignonnerie devient à la fois une performance nécessaire et une stratégie de survie. Le corps de Hayakawa devient un lieu où les généalogies de la féminité – des mangas et des animés contemporains à Madame Hanako du japonisme et au magazine de danse éducatif du XXe siècle 遊戯と唱歌 – sont réinventées comme des formes tactiques de subjectivité.",
+"fr": "Dans 遊戯 (Yugi) n°3 , Hanako Hayakawa retrace l'esthétique politique de la gentillesse dans une société motivée par la demande d'attention. Ici, la gentillesse devient à la fois une performance nécessaire et une stratégie de survie. Le corps de Hayakawa devient un lieu où les généalogies de l’enfance – des mangas et anime contemporains à Madame Hanako du japonisme et au magazine de danse pédagogique du XXe siècle 遊戯と唱歌 – sont réinventées comme des formes tactiques de subjectivité.",
 "spoken": "En anglais",
 "src": "In 遊戯 (Yugi) no.3 , Hanako Hayakawa traces the political aesthetics of cuteness in a society driven by the demand for attention. Here, cuteness becomes both a necessary performance and a strategy for survival. Hayakawa’s body becomes a site where genealogies of girlhood—from contemporary manga and anime to Madame Hanako of Japonism and the twentieth-century educational dance magazine 遊戯と唱歌 —are reimagined as tactical forms of subjectivity.",
 "surtitles": null,
+"tx": 1,
+"u": "https://sophiensaele.com/en/stueck/yugi-no3",
 "v": 3
 },
 "531de37b20bf": {
@@ -1098,9 +1196,10 @@
 "v": 3
 },
 "54b18412e32d": {
-"at": "2026-11-20T00:16:50.553972+00:00",
-"en": "ERECTION stand for what modern music often no longer dares to offer: uncompromising honesty, raw emotions and a sound world that moves somewhere between hope, overwhelm and pure electric energy.",
-"fr": "ERECTION incarne ce que la musique moderne n’ose souvent plus offrir : une honnêteté sans compromis, des émotions brutes et un univers sonore qui se situe quelque part entre l’espoir, le sentiment d’être dépassé et un pur élan électrique.",
+"at": "2026-11-23T16:11:52.777436+00:00",
+"dur": null,
+"en": "ERECTION stand for what modern music often no longer dares to offer: uncompromising honesty, raw emotions and a sound world that moves somewhere between hope, excessive demands and pure electric awakening.",
+"fr": "ERECTION représente ce que la musique moderne n'ose souvent plus offrir : une honnêteté sans compromis, des émotions brutes et un monde sonore qui oscille entre l'espoir, l'exigence excessive et le pur éveil électrique.",
 "src": "ERECTION stehen für das, was moderne Musik oft nicht mehr zu bieten wagt: kompromisslose Ehrlichkeit, rohe Emotionen und eine Klangwelt, die sich irgendwo zwischen Hoffnung,Überforderung und purem elektrischen Aufbruch bewegt.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/?page=2#e20261210",
@@ -1116,12 +1215,15 @@
 "v": 3
 },
 "567dccaf2059": {
-"at": "2026-11-10T23:54:01.211500+00:00",
+"at": "2026-11-23T16:10:31.116274+00:00",
+"dur": null,
 "en": "Everyone who has read Leonora Carrington’s century-defining novel The Hearing Trumpet knows: it is an unleashing of literary energy and a surrealist revolutionary attack on the humorlessness and lack of alternatives of patriarchal power. The ninety-two-year-old heroine rebels alongside other elderly people and outcasts: What if the world had taken a different path, one not defined by greed and violence?",
 "fr": "Tous ceux qui ont lu The Hearing Trumpet, le roman marquant du siècle de Leonora Carrington, le savent : il s’agit d’un déchaînement d’énergie littéraire et d’une attaque révolutionnaire surréaliste contre le manque d’humour et le manque d’alternatives du pouvoir patriarcal. L'héroïne de quatre-vingt-douze ans se rebelle aux côtés d'autres personnes âgées et exclus : et si le monde avait emprunté une voie différente, non définie par l'avidité et la violence ?",
 "spoken": null,
 "src": "Everyone who has read Leonora Carrington’s century-defining novel The Hearing Trumpet knows: it is an unleashing of literary energy and a surrealist revolutionary attack on the humorlessness and lack of alternatives of patriarchal power. The ninety-two-year-old heroine rebels alongside other elderly people and outcasts: What if the world had taken a different path, one not defined by greed and violence?",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.gorki.de/en/the-hearing-trumpet",
 "v": 3
 },
 "56d87cf8a198": {
@@ -1139,12 +1241,15 @@
 "v": 3
 },
 "58e7d2dfba5b": {
-"at": "2026-11-08T15:18:40.653021+00:00",
+"at": "2026-11-23T16:10:10.868329+00:00",
+"dur": null,
 "en": "What happens to a society when more and more people lose faith that the future can be better? In »Bad Kingdom« , people come together who are trying to regain control of their lives in an increasingly unstable world. They are searching for love, security and a sense of belonging, whilst around them political certainties are crumbling, social conflicts are escalating and fears of social decline, war and an authoritarian future are growing. Who benefits from this fear?",
 "fr": "Qu’arrive-t-il à une société lorsque de plus en plus de personnes perdent confiance dans le fait que l’avenir peut être meilleur ? Dans »Bad Kingdom« , se réunissent des personnes qui tentent de reprendre le contrôle de leur vie dans un monde de plus en plus instable. Ils recherchent l’amour, la sécurité et un sentiment d’appartenance, alors qu’autour d’eux les certitudes politiques s’effondrent, les conflits sociaux s’intensifient et les craintes d’un déclin social, d’une guerre et d’un avenir autoritaire grandissent. À qui profite cette peur ?",
 "spoken": null,
 "src": "What happens to a society when more and more people lose faith that the future can be better? In »Bad Kingdom« , people come together who are trying to regain control of their lives in an increasingly unstable world. They are searching for love, security and a sense of belonging, whilst around them political certainties are crumbling, social conflicts are escalating and fears of social decline, war and an authoritarian future are growing. Who benefits from this fear?",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
 "v": 3
 },
 "594e6eeb8a7e": {
@@ -1221,7 +1326,8 @@
 "v": 3
 },
 "5dffff07dacc": {
-"at": "2026-11-21T13:36:39.773838+00:00",
+"at": "2026-11-23T16:10:24.897841+00:00",
+"dur": null,
 "en": "Saba Lou plays with her full band for the first time in years to celebrate the release of her third album, Nothing But Love. Come and be there; Nobody knows when the opportunity will come next. However, if you want to see Saba Lou in a completely different format, you can hear her play and sing in the film IDENTITTI. -- photo credit: Julia Autz",
 "fr": "Saba Lou joue avec son groupe complet pour la première fois depuis des années pour célébrer la sortie de son troisième album, Nothing But Love. Venez et soyez là; Personne ne sait quand l’occasion se présentera la prochaine fois. Cependant, si vous souhaitez voir Saba Lou dans un format complètement différent, vous pouvez l'entendre jouer et chanter dans le film IDENTITTI. -- crédit photo : Julia Autz",
 "src": "SABA LOU spielt zum ersten mal seit Jahren mit ihrer ganzen Band um die Veröffentlichung ihres dritten Albums, Nothing But Love, zu feiern. Kommt und seid dabei; keiner weiß wann es die Gelegenheit zum nächsten mal gibt. Wer Saba Lou allerdings in ganz anderem Format sehen will kann sie im Kinofilm IDENTITTI spielen und auch singen hören. -- foto credit: julia autz",
@@ -1230,9 +1336,10 @@
 "v": 3
 },
 "5e137f5dabcb": {
-"at": "2026-11-20T00:16:10.232081+00:00",
-"en": "CAVA are back and are celebrating the release of their third album \"GOOD LUCK\" with two evenings at Schokoladen – on November 27 and 28. What remains after the champagne corks have popped, after the mosh pit has become just another memory and one's own reality of life regains the upper hand? CAVA are back with their new album \"Good Luck,\" although the title is by no means synonymous with accepting defeat.",
-"fr": "CAVA est de retour et célèbre la sortie de son troisième album « GOOD LUCK » avec deux soirées au Schokoladen – les 27 et 28 novembre. Que reste-t-il après que les bouchons de champagne ont sauté, après que le mosh pit est devenu un autre souvenir et que la réalité de sa propre vie reprend le dessus ? CAVA est de retour avec son nouvel album « Good Luck », dont le titre n’est en aucun cas synonyme d’acceptation d’une défaite.",
+"at": "2026-11-23T16:10:02.182072+00:00",
+"dur": null,
+"en": "CAVA are back and celebrating the release of their third album »GOOD LUCK« with two evenings at Chocolate - on November 27th and 28th. What remains after the champagne corks have popped, after the mosh pit has become another memory and the reality of your own life takes over again? CAVA are back with their new album \"Good Luck\", although the title is in no way synonymous with acceptance of defeat.",
+"fr": "CAVA est de retour et célèbre la sortie de son troisième album « GOOD LUCK » avec deux soirées au Chocolate - les 27 et 28 novembre. Que reste-t-il après que les bouchons de champagne ont éclaté, après que le mosh pit soit devenu un autre souvenir et que la réalité de votre propre vie reprenne le dessus ? CAVA est de retour avec son nouvel album « Good Luck », même si le titre n'est en aucun cas synonyme d'acceptation de la défaite.",
 "src": "CAVA sind zurück und feiern die Veröffentlichung ihres dritten Albums »GOOD LUCK« mit zwei Abenden im Schokoladen – am 27. und 28. November Was bleibt, nachdem die Sektkorken geknallt haben, nachdem der Moshpit zu einer weiteren Erinnerung geworden ist und die eigene Lebensrealität wieder die Oberhand gewinnt? CAVA sind zurück mit ihrem neuen Album „Good Luck\", wobei der Titel keineswegs mit der Akzeptanz einer Niederlage gleichzusetzen ist.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/#e20261128",
@@ -1278,12 +1385,15 @@
 "v": 3
 },
 "62948f530d72": {
-"at": "2026-11-10T23:54:09.942432+00:00",
+"at": "2026-11-23T16:12:46.991170+00:00",
+"dur": null,
 "en": "With “Die große Klassenrevue,” Christiane Rösinger brings a modern agitpop revue to the stage that uses music and humour to question today's class relations. Together with experts and a band, she debunks the myth of the middle class, addresses social inequality and tells of dropping out instead of rising up.",
 "fr": "Avec «Die große Klassenrevue», Christiane Rösinger met sur scène une revue agitpop moderne qui interroge la musique et l'humour sur les rapports de classe d'aujourd'hui. Avec des experts et un groupe, elle démystifie le mythe de la classe moyenne, s'attaque aux inégalités sociales et raconte l'abandon scolaire au lieu de s'élever.",
 "spoken": null,
 "src": "With “Die große Klassenrevue,” Christiane Rösinger brings a modern agitpop revue to the stage that uses music and humour to question today's class relations. Together with experts and a band, she debunks the myth of the middle class, addresses social inequality and tells of dropping out instead of rising up.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/christiane-roesinger-hau-die-grosse-klassenrevue/",
 "v": 3
 },
 "6367fdfd83f3": {
@@ -1334,11 +1444,12 @@
 "v": 3
 },
 "6684de686680": {
-"at": "2026-11-21T13:36:55.546352+00:00",
-"en": "",
-"fr": "",
+"at": "2026-11-23T16:11:32.487947+00:00",
+"dur": 200,
+"en": "In Christopher Rüping's new play, a daughter meets her father. She has a lot of questions for him, but gets no answers because the demented father has forgotten where he comes from and who he is.",
+"fr": "Dans la nouvelle pièce de Christopher Rüping, une fille rencontre son père. Elle a beaucoup de questions à lui poser, mais n'obtient aucune réponse car le père dément a oublié d'où il vient et qui il est.",
 "spoken": null,
-"src": null,
+"src": "Im neuen Theaterstück von Christopher Rüping begegnet eine Tochter ihrem Vater. Sie hat viele Fragen an ihn, bekommt aber keine Antworten, denn der demente Vater hat vergessen, woher er kommt und wer er ist.",
 "surtitles": "surtitres anglais",
 "tx": 1,
 "u": "https://www.deutschestheater.de/en/program/productions/deutscher-herbst",
@@ -1354,12 +1465,15 @@
 "v": 3
 },
 "686244060682": {
-"at": "2026-11-18T22:40:39.690457+00:00",
+"at": "2026-11-23T16:13:00.690882+00:00",
+"dur": null,
 "en": "Routine and Facade: In his novel A Single Man , published in 1964, Christopher Isherwood depicts a day in the life of university lecturer George Falconer.",
 "fr": "Routine et façade : Dans son roman A Single Man, publié en 1964, Christopher Isherwood dépeint une journée dans la vie du professeur d'université George Falconer.",
 "spoken": null,
 "src": "Routine and Facade: In his novel A Single Man , published in 1964, Christopher Isherwood depicts a day in the life of university lecturer George Falconer.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.deutschestheater.de/en/program/productions/the-cold-reminder-at",
 "v": 3
 },
 "6968a67fbdd6": {
@@ -1377,10 +1491,13 @@
 "v": 3
 },
 "6a5ed3682b02": {
-"at": "2026-11-10T23:29:09.660117+00:00",
+"at": "2026-11-23T16:11:48.476916+00:00",
+"dur": 90,
 "en": "Marek Janowski has described Anton Bruckner as a “Baroque Romantic” – a formulation that reflects the dual character of his music. Janowski reveals the music’s complex layers while allowing its radiant colours to shine through. Janowski has appeared with the Berliner Philharmoniker as a Bruckner interpreter on several occasions.",
 "fr": "Marek Janowski a décrit Anton Bruckner comme un « baroque romantique », une formulation qui reflète le double caractère de sa musique. Janowski révèle les couches complexes de la musique tout en laissant transparaître ses couleurs éclatantes. Janowski s'est produit à plusieurs reprises avec le Berliner Philharmoniker en tant qu'interprète de Bruckner.",
 "src": "Marek Janowski has described Anton Bruckner as a “Baroque Romantic” – a formulation that reflects the dual character of his music. Janowski reveals the music’s complex layers while allowing its radiant colours to shine through. Janowski has appeared with the Berliner Philharmoniker as a Bruckner interpreter on several occasions.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57074/",
 "v": 3
 },
 "6c3f94f9ef00": {
@@ -1391,12 +1508,15 @@
 "v": 3
 },
 "6c4469dc9269": {
-"at": "2026-11-18T22:37:59.572406+00:00",
+"at": "2026-11-23T16:07:58.418193+00:00",
+"dur": null,
 "en": "In 1965, amid the Civil Rights Movement, racial conflict and profound social transformation in the United States, Steve Reich recorded the voice of Black street preacher Brother Walter declaring: “It’s gonna rain.” Walter’s words warn of an approaching catastrophe and of the moment when escape is no longer possible. This warning became a loop in Reich’s work: repeated, fractured and transformed.",
-"fr": "En 1965, au milieu du mouvement des droits civiques, des conflits raciaux et d'une profonde transformation sociale aux États-Unis, Steve Reich a enregistré la voix du prédicateur de rue noir Brother Walter déclarant : « It’s Gonna Rain ». Les paroles de Walter mettent en garde contre une catastrophe imminente et contre le moment où il ne sera plus possible de s'échapper. Cet avertissement est devenu une boucle dans l'œuvre de Reich : répété, fragmenté et transformé.",
+"fr": "En 1965, au milieu du mouvement des droits civiques, du conflit racial et de la profonde transformation sociale aux États-Unis, Steve Reich a enregistré la voix du prédicateur de rue noir, frère Walter, déclarant : « It’s Gonna Rain ». Les paroles de Walter avertissent d’une catastrophe imminente et du moment où la fuite n’est plus possible. Cet avertissement est devenu une boucle dans l’œuvre de Reich : répété, fracturé et transformé.",
 "spoken": "En anglais",
 "src": "In 1965, amid the Civil Rights Movement, racial conflict and profound social transformation in the United States, Steve Reich recorded the voice of Black street preacher Brother Walter declaring: “It’s gonna rain.” Walter’s words warn of an approaching catastrophe and of the moment when escape is no longer possible. This warning became a loop in Reich’s work: repeated, fractured and transformed.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.etberlin.de/production/its-gonna-rain/",
 "v": 3
 },
 "6d0053bffdda": {
@@ -1488,14 +1608,18 @@
 "v": 3
 },
 "7909b849d92e": {
-"at": "2026-11-18T22:40:00.488994+00:00",
+"at": "2026-11-23T16:11:07.059737+00:00",
+"dur": null,
 "en": "After Dublin, Brussels and Paris, the journey continues in Berlin. A melodic house night built around a carefully curated lineup, where every set is a chapter of the same story. For his first appearance in Berlin, Thaylo brings his immersive sound to Urban Spree alongside Darin Epsilon and Gareden. Deep, emotional melodies, slow-building tension and an elegant energy that holds the room until the very last track.",
 "fr": "Après Dublin, Bruxelles et Paris, le voyage se poursuit à Berlin. Une soirée house mélodique construite autour d'une programmation soigneusement organisée, où chaque set est un chapitre de la même histoire. Pour sa première apparition à Berlin, Thaylo apporte son son immersif à Urban Spree aux côtés de Darin Epsilon et Gareden. Des mélodies profondes et émotionnelles, une tension qui monte lentement et une énergie élégante qui tient la salle jusqu'au tout dernier morceau.",
 "src": "After Dublin, Brussels and Paris, the journey continues in Berlin. A melodic house night built around a carefully curated lineup, where every set is a chapter of the same story. For his first appearance in Berlin, Thaylo brings his immersive sound to Urban Spree alongside Darin Epsilon and Gareden. Deep, emotional melodies, slow-building tension and an elegant energy that holds the room until the very last track.",
+"tx": 1,
+"u": "https://www.urbanspree.com/program/concerts/thaylo-darin-epsilon-gareden.html",
 "v": 3
 },
 "790a16bde968": {
-"at": "2026-11-22T13:29:44.457428+00:00",
+"at": "2026-11-23T16:10:38.433000+00:00",
+"dur": null,
 "en": "THE WANTS blend angular post-punk, hypnotic rhythms, abrasive guitars and electronic experimentation. The New York City band formed in 2017 by songwriter, guitarist and producer Madison Velding-VanDam and drummer Jason Gates. Their sound fuses sharp songwriting with unstable rhythms, electronics and live instrumentation.",
 "fr": "The Wants mélange post-punk anguleux, rythmes hypnotiques, guitares abrasives et expérimentation électronique. Le groupe new-yorkais formé en 2017 par l'auteur-compositeur, guitariste et producteur Madison Velding-VanDam et le batteur Jason Gates. Leur son fusionne une composition pointue avec des rythmes instables, de l'électronique et des instruments live.",
 "src": "THE WANTS blend angular post-punk, hypnotic rhythms, abrasive guitars and electronic experimentation. The New York City band formed in 2017 by songwriter, guitarist and producer Madison Velding-VanDam and drummer Jason Gates. Their sound fuses sharp songwriting with unstable rhythms, electronics and live instrumentation.",
@@ -1527,9 +1651,10 @@
 "v": 3
 },
 "7a2af0abc221": {
-"at": "2026-11-21T13:36:44.979084+00:00",
+"at": "2026-11-23T16:10:28.412020+00:00",
+"dur": null,
 "en": "aufnahme + wiedergabe presents SPK (live) Alvar (live) Philipp Strobel Marko König SPK are one of the founding names of industrial music. Formed in Sydney in 1978 by Graeme Revell and Neil Hill, the group helped redefine the possibilities of experimental sound, combining electronic music, noise, ritual, performance art and political provocation into a body of work whose influence continues to resonate across industrial, electronic and extreme music today.",
-"fr": "aufnahme + wiedergabe présente SPK (live) Alvar (live) Philipp Strobel Marko König SPK est l’un des noms fondateurs de la musique industrielle. Formé à Sydney en 1978 par Graeme Revell et Neil Hill, le groupe a contribué à redéfinir les possibilités du son expérimental, en combinant la musique électronique, le noise, le rituel, l’art de la performance et la provocation politique dans un ensemble d’œuvres dont l’influence continue de résonner aujourd’hui dans la musique industrielle, électronique et extrême.",
+"fr": "aufnahme + wiedergabe présente SPK (live) Alvar (live) Philipp Strobel Marko König SPK est l'un des noms fondateurs de la musique industrielle. Formé à Sydney en 1978 par Graeme Revell et Neil Hill, le groupe a contribué à redéfinir les possibilités du son expérimental, combinant musique électronique, noise, rituel, performance artistique et provocation politique dans un ensemble d'œuvres dont l'influence continue de résonner aujourd'hui dans la musique industrielle, électronique et extrême.",
 "spoken": null,
 "src": "aufnahme + wiedergabe presents SPK (live) Alvar (live) Philipp Strobel Marko König SPK are one of the founding names of industrial music. Formed in Sydney in 1978 by Graeme Revell and Neil Hill, the group helped redefine the possibilities of experimental sound, combining electronic music, noise, ritual, performance art and political provocation into a body of work whose influence continues to resonate across industrial, electronic and extreme music today.",
 "surtitles": "surtitres anglais",
@@ -1558,12 +1683,15 @@
 "v": 3
 },
 "7b8a414b20ef": {
-"at": "2026-11-10T13:30:29.146115+00:00",
+"at": "2026-11-23T16:08:04.489607+00:00",
+"dur": null,
 "en": "Once a quarter, the Volksbühne invites Berlin-based artists onto the stage of the Roter Salon to spend a long night exploring, through their own artistic practice, the mother of all interdisciplinary formats: the lecture performance. A form that has been circulating between disciplines since the 1960s, placing the art of storytelling at its heart and infiltrating both the theatre and the lecture hall in equal measure. It has long since become a genre in its own right.",
 "fr": "Une fois par trimestre, la Volksbühne invite des artistes berlinois sur la scène du Roter Salon pour passer une longue nuit à explorer, à travers leur propre pratique artistique, la mère de tous les formats interdisciplinaires : la conférence-performance. Une forme qui circule entre les disciplines depuis les années 1960, plaçant l’art du conte en son cœur et infiltrant à parts égales le théâtre et l’amphithéâtre. C’est depuis longtemps devenu un genre à part entière.",
 "spoken": "En anglais",
 "src": "Once a quarter, the Volksbühne invites Berlin-based artists onto the stage of the Roter Salon to spend a long night exploring, through their own artistic practice, the mother of all interdisciplinary formats: the lecture performance. A form that has been circulating between disciplines since the 1960s, placing the art of storytelling at its heart and infiltrating both the theatre and the lecture hall in equal measure. It has long since become a genre in its own right.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.volksbuehne-berlin.de/en/series-and-projects/20-minuten/20-minuten-2/",
 "v": 3
 },
 "7d5de834a537": {
@@ -1576,20 +1704,25 @@
 "v": 3
 },
 "7da4e5f11b3c": {
-"at": "2026-11-19T23:15:40.046116+00:00",
+"at": "2026-11-23T16:09:58.691434+00:00",
+"dur": null,
 "en": "Andrea Breth’s gorgeous production of Madama Butterfly , following its runs in Aix-en-Provence and Lyon, now comes to the Komische Oper Berlin – and is sure to move audiences to tears. There’s good reason why Puccini described his masterpiece as ‘the most heartfelt opera I have ever written’.",
-"fr": "La magnifique mise en scène de Madama Butterfly par Andrea Breth, après ses représentations à Aix-en-Provence et à Lyon, arrive maintenant au Komische Oper Berlin – et ne manquera pas d'émouvoir le public jusqu'aux larmes. Ce n'est pas pour rien que Puccini a qualifié son chef-d'œuvre d '« opéra le plus sincère que j'aie jamais écrit ».",
+"fr": "La magnifique production de Madama Butterfly d'Andrea Breth, après ses tournées à Aix-en-Provence et à Lyon, arrive désormais au Komische Oper Berlin – et ne manquera pas d'émouvoir le public jusqu'aux larmes. Ce n’est pas pour rien que Puccini a décrit son chef-d’œuvre comme « l’opéra le plus sincère que j’ai jamais écrit ».",
 "spoken": null,
 "src": "Andrea Breth’s gorgeous production of Madama Butterfly , following its runs in Aix-en-Provence and Lyon, now comes to the Komische Oper Berlin – and is sure to move audiences to tears. There’s good reason why Puccini described his masterpiece as ‘the most heartfelt opera I have ever written’.",
 "surtitles": "surtitres anglais",
+"tx": 1,
 "u": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
 "v": 3
 },
 "7e1dd21c1512": {
-"at": "2026-11-18T22:39:28.906492+00:00",
-"en": "Ten years after its release, the concept album about flying to the stars returns - fresh, vibrant and as relevant as ever. The album not only tells of the fascination of space, but also highlights the dark side of space travel (the gatefold cover reminds us of the animals that were sent into space by humanity).",
-"fr": "Dix ans après sa sortie, l'album concept sur le vol vers les étoiles revient – ​​frais, vibrant et toujours aussi pertinent. L'album raconte non seulement la fascination de l'espace, mais met également en avant le côté sombre du voyage spatial (la pochette gatefold rappelle les animaux envoyés dans l'espace par l'humanité).",
-"src": "Zehn Jahre nach seiner Veröffentlichung kehrt das Konzeptalbum über das Fliegen zu den Sternen zurück – frisch, lebendig und so relevant wie eh und je. Das Album erzählt nicht nur von der Faszination des Weltalls, sondern beleuchtet auch die Schattenseiten der Raumfahrt (im Klappcover erinnert man an die Tiere, die von der Menschheit ins All geschickt wurden).",
+"at": "2026-11-23T16:09:36.501251+00:00",
+"dur": null,
+"en": "COOGAN'S BLUFF: “Flying To The Stars” – 10 years of timeless and weightless, an album that has never stopped taking off! For the first time, the band is celebrating an anniversary - with their favorite album: Flying To The Stars.",
+"fr": "COOGAN'S BLUFF : « Flying To The Stars » – 10 ans d'intemporel et d'apesanteur, un album qui n'a jamais cessé de décoller ! Pour la première fois, le groupe fête un anniversaire - avec son album préféré : Flying To The Stars.",
+"src": "COOGANS BLUFF: „Flying To The Stars“ – 10 Jahre zeit- und schwerelos, ein Album, das nie aufgehört hat abzuheben! Zum ersten Mal feiert die Band ein Jubiläum – und das mit ihrem Lieblingsalbum: Flying To The Stars.",
+"tx": 1,
+"u": "https://www.urbanspree.com/program/concerts/coogans-bluff-10-years-of-flying-to-the-stars.html",
 "v": 3
 },
 "7ed9752eb707": {
@@ -1604,11 +1737,12 @@
 "v": 3
 },
 "7f1d7c5353d3": {
-"at": "2026-11-21T13:36:56.950944+00:00",
-"en": "",
-"fr": "",
+"at": "2026-11-23T16:11:58.928931+00:00",
+"dur": 165,
+"en": "A property on Scharmützelsee in Brandenburg, with a summer house on it, with the history of the 20th century inside. This is how the novel by Berlin author Jenny Erpenbeck, published in 2007, could be summarized. A text in which the main role is played by the house, actually the property. Originally owned by a large farmer, after his death it was divided up and became the stage for eleven life stories, representing the hope and suffering, happiness and tragedy of the last hundred years.",
+"fr": "Une propriété sur le Scharmützelsee dans le Brandebourg, avec une maison d'été, avec l'histoire du 20e siècle à l'intérieur. C’est ainsi que pourrait être résumé le roman de l’auteure berlinoise Jenny Erpenbeck, publié en 2007. Un texte dans lequel le rôle principal est joué par la maison, en fait la propriété. Propriété à l'origine d'un grand agriculteur, elle a été divisée après sa mort et est devenue le théâtre de onze histoires de vie, représentant l'espoir et la souffrance, le bonheur et la tragédie des cent dernières années.",
 "spoken": null,
-"src": null,
+"src": "Ein Grundstück am Scharmützelsee in Brandenburg, darauf ein Sommerhaus, darin die Geschichte des 20. Jahrhunderts. So ließe sich der 2007 erschienene Roman der Berliner Autorin Jenny Erpenbeck zusammenfassen. Ein Text, in dem die Hauptrolle das Haus, eigentlich sogar das Grundstück hat. Ursprünglich im Besitz eines Großbauern, wird es nach dessen Tod aufgeteilt und zur Bühne von elf Lebensgeschichten, stellvertretend für Hoffnung und Leid, Glück und Tragödie der letzten einhundert Jahre.",
 "surtitles": "surtitres anglais",
 "tx": 1,
 "u": "https://www.deutschestheater.de/en/program/productions/heimsuchung",
@@ -1631,12 +1765,15 @@
 "v": 3
 },
 "83580ebf7774": {
-"at": "2026-11-18T22:40:37.079588+00:00",
+"at": "2026-11-23T16:12:56.191525+00:00",
+"dur": null,
 "en": "Jiří Kylián has left a lasting mark on 20th-century ballet. In Gods and Dogs , Kylián bridges the divine and the instinctual, order and madness, in a radically concentrated manner. The piece explores the fine line where “normal” behaviour tips into the seemingly “bizarre,” revealing the darkness hidden within the everyday.",
 "fr": "Jiří Kylián a laissé une marque durable sur le ballet du XXe siècle. Dans Dieux et chiens, Kylián relie le divin et l'instinct, l'ordre et la folie, de manière radicalement concentrée. La pièce explore la ligne fine où le comportement « normal » bascule vers l’apparence « bizarre », révélant l’obscurité cachée dans le quotidien.",
 "spoken": "Aucune langue requise (danse)",
 "src": "Jiří Kylián has left a lasting mark on 20th-century ballet. In Gods and Dogs , Kylián bridges the divine and the instinctual, order and madness, in a radically concentrated manner. The piece explores the fine line where “normal” behaviour tips into the seemingly “bizarre,” revealing the darkness hidden within the everyday.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/2-chapters-love-en/63.html",
 "v": 3
 },
 "8421f7095450": {
@@ -1649,12 +1786,15 @@
 "v": 3
 },
 "848b1c06ac68": {
-"at": "2026-11-18T22:40:32.425459+00:00",
+"at": "2026-11-23T16:07:22.115365+00:00",
+"dur": null,
 "en": "Rosa Luxemburg was born in 1871 in the south-east of what is now Poland; she began her political career as a Polish social democrat, studied in Switzerland, and went on to become a charismatic figure in Berlin and an icon of the European Left. She went down in history as a combative politician in a male-dominated world, as a revolutionary socialist in the German Empire, and as a leading Marxist theorist.",
 "fr": "Rosa Luxemburg est né en 1871 dans le sud-est de l'actuelle Pologne ; elle a commencé sa carrière politique en tant que sociale-démocrate polonaise, a étudié en Suisse et est devenue une figure charismatique à Berlin et une icône de la gauche européenne. Elle est entrée dans l’histoire comme une politicienne combative dans un monde dominé par les hommes, comme une socialiste révolutionnaire dans l’Empire allemand et comme une théoricienne marxiste de premier plan.",
 "spoken": null,
 "src": "Rosa Luxemburg was born in 1871 in the south-east of what is now Poland; she began her political career as a Polish social democrat, studied in Switzerland, and went on to become a charismatic figure in Berlin and an icon of the European Left. She went down in history as a combative politician in a male-dominated world, as a revolutionary socialist in the German Empire, and as a leading Marxist theorist.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.deutschestheater.de/en/program/productions/rosa-l",
 "v": 3
 },
 "85860434bcdb": {
@@ -1765,10 +1905,13 @@
 "v": 3
 },
 "8a2399b11a1f": {
-"at": "2026-11-10T23:29:02.023592+00:00",
+"at": "2026-11-23T16:11:22.943086+00:00",
+"dur": 105,
 "en": "Mitsuko Uchida’s playing has been praised for its clarity and emotional depth. This recital programme brings together works of striking emotional intensity, from Haydn’s dark F minor Variations and Mozart’s melancholy A minor Rondo to Schubert’s late A major Sonata, composed only a few weeks before the composer’s death. Schoenberg’s Six Little Piano Pieces provide a striking contrast: brief, concentrated miniatures in which every gesture counts.",
 "fr": "Le jeu de Mitsuko Uchida a été salué pour sa clarté et sa profondeur émotionnelle. Ce programme de récital rassemble des œuvres d’une intensité émotionnelle saisissante, depuis les sombres Variations en fa mineur de Haydn et le mélancolique Rondo en la mineur de Mozart jusqu’à la défunte Sonate en la majeur de Schubert, composée quelques semaines seulement avant la mort du compositeur. Les Six petites pièces pour piano de Schoenberg offrent un contraste saisissant : des miniatures brèves et concentrées dans lesquelles chaque geste compte.",
 "src": "Mitsuko Uchida’s playing has been praised for its clarity and emotional depth. This recital programme brings together works of striking emotional intensity, from Haydn’s dark F minor Variations and Mozart’s melancholy A minor Rondo to Schubert’s late A major Sonata, composed only a few weeks before the composer’s death. Schoenberg’s Six Little Piano Pieces provide a striking contrast: brief, concentrated miniatures in which every gesture counts.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57070/",
 "v": 3
 },
 "8aaed59848ca": {
@@ -1802,12 +1945,25 @@
 "v": 3
 },
 "8e83952e66dc": {
-"at": "2026-11-10T23:53:43.176521+00:00",
+"at": "2026-11-23T16:08:15.948959+00:00",
+"dur": null,
 "en": "A blend of theatre and cinema: the action takes place on the streets of Johannesburg and is broadcast live onto the big screen at HAU during every performance. Before the audience’s very eyes, a captivating portrait emerges of a generation born in the early 2000s. A group of young people roam the streets of Johannesburg at night. They have grown up in a world full of economic crises, reignited wars and tensions fuelled by propaganda.",
 "fr": "Un mélange de théâtre et de cinéma : l'action se déroule dans les rues de Johannesburg et est retransmise en direct sur grand écran au HAU à chaque représentation. Sous les yeux du public, se dessine un portrait captivant d’une génération née au début des années 2000. Un groupe de jeunes errent la nuit dans les rues de Johannesburg. Ils ont grandi dans un monde plein de crises économiques, de guerres ravivées et de tensions alimentées par la propagande.",
 "spoken": "En anglais",
 "src": "A blend of theatre and cinema: the action takes place on the streets of Johannesburg and is broadcast live onto the big screen at HAU during every performance. Before the audience’s very eyes, a captivating portrait emerges of a generation born in the early 2000s. A group of young people roam the streets of Johannesburg at night. They have grown up in a world full of economic crises, reignited wars and tensions fuelled by propaganda.",
 "surtitles": "surtitres allemands",
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/boris-nikitin-kids/",
+"v": 3
+},
+"8e96b692c517": {
+"at": "2026-11-23T16:07:24.366646+00:00",
+"dur": null,
+"en": "",
+"fr": "",
+"src": null,
+"tx": 1,
+"u": "https://www.urbanspree.com/program/concerts/black-pope-furie-yetzt-live-at-urban-spree.html",
 "v": 3
 },
 "8ec031d54a8b": {
@@ -1887,12 +2043,27 @@
 "v": 3
 },
 "99afbca748d5": {
-"at": "2026-11-08T15:18:29.320884+00:00",
+"at": "2026-11-23T16:12:28.145453+00:00",
+"dur": 105,
 "en": "Mononoke. It’s the Japanese name given to spirits that take up residence in people and implant curses. Takako, an ironmongery saleswoman, has been afflicted by one of those. She sells iron kettles made with centuries-old Japanese craftsmanship. In the evenings, she puts an iron egg in her tea water. After finishing her tea, she has sex with the egg, still warm from the hot water. And although this feels good, Takako has an uneasy sense that something is wrong.",
 "fr": "Mononoke. C’est le nom japonais donné aux esprits qui s’installent chez les gens et implantent des malédictions. Takako, une vendeuse de quincaillerie, a été touchée par l'un d'entre eux. Elle vend des bouilloires en fer fabriquées avec un savoir-faire japonais vieux de plusieurs siècles. Le soir, elle met un œuf de fer dans son eau de thé. Après avoir fini son thé, elle couche avec l'œuf, encore tiède de l'eau chaude. Et même si cela fait du bien, Takako a le sentiment inquiet que quelque chose ne va pas.",
 "spoken": null,
 "src": "Mononoke. It’s the Japanese name given to spirits that take up residence in people and implant curses. Takako, an ironmongery saleswoman, has been afflicted by one of those. She sells iron kettles made with centuries-old Japanese craftsmanship. In the evenings, she puts an iron egg in her tea water. After finishing her tea, she has sex with the egg, still warm from the hot water. And although this feels good, Takako has an uneasy sense that something is wrong.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261215-1930/",
+"v": 3
+},
+"99e6eb2450d2": {
+"at": "2026-11-23T16:07:26.571501+00:00",
+"dur": null,
+"en": "",
+"fr": "",
+"spoken": null,
+"src": null,
+"surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.urbanspree.com/program/concerts/the-cassandra-complex-special-guests-rhys-fulber-and-daniel-myer.html",
 "v": 3
 },
 "9a8cc805e0cd": {
@@ -1903,7 +2074,8 @@
 "v": 3
 },
 "9b9e27211586": {
-"at": "2026-11-20T01:21:03.379848+00:00",
+"at": "2026-11-23T16:12:53.667230+00:00",
+"dur": 50,
 "en": "What is there to actually see here? Nothing special. Just a bear sitting in his cage in the middle of the stage, watching the audience while the audience watches him. It's hard to say who determines what happens on stage and in the audience - the audience, or the bear? And why the bear anyway?",
 "fr": "Qu’y a-t-il réellement à voir ici ? Rien de spécial. Juste un ours assis dans sa cage au milieu de la scène, regardant le public pendant que le public le regarde. Il est difficile de dire qui détermine ce qui se passe sur scène et dans le public : le public ou l'ours ? Et pourquoi l'ours, d'ailleurs ?",
 "spoken": "Sans texte",
@@ -1923,12 +2095,15 @@
 "v": 3
 },
 "9c680ea022d9": {
-"at": "2026-11-08T15:18:32.326950+00:00",
+"at": "2026-11-23T16:09:14.875227+00:00",
+"dur": null,
 "en": "Oskar Matzerath has barely been born when he recognises the world to be a universal disaster – and rejects it entirely. Because the world he is tossed into, 1924 Danzig, is the dawn of the National Socialist regime. A world that provides scant opportunities for a growing boy to thrive.",
 "fr": "Oskar Matzerath, à peine né, reconnaît que le monde est un désastre universel – et le rejette totalement. Parce que le monde dans lequel il est plongé, Dantzig en 1924, est l’aube du régime national-socialiste. Un monde qui offre peu d’opportunités à un garçon en pleine croissance pour s’épanouir.",
 "spoken": null,
 "src": "Oskar Matzerath has barely been born when he recognises the world to be a universal disaster – and rejects it entirely. Because the world he is tossed into, 1924 Danzig, is the dawn of the National Socialist regime. A world that provides scant opportunities for a growing boy to thrive.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.berliner-ensemble.de/en/production/tin-drum",
 "v": 3
 },
 "9c7a8c3179cd": {
@@ -1941,12 +2116,15 @@
 "v": 3
 },
 "9d3223d5a676": {
-"at": "2026-11-18T22:39:32.057692+00:00",
+"at": "2026-11-23T16:09:40.118344+00:00",
+"dur": null,
 "en": "Schwarze Leute – Reclaiming Memories is a belated look into the files. Soon after the Second World War, Afro-German children were born in postwar Germany: children of white German women and Black soldiers of the US Army. Politicians and public authorities declared these children a problem and made sure that many of them did not grow up with their families, but were placed in children’s homes or sent abroad.",
 "fr": "Schwarze Leute – Reclaiming Memories est un examen tardif des dossiers. Peu après la Seconde Guerre mondiale, des enfants afro-allemands sont nés dans l’Allemagne d’après-guerre : enfants de femmes allemandes blanches et de soldats noirs de l’armée américaine. Les politiciens et les pouvoirs publics ont déclaré que ces enfants constituaient un problème et ont veillé à ce que beaucoup d’entre eux ne grandissent pas dans leur famille, mais soient placés dans des foyers pour enfants ou envoyés à l’étranger.",
 "spoken": null,
 "src": "Schwarze Leute – Reclaiming Memories is a belated look into the files. Soon after the Second World War, Afro-German children were born in postwar Germany: children of white German women and Black soldiers of the US Army. Politicians and public authorities declared these children a problem and made sure that many of them did not grow up with their families, but were placed in children’s homes or sent abroad.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://sophiensaele.com/en/stueck/schwarze-leute-reclaiming-memories",
 "v": 3
 },
 "9d57edd70532": {
@@ -1961,11 +2139,12 @@
 "v": 3
 },
 "9d5d255c9dea": {
-"at": "2026-11-21T13:36:48.540682+00:00",
-"en": "",
-"fr": "",
+"at": "2026-11-23T16:10:50.782038+00:00",
+"dur": 90,
+"en": "Imagine discovering the world formula. A knowledge that in the wrong hands could mean the downfall of humanity. What to do? Announce? Hide? Or feign madness to save the world? The physicist Möbius opts for staged madness. In order to protect this formula from abuse, he moves into a sanatorium - under the direction of Dr. Mathilde von Zahnd – back. There are two mysterious murders of nurses there.",
+"fr": "Imaginez découvrir la formule du monde. Une connaissance qui, entre de mauvaises mains, pourrait entraîner la chute de l’humanité. Ce qu'il faut faire? Annoncer? Cacher? Ou feindre la folie pour sauver le monde ? Le physicien Möbius opte pour une folie mise en scène. Afin de protéger cette formule contre les abus, il s'installe dans un sanatorium - sous la direction du Dr Mathilde von Zahnd -. Il y a là deux meurtres mystérieux d'infirmières.",
 "spoken": null,
-"src": null,
+"src": "Stellen Sie sich vor, Sie entdecken die Weltformel. Eine Erkenntnis, die in den falschen Händen den Untergang der Menschheit bedeuten könnte. Was tun? Verkünden? Verbergen? Oder den Wahnsinn vortäuschen, um die Welt zu retten? Der Physiker Möbius entscheidet sich für den inszenierten Wahnsinn. Um diese Formel vor Missbrauch zu schützen, zieht er sich in ein Sanatorium – unter der Leitung von Dr. Mathilde von Zahnd – zurück. Dort kommt es zu zwei mysteriösen Morden an Krankenschwestern.",
 "surtitles": "surtitres anglais",
 "tx": 1,
 "u": "https://www.deutschestheater.de/en/program/productions/die-physiker",
@@ -2040,12 +2219,15 @@
 "v": 3
 },
 "a1f77c23b509": {
-"at": "2026-11-18T22:40:11.969471+00:00",
+"at": "2026-11-23T16:11:41.212382+00:00",
+"dur": null,
 "en": "A motley crew sets off into the rainforests of Central America to piece together the mysterious disappearance of two young female tourists, to explore it artistically and to turn it into a play. Among them is a writer who will later recount her experiences. And she does not merely report on them, but weaves many more stories into her account, which increasingly make it clear that there is no such thing as an unambiguous truth in this world.",
-"fr": "Une équipe hétéroclite s'aventure dans les forêts tropicales d'Amérique centrale pour reconstituer la mystérieuse disparition de deux jeunes touristes, l'explorer artistiquement et en faire une pièce de théâtre. Parmi eux se trouve une écrivaine qui racontera plus tard son expérience. Et elle ne se contente pas d’en rendre compte, mais intègre dans son récit de nombreuses autres histoires, qui montrent de plus en plus clairement qu’il n’existe pas de vérité sans ambiguïté dans ce monde.",
+"fr": "Une équipe hétéroclite s'aventure dans les forêts tropicales d'Amérique centrale pour reconstituer la mystérieuse disparition de deux jeunes touristes, l'explorer artistiquement et en faire une pièce de théâtre. Parmi eux se trouve une écrivaine qui racontera plus tard ses expériences. Et elle ne se contente pas d’en rendre compte, mais intègre dans son récit de nombreuses autres histoires, qui montrent de plus en plus clairement qu’il n’existe pas de vérité sans ambiguïté dans ce monde.",
 "spoken": null,
 "src": "A motley crew sets off into the rainforests of Central America to piece together the mysterious disappearance of two young female tourists, to explore it artistically and to turn it into a play. Among them is a writer who will later recount her experiences. And she does not merely report on them, but weaves many more stories into her account, which increasingly make it clear that there is no such thing as an unambiguous truth in this world.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.deutschestheater.de/en/program/productions/die-hollaenderinnen",
 "v": 3
 },
 "a388f74ed938": {
@@ -2065,16 +2247,20 @@
 "v": 3
 },
 "a477579d1598": {
-"at": "2026-11-18T22:38:43.818193+00:00",
+"at": "2026-11-23T16:11:15.757272+00:00",
+"dur": 105,
 "en": "“Nervous breakdown in Antarctica—Russian researcher stabs colleague,” read the headline in Fokus magazine in October 2018. Both men, Oleg B. and Sergei S., were avid readers, filling the long hours in the Antarctic solitude with books. One day, Oleg revealed the ending of a book to his colleague, who then stabbed him with a knife, causing life-threatening injuries.",
-"fr": "« Crise de nerfs en Antarctique : un chercheur russe poignarde son collègue », titrait le magazine Fokus en octobre 2018. Les deux hommes, Oleg B. et Sergueï S., étaient des lecteurs passionnés qui occupaient les longues heures de solitude en Antarctique en lisant des livres. Un jour, Oleg a révélé la fin d’un livre à son collègue, qui l’a ensuite poignardé avec un couteau, lui infligeant des blessures mortelles.",
+"fr": "« Dépression nerveuse en Antarctique – un chercheur russe poignarde un collègue », titrait le magazine Fokus en octobre 2018. Les deux hommes, Oleg B. et Sergei S., étaient de fervents lecteurs, remplissant les longues heures passées dans la solitude antarctique de livres. Un jour, Oleg a révélé la fin d'un livre à son collègue, qui l'a ensuite poignardé avec un couteau, lui causant des blessures potentiellement mortelles.",
 "spoken": null,
 "src": "“Nervous breakdown in Antarctica—Russian researcher stabs colleague,” read the headline in Fokus magazine in October 2018. Both men, Oleg B. and Sergei S., were avid readers, filling the long hours in the Antarctic solitude with books. One day, Oleg revealed the ending of a book to his colleague, who then stabbed him with a knife, causing life-threatening injuries.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.deutschestheater.de/en/program/productions/polaris",
 "v": 3
 },
 "a634105e6a6a": {
-"at": "2026-11-20T16:14:19.014290+00:00",
+"at": "2026-11-23T16:08:46.859227+00:00",
+"dur": null,
 "en": "South African performer Xabiso Vili brings sharp wit, poetry, and captivating storytelling to the stage in a lively one-man show about identity, memory, and transformation. Developed within the framework of Forecast , with mentoring by comedian and writer Vidura Bandara Rajapaksa —who opens the show with a guest appearance—the evening features plenty of laughter, surprising twists, and thought-provoking moments of self-exploration.",
 "fr": "L'artiste sud-africain Xabiso Vili apporte sur scène un esprit vif, de la poésie et une narration captivante dans un one-man show animé sur l'identité, la mémoire et la transformation. Développée dans le cadre de Forecast, avec le mentorat du comédien et écrivain Vidura Bandara Rajapaksa – qui ouvre le spectacle avec une apparition en tant qu'invité – la soirée propose beaucoup de rires, des rebondissements surprenants et des moments d'auto-exploration qui suscitent la réflexion.",
 "spoken": "En anglais",
@@ -2099,21 +2285,27 @@
 "v": 3
 },
 "a8bc1ca5b9e8": {
-"at": "2026-11-12T13:50:09.706936+00:00",
+"at": "2026-11-23T16:07:29.792259+00:00",
+"dur": null,
 "en": "The setting is Carthage, in ancient times: the hero Aeneas flees from burning Troy and arrives in North Africa via the Mediterranean Sea with his fleet of ships, where he meets the beautiful queen Dido. They are lovestruck – and yet fail to bond because of fate’s intervention. Aeneas continues on his journey to form a new kingdom in Italy, while the abandoned Dido is left no alternative but to stay.",
 "fr": "Le décor est Carthage, dans l'Antiquité : le héros Énée fuit Troie en feu et arrive en Afrique du Nord via la mer Méditerranée avec sa flotte de navires, où il rencontre la belle reine Didon. Ils sont amoureux – mais ne parviennent pas à se lier à cause de l’intervention du destin. Enée continue son voyage pour former un nouveau royaume en Italie, tandis que Didon abandonnée n'a d'autre choix que de rester.",
 "spoken": "En anglais",
 "src": "The setting is Carthage, in ancient times: the hero Aeneas flees from burning Troy and arrives in North Africa via the Mediterranean Sea with his fleet of ships, where he meets the beautiful queen Dido. They are lovestruck – and yet fail to bond because of fate’s intervention. Aeneas continues on his journey to form a new kingdom in Italy, while the abandoned Dido is left no alternative but to stay.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
 "v": 3
 },
 "aa2b7338c389": {
-"at": "2026-11-08T15:16:31.278910+00:00",
+"at": "2026-11-23T16:07:55.137874+00:00",
+"dur": null,
 "en": "What happens when you follow the material? How do you translate from one medium into another, from one language into another, from lived experience into aesthetic form? How does translation reorganizereorganise and reorient attention in a scattered world? How do we approximate the unbridgeable distances in translation? Accept the muddle, the opaque, disrupt the default? We invite you to an evening of performances and conversations dedicated to experimental translation as an artistic practice.",
 "fr": "Que se passe-t-il lorsque vous suivez le matériel ? Comment traduire d’un médium à un autre, d’une langue à une autre, d’une expérience vécue à une forme esthétique ? Comment la traduction réorganise-t-elle, réorganise-t-elle et réoriente-t-elle l’attention dans un monde dispersé ? Comment pouvons-nous approcher les distances infranchissables en traduction ? Accepter le brouhaha, l'opaque, Disrupt the Default ? Nous vous invitons à une soirée de performances et de conversations dédiées à la traduction expérimentale comme pratique artistique.",
 "spoken": "En anglais",
 "src": "What happens when you follow the material? How do you translate from one medium into another, from one language into another, from lived experience into aesthetic form? How does translation reorganizereorganise and reorient attention in a scattered world? How do we approximate the unbridgeable distances in translation? Accept the muddle, the opaque, disrupt the default? We invite you to an evening of performances and conversations dedicated to experimental translation as an artistic practice.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.volksbuehne-berlin.de/en/productions/disrupt-the-default-translating-experience/20261128-1900/",
 "v": 3
 },
 "aa46c2a89324": {
@@ -2135,7 +2327,8 @@
 "v": 3
 },
 "ab0d70c03ce8": {
-"at": "2026-11-21T13:36:20.474733+00:00",
+"at": "2026-11-23T16:11:03.426473+00:00",
+"dur": null,
 "en": "",
 "fr": "",
 "src": null,
@@ -2185,12 +2378,14 @@
 "v": 3
 },
 "adf68043a865": {
-"at": "2026-11-19T23:17:04.288398+00:00",
+"at": "2026-11-23T16:11:19.359658+00:00",
+"dur": null,
 "en": "This fairy-tale opera is perfect for a special family outing that brings together children, parents and grandparents, as well as opera aficionados and newcomers alike. With humour, warmth and a keen sense of how children see the world, this production tells a story of courage, sibling love and the power of solidarity. When good triumphs in the end, it leaves behind a feeling of comfort, confidence and that fairy-tale magic that connects generations.",
-"fr": "Cet opéra de conte de fées est parfait pour une sortie familiale spéciale qui réunit enfants, parents et grands-parents, ainsi que les amateurs d’opéra et les néophytes. Avec humour, chaleur et un sens aigu de la façon dont les enfants voient le monde, cette production raconte une histoire de courage, d’amour fraternel et du pouvoir de la solidarité. Lorsque le bien triomphe finalement, il laisse derrière lui un sentiment de réconfort, de confiance et cette magie de conte de fées qui unit les générations.",
+"fr": "Cet opéra de conte de fées est parfait pour une sortie familiale spéciale réunissant enfants, parents et grands-parents, mais aussi amateurs d'opéra et nouveaux arrivants. Avec humour, chaleur et un sens aigu de la façon dont les enfants voient le monde, cette production raconte une histoire de courage, d'amour fraternel et du pouvoir de la solidarité. Lorsque le bien finit par triompher, il laisse derrière lui un sentiment de confort, de confiance et cette magie de conte de fées qui relie les générations.",
 "spoken": null,
 "src": "This fairy-tale opera is perfect for a special family outing that brings together children, parents and grandparents, as well as opera aficionados and newcomers alike. With humour, warmth and a keen sense of how children see the world, this production tells a story of courage, sibling love and the power of solidarity. When good triumphs in the end, it leaves behind a feeling of comfort, confidence and that fairy-tale magic that connects generations.",
 "surtitles": "surtitres anglais",
+"tx": 1,
 "u": "https://www.komische-oper-berlin.de/en/what/a-z/hansel-und-gretel/",
 "v": 3
 },
@@ -2202,11 +2397,12 @@
 "v": 3
 },
 "af7258134a28": {
-"at": "2026-11-21T13:36:32.819589+00:00",
-"en": "",
-"fr": "",
+"at": "2026-11-23T16:09:54.514671+00:00",
+"dur": 120,
+"en": "The gigantic corporations Never and Always are fighting for a monopoly position on the market and to invent the next innovative feminine hygiene product. The CEOs Franka König and Bettina Fürstenberg want to buy each other's company and are at each other's throats. Their children compete for their mothers' inheritance and affection, while their confidants, advisors and interns sense career opportunities of their own.",
+"fr": "Les gigantesques entreprises Never and Always se battent pour une position de monopole sur le marché et pour inventer le prochain produit d'hygiène féminine innovant. Les PDG Franka König et Bettina Fürstenberg veulent racheter l'entreprise de l'autre et sont à couteaux tirés. Leurs enfants se disputent l'héritage et l'affection de leur mère, tandis que leurs confidents, conseillers et stagiaires pressentent leurs propres opportunités de carrière.",
 "spoken": null,
-"src": null,
+"src": "Die gigantischen Konzerne Never und Immer ringen um die Monopolstellung auf dem Markt und um die Erfindung des nächsten innovativen Frauenhygieneartikels. Die CEOs Franka König und Bettina Fürstenberg wollen die Firma der jeweils anderen aufkaufen und sich gegenseitig an den Kragen. Ihre Kinder buhlen um das Erbe und um die Zuneigung ihrer Mütter, während deren Vertraute, Beraterinnen und Praktikantinnen eigene Karrierechancen wittern.",
 "surtitles": "surtitres anglais",
 "tx": 1,
 "u": "https://www.deutschestheater.de/en/program/productions/der-liebling",
@@ -2238,12 +2434,15 @@
 "v": 3
 },
 "b340fcee2a16": {
-"at": "2026-11-18T22:37:55.360421+00:00",
+"at": "2026-11-23T16:07:52.078671+00:00",
+"dur": null,
 "en": "Schreien (SCREAMING) is a project about screaming as screaming. In collaboration with friends, colleagues and experts, Antonia Baehr explores this form of expression as a sovereign entity, detached from causal baggage and intelligible language, looking at the thing itself: the sound and the form, the music, the choreography and the drama, the rhythm and the gesture – and not least the silent, soundless scream.",
-"fr": "Schreien (CRIER) est un projet sur le cri en tant que cri. En collaboration avec des amis, des collègues et des experts, Antonia Baehr explore cette forme d'expression en tant qu'entité souveraine, détachée des connotations causales et du langage intelligible, en se concentrant sur la chose elle-même : le son et la forme, la musique, la chorégraphie et le drame, le rythme et le geste – et, surtout, le cri silencieux et muet.",
+"fr": "Schreien (SCREAMING) est un projet sur le cri en tant que cri. En collaboration avec des amis, des collègues et des experts, Antonia Baehr explore cette forme d’expression comme une entité souveraine, détachée du bagage causal et du langage intelligible, en regardant la chose elle-même : le son et la forme, la musique, la chorégraphie et le drame, le rythme et le geste – et surtout le cri silencieux et silencieux.",
 "spoken": "En anglais et allemand",
 "src": "Schreien (SCREAMING) is a project about screaming as screaming. In collaboration with friends, colleagues and experts, Antonia Baehr explores this form of expression as a sovereign entity, detached from causal baggage and intelligible language, looking at the thing itself: the sound and the form, the music, the choreography and the drama, the rhythm and the gesture – and not least the silent, soundless scream.",
 "surtitles": null,
+"tx": 1,
+"u": "https://sophiensaele.com/en/stueck/screaming-ii-eine-forschungsreihe",
 "v": 3
 },
 "b38ad0217bd6": {
@@ -2265,7 +2464,8 @@
 "v": 3
 },
 "b55d9636f700": {
-"at": "2026-11-21T13:36:31.304129+00:00",
+"at": "2026-11-23T16:07:32.478078+00:00",
+"dur": null,
 "en": "aufnahme + wiedergabe presents FÏX8:SËD8 (live) [Dependent] Dark Electro - old school set - www.fix8sed8.com NER\\OGRIS (live) [Dependent] Dark sounds from a dark soul TC75 meets Les Berrtas www.nerogris.com SCHNEIDER (live) [aufnahme + wiedergabe] EBM / Techno / Future Pop www.instagram.com/schneider.band PHILIPP STROBEL [aufnahme + wiedergabe] www.aufnahmeundwiedergabe.bandcamp.com Under the obvious influence of Canadian cult acts such as SKINNY PUPPY and FRONT LINE ASSEMBLY, FÏX8:SËD8 has…",
 "fr": "aufnahme + wiedergabe présente FÏX8:SËD8 (live) [Dependent] Dark Electro - set old school - www.fix8sed8.com NER\\OGRIS (live) [Dependent] Sons sombres d'une âme sombre TC75 rencontre Les Berrtas www.nerogris.com SCHNEIDER (live) [aufnahme + wiedergabe] EBM / Techno / Future Pop www.instagram.com/schneider.band PHILIPP STROBEL [aufnahme + wiedergabe] www.aufnahmeundwiedergabe.bandcamp.com Sous l'influence évidente d'actes cultes canadiens tels que SKINNY PUPPY et FRONT LINE ASSEMBLY, FÏX8:SËD8 a…",
 "spoken": null,
@@ -2276,12 +2476,15 @@
 "v": 3
 },
 "b63e368711f7": {
-"at": "2026-11-08T15:16:56.023133+00:00",
+"at": "2026-11-23T16:08:36.957525+00:00",
+"dur": null,
 "en": "\" Those who want a mask have to wear it. People whose desire is solely for self-realisation never know where they are going. When one has weighed the sun in the balance, and measured the steps of the moon, and mapped out the seven heavens star by star, there still remains oneself. \" – O. W. In 1895, Oscar Wilde was sentenced to two years in prison – for being provocative; for loving men, for not hiding his true self and for defying convention.",
 "fr": "\" Ceux qui veulent un masque doivent le porter. Les gens dont le seul désir est de se réaliser ne savent jamais où ils vont. Quand on a pesé le soleil dans la balance, mesuré les marches de la lune et cartographié les sept cieux étoile par étoile, il reste encore soi-même. \" – O. W. En 1895, Oscar Wilde a été condamné à deux ans de prison – pour provocation ; pour aimer les hommes, pour ne pas cacher sa vraie personnalité et pour défier les conventions.",
 "spoken": null,
 "src": "\" Those who want a mask have to wear it. People whose desire is solely for self-realisation never know where they are going. When one has weighed the sun in the balance, and measured the steps of the moon, and mapped out the seven heavens star by star, there still remains oneself. \" – O. W. In 1895, Oscar Wilde was sentenced to two years in prison – for being provocative; for loving men, for not hiding his true self and for defying convention.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.berliner-ensemble.de/en/production/de-profundis",
 "v": 3
 },
 "b7dfe59b300a": {
@@ -2317,9 +2520,10 @@
 "v": 3
 },
 "baaa90706970": {
-"at": "2026-11-20T00:17:11.096548+00:00",
+"at": "2026-11-23T16:12:43.612511+00:00",
+"dur": null,
 "en": "*This is the last M:Soundtrack show of the year and will be dedicated as always to building communities and tonight celebrating Latin Music in Berlin, Dance shoes required ! Hot off their Record Release Los Baby Jaguars bring their new music and their community with them to Schokoladen.",
-"fr": "* Il s’agit du dernier spectacle M:Soundtrack de l’année, qui sera consacré, comme toujours, à la création de communautés et, ce soir, à la célébration de la musique latino-américaine à Berlin. Chaussures de danse obligatoires ! Tout juste après la sortie de leur disque, Los Baby Jaguars apporte sa nouvelle musique et sa communauté au Schokoladen.",
+"fr": "*C'est le dernier spectacle M:Soundtrack de l'année et sera dédié comme toujours à la construction de communautés et ce soir à la célébration de la musique latine à Berlin, chaussures de danse obligatoires ! Juste après leur sortie de disque, Los Baby Jaguars amène sa nouvelle musique et sa communauté avec eux à Schokoladen.",
 "src": "*This is the last M:Soundtrack show of the year and will be dedicated as always to building communities and tonight celebrating Latin Music in Berlin, Dance shoes required ! Hot off their Record Release Los Baby Jaguars bring their new music and their community with them to Schokoladen.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/?page=3#e20261217",
@@ -2344,12 +2548,15 @@
 "v": 3
 },
 "bde6ecc6172d": {
-"at": "2026-11-11T00:04:34.812683+00:00",
+"at": "2026-11-23T16:10:34.381118+00:00",
+"dur": null,
 "en": "It is one of the classics in the Staatsoper’s repertoire: August Everding’s production of Wolfgang Amadeus Mozart’s The Magic Flute . The production is unique for its reconstruction of Karl Friedrich Schinkel’s 1816 set design for what was then the Berlin Court Opera on Unter den Linden – including the legendary starry sky for the Queen of the Night, which has become an icon of scenography and continues to enchant audiences.",
-"fr": "C'est l'un des classiques du répertoire du Staatsoper : la production d'August Everding de La Flûte enchantée de Wolfgang Amadeus Mozart. La production est unique pour sa reconstruction du décor de 1816 de Karl Friedrich Schinkel pour ce qui était alors l'Opéra de la Cour de Berlin sur Unter den Linden – y compris le légendaire ciel étoilé pour la Reine de la Nuit, qui est devenue une icône de la scénographie et continue d'enchanter le public.",
+"fr": "Il s’agit d’un des classiques du répertoire du Staatsoper : la production d’August Everding de La Flûte enchantée de Wolfgang Amadeus Mozart. La production est unique car elle reconstitue la scénographie de Karl Friedrich Schinkel de 1816 pour ce qui était alors l’Opéra de la Cour de Berlin sur Unter den Linden – y compris le légendaire ciel étoilé de la Reine de la Nuit, devenu une icône de la scénographie et qui continue d’enchanter le public.",
 "spoken": null,
 "src": "It is one of the classics in the Staatsoper’s repertoire: August Everding’s production of Wolfgang Amadeus Mozart’s The Magic Flute . The production is unique for its reconstruction of Karl Friedrich Schinkel’s 1816 set design for what was then the Berlin Court Opera on Unter den Linden – including the legendary starry sky for the Queen of the Night, which has become an icon of scenography and continues to enchant audiences.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
 "v": 3
 },
 "beb95ce61543": {
@@ -2371,7 +2578,8 @@
 "v": 3
 },
 "c0640fd437bc": {
-"at": "2026-11-20T01:20:59.544827+00:00",
+"at": "2026-11-23T16:12:34.222281+00:00",
+"dur": null,
 "en": "Cloks Tik is vaguely pop oriented, hinging on guitar and vocals. Triphop inspired rhythms prepare the grounds for some sort of sonic flea market where classic songwriting, recycled indie-rock elements and unpredictable noise granulate into thriving ideas of what their music is. Most of their songs deal with the unforgiving nature of reality. Emotions that bother and never seem to resolve. Husbandry is a four-piece band from Berlin blending vulnerable honesty with playful melodrama.",
 "fr": "Cloks Tik est vaguement orienté pop, s'articulant autour de la guitare et du chant. Les rythmes inspirés du triphop préparent le terrain pour une sorte de marché aux puces sonore où l'écriture de chansons classiques, les éléments indie-rock recyclés et le bruit imprévisible se granulent en des idées florissantes sur ce qu'est leur musique. La plupart de leurs chansons traitent de la nature impitoyable de la réalité. Des émotions qui dérangent et qui ne semblent jamais se résoudre. Husbandry est un groupe de quatre musiciens berlinois mêlant honnêteté vulnérable et mélodrame ludique.",
 "src": "Cloks Tik is vaguely pop oriented, hinging on guitar and vocals. Triphop inspired rhythms prepare the grounds for some sort of sonic flea market where classic songwriting, recycled indie-rock elements and unpredictable noise granulate into thriving ideas of what their music is. Most of their songs deal with the unforgiving nature of reality. Emotions that bother and never seem to resolve. Husbandry is a four-piece band from Berlin blending vulnerable honesty with playful melodrama.",
@@ -2414,7 +2622,8 @@
 "v": 3
 },
 "c34a575678e4": {
-"at": "2026-11-21T13:36:36.090873+00:00",
+"at": "2026-11-23T16:10:07.036943+00:00",
+"dur": null,
 "en": "Tickets: soon After their extremely successful first European tour and the warm response from the audience at every stop, the Banda Entopica is preparing with great momentum for the next step: their second European tour. The aim is to continue and expand this musical journey, which has already left a strong impression on festivals, in concert halls and on audiences across Europe.",
 "fr": "Billets : bientôt Après leur première tournée européenne extrêmement réussie et l'accueil chaleureux du public à chaque étape, les Banda Entopica se préparent avec beaucoup d'enthousiasme pour la prochaine étape : leur deuxième tournée européenne. L’objectif est de poursuivre et d’élargir ce voyage musical, qui a déjà laissé une forte impression dans les festivals, dans les salles de concert et auprès du public à travers l’Europe.",
 "src": "Tickets: soon Nach ihrer äußerst erfolgreichen ersten Europatournee und der herzlichen Resonanz des Publikums bei jeder Station bereitet sich die Banda Entopica mit großer Dynamik auf den nächsten Schritt vor: ihre zweite Europatournee Ziel ist es, diese musikalische Reise fortzusetzen und zu erweitern, die bereits einen starken Eindruck auf Festivals, in Konzerthäusern und beim Publikum in ganz Europa hinterlassen hat.",
@@ -2430,12 +2639,15 @@
 "v": 3
 },
 "c48cb0f1ebbd": {
-"at": "2026-11-08T15:18:53.305286+00:00",
-"en": "In Thomas Brasch ’s previously unpublished comedy screenplay Alles Glück der Welt , the East German poet and writer imagines a future in 1985 that feels strangely familiar in today’s world. Full of humour, he depicts a society in which the Nazi past has not been dealt with but continues to exert its influence. A new war seems imminent. People wear gloves, and there is widespread fear of an epidemic – of anything that might be contagious. Intimacy feels like an imposition.",
-"fr": "Dans le scénario de comédie inédit Alles Glück der Welt de Thomas Brasch, le poète et écrivain est-allemand imagine en 1985 un avenir étrangement familier dans le monde d'aujourd'hui. Plein d'humour, il dépeint une société dans laquelle le passé nazi n'est pas traité mais continue d'exercer son influence. Une nouvelle guerre semble imminente. Les gens portent des gants et la peur d’une épidémie – de tout ce qui pourrait être contagieux – est largement répandue. L'intimité ressemble à une imposition.",
+"at": "2026-11-23T16:07:35.078247+00:00",
+"dur": null,
+"en": "In Thomas Brasch ’s unfinished and previously unpublished comedy screenplay Alles Glück der Welt , the East German poet and writer imagines a future in 1985 that feels strangely familiar in today’s world. He depicts a society in which the Nazi past has not been dealt with but continues to exert its influence. A new war seems imminent. People wear gloves, and there is widespread fear of an epidemic – of anything that might be contagious. Intimacy feels like an imposition.",
+"fr": "Dans le scénario de comédie inachevé et inédit Alles Glück der Welt de Thomas Brasch, le poète et écrivain est-allemand imagine un avenir en 1985 qui semble étrangement familier dans le monde d'aujourd'hui. Il dépeint une société dans laquelle le passé nazi n’a pas été abordé mais continue d’exercer son influence. Une nouvelle guerre semble imminente. Les gens portent des gants et la peur d’une épidémie – de tout ce qui pourrait être contagieux – est largement répandue. L'intimité ressemble à une imposition.",
 "spoken": null,
-"src": "In Thomas Brasch ’s previously unpublished comedy screenplay Alles Glück der Welt , the East German poet and writer imagines a future in 1985 that feels strangely familiar in today’s world. Full of humour, he depicts a society in which the Nazi past has not been dealt with but continues to exert its influence. A new war seems imminent. People wear gloves, and there is widespread fear of an epidemic – of anything that might be contagious. Intimacy feels like an imposition.",
+"src": "In Thomas Brasch ’s unfinished and previously unpublished comedy screenplay Alles Glück der Welt , the East German poet and writer imagines a future in 1985 that feels strangely familiar in today’s world. He depicts a society in which the Nazi past has not been dealt with but continues to exert its influence. A new war seems imminent. People wear gloves, and there is widespread fear of an epidemic – of anything that might be contagious. Intimacy feels like an imposition.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261125-1930/",
 "v": 3
 },
 "c584398ca36c": {
@@ -2459,14 +2671,15 @@
 "v": 3
 },
 "c7551968afa8": {
-"at": "2026-11-20T01:22:41.226091+00:00",
+"at": "2026-11-23T16:07:37.589606+00:00",
+"dur": 140,
 "en": "It’s October 7, 1989: The 40th anniversary of the GDR is celebrated with a military parade on Karl-Marx-Allee. Meanwhile, representatives of all the theatres in East Berlin are gathering at the side foyer of the Volksbühne. A month later, this gathering has grown into one of the largest demonstrations in the history of Germany, bringing together almost one million people.",
 "fr": "Nous sommes le 7 octobre 1989 : le 40e anniversaire de la RDA est célébré par un défilé militaire sur la Karl-Marx-Allee. Pendant ce temps, les représentants de tous les théâtres de Berlin-Est se rassemblent dans le hall latéral de la Volksbühne. Un mois plus tard, ce rassemblement est devenu l'une des plus grandes manifestations de l'histoire de l'Allemagne, rassemblant près d'un million de personnes.",
 "spoken": null,
 "src": "It’s October 7, 1989: The 40th anniversary of the GDR is celebrated with a military parade on Karl-Marx-Allee. Meanwhile, representatives of all the theatres in East Berlin are gathering at the side foyer of the Volksbühne. A month later, this gathering has grown into one of the largest demonstrations in the history of Germany, bringing together almost one million people.",
 "surtitles": "surtitres anglais",
 "tx": 1,
-"u": "https://www.volksbuehne-berlin.de/en/productions/house-of-hopes/20261212-1830/",
+"u": "https://www.volksbuehne-berlin.de/en/productions/house-of-hopes/20261212-1930/",
 "v": 3
 },
 "c7fb19f3c10d": {
@@ -2489,7 +2702,8 @@
 "v": 3
 },
 "c92d2e4c5cc7": {
-"at": "2026-11-21T13:36:47.018256+00:00",
+"at": "2026-11-23T16:10:40.719207+00:00",
+"dur": null,
 "en": "",
 "fr": "",
 "src": null,
@@ -2498,21 +2712,25 @@
 "v": 3
 },
 "c934e51c4708": {
-"at": "2026-11-20T00:17:17.366665+00:00",
-"en": "The Special Guests feat. Willie Ocean will be playing a legendary Christmas concert at Schokoladen on December 19, 2026. The band shouldn't really exist anymore. Berlin's former best ska band officially disbanded in 2009. But old habits die hard, and so there will be a rare reunion concert by the band with old hits like \"Waiting,\" \"Beetroot\" and \"Forget It.\"",
-"fr": "The Special Guests feat. Willie Ocean donnera un concert de Noël légendaire au Schokoladen le 19 décembre 2026. Pourtant, le groupe ne devrait plus exister. L’ancien meilleur groupe de ska de Berlin s’est en effet officiellement séparé en 2009. Mais le chat n’abandonne pas la chasse aux souris et c’est ainsi qu’il y a un rare concert de retrouvailles du groupe avec de vieux succès comme « Waiting », « Beetroot » ou « Forget It ».",
-"src": "The Special Guests feat. Willie Ocean spielen am 19.12.2026 ein legendäres Weihnachtskonzert im Schokoladen. Dabei sollte es die Band eigentlich nicht mehr geben. Berlins ehemals beste Ska-Band hat sich nämglich 2009 offiziell aufgelöst. Aber die Katze lässt das Mausen nicht und so gibt es seltenes Reunion-Konzert der Band mit alten Hits wie \"Waiting\", \"Beetroot\" oder \"Forget It\".",
+"at": "2026-11-23T16:13:04.592925+00:00",
+"dur": null,
+"en": "The Special Guests feat. Willie Ocean will play a legendary Christmas concert at the Chocolate on December 19th, 2026. The band wasn't supposed to exist anymore. Berlin's former best ska band officially broke up in 2009. But the cat won't let it go and so there will be a rare reunion concert for the band with old hits like \"Waiting\", \"Beetroot\" and \"Forget It\".",
+"fr": "The Special Guests feat. Willie Ocean donnera un concert de Noël mythique au Chocolate le 19 décembre 2026. Le groupe n'était plus censé exister. L'ancien meilleur groupe de ska de Berlin s'est officiellement séparé en 2009. Mais le chat ne le lâche pas et il y aura donc un rare concert de retrouvailles pour le groupe avec de vieux tubes comme \"Waiting\", \"Beetroot\" et \"Forget It\".",
+"src": "The Special Guests feat. Willie Ocean spielen am 19.12.2026 ein legendäres Weihnachtskonzert im Schokoladen. Dabei sollte es die Band eigentlich nicht mehr geben. Berlins ehemals beste Ska-Band hat sich nämlich 2009 offiziell aufgelöst. Aber die Katze lässt das Mausen nicht und so gibt es seltenes Reunion-Konzert der Band mit alten Hits wie \"Waiting\", \"Beetroot\" oder \"Forget It\".",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/?page=3#e20261219",
 "v": 3
 },
 "c9611a72dd65": {
-"at": "2026-11-08T15:16:28.034180+00:00",
+"at": "2026-11-23T16:07:48.778033+00:00",
+"dur": 90,
 "en": "In »The Seer«, Ursina Lardi plays a war photographer who travels to conflict areas around the world in search of images of dread. She always seems one step ahead of the suffering and horror, and at the same time untouchable. But then she is forced to experience what violence means first-hand. The celebrated war photographer becomes a bitter Cassandra fighting against the blindness of our times. We witness the darkness and loneliness, the cynicism and wisdom of a person who has seen it all.",
 "fr": "Dans »The Seer«, Ursina Lardi incarne une photographe de guerre qui voyage dans les zones de conflit du monde entier à la recherche d'images d'effroi. Elle semble toujours avoir une longueur d'avance sur la souffrance et l'horreur, et en même temps intouchable. Mais elle est ensuite obligée de faire l’expérience directe de ce que signifie la violence. Le célèbre photographe de guerre devient une Cassandre amère luttant contre l’aveuglement de notre époque. Nous sommes témoins de l'obscurité et de la solitude, du cynisme et de la sagesse d'une personne qui a tout vu.",
 "spoken": "En allemand et arabe",
 "src": "In »The Seer«, Ursina Lardi plays a war photographer who travels to conflict areas around the world in search of images of dread. She always seems one step ahead of the suffering and horror, and at the same time untouchable. But then she is forced to experience what violence means first-hand. The celebrated war photographer becomes a bitter Cassandra fighting against the blindness of our times. We witness the darkness and loneliness, the cynicism and wisdom of a person who has seen it all.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.schaubuehne.de/en/produktionen/die-seherin.html?ID_Vorstellung=7262&m=398",
 "v": 3
 },
 "c9ccac8c7d13": {
@@ -2560,12 +2778,14 @@
 "v": 3
 },
 "cd865473ad11": {
-"at": "2026-11-19T23:16:47.838146+00:00",
+"at": "2026-11-23T16:07:40.778465+00:00",
+"dur": null,
 "en": "Bored by her passionless marriage to the drab musician Orpheus, Eurydice prefers to amuse herself with Pluto, the lord of the underworld, and is—quite unlike her mythological model—more than happy to let herself be carried off to the realm of the dead. When Jupiter, the king of the gods, also learns of the beautiful mortal, a jocular competition for Eurydice’s favour ensues.",
-"fr": "Ennuyée par son mariage sans passion avec le musicien terne Orphée, Eurydice préfère s'amuser avec Pluton, le seigneur des Enfers, et, contrairement à son modèle mythologique, elle est plus qu'heureuse de se laisser emporter dans le royaume des morts. Lorsque Jupiter, le roi des dieux, apprend lui aussi l'existence de la belle mortelle, une compétition amusante s'ensuit pour obtenir les faveurs d'Eurydice.",
+"fr": "Ennuyée par son mariage sans passion avec le terne musicien Orphée, Eurydice préfère s'amuser avec Pluton, le seigneur des enfers, et est, contrairement à son modèle mythologique, plus qu'heureuse de se laisser emporter au royaume des morts. Lorsque Jupiter, le roi des dieux, apprend également l’existence de la belle mortelle, une compétition plaisante pour les faveurs d’Eurydice s’ensuit.",
 "spoken": null,
 "src": "Bored by her passionless marriage to the drab musician Orpheus, Eurydice prefers to amuse herself with Pluto, the lord of the underworld, and is—quite unlike her mythological model—more than happy to let herself be carried off to the realm of the dead. When Jupiter, the king of the gods, also learns of the beautiful mortal, a jocular competition for Eurydice’s favour ensues.",
 "surtitles": "surtitres anglais",
+"tx": 1,
 "u": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
 "v": 3
 },
@@ -2577,7 +2797,8 @@
 "v": 3
 },
 "ce3bc1802273": {
-"at": "2026-11-20T01:20:40.850008+00:00",
+"at": "2026-11-23T16:08:10.265670+00:00",
+"dur": null,
 "en": "The first Sunday every month, Scratch Theater present's their two-part, monthly show of long-form theater that is completely improvised and focused on dramatic narration. The show is in English from a cast that reflects Berlin's own diversity! The first half produced by the Scratch Improv School, will showcase a rotating cast from the Scratch Company Players. The Second half, a deep dive into genre and story, will be performed by Scratch Theater.",
 "fr": "Le premier dimanche de chaque mois, Scratch Theater présente son spectacle mensuel en deux parties de théâtre de longue durée entièrement improvisé et axé sur la narration dramatique. Le spectacle est en anglais et provient d'une distribution qui reflète la diversité de Berlin ! La première moitié, produite par la Scratch Improv School, présentera un casting tournant des Scratch Company Players. La seconde moitié, une plongée profonde dans le genre et l'histoire, sera interprétée par Scratch Theater.",
 "spoken": "En anglais",
@@ -2615,7 +2836,8 @@
 "v": 3
 },
 "d0998cbf45f7": {
-"at": "2026-11-21T13:36:53.975733+00:00",
+"at": "2026-11-23T16:11:25.122567+00:00",
+"dur": null,
 "en": "",
 "fr": "",
 "spoken": null,
@@ -2694,7 +2916,8 @@
 "v": 3
 },
 "d5842e05b06a": {
-"at": "2026-11-21T13:36:28.379234+00:00",
+"at": "2026-11-23T16:09:22.655712+00:00",
+"dur": null,
 "en": "Franco-American brothers Elliott and Virgile Arndt return as Faux Real with new single 'That Far' and its official video (out May 20), alongside the announcement of their second album Poison Time, due September 4 via b4. Known for idiosyncratic, high-energy live shows combining choreography, showmanship, and practical effects with an intentionally unfiltered physicality, the duo have toured with Wet Leg and Metronomy, played major festival stages, and landed on BBC Radio 6 Music's Albums of the…",
 "fr": "Les frères franco-américains Elliott et Virgile Arndt reviennent sous le nom de Faux Real avec le nouveau single 'That Far' et son clip officiel (sortie le 20 mai), parallèlement à l'annonce de leur deuxième album Poison Time, attendu le 4 septembre via b4. Connu pour ses spectacles idiosyncratiques et énergiques combinant chorégraphie, sens du spectacle et effets pratiques avec une physicalité intentionnellement non filtrée, le duo a tourné avec Wet Leg et Metronomy, joué sur de grandes scènes de festivals et a atterri sur les albums de BBC Radio 6 Music.",
 "src": "Franco-American brothers Elliott and Virgile Arndt return as Faux Real with new single 'That Far' and its official video (out May 20), alongside the announcement of their second album Poison Time, due September 4 via b4. Known for idiosyncratic, high-energy live shows combining choreography, showmanship, and practical effects with an intentionally unfiltered physicality, the duo have toured with Wet Leg and Metronomy, played major festival stages, and landed on BBC Radio 6 Music's Albums of the…",
@@ -2712,30 +2935,37 @@
 "v": 3
 },
 "d5ddc77b09c3": {
-"at": "2026-11-11T00:04:18.256157+00:00",
+"at": "2026-11-23T16:10:20.787124+00:00",
+"dur": 120,
 "en": "Max loves to read. Now a book written over 150 years ago has captivated him: In 80 Tagen um die Welt by Jules Verne, known in English as Around the World in 80 Days. Not even Max’s girlfriend Josi can keep him from his reading, even though she feels he can’t escape into his own world in his attic forever. After all, reality is exciting enough, he should go with her to the important demonstration!",
-"fr": "Max adore lire. Maintenant, un livre écrit il y a plus de 150 ans l'a captivé : In 80 Tagen um die Welt de Jules Verne, connu en anglais sous le nom de Around the World in 80 Days. Même la petite amie de Max, Josi, ne peut pas l'empêcher de lire, même si elle sent qu'il ne peut pas s'échapper dans son propre monde dans son grenier pour toujours. Après tout, la réalité est déjà assez excitante, il devrait l'accompagner à la manifestation importante !",
+"fr": "Max adore lire. Aujourd'hui, un livre écrit il y a plus de 150 ans le captive : In 80 Tagen um die Welt de Jules Verne, connu en anglais sous le nom de Around the World in 80 Days. Même Josi, la petite amie de Max, ne peut pas l'empêcher de lire, même si elle sent qu'il ne peut pas s'échapper pour toujours dans son propre monde dans son grenier. Après tout, la réalité est déjà assez excitante, il devrait l'accompagner à l'importante manifestation !",
 "spoken": null,
 "src": "Max loves to read. Now a book written over 150 years ago has captivated him: In 80 Tagen um die Welt by Jules Verne, known in English as Around the World in 80 Days. Not even Max’s girlfriend Josi can keep him from his reading, even though she feels he can’t escape into his own world in his attic forever. After all, reality is exciting enough, he should go with her to the important demonstration!",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
 "v": 3
 },
 "d62de3c45a06": {
-"at": "2026-11-20T00:16:14.499618+00:00",
+"at": "2026-11-23T16:10:13.968921+00:00",
+"dur": null,
 "en": "SHAKING HAND are a Manchester trio who construct long slowburning post-rock in multiple tunings and time signatures, taking inspiration from modernist architecture, 90s US alternative and midwestern emo. The band’s musical DNA runs through experimental guitar outfits like Women, Slint, Sonic Youth, Pavement, and Ulrika Spacek, balanced with the melodic sensibility of Big Thief and the dynamic intimacy of Yo La Tengo. — SWEETSPOT is a Berlin based Noise-Dreampop band.",
-"fr": "Shaking Hand est un trio de Manchester qui compose un post-rock long et lent, avec de multiples accords et signatures rythmiques, en s’inspirant de l’architecture moderniste, de l’alternative américaine des années 90 et de l’emo du Midwest. L’ADN musical du groupe s’inspire de groupes de guitare expérimentaux tels que Women, Slint, Sonic Youth, Pavement et Ulrika Spacek, auquel s’ajoutent la sensibilité mélodique de Big Thief et l’intimité dynamique de Yo La Tengo. — SWEETSPOT est un groupe de noise-dreampop basé à Berlin.",
+"fr": "Shaking Hand est un trio de Manchester qui construit un long post-rock lent avec de multiples accordages et signatures rythmiques, en s'inspirant de l'architecture moderniste, de l'alternative américaine des années 90 et de l'emo du Midwest. L’ADN musical du groupe traverse des groupes de guitare expérimentaux comme Women, Slint, Sonic Youth, Pavement et Ulrika Spacek, équilibrés par la sensibilité mélodique de Big Thief et l’intimité dynamique de Yo La Tengo. — SWEETSPOT est un groupe de Noise-Dreampop basé à Berlin.",
 "src": "SHAKING HAND are a Manchester trio who construct long slowburning post-rock in multiple tunings and time signatures, taking inspiration from modernist architecture, 90s US alternative and midwestern emo. The band’s musical DNA runs through experimental guitar outfits like Women, Slint, Sonic Youth, Pavement, and Ulrika Spacek, balanced with the melodic sensibility of Big Thief and the dynamic intimacy of Yo La Tengo. — SWEETSPOT is a Berlin based Noise-Dreampop band.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/#e20261130",
 "v": 3
 },
 "d77f0822baf9": {
-"at": "2026-11-11T00:04:26.773688+00:00",
+"at": "2026-11-23T16:09:04.956104+00:00",
+"dur": null,
 "en": "In his last opera, Claudio Monteverdi drew for the first time on material with real historical figures, and thus created the first \"sex-and-crime story\" in operatic history. Like a political thriller, this early Baroque masterpiece tells a story of power and passion and of occasions where it is abused. Poppea Sabina, the most beautiful woman in Rome, wants nothing less than to be Empress at the side of Emperor Nerone.",
-"fr": "Dans son dernier opéra, Claudio Monteverdi dessine pour la première fois sur du matériel avec de vraies figures historiques, et crée ainsi la première « histoire du sexe et du crime » de l'histoire de l'opéra. Comme un thriller politique, ce chef-d' œuvre du début du baroque raconte une histoire de pouvoir et de passion et d'occasions où il est abusé. Poppea Sabina, la plus belle femme de Rome, ne veut rien de moins que d'être impératrice aux côtés de l'empereur Néron.",
+"fr": "Dans son dernier opéra, Claudio Monteverdi s'est inspiré pour la première fois de personnages historiques réels et a ainsi créé la première « histoire de sexe et de crime » de l'histoire de l'opéra. Tel un thriller politique, ce chef-d’œuvre du début du baroque raconte une histoire de pouvoir, de passion et d’occasions d’abus. Poppée Sabine, la plus belle femme de Rome, ne veut rien de moins que d'être impératrice aux côtés de l'empereur Néron.",
 "spoken": "En italien",
 "src": "In his last opera, Claudio Monteverdi drew for the first time on material with real historical figures, and thus created the first \"sex-and-crime story\" in operatic history. Like a political thriller, this early Baroque masterpiece tells a story of power and passion and of occasions where it is abused. Poppea Sabina, the most beautiful woman in Rome, wants nothing less than to be Empress at the side of Emperor Nerone.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
 "v": 3
 },
 "d8e7a7d4a25d": {
@@ -2753,12 +2983,15 @@
 "v": 3
 },
 "da598a50707a": {
-"at": "2026-11-11T00:03:56.203379+00:00",
+"at": "2026-11-23T16:07:46.350207+00:00",
+"dur": null,
 "en": "Eight people reunite after a wedding celebration: the piece unfolds as a gallery of portraits, revealing each character as a story within a story. In their first collaboration, Gisèle Vienne and Marie NDiaye make visible how power, violence and social expectations permeate bodies, language and relationships – quietly, precisely, relentlessly.",
-"fr": "Huit personnes se retrouvent après une célébration de mariage : la pièce se déroule comme une galerie de portraits, révélant chaque personnage comme une histoire au sein d'une histoire. Dans leur première collaboration, Gisèle Vienne et Marie NDiaye montrent comment le pouvoir, la violence et les attentes sociales imprègnent les corps, le langage et les relations – silencieusement, précisément, sans relâche.",
+"fr": "Huit personnes se réunissent après une célébration de mariage : la pièce se déroule comme une galerie de portraits, révélant chaque personnage comme une histoire dans l'histoire. Dans leur première collaboration, Gisèle Vienne et Marie NDiaye rendent visible comment le pouvoir, la violence et les attentes sociales imprègnent les corps, le langage et les relations – doucement, précisément, sans relâche.",
 "spoken": "En anglais et français",
 "src": "Eight people reunite after a wedding celebration: the piece unfolds as a gallery of portraits, revealing each character as a story within a story. In their first collaboration, Gisèle Vienne and Marie NDiaye make visible how power, violence and social expectations permeate bodies, language and relationships – quietly, precisely, relentlessly.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/archives-of-feelings",
 "v": 3
 },
 "da8952e5b9a5": {
@@ -2771,12 +3004,15 @@
 "v": 3
 },
 "da974a015c87": {
-"at": "2026-11-08T15:16:49.035275+00:00",
+"at": "2026-11-23T16:08:27.711083+00:00",
+"dur": 120,
 "en": "At 4.00 am in the Place de la République in Paris, while returning home from a Christmas dinner, young Édouard meets Reda, a man who has an Algerian background. They get talking, start to flirt and soon Édouard is taking Reda back to his studio apartment. The two spend the night together. Reda talks about his childhood and his father who fled to France from Algeria. The mood is playful, they laugh, exchange caresses and have sex.",
 "fr": "A 4 heures du matin, place de la République à Paris, alors qu'il rentre d'un dîner de Noël, le jeune Édouard rencontre Reda, un homme d'origine algérienne. Ils discutent, commencent à flirter et bientôt Édouard ramène Reda dans son studio. Les deux passent la nuit ensemble. Reda parle de son enfance et de son père qui a fui l'Algérie pour la France. L'ambiance est ludique, ils rient, échangent des caresses et font l'amour.",
 "spoken": null,
 "src": "At 4.00 am in the Place de la République in Paris, while returning home from a Christmas dinner, young Édouard meets Reda, a man who has an Algerian background. They get talking, start to flirt and soon Édouard is taking Reda back to his studio apartment. The two spend the night together. Reda talks about his childhood and his father who fled to France from Algeria. The mood is playful, they laugh, exchange caresses and have sex.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.schaubuehne.de/en/produktionen/im-herzen-der-gewalt-2.html?ID_Vorstellung=7308&m=398",
 "v": 3
 },
 "dab12c714ad8": {
@@ -2834,19 +3070,25 @@
 "v": 3
 },
 "dfc6895b18ef": {
-"at": "2026-11-10T23:29:14.571560+00:00",
+"at": "2026-11-23T16:12:31.139013+00:00",
+"dur": null,
 "en": "Nature in constant transformation: Antonio Vivaldi’s cycle of concertos The Four Seasons traces the course of the year in music – with chirping birds, rumbling thunderstorms, dancing peasants, joyful hunting parties and biting frost. The work, performed by the Berliner Barock Solisten with Daishin Kashimoto, First Concertmaster of the Berliner Philharmoniker, as soloist, is among the most popular compositions of the Baroque era.",
 "fr": "Une nature en constante transformation : le cycle de concertos d’Antonio Vivaldi Les Quatre Saisons retrace le cours de l’année en musique – avec le chant des oiseaux, le grondement des orages, les paysans dansants, les joyeuses parties de chasse et le gel mordant. L'œuvre, interprétée par le Berliner Barock Solisten avec Daishin Kashimoto, premier violon solo du Berliner Philharmoniker, comme soliste, compte parmi les compositions les plus populaires de l'époque baroque.",
 "src": "Nature in constant transformation: Antonio Vivaldi’s cycle of concertos The Four Seasons traces the course of the year in music – with chirping birds, rumbling thunderstorms, dancing peasants, joyful hunting parties and biting frost. The work, performed by the Berliner Barock Solisten with Daishin Kashimoto, First Concertmaster of the Berliner Philharmoniker, as soloist, is among the most popular compositions of the Baroque era.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57448/",
 "v": 3
 },
 "dfe2b95d383b": {
-"at": "2026-11-18T22:37:51.029125+00:00",
+"at": "2026-11-23T16:09:48.955288+00:00",
+"dur": null,
 "en": "“Piece of Changes”, the new work by choreographer and dancer Isabelle Schad, is a piece about transformation and, at the same time, a search for change. In an age of multiple crises, this new creation counters the current sense of collective powerlessness with physically tangible forms of resistance, permeability and connectedness.",
-"fr": "« Piece of Changes », la nouvelle œuvre de la chorégraphe et danseuse Isabelle Schad, est une pièce sur la transformation et, en même temps, une quête de changement. À une époque marquée par de multiples crises, cette nouvelle création s’oppose au sentiment actuel d’impuissance collective par des formes physiquement tangibles de résistance, de perméabilité et de connexion.",
+"fr": "« Piece of Changes », la nouvelle œuvre de la chorégraphe et danseuse Isabelle Schad, est une pièce sur la transformation et, en même temps, une recherche de changement. À une époque de crises multiples, cette nouvelle création contrecarre le sentiment actuel d’impuissance collective avec des formes physiquement tangibles de résistance, de perméabilité et de connectivité.",
 "spoken": "Aucune langue requise (danse)",
 "src": "“Piece of Changes”, the new work by choreographer and dancer Isabelle Schad, is a piece about transformation and, at the same time, a search for change. In an age of multiple crises, this new creation counters the current sense of collective powerlessness with physically tangible forms of resistance, permeability and connectedness.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/isabelle-schad-piece-of-changes/",
 "v": 3
 },
 "e0e38a1a8093": {
@@ -2859,12 +3101,15 @@
 "v": 3
 },
 "e30e83fdcb13": {
-"at": "2026-11-18T22:38:13.299908+00:00",
+"at": "2026-11-23T16:08:24.575648+00:00",
+"dur": null,
 "en": "ghostbox – caja fantasma is a sound lecture performance about ghosts, siblinghood, and lost futures. Director and performer María F. Giacaman Hasbún and her brother, sound artist Juan Lázaro, invite the audience to an intimate listening session. Drawing on their own family history and inspired by Latin American horror stories, they set out in search of their own ghosts.",
-"fr": "ghostbox – caja fantasma est une performance sonore sous forme de conférence sur les fantômes, la fraternité et les avenirs perdus. La metteuse en scène et interprète María F. Giacaman Hasbún et son frère, l’artiste sonore Juan Lázaro, invitent le public à une séance d’écoute intime. S’appuyant sur leur propre histoire familiale et s’inspirant des récits d’horreur latino-américains, ils partent à la recherche de leurs propres fantômes.",
+"fr": "ghostbox – caja fantasma est une conférence-performance sonore sur les fantômes, la fratrie et les avenirs perdus. La réalisatrice et performeuse María F. Giacaman Hasbún et son frère, l'artiste sonore Juan Lázaro, invitent le public à une séance d'écoute intime. S'appuyant sur leur propre histoire familiale et inspirés par les histoires d'horreur latino-américaines, ils partent à la recherche de leurs propres fantômes.",
 "spoken": "En anglais",
 "src": "ghostbox – caja fantasma is a sound lecture performance about ghosts, siblinghood, and lost futures. Director and performer María F. Giacaman Hasbún and her brother, sound artist Juan Lázaro, invite the audience to an intimate listening session. Drawing on their own family history and inspired by Latin American horror stories, they set out in search of their own ghosts.",
 "surtitles": null,
+"tx": 1,
+"u": "https://sophiensaele.com/en/stueck/ghostbox-caja-fantasma",
 "v": 3
 },
 "e376df3050ff": {
@@ -2918,19 +3163,25 @@
 "v": 3
 },
 "e67efcd4e081": {
-"at": "2026-11-10T23:28:46.410219+00:00",
+"at": "2026-11-23T16:09:18.908936+00:00",
+"dur": 105,
 "en": "This concert brings together jazz musicians with a particular flair for musical dialogue. Nils Kugelmann is equally compelling on clarinet and double bass. Together with pianist Shuteen Erdenebaatar, from Ulaanbaatar, he explores a richly atmospheric duo sound. Also returning to our jazz series is the Finnish pianist Iiro Rantala, this time with his trio and its characteristically energetic mix of virtuosity and humour.",
 "fr": "Ce concert rassemble des musiciens de jazz ayant un flair particulier pour le dialogue musical. Nils Kugelmann est tout aussi convaincant à la clarinette qu'à la contrebasse. Avec le pianiste Shuteen Erdenebaatar, d'Oulan-Bator, il explore un duo richement atmosphérique. Le pianiste finlandais Iiro Rantala revient également dans notre série jazz, cette fois avec son trio et son mélange typiquement énergique de virtuosité et d'humour.",
 "src": "This concert brings together jazz musicians with a particular flair for musical dialogue. Nils Kugelmann is equally compelling on clarinet and double bass. Together with pianist Shuteen Erdenebaatar, from Ulaanbaatar, he explores a richly atmospheric duo sound. Also returning to our jazz series is the Finnish pianist Iiro Rantala, this time with his trio and its characteristically energetic mix of virtuosity and humour.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57062/",
 "v": 3
 },
 "ea8a5babc4fe": {
-"at": "2026-11-08T15:18:46.824014+00:00",
+"at": "2026-11-23T16:10:44.428097+00:00",
+"dur": 100,
 "en": "Here's what it's about: In Horseland, the Lesbian Law states that any contact between femmes and butches is strictly forbidden – except for the highly commercial cow handover! But when the Butches forget a screwdriver after a trade with the Femmes, Sandy has to leave the Femme Farm for the first time to take the tool back to the Butch Barn. There she meets Corky – one touch is all it takes to ignite a blazing desire that threatens to end everything in chaos…",
 "fr": "Voilà de quoi il s'agit : à Horseland, la Loi Lesbienne stipule que tout contact entre femmes et bouchers est strictement interdit – à l'exception de la remise des vaches, très commerciale ! Mais lorsque les Butch oublient un tournevis après un échange avec les Femmes, Sandy doit quitter la Femme Farm pour la première fois pour rapporter l'outil à la Butch Barn. Là, elle rencontre Corky – un simple contact suffit pour enflammer un désir ardent qui menace de tout mettre fin au chaos…",
 "spoken": "En allemand et anglais",
 "src": "Here's what it's about: In Horseland, the Lesbian Law states that any contact between femmes and butches is strictly forbidden – except for the highly commercial cow handover! But when the Butches forget a screwdriver after a trade with the Femmes, Sandy has to leave the Femme Farm for the first time to take the tool back to the Butch Barn. There she meets Corky – one touch is all it takes to ignite a blazing desire that threatens to end everything in chaos…",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.volksbuehne-berlin.de/en/productions/save-a-horse-ride-a-cowgirl/20261204-2000/",
 "v": 3
 },
 "eaf257014c5f": {
@@ -2984,12 +3235,15 @@
 "v": 3
 },
 "ed89f8f6b308": {
-"at": "2026-11-10T23:53:51.496920+00:00",
+"at": "2026-11-23T16:08:30.943890+00:00",
+"dur": null,
 "en": "A temporary community allows itself to be imperfect for one evening: inspired by the music of the “King of the Waltz,” “DI/Strauss technique” unfolds as a collective ritual of joy and irreverence, blending queer humour with operetta kitsch and camp catharsis. The choreographer, singer-songwriter, performance artist and provocateur Ivo Dimchev has been thrilling HAU audiences for many years. In his performances, he skilfully brings together high culture and subculture, pop and Balkan rhythms.",
 "fr": "Une communauté éphémère se laisse imparfaite le temps d’une soirée : inspirée par la musique du « Roi de la Valse », « Di/STRAUSS technique » se déroule comme un rituel collectif de joie et d’irrévérence, mêlant humour queer, kitsch d’opérette et catharsis de camp. Le chorégraphe, auteur-compositeur-interprète, performeur et provocateur Ivo Dimchev fait vibrer le public de HAU depuis de nombreuses années. Dans ses performances, il réunit habilement la haute culture et la sous-culture, la pop et les rythmes balkaniques.",
 "spoken": "En anglais",
 "src": "A temporary community allows itself to be imperfect for one evening: inspired by the music of the “King of the Waltz,” “DI/Strauss technique” unfolds as a collective ritual of joy and irreverence, blending queer humour with operetta kitsch and camp catharsis. The choreographer, singer-songwriter, performance artist and provocateur Ivo Dimchev has been thrilling HAU audiences for many years. In his performances, he skilfully brings together high culture and subculture, pop and Balkan rhythms.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.hebbel-am-ufer.de/en/programme/pdetail/ivo-dimchev-di-strauss-technique/",
 "v": 3
 },
 "ed9b578662f6": {
@@ -3002,12 +3256,15 @@
 "v": 3
 },
 "ef7d87359166": {
-"at": "2026-11-11T00:04:38.791323+00:00",
+"at": "2026-11-23T16:10:36.593709+00:00",
+"dur": 165,
 "en": "Mozart’s singspiel The Abduction from the Seraglio (Die Entführung aus dem Serail) may at first glance appear fairytale-like and almost a bit naive. And the plot surrounding Konstanze, who has been abducted by pirates and is now trapped in the harem of Bassa Selim, seems to only confirm this. But Mozart’s music transcends the boundaries of the singspiel.",
-"fr": "Le singspiel de Mozart The Abduction from the Seraglio (Die Entführung aus dem Serail) peut sembler à première vue un conte de fées et presque un peu naïf. Et le complot entourant Konstanze, qui a été enlevé par des pirates et est maintenant piégé dans le harem de Bassa Selim, ne semble que le confirmer. Mais la musique de Mozart transcende les frontières du singspiel.",
+"fr": "Le singspiel The Abduction from the Seraglio (Die Entführung aus dem Serail) de Mozart peut à première vue paraître féerique et presque un peu naïf. Et le complot entourant Constance, enlevée par des pirates et désormais piégée dans le harem de Bassa Selim, ne semble que le confirmer. Mais la musique de Mozart transcende les frontières du singspiel.",
 "spoken": null,
 "src": "Mozart’s singspiel The Abduction from the Seraglio (Die Entführung aus dem Serail) may at first glance appear fairytale-like and almost a bit naive. And the plot surrounding Konstanze, who has been abducted by pirates and is now trapped in the harem of Bassa Selim, seems to only confirm this. But Mozart’s music transcends the boundaries of the singspiel.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/the-abduction-from-the-seraglio.1383413",
 "v": 3
 },
 "ef83d208b879": {
@@ -3020,12 +3277,15 @@
 "v": 3
 },
 "f0c539a93fff": {
-"at": "2026-11-11T00:04:46.635976+00:00",
+"at": "2026-11-23T16:12:03.439787+00:00",
+"dur": 150,
 "en": "At its premiere in Turin in 1896, La bohème was met with scepticism. Only after further performances in several Italian cities did it achieve the success that quickly brought Puccini and his librettist international fame. With their first collaboration, based on Henri Murger’s novel Scènes de la vie de bohème, the trio created the epitome of the romantic love story on the operatic stage.",
-"fr": "Lors de sa première à Turin en 1896, La bohème a été accueillie avec scepticisme. Ce n'est qu'après de nouvelles représentations dans plusieurs villes italiennes qu'il a atteint le succès qui a rapidement apporté à Puccini et à son librettiste une renommée internationale. Avec leur première collaboration, basée sur le roman Scènes de la vie de bohème d'Henri Murger, le trio a créé la quintessence de l'histoire d'amour romantique sur la scène lyrique.",
+"fr": "Lors de sa première à Turin en 1896, La bohème fut accueilli avec scepticisme. Ce n'est qu'après de nouvelles représentations dans plusieurs villes italiennes qu'il connut le succès qui apporta rapidement à Puccini et à son librettiste une renommée internationale. Avec leur première collaboration, basée sur le roman Scènes de la vie de bohème d’Henri Murger, le trio crée sur la scène de l’opéra la quintessence de l’histoire d’amour romantique.",
 "spoken": "En italien",
 "src": "At its premiere in Turin in 1896, La bohème was met with scepticism. Only after further performances in several Italian cities did it achieve the success that quickly brought Puccini and his librettist international fame. With their first collaboration, based on Henri Murger’s novel Scènes de la vie de bohème, the trio created the epitome of the romantic love story on the operatic stage.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/la-boheme.1385732",
 "v": 3
 },
 "f0dd52ba5202": {
@@ -3061,12 +3321,15 @@
 "v": 3
 },
 "f3811fe60390": {
-"at": "2026-11-11T00:04:22.649635+00:00",
+"at": "2026-11-23T16:09:08.039197+00:00",
+"dur": 180,
 "en": "With The Magic Flute, Mozart wanted to write a piece for everyone – the blend of Viennese folk theater, Singspiel, and Italian opera makes it a favourite with audiences to this day. There's something for every taste, from catchy songs and arias to humorous spoken dialogue and fairytale elements. Günter Krämer’s production creates two contrasting worlds: the realm of the Queen of the Night and the temple of the Sun King.",
-"fr": "Avec The Magic Flute, Mozart voulait écrire une pièce pour tout le monde – le mélange de théâtre folklorique viennois, de Singspiel et d'opéra italien en fait un favori du public à ce jour. Il y en a pour tous les goûts, des chansons et des airs accrocheurs aux dialogues parlés humoristiques et aux éléments de conte de fées. La production de Günter Krämer crée deux mondes contrastés : le royaume de la Reine de la Nuit et le temple du Roi Soleil.",
+"fr": "Avec The Magic Flute, Mozart voulait écrire une pièce pour tout le monde – le mélange du théâtre populaire viennois, du Singspiel et de l’opéra italien en fait encore aujourd’hui l’une des pièces préférées du public. Il y en a pour tous les goûts, des chansons et airs entraînants aux dialogues parlés humoristiques et aux éléments de conte de fées. La production de Günter Krämer crée deux mondes contrastés : le royaume de la Reine de la Nuit et le temple du Roi Soleil.",
 "spoken": null,
 "src": "With The Magic Flute, Mozart wanted to write a piece for everyone – the blend of Viennese folk theater, Singspiel, and Italian opera makes it a favourite with audiences to this day. There's something for every taste, from catchy songs and arias to humorous spoken dialogue and fairytale elements. Günter Krämer’s production creates two contrasting worlds: the realm of the Queen of the Night and the temple of the Sun King.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/the-magic-flute.1385471",
 "v": 3
 },
 "f39869cc7b36": {
@@ -3095,10 +3358,13 @@
 "v": 3
 },
 "f6716a508cb3": {
-"at": "2026-11-10T23:29:04.679637+00:00",
+"at": "2026-11-23T16:11:35.176852+00:00",
+"dur": 90,
 "en": "The composers of the Baroque era left us a wealth of Christmas music, from cantatas to concertos. Les Accents, one of the leading ensembles on the early music scene, presents festive treasures of the 17th and 18th centuries in a programme titled Heavenly Night.",
 "fr": "Les compositeurs de l’époque baroque nous ont légué une richesse de musique de Noël, des cantates aux concertos. Les Accents, l'un des ensembles phares de la scène musicale ancienne, présente les trésors festifs des XVIIe et XVIIIe siècles dans un programme intitulé Nuit céleste.",
 "src": "The composers of the Baroque era left us a wealth of Christmas music, from cantatas to concertos. Les Accents, one of the leading ensembles on the early music scene, presents festive treasures of the 17th and 18th centuries in a programme titled Heavenly Night.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57071/",
 "v": 3
 },
 "f8698aaa9fce": {
@@ -3111,21 +3377,25 @@
 "v": 3
 },
 "f8eb857dabd8": {
-"at": "2026-11-20T00:16:03.856651+00:00",
-"en": "What remains after the champagne corks have popped, after the mosh pit has become just another memory, and after one's own reality of life regains the upper hand? CAVA are back with their new album \"Good Luck,\" although the title is by no means synonymous with accepting defeat.",
-"fr": "Que reste-t-il après que les bouchons de champagne ont sauté, après que le mosh pit est devenu un autre souvenir et que la réalité de sa propre vie reprend le dessus ? CAVA est de retour avec son nouvel album « Good Luck », dont le titre n’est en aucun cas synonyme d’acceptation d’une défaite.",
+"at": "2026-11-23T16:09:46.410572+00:00",
+"dur": null,
+"en": "What remains after the champagne corks have popped, after the mosh pit has become another memory and the reality of your own life takes over again? CAVA are back with their new album \"Good Luck\", although the title is in no way synonymous with acceptance of defeat.",
+"fr": "Que reste-t-il après que les bouchons de champagne ont éclaté, après que le mosh pit soit devenu un autre souvenir et que la réalité de votre propre vie reprenne le dessus ? CAVA est de retour avec son nouvel album « Good Luck », même si le titre n'est en aucun cas synonyme d'acceptation de la défaite.",
 "src": "Was bleibt, nachdem die Sektkorken geknallt haben, nachdem der Moshpit zu einer weiteren Erinnerung geworden ist und die eigene Lebensrealität wieder die Oberhand gewinnt? CAVA sind zurück mit ihrem neuen Album „Good Luck\", wobei der Titel keineswegs mit der Akzeptanz einer Niederlage gleichzusetzen ist.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/#e20261127",
 "v": 3
 },
 "f9b4daeffd3f": {
-"at": "2026-11-18T22:40:53.794496+00:00",
+"at": "2026-11-23T16:09:42.652584+00:00",
+"dur": null,
 "en": "Christian Spuck’s new production places E.T.A. Hoffmann’s literary original at its center, emphasizing the tension between childhood innocence and the awakening of self-awareness. Since Hoffmann’s 1816 story and the later ballet adaptation by Marius Petipa and Pyotr I. Tchaikovsky in 1892, The Nutcracker has become one of the most renowned classics of ballet.",
 "fr": "La nouvelle production de Christian Spuck place E.T.A. L’original littéraire d’Hoffmann en son centre, soulignant la tension entre l’innocence de l’enfance et l’éveil de la conscience de soi. Depuis l’histoire d’Hoffmann de 1816 et l’adaptation ultérieure du ballet par Marius Petipa et Piotr I. Tchaïkovski en 1892, The Nutcracker est devenu l’un des classiques du ballet les plus renommés.",
 "spoken": "Aucune langue requise (danse)",
 "src": "Christian Spuck’s new production places E.T.A. Hoffmann’s literary original at its center, emphasizing the tension between childhood innocence and the awakening of self-awareness. Since Hoffmann’s 1816 story and the later ballet adaptation by Marius Petipa and Pyotr I. Tchaikovsky in 1892, The Nutcracker has become one of the most renowned classics of ballet.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-nussknacker-en/348.html",
 "v": 3
 },
 "f9bc851b7946": {
@@ -3147,12 +3417,15 @@
 "v": 3
 },
 "fb525f608a3d": {
-"at": "2026-11-18T22:40:21.324064+00:00",
+"at": "2026-11-23T16:12:12.616594+00:00",
+"dur": 280,
 "en": "In Copenhagen's Imperial Hospital, known as ‘The Empire’, doctors use state-of-the-art technology to fight disease and death in the service of science. However, this is certainly on shaky ground, as the hospital was built on marshland: ‘Perhaps they became too presumptuous in their stubborn denial of the spiritual world? For in the building, so modern and seemingly so solid, cracks of fatigue are becoming visible.",
 "fr": "À l’hôpital impérial de Copenhague, surnommé « l’Empire », les médecins utilisent une technologie de pointe pour combattre la maladie et la mort au service de la science. Cependant, le terrain est certainement fragile, car l’hôpital a été construit sur un terrain marécageux : « Peut-être sont-ils devenus trop présomptueux dans leur refus obstiné du monde spirituel ? Car dans le bâtiment, si moderne et en apparence si solide, des fissures de fatigue deviennent visibles.",
 "spoken": null,
 "src": "In Copenhagen's Imperial Hospital, known as ‘The Empire’, doctors use state-of-the-art technology to fight disease and death in the service of science. However, this is certainly on shaky ground, as the hospital was built on marshland: ‘Perhaps they became too presumptuous in their stubborn denial of the spiritual world? For in the building, so modern and seemingly so solid, cracks of fatigue are becoming visible.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.deutschestheater.de/en/program/productions/hospital-der-geister",
 "v": 3
 },
 "fb911f3f8aa8": {
@@ -3174,12 +3447,15 @@
 "v": 3
 },
 "fcf2df737adb": {
-"at": "2026-11-08T15:16:38.531474+00:00",
+"at": "2026-11-23T16:08:13.350290+00:00",
+"dur": null,
 "en": "The island of Illyria seems at first to be a life raft after a dramatic shipwreck, but soon becomes the setting for deceptions about identity and the romantic entanglements that follow: having survived and been stranded, Viola believes that her beloved twin brother Sebastian has drowned and disguises herself as Cesario so that she can serve the Duke Orsino. Orsino is crazy about the reclusive Countess Olivia, who is in mourning, and sends Cesario to her as his messenger of love.",
 "fr": "L'île d'Illyrie semble d'abord être un radeau de sauvetage après un naufrage dramatique, mais devient bientôt le théâtre de tromperies sur l'identité et des enchevêtrements romantiques qui s'ensuivent : après avoir survécu et s'être échouée, Viola croit que son frère jumeau bien-aimé Sébastien s'est noyé et se déguise en Cesario pour pouvoir servir le duc Orsino. Orsino est fou de la comtesse solitaire Olivia, en deuil, et lui envoie Cesario comme messager de l'amour.",
 "spoken": null,
 "src": "The island of Illyria seems at first to be a life raft after a dramatic shipwreck, but soon becomes the setting for deceptions about identity and the romantic entanglements that follow: having survived and been stranded, Viola believes that her beloved twin brother Sebastian has drowned and disguises herself as Cesario so that she can serve the Duke Orsino. Orsino is crazy about the reclusive Countess Olivia, who is in mourning, and sends Cesario to her as his messenger of love.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.berliner-ensemble.de/en/production/twelfth-night-was-ihr-wollt",
 "v": 3
 },
 "fd3d6d25167f": {
