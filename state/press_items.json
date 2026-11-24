@@ -57,14 +57,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Stereophonic",
-  "url": "https://www.schaubuehne.de/en/produktionen/stereophonic.html?ID_Vorstellung=7317&m=398",
-  "opens": "2026-12-04",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Sophiensæle",
   "title": "Olympia Bukkakis: Queer and Present Dangers/GOD",
   "url": "https://sophiensaele.com/en/stueck/queer-and-present-dangersgod",
@@ -121,17 +113,6 @@
   "url": "https://sophiensaele.com/en/stueck/ghostbox-caja-fantasma",
   "opens": "2026-12-18",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Im Herzen der Gewalt (History of Violence)",
-  "url": "https://www.schaubuehne.de/en/produktionen/im-herzen-der-gewalt-2.html?ID_Vorstellung=7308&m=398",
-  "opens": "2026-12-19",
-  "aliases": [
-   "Im Herzen der Gewalt",
-   "History of Violence"
-  ]
  },
  {
   "kind": "theatre",
@@ -383,14 +364,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "L’incoronazione di Poppea",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
-  "opens": "2026-11-24",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "The Magic Flute",
   "url": "https://deutscheoperberlin.de/en_EN/production/the-magic-flute.1385471",
@@ -447,6 +420,14 @@
   "venue": "Sophiensæle",
   "title": "markus&markustheaterkollektiv: Die Brieffreundschaft II",
   "url": "https://sophiensaele.com/en/stueck/die-brieffreundschaft-ii",
+  "opens": "2026-11-26",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "L’incoronazione di Poppea",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/l-incoronazione-di-poppea.94/",
   "opens": "2026-11-26",
   "aliases": []
  },
@@ -575,14 +556,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Bad Kingdom",
-  "url": "https://www.schaubuehne.de/en/produktionen/bad-kingdom.html?ID_Vorstellung=7296&m=398",
-  "opens": "2026-11-30",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Shaking Hand (post-rock, uk) & Sweetspot (noise-dream-pop, bln)",
   "url": "https://www.schokoladen-mitte.de/#e20261130",
@@ -590,6 +563,17 @@
   "aliases": [
    "Shaking Hand",
    "post-rock, uk) & Sweetspot (noise-dream-pop, bln"
+  ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Ensemble",
+  "title": "Die Dreigroschenoper (The Threepenny Opera)",
+  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
+  "opens": "2026-12-01",
+  "aliases": [
+   "Die Dreigroschenoper",
+   "The Threepenny Opera"
   ]
  },
  {
@@ -615,6 +599,14 @@
   "venue": "Urban Spree",
   "title": "SPK + ALVAR",
   "url": "https://www.urbanspree.com/program/concerts/spk-alvar-urban-spree,-berlin.html",
+  "opens": "2026-12-02",
+  "aliases": []
+ },
+ {
+  "kind": "expo",
+  "venue": "Berlinische Galerie",
+  "title": "NEOZOON — In the IBB Video Space",
+  "url": "https://berlinischegalerie.de/en/exhibitions/preview/neozoon/",
   "opens": "2026-12-02",
   "aliases": []
  },
@@ -1158,30 +1150,11 @@
  },
  {
   "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "It's Britney, Bitch!",
-  "url": "https://www.berliner-ensemble.de/en/production/its-britney-bitch",
-  "opens": "2026-12-26",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Deutsche Oper Berlin",
   "title": "La traviata",
   "url": "https://deutscheoperberlin.de/en_EN/production/la-traviata.1385739",
   "opens": "2026-12-26",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Berliner Ensemble",
-  "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
-  "opens": "2026-12-27",
-  "aliases": [
-   "Die Dreigroschenoper",
-   "The Threepenny Opera"
-  ]
  },
  {
   "kind": "theatre",
@@ -1201,14 +1174,6 @@
    "Sempf",
    "pop-punk/ HH) + Bistro 11 (PopPunk/CollegeRock/ Bln"
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Antigone. Der Abschied",
-  "url": "https://www.schaubuehne.de/en/produktionen/antigone-der-abschied.html?ID_Vorstellung=7302&m=398",
-  "opens": "2026-12-29",
-  "aliases": []
  },
  {
   "kind": "theatre",

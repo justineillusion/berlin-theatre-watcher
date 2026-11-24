@@ -64,10 +64,13 @@
 "v": 3
 },
 "06dd20b94761": {
-"at": "2026-11-10T23:32:49.916305+00:00",
+"at": "2026-11-24T19:03:15.158810+00:00",
+"dur": 105,
 "en": "When Esbjörn Svensson died in a diving accident in June 2008, the jazz world lost one of its most innovative artists. The Swedish pianist was just 44 and at the height of his career. With his trio, he became one of the defining voices on the European scene, blending jazz, classical music, rock, pop and electronic elements into a distinctive musical language.",
-"fr": "Lorsqu'Esbjörn Svensson décède dans un accident de plongée en juin 2008, le monde du jazz perd l'un de ses artistes les plus innovants. Le pianiste suédois n'avait que 44 ans et était au sommet de sa carrière. Avec son trio, il est devenu l'une des voix déterminantes de la scène européenne, mêlant jazz, musique classique, rock, pop et éléments électroniques dans un langage musical distinctif.",
+"fr": "Lorsque Esbjörn Svensson est décédé dans un accident de plongée en juin 2008, le monde du jazz a perdu l'un de ses artistes les plus innovants. Le pianiste suédois n'avait que 44 ans et était au sommet de sa carrière. Avec son trio, il est devenu l'une des voix emblématiques de la scène européenne, mêlant jazz, musique classique, rock, pop et éléments électroniques pour créer un langage musical unique.",
 "src": "When Esbjörn Svensson died in a diving accident in June 2008, the jazz world lost one of its most innovative artists. The Swedish pianist was just 44 and at the height of his career. With his trio, he became one of the defining voices on the European scene, blending jazz, classical music, rock, pop and electronic elements into a distinctive musical language.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57183/",
 "v": 3
 },
 "07ef689e76dc": {
@@ -83,12 +86,15 @@
 "v": 3
 },
 "07f9e7514bdf": {
-"at": "2026-11-08T15:16:45.773067+00:00",
+"at": "2026-11-24T19:03:40.995023+00:00",
+"dur": null,
 "en": "Who am I when no one is watching? And who can I be when everyone sees me? Dorian Gray is young, handsome and desirable. His looks open doors for him, earn him recognition, protect him. Anything that disturbs this image – guilt, desire, age – disappears. It all goes into a painting that no one is allowed to see. This painting depicts what Dorian doesn't want to show. He remains flawless on the outside, but inside he's falling apart.",
-"fr": "Qui suis-je quand personne ne me regarde ? Et qui puis-je être quand tout le monde me voit ? Dorian Gray est jeune, beau et désirable. Son look lui ouvre des portes, lui vaut la reconnaissance, le protège. Tout ce qui vient perturber cette image – la culpabilité, le désir, l’âge – disparaît. Tout cela se résume dans un tableau que personne n’a le droit de voir. Ce tableau représente ce que Dorian ne veut pas montrer. Il reste impeccable à l’extérieur, mais à l’intérieur il s’effondre.",
+"fr": "Qui suis-je quand personne ne me regarde ? Et qui puis-je être quand tout le monde me voit ? Dorian Gray est jeune, beau et séduisant. Son apparence lui ouvre des portes, lui vaut la reconnaissance et le protège. Tout ce qui perturbe cette image – la culpabilité, le désir, l'âge – disparaît. Tout cela se retrouve dans un tableau que personne n'est autorisé à voir. Ce tableau représente ce que Dorian ne veut pas montrer. Il reste impeccable à l'extérieur, mais à l'intérieur, il se décompose.",
 "spoken": null,
 "src": "Who am I when no one is watching? And who can I be when everyone sees me? Dorian Gray is young, handsome and desirable. His looks open doors for him, earn him recognition, protect him. Anything that disturbs this image – guilt, desire, age – disappears. It all goes into a painting that no one is allowed to see. This painting depicts what Dorian doesn't want to show. He remains flawless on the outside, but inside he's falling apart.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.berliner-ensemble.de/en/production/picture-dorian-gray-das-bildnis-des-dorian-gray",
 "v": 3
 },
 "085ee5f6e45d": {
@@ -191,12 +197,15 @@
 "v": 3
 },
 "0c4f13421058": {
-"at": "2026-11-08T15:16:42.581548+00:00",
+"at": "2026-11-24T19:03:36.537732+00:00",
+"dur": null,
 "en": "CURSED – a preinvented world. is bent on trying our imagination. It starts as an open experimental setup, with people moving through a space that lacks the clear boundaries between stage and auditorium. Groups may form and disband. A live commentator keeps us updated about what’s happening, like a sports broadcast. Chatting turns into hearsay; hearsay into a collective state; collective states into new versions of reality.",
-"fr": "CURSED – a preinvented world. est déterminé à mettre à l’épreuve notre imagination. Cela commence comme une installation expérimentale ouverte, dans laquelle les gens se déplacent dans un espace sans limites claires entre scène et auditorium. Des groupes peuvent se former et se dissoudre. Un commentateur en direct nous tient au courant de ce qui se passe, comme une émission sportive. Le bavardage se transforme en ouï-dire ; le ouï-dire en un état collectif ; États collectifs vers de nouvelles versions de la réalité.",
-"spoken": "En anglais",
+"fr": "CURSED – a preinvented world. est déterminé à mettre notre imagination à l'épreuve. Cela commence par une configuration expérimentale ouverte, avec des personnes se déplaçant dans un espace dépourvu de frontières claires entre la scène et la salle. Des groupes peuvent se former et se dissoudre. Un commentateur en direct nous tient au courant de ce qui se passe, comme lors d'une retransmission sportive. Les conversations se transforment en rumeurs ; les rumeurs en un état collectif ; les états collectifs en de nouvelles versions de la réalité.",
+"spoken": "En allemand et anglais",
 "src": "CURSED – a preinvented world. is bent on trying our imagination. It starts as an open experimental setup, with people moving through a space that lacks the clear boundaries between stage and auditorium. Groups may form and disband. A live commentator keeps us updated about what’s happening, like a sports broadcast. Chatting turns into hearsay; hearsay into a collective state; collective states into new versions of reality.",
-"surtitles": null,
+"surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261211-1900/",
 "v": 3
 },
 "0ca6a1cdedf1": {
@@ -219,9 +228,10 @@
 "v": 3
 },
 "0db08de2c6a1": {
-"at": "2026-11-21T13:37:43.800601+00:00",
-"en": "The concert is sold out. Both bands also play in the Kastanienkeller the day before (December 11th). duesenjaeger (Punk, Osnabrück) https://duesenjaeger.bandcamp.com Tremors (Punk, Osnabrück) https://tremors777.bandcamp.com",
-"fr": "Le concert est complet. Les deux groupes jouent également au Kastanienkeller la veille (11 décembre). duesenjaeger (Punk, Osnabrück) https://duesenjaeger.bandcamp.com Tremblements (Punk, Osnabrück) https://tremors777.bandcamp.com",
+"at": "2026-11-24T19:04:13.786231+00:00",
+"dur": null,
+"en": "The concert is sold out. Both bands will also be playing at the Kastanienkeller the day before (December 11). Düsenjäger (punk, Osnabrück) https://duesenjaeger.bandcamp.com Tremors (punk, Osnabrück) https://tremors777.bandcamp.com",
+"fr": "Le concert est complet. Les deux groupes joueront également la veille (11/12) au Kastanienkeller. duesenjaeger (punk, Osnabrück) https://duesenjaeger.bandcamp.com Tremors (punk, Osnabrück) https://tremors777.bandcamp.com",
 "src": "Das Konzert ist ausverkauft. Beide Bands spielen am Vortag (11.12.) auch noch im Kastanienkeller. duesenjaeger (Punk, Osnabrück) https://duesenjaeger.bandcamp.com Tremors (Punk, Osnabrück) https://tremors777.bandcamp.com",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/?page=2#e20261212",
@@ -469,9 +479,10 @@
 "v": 3
 },
 "1be3355d8d95": {
-"at": "2026-11-22T13:30:27.249263+00:00",
-"en": "With KüfA for a donation from 7 p.m. to 8 p.m. (also possible without a ticket for YOK) YOK - pocketpunk spielt FUCK 10 CHECK If you read the title in English, then you'll understand. Ahhh! Who is the third of these YOK? Taxi driver and squeeze paua! But that was before. Now it's getting old. Still rabble-rousing though. Against extreme conservatives and Bollos in general. He sometimes plays the ship's piano and a children's guitar. And he can read too. From his books. He knows them best.",
-"fr": "Avec KüfA pour un don à partir de 19h. à 20 heures (également possible sans ticket pour YOK) YOK - pocketpunk spielt FUCK 10 CHECK Si vous lisez le titre en anglais, vous comprendrez. Ahhh ! Qui est le troisième de ces YOK ? Chauffeur de taxi et presse paua ! Mais c'était avant. Maintenant, ça vieillit. Cela reste néanmoins une agitation. Contre les conservateurs extrémistes et contre Bollos en général. Il joue parfois du piano du navire et de la guitare pour enfants. Et il sait lire aussi. De ses livres. C'est lui qui les connaît le mieux.",
+"at": "2026-11-24T19:04:20.107424+00:00",
+"dur": null,
+"en": "With KüfA for a donation from 7 – 8 p.m. (also possible without a ticket for YOK) YOK - pocketpunk spielt FUCK 10 CHECK List of titles in English, then you'll understand. Aahhh! Who the hell is this YOK? Taxi driver and accordion player! But that was back in the day. Now he's old. But he still causes trouble. Against extreme conservatives and Bollos in general. Sometimes he plays the accordion and a little kid's guitar. And he can read, too. From his books. He knows them best.",
+"fr": "Avec KüfA contre don à partir de 19 h - 20 h (également possible sans billet pour YOK) YOK - pocketpunk spielt FUCK 10 CHECK Liste des titres en anglais, alors tu comprendras. Aahhh ! C’est qui ce YOK ? Chauffeur de taxi et accordéoniste ! Mais c’était avant. Maintenant, il est vieux. Mais il continue à faire le fanfaron. Contre les conservateurs extrêmes et les Bollos en général. Il joue parfois de l’accordéon et d’une guitare pour enfants. Et il sait aussi lire. Dans ses livres. Ce sont ceux qu’il connaît le mieux.",
 "src": "Mit KüfA gegen Spende ab 19 - 20 Uhr (auch ohne Ticket für YOK möglich) YOK - pocketpunk spielt FUCK 10 CHECK Lieste Titel englisch, dann verstehste. Aahhh! Wer is'n ditte dieser Yok? Taxifahrer und Quetschenpaua! Aber das war früher. Jetzt isser alt. Pöbelt aber immer noch rum. Gegen extreme Konservative und Bollos im Allgemeinen. Schifferklavier spielt er dabei manchmal und so'ne Kindergitarre. Und lesen kann er auch. Aus seinen Büchern. Die kennt er am besten.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/?page=2#e20261213",
@@ -495,9 +506,10 @@
 "v": 3
 },
 "1cf6f8bca07f": {
-"at": "2026-11-20T01:22:15.619999+00:00",
+"at": "2026-11-24T19:02:26.075380+00:00",
+"dur": null,
 "en": "The choir of the Komische Oper Berlin presents an international programme with music from all over the world—and from their own home countries. The evening brings together both new discoveries and popular favourites, from Korea to Venezuela and from Poland to Wales. The programme is as diverse as the choir itself, which has some sixty members and has helped shape the programming of the Komische Oper Berlin for almost eighty years.",
-"fr": "Le chœur du Komische Oper Berlin présente un programme international avec de la musique du monde entier et de leur propre pays. La soirée rassemble à la fois de nouvelles découvertes et des favoris populaires, de la Corée au Venezuela et de la Pologne au Pays de Galles. Le programme est aussi diversifié que le chœur lui-même, qui compte une soixantaine de membres et contribue à façonner la programmation du Komische Oper Berlin depuis près de quatre-vingts ans.",
+"fr": "La chorale du Komische Oper Berlin présente un programme international avec de la musique du monde entier, ainsi que de leurs propres pays d'origine. La soirée réunit à la fois de nouvelles découvertes et des œuvres populaires, de la Corée au Venezuela et de la Pologne au Pays de Galles. Le programme est aussi diversifié que la chorale elle-même, qui compte une soixantaine de membres et contribue à façonner la programmation du Komische Oper Berlin depuis près de quatre-vingts ans.",
 "spoken": null,
 "src": "The choir of the Komische Oper Berlin presents an international programme with music from all over the world—and from their own home countries. The evening brings together both new discoveries and popular favourites, from Korea to Venezuela and from Poland to Wales. The programme is as diverse as the choir itself, which has some sixty members and has helped shape the programming of the Komische Oper Berlin for almost eighty years.",
 "surtitles": "surtitres anglais",
@@ -506,12 +518,15 @@
 "v": 3
 },
 "1e66342fef8a": {
-"at": "2026-11-08T15:19:10.474683+00:00",
+"at": "2026-11-24T19:03:45.689598+00:00",
+"dur": null,
 "en": "Experiences of motherhood seldom match with the image conveyed by our culture and language. The ideal, unselfishly caring, endlessly patient and, what is more, happy mother – of course she doesn’t exist. Instead, motherhood becomes society’s predetermined breaking point: When mothers are still required to be unconditional carers – and yet the labour market can’t do without them.",
-"fr": "Les expériences de maternité correspondent rarement à l’image véhiculée par notre culture et notre langue. La mère idéale, altruiste, patiente et, qui plus est, heureuse – bien sûr, elle n’existe pas. Au lieu de cela, la maternité devient le point de rupture prédéterminé de la société : alors que les mères sont toujours tenues d’être des soignantes inconditionnelles – alors que le marché du travail ne peut pas se passer d’elles.",
+"fr": "Les expériences de la maternité correspondent rarement à l'image véhiculée par notre culture et notre langage. La mère idéale, qui prend soin des autres de manière désintéressée, qui est infiniment patiente et, qui plus est, heureuse : bien sûr, elle n'existe pas. Au lieu de cela, la maternité devient le point de rupture prédéterminé de la société : alors que les mères sont toujours tenues d’être des aidantes inconditionnelles, le marché du travail ne peut pourtant pas se passer d’elles.",
 "spoken": null,
 "src": "Experiences of motherhood seldom match with the image conveyed by our culture and language. The ideal, unselfishly caring, endlessly patient and, what is more, happy mother – of course she doesn’t exist. Instead, motherhood becomes society’s predetermined breaking point: When mothers are still required to be unconditional carers – and yet the labour market can’t do without them.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.berliner-ensemble.de/en/production/motherfuckinghood",
 "v": 3
 },
 "1ecc9968266e": {
@@ -561,12 +576,15 @@
 "v": 3
 },
 "213c007a09dc": {
-"at": "2026-11-11T00:06:53.393640+00:00",
+"at": "2026-11-24T19:01:41.759515+00:00",
+"dur": 180,
 "en": "Anyone in Seville who needs help goes to Figaro – the barber has a solution for every problem, because he knows everyone in the city, is well-informed about all the gossip and many owe him a favour. This time, he is to help Count Almaviva free Rosina, who has been imprisoned by her guardian, and win her heart.",
-"fr": "Toute personne à Séville qui a besoin d'aide va au Figaro – le coiffeur a une solution pour chaque problème, car il connaît tout le monde dans la ville, est bien informé de tous les commérages et beaucoup lui doivent une faveur. Cette fois, il doit aider le comte Almaviva à libérer Rosina, qui a été emprisonnée par son tuteur, et à gagner son cœur.",
+"fr": "À Séville, toute personne ayant besoin d'aide se tourne vers Figaro : le barbier a une solution à chaque problème, car il connaît tout le monde dans la ville, est bien informé de tous les ragots et beaucoup lui doivent une faveur. Cette fois, il doit aider le comte Almaviva à libérer Rosine, qui a été emprisonnée par son tuteur, et à conquérir son cœur.",
 "spoken": "En italien",
 "src": "Anyone in Seville who needs help goes to Figaro – the barber has a solution for every problem, because he knows everyone in the city, is well-informed about all the gossip and many owe him a favour. This time, he is to help Count Almaviva free Rosina, who has been imprisoned by her guardian, and win her heart.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/il-barbiere-di-siviglia.1385828",
 "v": 3
 },
 "21e2bc6dce4a": {
@@ -686,10 +704,13 @@
 "v": 3
 },
 "2c1d3031f235": {
-"at": "2026-11-18T22:42:48.136257+00:00",
-"en": "Wheelchair users please use the appropriate ticket. Most venues are barrier-free accessible. Severely disabled people who are entitled to a free companion show us their B pass at the entrance and can then take the companion with them without a ticket.",
-"fr": "Les utilisateurs de fauteuils roulants doivent utiliser le ticket approprié. La plupart des sites sont accessibles sans obstacle. Les personnes gravement handicapées qui ont droit à un accompagnateur gratuit nous présentent leur pass B à l'entrée et peuvent ensuite emmener l'accompagnateur avec elles sans ticket.",
-"src": "Rollstuhlnutzende bitte das entsprechende Ticket nutzen. Die meisten Venues sind barrierefrei zugänglich. Schwerbehinderte mit Anspruch auf eine kostenlose Begleitung zeigen uns am Eingang den B-Ausweis und können dann die Begleitperson ohne Ticket mitnehmen.",
+"at": "2026-11-24T19:03:31.421373+00:00",
+"dur": null,
+"en": "All information can be found here: www.berlin-breakout.com Wheelchair users, please use the corresponding ticket. Most venues are accessible. Severely disabled persons entitled to a free companion should show us their B ID card at the entrance and can then bring their companion along without a ticket. (Program subject to change)",
+"fr": "Toutes les informations sont disponibles ici : www.berlin-breakout.com Les personnes en fauteuil roulant sont priées d’utiliser le billet correspondant. La plupart des lieux sont accessibles aux personnes à mobilité réduite. Les personnes gravement handicapées ayant droit à un accompagnement gratuit nous présentent leur carte d’invalidité B à l’entrée et peuvent ensuite être accompagnées par une personne sans billet. (Sous réserve de modifications du programme)",
+"src": "Alle Infos gibts hier: www.berlin-breakout.com Rollstuhlnutzende bitte das entsprechende Ticket nutzen. Die meisten Venues sind barrierefrei zugänglich. Schwerbehinderte mit Anspruch auf eine kostenlose Begleitung zeigen uns am Eingang den B-Ausweis und können dann die Begleitperson ohne Ticket mitnehmen. (Programmänderungen vorbehalten)",
+"tx": 1,
+"u": "https://www.urbanspree.com/program/concerts/berlin-breakout-2027.html",
 "v": 3
 },
 "2db27e2179c9": {
@@ -817,9 +838,10 @@
 "v": 3
 },
 "33bbcd99c6e3": {
-"at": "2026-11-20T01:22:49.432065+00:00",
+"at": "2026-11-24T19:04:07.539398+00:00",
+"dur": null,
 "en": "The multi-award-winning ballet Nureyev, choreographed by Yuri Possokhov, composed by Ilya Demutsky and staged by visionary director Kirill Serebrennikov, premiered in December 2017 at Moscow’s world-famous Bolshoi Theatre. Even before its debut, the work caused a stir internationally. In its 25/26 season, the Staatsballett Berlin brought this extraordinary production to the stage for the first time outside Russia.",
-"fr": "Le ballet primé à plusieurs reprises Nureyev, chorégraphié par Yuri Possokhov, composé par Ilya Demutsky et mis en scène par le metteur en scène visionnaire Kirill Serebrennikov, a été créé en décembre 2017 au célèbre Théâtre Bolchoï de Moscou. Avant même ses débuts, l’œuvre a fait sensation à l’échelle internationale. Au cours de sa saison 25/26, le Staatsballett Berlin a présenté pour la première fois cette production extraordinaire sur scène en dehors de la Russie.",
+"fr": "Le ballet Nureyev, plusieurs fois primé, chorégraphié par Yuri Possokhov, composé par Ilya Demutsky et mis en scène par le metteur en scène visionnaire Kirill Serebrennikov, a été créé en décembre 2017 au célèbre théâtre du Bolchoï à Moscou. Avant même ses débuts, l’œuvre a fait sensation à l’échelle internationale. Lors de sa saison 25/26, le Staatsballett Berlin a présenté cette production extraordinaire sur scène pour la première fois en dehors de la Russie.",
 "spoken": "Aucune langue requise (danse)",
 "src": "The multi-award-winning ballet Nureyev, choreographed by Yuri Possokhov, composed by Ilya Demutsky and staged by visionary director Kirill Serebrennikov, premiered in December 2017 at Moscow’s world-famous Bolshoi Theatre. Even before its debut, the work caused a stir internationally. In its 25/26 season, the Staatsballett Berlin brought this extraordinary production to the stage for the first time outside Russia.",
 "surtitles": null,
@@ -951,10 +973,13 @@
 "v": 3
 },
 "3b7b9c4dcec2": {
-"at": "2026-11-10T23:32:08.379243+00:00",
+"at": "2026-11-24T19:01:18.363174+00:00",
+"dur": 105,
 "en": "This concert brings the Berliner Philharmoniker Ensembles’ Beethoven series to a close with two of the composer’s most popular chamber works: the “Gassenhauer Trio”, with its ingenious variations on a popular operatic hit, and his Septet in E-flat major. Both works combine melodic invention with wit and elegance.",
-"fr": "Ce concert clôture la série Berliner Philharmoniker Ensembles’ Beethoven avec deux des œuvres de chambre les plus populaires du compositeur : le « Trio Gassenhauer », avec ses ingénieuses variations sur un succès d’opéra populaire, et son Septuor en mi bémol majeur. Les deux œuvres combinent invention mélodique avec esprit et élégance.",
+"fr": "Ce concert clôt la série Beethoven de Berliner Philharmoniker Ensembles’ avec deux des œuvres de musique de chambre les plus populaires du compositeur : le « Trio Gassenhauer », avec ses variations ingénieuses sur un air d’opéra populaire, et son Septuor en mi bémol majeur. Les deux œuvres allient l’invention mélodique à l’esprit et à l’élégance.",
 "src": "This concert brings the Berliner Philharmoniker Ensembles’ Beethoven series to a close with two of the composer’s most popular chamber works: the “Gassenhauer Trio”, with its ingenious variations on a popular operatic hit, and his Septet in E-flat major. Both works combine melodic invention with wit and elegance.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57167/",
 "v": 3
 },
 "3c17028bb48b": {
@@ -1105,12 +1130,15 @@
 "v": 3
 },
 "4489b3f6dc45": {
-"at": "2026-11-11T00:06:57.406203+00:00",
+"at": "2026-11-24T19:01:50.815303+00:00",
+"dur": 210,
 "en": "Giuseppe Verdi's Don Carlo intertwines family tragedy and historical panorama. This grand opera premiered in 1867 and was repeatedly reworked in the following decades. In the four-act Italian version, the abysses of Spanish absolutism open up even more dramatically: arbitrary rule, an emaciated people, fanatical autodafés – and the experience that friendship can be stronger than the hated bonds of blood. Based on Schiller's",
-"fr": "Le Don Carlo de Giuseppe Verdi entremêle tragédie familiale et panorama historique. Ce grand opéra a été créé en 1867 et a été retravaillé à plusieurs reprises au cours des décennies suivantes. Dans la version italienne en quatre actes, les abîmes de l'absolutisme espagnol s'ouvrent encore plus dramatiquement : règne arbitraire, peuple émacié, autodafés fanatiques – et l'expérience que l'amitié peut être plus forte que les liens du sang détestés. Basé sur Schiller's",
+"fr": "Le Don Carlo de Giuseppe Verdi entremêle tragédie familiale et panorama historique. Ce grand opéra a été créé en 1867 et a été remanié à plusieurs reprises au cours des décennies suivantes. Dans la version italienne en quatre actes, les abîmes de l'absolutisme espagnol s'ouvrent de manière encore plus dramatique : le règne de l'arbitraire, un peuple émacié, des autodafés fanatiques – et la découverte que l'amitié peut être plus forte que les liens du sang tant détestés. D'après Schiller",
 "spoken": "En italien",
 "src": "Giuseppe Verdi's Don Carlo intertwines family tragedy and historical panorama. This grand opera premiered in 1867 and was repeatedly reworked in the following decades. In the four-act Italian version, the abysses of Spanish absolutism open up even more dramatically: arbitrary rule, an emaciated people, fanatical autodafés – and the experience that friendship can be stronger than the hated bonds of blood. Based on Schiller's",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/don-carlo.1385834",
 "v": 3
 },
 "467a21773f16": {
@@ -1150,9 +1178,10 @@
 "v": 3
 },
 "4a523f320f9b": {
-"at": "2026-11-20T16:14:37.844151+00:00",
+"at": "2026-11-24T19:01:13.557012+00:00",
+"dur": null,
 "en": "Malmequer is a Berlin-based DIY punk rock trio of Brazilian friends who connect through the shared experience of living far from home, using music as an outlet to maintain sanity. They transform their lives into raw punk rock, exploring both political and personal aspects of mental health, lifestyle, and the socio-political issues that shape their worldview.",
-"fr": "Malmequer est un trio punk rock DIY basé à Berlin composé d'amis brésiliens qui se connectent grâce à l'expérience partagée de vivre loin de chez eux, utilisant la musique comme un exutoire pour maintenir la raison. Ils transforment leur vie en punk rock brut, explorant les aspects à la fois politiques et personnels de la santé mentale, du mode de vie et des problèmes sociopolitiques qui façonnent leur vision du monde.",
+"fr": "Malmequer est un trio de punk rock DIY basé à Berlin, composé d’amis brésiliens qui se retrouvent dans l’expérience commune de vivre loin de chez eux et qui utilisent la musique comme exutoire pour garder leur santé mentale. Ils transforment leur vie en punk rock brut, explorant à la fois les aspects politiques et personnels de la santé mentale, du mode de vie et des questions sociopolitiques qui façonnent leur vision du monde.",
 "src": "Malmequer is a Berlin-based DIY punk rock trio of Brazilian friends who connect through the shared experience of living far from home, using music as an outlet to maintain sanity. They transform their lives into raw punk rock, exploring both political and personal aspects of mental health, lifestyle, and the socio-political issues that shape their worldview.",
 "tx": 1,
 "u": "https://www.schokoladen-mitte.de/?page=8#e20270516",
@@ -1305,12 +1334,15 @@
 "v": 3
 },
 "534c0f3bf6fc": {
-"at": "2026-11-10T23:32:47.166125+00:00",
-"en": "Benjamin Britten’s War Requiem embodies pacifism as an artistic stance. Yet this anti-militarist, anti-nationalist monument to remembrance has lost none of its significance in today’s political climate. Listen here to director Daniel Kramer talking about his collaboration with Wolfgang Tillmans.",
-"fr": "War Requiem de Benjamin Britten incarne le pacifisme en tant que position artistique. Pourtant, ce monument du souvenir antimilitariste et antinationaliste n’a rien perdu de son importance dans le climat politique actuel. Écoutez ici le réalisateur Daniel Kramer parler de sa collaboration avec Wolfgang Tillmans.",
+"at": "2026-11-24T19:03:10.237152+00:00",
+"dur": 90,
+"en": "«I am the enemy you killed, my friend,» writes an English lieutenant in 1918 on the front in northern France. On the day of the ceasefire, Wilfred Owen falls at the age of 25. The death knell and the peal of peace bells overlap, their echo resonating in Benjamin Britten’s War Requiem: an anti-militarist, anti-nationalist monument of remembrance, collective mourning and personal loss.",
+"fr": "« Je suis l’ennemi que tu as tué, mon ami », écrit un lieutenant anglais en 1918 sur le front du nord de la France. Le jour du cessez-le-feu, Wilfred Owen tombe à l'âge de 25 ans. Le glas et le carillon des cloches de la paix se superposent, leur écho résonnant dans le War Requiem de Benjamin Britten : un monument antimilitariste et antinationaliste du souvenir, du deuil collectif et de la perte personnelle.",
 "spoken": null,
-"src": "Benjamin Britten’s War Requiem embodies pacifism as an artistic stance. Yet this anti-militarist, anti-nationalist monument to remembrance has lost none of its significance in today’s political climate. Listen here to director Daniel Kramer talking about his collaboration with Wolfgang Tillmans.",
+"src": "«I am the enemy you killed, my friend,» writes an English lieutenant in 1918 on the front in northern France. On the day of the ceasefire, Wilfred Owen falls at the age of 25. The death knell and the peal of peace bells overlap, their echo resonating in Benjamin Britten’s War Requiem: an anti-militarist, anti-nationalist monument of remembrance, collective mourning and personal loss.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://deutscheoperberlin.de/en_EN/production/war-requiem.1385838",
 "v": 3
 },
 "537ccc41dbf2": {
@@ -1362,10 +1394,13 @@
 "v": 3
 },
 "58c1220d3fac": {
-"at": "2026-11-10T23:32:33.389605+00:00",
+"at": "2026-11-24T19:02:36.196048+00:00",
+"dur": 90,
 "en": "The organ and timpani are among the concert hall’s most powerful instruments. For this unusual concert, Québec-born organist Isabelle Demers joins Vincent Vogel, principal timpanist of the Berliner Philharmoniker, for a programme that includes solo organ arrangements of music from John Williams’ Star Wars and Igor Stravinsky’s Firebird Suite alongside a new work by Oscar Jockel, former conducting fellow at the Karajan-Akademie and assistant to Kirill Petrenko.",
-"fr": "L’orgue et les timbales comptent parmi les instruments les plus puissants de la salle de concert. Pour ce concert insolite, l’organiste québécoise Isabelle Demers se joint à Vincent Vogel, timbalier principal du Berliner Philharmoniker, pour un programme qui comprend des arrangements pour orgue solo de musiques de Star Wars de John Williams et de la Suite Firebird d’Igor Stravinsky ainsi qu’une nouvelle œuvre d’Oscar Jockel, ancien chef d’orchestre à la Karajan-Akademie et assistant de Kirill Petrenko.",
+"fr": "L’orgue et les timbales comptent parmi les instruments les plus puissants de la salle de concert. Pour ce concert insolite, l’organiste québécoise Isabelle Demers se joint à Vincent Vogel, timbalier principal de l’Orchestre philharmonique de Berlin, pour un programme qui comprend des arrangements pour orgue solo de musiques issues de Star Wars de John Williams et de la Suite de l’Oiseau de feu d’Igor Stravinsky, ainsi qu’une nouvelle œuvre d’Oscar Jockel, ancien boursier chef d’orchestre à l’Académie Karajan et assistant de Kirill Petrenko.",
 "src": "The organ and timpani are among the concert hall’s most powerful instruments. For this unusual concert, Québec-born organist Isabelle Demers joins Vincent Vogel, principal timpanist of the Berliner Philharmoniker, for a programme that includes solo organ arrangements of music from John Williams’ Star Wars and Igor Stravinsky’s Firebird Suite alongside a new work by Oscar Jockel, former conducting fellow at the Karajan-Akademie and assistant to Kirill Petrenko.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57179/",
 "v": 3
 },
 "58e7d2dfba5b": {
@@ -1436,10 +1471,13 @@
 "v": 3
 },
 "5d43ef01438e": {
-"at": "2026-11-10T23:32:17.220684+00:00",
+"at": "2026-11-24T19:01:46.003296+00:00",
+"dur": 120,
 "en": "Two courageous children who free themselves from a witch’s clutches through their own ingenuity: Engelbert Humperdinck turned the popular fairy tale into an opera that continues to enchant audiences across generations. Its combination of folk-like melodies with a Wagnerian orchestral sound is unique. The colourful staged production is conducted by Kirill Petrenko.",
-"fr": "Deux enfants courageux qui, grâce à leur ingéniosité, se libèrent des griffes d’une sorcière : Engelbert Humperdinck a transformé le conte de fées populaire en un opéra qui continue d’enchanter le public de génération en génération. Sa combinaison de mélodies folkloriques avec un son orchestral wagnérien est unique. La mise en scène colorée est dirigée par Kirill Petrenko.",
+"fr": "Deux enfants courageux qui se libèrent des griffes d'une sorcière grâce à leur propre ingéniosité : Engelbert Humperdinck a transformé le conte de fées populaire en un opéra qui continue d'enchanter le public à travers les générations. Sa combinaison de mélodies de type folklorique avec un son orchestral wagnérien est unique. La mise en scène colorée est dirigée par Kirill Petrenko.",
 "src": "Two courageous children who free themselves from a witch’s clutches through their own ingenuity: Engelbert Humperdinck turned the popular fairy tale into an opera that continues to enchant audiences across generations. Its combination of folk-like melodies with a Wagnerian orchestral sound is unique. The colourful staged production is conducted by Kirill Petrenko.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57170/",
 "v": 3
 },
 "5d4fff3c50b0": {
@@ -1482,12 +1520,15 @@
 "v": 3
 },
 "610a2af3c059": {
-"at": "2026-11-18T22:42:40.967934+00:00",
+"at": "2026-11-24T19:02:05.995773+00:00",
+"dur": null,
 "en": "Marco Goecke's Der Liebhaber is based on Marguerite Duras’ 1984 novel L’Amant . In partly autobiographical fragments, Duras recounts the encounter between a fifteen-year-old French girl and a significantly older Chinese lover in colonial Indochina, today’s Vietnam.",
-"fr": "Der Liebhaber de Marco Goecke est basé sur le roman L'Amant de Marguerite Duras de 1984. Dans des fragments en partie autobiographiques, Duras raconte la rencontre entre une jeune Française de quinze ans et un amant chinois nettement plus âgé dans l’Indochine coloniale, l’actuel Vietnam.",
+"fr": "Der Liebhaber de Marco Goecke est basé sur le roman L’Amant de Marguerite Duras, publié en 1984. Dans des fragments en partie autobiographiques, Duras raconte la rencontre entre une jeune Française de quinze ans et un amant chinois nettement plus âgé dans l'Indochine coloniale, l'actuel Vietnam.",
 "spoken": "Aucune langue requise (danse)",
 "src": "Marco Goecke's Der Liebhaber is based on Marguerite Duras’ 1984 novel L’Amant . In partly autobiographical fragments, Duras recounts the encounter between a fifteen-year-old French girl and a significantly older Chinese lover in colonial Indochina, today’s Vietnam.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-liebhaber-en/350.html",
 "v": 3
 },
 "6145641ba17c": {
@@ -1498,10 +1539,13 @@
 "v": 3
 },
 "61c2fb21035e": {
-"at": "2026-11-10T23:32:52.050946+00:00",
+"at": "2026-11-24T19:03:19.485201+00:00",
+"dur": 120,
 "en": "Two ensembles explore different ways of bringing African musical traditions into dialogue with the present. Swedish singer Sousou and Senegal-born kora virtuoso Maher Cissoko bring together the musical traditions of West Africa with influences from folk, reggae, soul and jazz. Alongside them, the Zawose Queens combine the ritual music of Tanzania with contemporary electronic sounds.",
-"fr": "Deux ensembles explorent différentes manières de faire dialoguer les traditions musicales africaines avec le présent. Le chanteur suédois Sousou et le virtuose de la kora sénégalais Maher Cissoko réunissent les traditions musicales de l'Afrique de l'Ouest avec des influences du folk, du reggae, de la soul et du jazz. A leurs côtés, les Zawose Queens allient la musique rituelle de Tanzanie aux sonorités électroniques contemporaines.",
+"fr": "Deux ensembles explorent différentes manières de faire dialoguer les traditions musicales africaines avec le présent. La chanteuse suédoise Sousou et le virtuose de la kora d’origine sénégalaise Maher Cissoko associent les traditions musicales de l’Afrique de l’Ouest à des influences folk, reggae, soul et jazz. À leurs côtés, les Zawose Queens combinent la musique rituelle de Tanzanie avec des sons électroniques contemporains.",
 "src": "Two ensembles explore different ways of bringing African musical traditions into dialogue with the present. Swedish singer Sousou and Senegal-born kora virtuoso Maher Cissoko bring together the musical traditions of West Africa with influences from folk, reggae, soul and jazz. Alongside them, the Zawose Queens combine the ritual music of Tanzania with contemporary electronic sounds.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57185/",
 "v": 3
 },
 "61d3ab30484c": {
@@ -1539,7 +1583,8 @@
 "v": 3
 },
 "6367fdfd83f3": {
-"at": "2026-11-22T13:30:21.569413+00:00",
+"at": "2026-11-24T19:02:20.980380+00:00",
+"dur": 180,
 "en": "",
 "fr": "",
 "spoken": "En russe",
@@ -1746,10 +1791,13 @@
 "v": 3
 },
 "73ea2332c96f": {
-"at": "2026-11-10T23:32:10.865911+00:00",
+"at": "2026-11-24T19:01:31.048872+00:00",
+"dur": 120,
 "en": "Young South Korean pianist Yunchan Lim has already won audience accolades with his interpretation of Sergei Rachmaninoff’s Fourth Piano Concerto, bringing a wealth of expressive nuance to this epic, extravagant work. Making his debut with the Berliner Philharmoniker, he performs under the direction of Klaus Mäkelä. Mäkelä also conducts Jean Sibelius’s last complete symphony: a dark, archaic work that, as he puts it, is “held together by a single great breath”.",
-"fr": "Le jeune pianiste sud-coréen Yunchan Lim a déjà remporté les éloges du public avec son interprétation du Quatrième Concerto pour piano de Sergueï Rachmaninov, apportant une richesse de nuances expressives à cette œuvre épique et extravagante. Faisant ses débuts avec le Berliner Philharmoniker, il se produit sous la direction de Klaus Mäkelä. Mäkelä dirige également la dernière symphonie complète de Jean Sibelius : une œuvre sombre et archaïque qui, comme il le dit, est « tenue par un seul grand souffle ».",
+"fr": "Le jeune pianiste sud-coréen Yunchan Lim a déjà remporté les éloges du public grâce à son interprétation du Quatrième Concerto pour piano de Sergueï Rachmaninov, apportant une grande richesse de nuances expressives à cette œuvre épique et extravagante. Faisant ses débuts avec l'Orchestre philharmonique de Berlin, il se produit sous la direction de Klaus Mäkelä. Mäkelä dirige également la dernière symphonie complète de Jean Sibelius : une œuvre sombre et archaïque qui, selon ses propres termes, est « maintenue par un seul grand souffle ».",
 "src": "Young South Korean pianist Yunchan Lim has already won audience accolades with his interpretation of Sergei Rachmaninoff’s Fourth Piano Concerto, bringing a wealth of expressive nuance to this epic, extravagant work. Making his debut with the Berliner Philharmoniker, he performs under the direction of Klaus Mäkelä. Mäkelä also conducts Jean Sibelius’s last complete symphony: a dark, archaic work that, as he puts it, is “held together by a single great breath”.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57168/",
 "v": 3
 },
 "75326d4d9345": {
@@ -1843,9 +1891,10 @@
 "v": 3
 },
 "7b4e72facde7": {
-"at": "2026-11-20T01:22:22.432977+00:00",
+"at": "2026-11-24T19:02:57.340163+00:00",
+"dur": null,
 "en": "From Buenos Aires to Chicago, from Helsinki to Tokyo, and from Auckland to Shanghai: Barrie Kosky’s production of The Magic Flute has delighted audiences around the world and can, without exaggeration, be called the ultimate export hit of the Komische Oper Berlin. After a two-year absence, Kosky’s Magic Flute is finally back on stage in Berlin.",
-"fr": "De Buenos Aires à Chicago, d’Helsinki à Tokyo et d’Auckland à Shanghai : la production de The Magic Flute de Barrie Kosky a ravi le public du monde entier et peut, sans exagération, être considérée comme le succès d’exportation ultime du Komische Oper Berlin. Après deux ans d’absence, la Flûte enchantée de Kosky est enfin de retour sur scène à Berlin.",
+"fr": "De Buenos Aires à Chicago, d'Helsinki à Tokyo et d'Auckland à Shanghai : la mise en scène de The Magic Flute par Barrie Kosky a enchanté le public du monde entier et peut, sans exagération, être qualifiée de plus grand succès d'exportation du Komische Oper Berlin. Après deux ans d'absence, la Flûte enchantée de Kosky est enfin de retour sur scène à Berlin.",
 "spoken": null,
 "src": "From Buenos Aires to Chicago, from Helsinki to Tokyo, and from Auckland to Shanghai: Barrie Kosky’s production of The Magic Flute has delighted audiences around the world and can, without exaggeration, be called the ultimate export hit of the Komische Oper Berlin. After a two-year absence, Kosky’s Magic Flute is finally back on stage in Berlin.",
 "surtitles": "surtitres anglais",
@@ -1890,19 +1939,20 @@
 "v": 3
 },
 "7e1dd21c1512": {
-"at": "2026-11-24T16:01:47.359004+00:00",
+"at": "2026-11-24T19:00:39.526642+00:00",
 "dur": null,
-"en": "COOGAN'S BLUFF: “Flying To The Stars” – 10 years of timeless and weightless, an album that has never stopped taking off! For the first time, the band is celebrating an anniversary - with their favorite album: Flying To The Stars.",
-"fr": "COOGAN'S BLUFF : « Flying To The Stars » – 10 ans d'intemporel et d'apesanteur, un album qui n'a jamais cessé de décoller ! Pour la première fois, le groupe fête un anniversaire - avec son album préféré : Flying To The Stars.",
+"en": "COOGANS BLUFF: \"Flying To The Stars\" – 10 years of being timeless and weightless, an album that has never stopped taking off! For the first time, the band is celebrating an anniversary – and with their favorite album: Flying To The Stars.",
+"fr": "COOGANS BLUFF : « Flying To The Stars » – 10 ans hors du temps et en apesanteur, un album qui n’a jamais cessé de décoller ! Pour la première fois, le groupe célèbre un anniversaire – et ce, avec son album préféré : Flying To The Stars.",
 "src": "COOGANS BLUFF: „Flying To The Stars“ – 10 Jahre zeit- und schwerelos, ein Album, das nie aufgehört hat abzuheben! Zum ersten Mal feiert die Band ein Jubiläum – und das mit ihrem Lieblingsalbum: Flying To The Stars.",
 "tx": 1,
 "u": "https://www.urbanspree.com/program/concerts/coogans-bluff-10-years-of-flying-to-the-stars.html",
 "v": 3
 },
 "7ed9752eb707": {
-"at": "2026-11-20T01:22:38.328442+00:00",
+"at": "2026-11-24T19:04:00.234716+00:00",
+"dur": null,
 "en": "What does it mean for a Jewish author today to discuss anti-Zionism as a Jewish legacy on a public stage in Berlin? Which Jewish traditions had to be repressed and replaced so that a single one could be declared the only legitimate version?",
-"fr": "Qu’est-ce que cela signifie pour un auteur juif aujourd’hui de discuter de l’antisionisme en tant qu’héritage juif sur la scène publique à Berlin ? Quelles traditions juives devaient être réprimées et remplacées pour qu’une seule puisse être déclarée comme la seule version légitime ?",
+"fr": "Que signifie aujourd’hui, pour un auteur juif, aborder l’antisionisme en tant qu’héritage juif sur une scène publique à Berlin ? Quelles traditions juives a-t-il fallu réprimer et remplacer pour qu’une seule puisse être déclarée comme étant la seule version légitime ?",
 "spoken": "En anglais",
 "src": "What does it mean for a Jewish author today to discuss anti-Zionism as a Jewish legacy on a public stage in Berlin? Which Jewish traditions had to be repressed and replaced so that a single one could be declared the only legitimate version?",
 "surtitles": null,
@@ -1936,6 +1986,16 @@
 "en": "Dawoud Bey (b. 1953, New York) is an American photographer, artist, and educator whose work explores questions of visibility, power, race, and historical memory. C/O Berlin presents his first major monographic exhibition in Europe, bringing together significant bodies of work such as Night Coming Tenderly, Black and The Birmingham Project , alongside the premiere of Berlin / Africa , a new series developed over the past two years.",
 "fr": "Dawoud Bey (né en 1953 à New York) est un photographe, artiste et éducateur américain dont le travail explore les questions de visibilité, de pouvoir, de race et de mémoire historique. C/O Berlin présente sa première grande exposition monographique en Europe, réunissant des corpus d'œuvres importants tels que Night Coming Tenderly, Black et The Birmingham Project, parallèlement à la première de Berlin / Africa, une nouvelle série développée au cours des deux dernières années.",
 "src": "Dawoud Bey (b. 1953, New York) is an American photographer, artist, and educator whose work explores questions of visibility, power, race, and historical memory. C/O Berlin presents his first major monographic exhibition in Europe, bringing together significant bodies of work such as Night Coming Tenderly, Black and The Birmingham Project , alongside the premiere of Berlin / Africa , a new series developed over the past two years.",
+"v": 3
+},
+"819078395a22": {
+"at": "2026-11-24T19:00:43.843991+00:00",
+"dur": null,
+"en": "NEOZOON is a collective of female artists that challenges patriarchal power structures, often through use of humour. In their three-part film series LAST THINGS, the artists explore ways that Christian concepts such as creation, heaven, and hell shape humanity’s relationship with other living beings.",
+"fr": "NEOZOON est un collectif d'artistes féminines qui remet en question les structures de pouvoir patriarcales, souvent par le biais de l'humour. Dans leur série de films en trois parties intitulée LAST THINGS, les artistes explorent la manière dont des concepts chrétiens tels que la création, le paradis et l'enfer façonnent la relation de l'humanité avec les autres êtres vivants.",
+"src": "NEOZOON is a collective of female artists that challenges patriarchal power structures, often through use of humour. In their three-part film series LAST THINGS, the artists explore ways that Christian concepts such as creation, heaven, and hell shape humanity’s relationship with other living beings.",
+"tx": 1,
+"u": "https://berlinischegalerie.de/en/exhibitions/preview/neozoon/",
 "v": 3
 },
 "83580ebf7774": {
@@ -2130,10 +2190,13 @@
 "v": 3
 },
 "8d4b36dbf701": {
-"at": "2026-11-10T23:32:43.043375+00:00",
+"at": "2026-11-24T19:03:05.013916+00:00",
+"dur": 120,
 "en": "Alan Gilbert describes Robert Schumann’s Symphony No. 2 as a “musical autobiography” – a work shaped both by the composer’s love for his wife Clara and by his artistic model, Johann Sebastian Bach. Schumann combines dense contrapuntal writing with irresistibly intimate melodies. Brett Dean, this season’s Composer in Residence, has called his Violin Concerto The Lost Art of Letter Writing a “pretty tricky piece” – tailor-made for Isabelle Faust’s precision and clarity.",
-"fr": "Alan Gilbert décrit la Symphonie n°2 de Robert Schumann comme une « autobiographie musicale » – une œuvre façonnée à la fois par l’amour du compositeur pour son épouse Clara et par son modèle artistique, Johann Sebastian Bach. Schumann combine une écriture contrapuntique dense avec des mélodies irrésistiblement intimes. Brett Dean, compositeur en résidence de cette saison, a qualifié son Concerto pour violon The Lost Art of Letter Writing de « pièce assez délicate » – taillée sur mesure pour la précision et la clarté d’Isabelle Faust.",
+"fr": "Alan Gilbert décrit la Symphonie n° 2 de Robert Schumann comme une « autobiographie musicale » – une œuvre façonnée à la fois par l'amour du compositeur pour son épouse Clara et par son modèle artistique, Johann Sebastian Bach. Schumann allie une écriture contrapuntique dense à des mélodies irrésistiblement intimes. Brett Dean, compositeur en résidence cette saison, a qualifié son Concerto pour violon The Lost Art of Letter Writing de « pièce assez délicate », taillée sur mesure pour la précision et la clarté d'Isabelle Faust.",
 "src": "Alan Gilbert describes Robert Schumann’s Symphony No. 2 as a “musical autobiography” – a work shaped both by the composer’s love for his wife Clara and by his artistic model, Johann Sebastian Bach. Schumann combines dense contrapuntal writing with irresistibly intimate melodies. Brett Dean, this season’s Composer in Residence, has called his Violin Concerto The Lost Art of Letter Writing a “pretty tricky piece” – tailor-made for Isabelle Faust’s precision and clarity.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57182/",
 "v": 3
 },
 "8deeceb7ff76": {
@@ -2299,12 +2362,15 @@
 "v": 3
 },
 "9baad9ad10f6": {
-"at": "2026-11-11T00:06:49.296214+00:00",
+"at": "2026-11-24T19:01:36.567405+00:00",
+"dur": null,
 "en": "Fate or calamitous accident? Leonora meets her lover Alvaro clandestinely. But they are caught by Leonora’s father, who is decidedly opposed to this relationship. To deescalate the situation, Alvaro tosses his weapon aside, but a shot is accidentally discharged and the father dies. The characters find themselves more and more entrapped in a maelstrom of guilt, vengeance, and persecution.",
-"fr": "Destin ou accident calamiteux ? Leonora rencontre son amant Alvaro clandestinement. Mais ils sont pris par le père de Leonora, qui est résolument opposé à cette relation. Pour désamorcer la situation, Alvaro jette son arme de côté, mais un coup de feu est accidentellement tiré et le père meurt. Les personnages se retrouvent de plus en plus pris au piège dans un maelström de culpabilité, de vengeance et de persécution.",
+"fr": "Destin ou accident funeste ? Léonora rencontre son amant Álvaro en secret. Mais ils sont surpris par le père de Léonora, qui s'oppose résolument à cette relation. Pour désamorcer la situation, Alvaro jette son arme de côté, mais un coup de feu part accidentellement et le père meurt. Les personnages se retrouvent de plus en plus pris au piège dans un tourbillon de culpabilité, de vengeance et de persécution.",
 "spoken": "En italien",
 "src": "Fate or calamitous accident? Leonora meets her lover Alvaro clandestinely. But they are caught by Leonora’s father, who is decidedly opposed to this relationship. To deescalate the situation, Alvaro tosses his weapon aside, but a shot is accidentally discharged and the father dies. The characters find themselves more and more entrapped in a maelstrom of guilt, vengeance, and persecution.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/la-forza-del-destino.27278/",
 "v": 3
 },
 "9c680ea022d9": {
@@ -2569,10 +2635,13 @@
 "v": 3
 },
 "abaa2488a4ca": {
-"at": "2026-11-10T23:32:22.408800+00:00",
+"at": "2026-11-24T19:02:00.466843+00:00",
+"dur": 105,
 "en": "Two facets of Romanticism: Felix Mendelssohn Bartholdy’s vivid, shimmering incidental music for Shakespeare’s A Midsummer Night’s Dream enchants with its elfin levity, and with the radiance of its famous Wedding March. Robert Schumann, by contrast, adopts a reflective tone in his Cello Concerto. Yo-Yo Ma, arguably the most famous cellist of our time, returns to the Berliner Philharmoniker after a long absence.",
-"fr": "Deux facettes du romantisme : la musique de scène vive et chatoyante de Felix Mendelssohn Bartholdy pour le Songe d’une nuit d’été de Shakespeare enchante par sa légèreté elfique et par l’éclat de sa célèbre marche nuptiale. Robert Schumann, en revanche, adopte un ton réfléchi dans son Concerto pour violoncelle. Yo-Yo Ma, sans doute le violoncelliste le plus célèbre de notre époque, revient au Berliner Philharmoniker après une longue absence.",
+"fr": "Deux facettes du romantisme : la musique de scène vive et chatoyante de Felix Mendelssohn Bartholdy pour Le Songe d'une nuit d'été de Shakespeare enchante par sa légèreté elfique et par l'éclat de sa célèbre Marche nuptiale. Robert Schumann, en revanche, adopte un ton contemplatif dans son Concerto pour violoncelle. Yo-Yo Ma, sans doute le violoncelliste le plus célèbre de notre époque, revient à l'Orchestre philharmonique de Berlin après une longue absence.",
 "src": "Two facets of Romanticism: Felix Mendelssohn Bartholdy’s vivid, shimmering incidental music for Shakespeare’s A Midsummer Night’s Dream enchants with its elfin levity, and with the radiance of its famous Wedding March. Robert Schumann, by contrast, adopts a reflective tone in his Cello Concerto. Yo-Yo Ma, arguably the most famous cellist of our time, returns to the Berliner Philharmoniker after a long absence.",
+"tx": 1,
+"u": "https://www.berliner-philharmoniker.de/en/concert/calendar/57173/",
 "v": 3
 },
 "abd11f94c09d": {
@@ -2635,6 +2704,16 @@
 "u": "https://www.deutschestheater.de/en/program/productions/der-liebling",
 "v": 3
 },
+"b02e0d6f8944": {
+"at": "2026-11-24T19:04:26.589480+00:00",
+"dur": null,
+"en": "A year of silence is behind us. A year of waiting, of anxiety, of longing. But lo! The little light is burning again. 🕯️✨ After what felt like an eternity of abstinence, GEILE LEUDE WEIHNACHTSFREUDE rises from the festive ashes and returns to the arms of her flock. For a year, you had to do without Hallelujah, without tinsel, and without rejoicing together.",
+"fr": "Une année de silence est derrière nous. Une année d’attente, d’inquiétude, de nostalgie. Mais regardez ! La petite lumière brille à nouveau. 🕯️✨ Après ce qui a semblé être une éternité d’abstinence, GEILE LEUDE WEIHNACHTSFREUDE se relève des cendres festives et retourne dans les bras de ses ouailles. Pendant un an, vous avez dû vous passer d’alléluias, de guirlandes et de réjouissances collectives.",
+"src": "Ein Jahr der Stille liegt hinter uns. Ein Jahr des Wartens, des Bangens, des Vermissens. Doch siehe! Das Lichtlein brennt wieder. 🕯️✨ Nach einer gefühlten Ewigkeit der Abstinenz erhebt sich GEILE LEUDE WEIHNACHTSFREUDE aus der festlichen Asche und kehrt zurück in die Arme ihrer Schäfchen. Ein Jahr lang musstet ihr ohne Halleluja, ohne Lametta und ohne gemeinschaftliches Frohlocken auskommen.",
+"tx": 1,
+"u": "https://www.schokoladen-mitte.de/?page=3#e20261218",
+"v": 3
+},
 "b14aa6919709": {
 "at": "2026-11-23T19:20:42.657001+00:00",
 "dur": 135,
@@ -2684,9 +2763,10 @@
 "v": 3
 },
 "b52e65280764": {
-"at": "2026-11-20T01:22:19.064781+00:00",
+"at": "2026-11-24T19:02:31.220775+00:00",
+"dur": null,
 "en": "Sondheim’s hit musical is staged by Barrie Kosky as a ‘children’s theatre nightmare collage’, blending revulsion and comedy with a fascination for horror. He mercilessly digs into the question of what humans are capable of when they follow the logic of revenge to the bitter end. The barber Benjamin Barker is unjustly sentenced to a long prison term by Judge Turpin, who has his eye on Barker’s wife. Years later, Barker returns with only one thing on his mind: revenge.",
-"fr": "La comédie musicale à succès de Sondheim est mise en scène par Barrie Kosky comme un « collage de cauchemars de théâtre pour enfants », mêlant répulsion et comédie à une fascination pour l’horreur. Il approfondit sans pitié la question de savoir de quoi les humains sont capables lorsqu’ils suivent jusqu’au bout la logique de la vengeance. Le barbier Benjamin Barker est injustement condamné à une longue peine de prison par le juge Turpin, qui lorgne sur l'épouse de Barker. Des années plus tard, Barker revient avec une seule chose en tête : la vengeance.",
+"fr": "La comédie musicale à succès de Sondheim est mise en scène par Barrie Kosky comme un « collage cauchemardesque de théâtre pour enfants », mêlant répulsion et comédie à une fascination pour l'horreur. Il explore sans pitié la question de ce dont les êtres humains sont capables lorsqu’ils suivent la logique de la vengeance jusqu’au bout. Le barbier Benjamin Barker est injustement condamné à une longue peine de prison par le juge Turpin, qui convoite l'épouse de Barker. Des années plus tard, Barker revient avec une seule chose en tête : la vengeance.",
 "spoken": null,
 "src": "Sondheim’s hit musical is staged by Barrie Kosky as a ‘children’s theatre nightmare collage’, blending revulsion and comedy with a fascination for horror. He mercilessly digs into the question of what humans are capable of when they follow the logic of revenge to the bitter end. The barber Benjamin Barker is unjustly sentenced to a long prison term by Judge Turpin, who has his eye on Barker’s wife. Years later, Barker returns with only one thing on his mind: revenge.",
 "surtitles": "surtitres anglais",
@@ -2856,12 +2936,15 @@
 "v": 3
 },
 "c0bb6da826f0": {
-"at": "2026-11-11T00:37:29.924235+00:00",
+"at": "2026-11-24T19:01:22.504520+00:00",
+"dur": 60,
 "en": "When author Malcolm Gladwell said “Ten thousand hours is the magic number of greatness”, he captured one part of the complex debate about what defines mastery. Australian circus superstars Gravity and Other Myths are masters of the impossible and this is their celebration of the overwhelming amount of time, sweat and joyous invention required to do what they do.",
-"fr": "Lorsque l'auteur Malcolm Gladwell a déclaré que « Ten Thousand Hours est le nombre magique de la grandeur », il a capturé une partie du débat complexe sur ce qui définit la maîtrise. Les superstars du cirque australien Gravity and Other Myths sont les maîtres de l'impossible et c'est leur célébration de la quantité écrasante de temps, de sueur et d'invention joyeuse nécessaire pour faire ce qu'ils font.",
+"fr": "Lorsque l'auteur Malcolm Gladwell a déclaré : « Ten Thousand Hours est le nombre magique de la grandeur », il a saisi une partie du débat complexe sur ce qui définit la maîtrise. Les superstars australiennes du cirque Gravity and Other Myths sont des maîtres de l'impossible, et c'est leur façon de célébrer la quantité considérable de temps, de sueur et d'invention joyeuse nécessaire pour accomplir ce qu'ils font.",
 "spoken": "Aucune langue requise (cirque)",
 "src": "When author Malcolm Gladwell said “Ten thousand hours is the magic number of greatness”, he captured one part of the complex debate about what defines mastery. Australian circus superstars Gravity and Other Myths are masters of the impossible and this is their celebration of the overwhelming amount of time, sweat and joyous invention required to do what they do.",
 "surtitles": null,
+"tx": 1,
+"u": "https://chamaeleonberlin.com/en/shows/ten-thousand-hours/",
 "v": 3
 },
 "c15ca7ed8eac": {
@@ -3114,14 +3197,15 @@
 "v": 3
 },
 "d03843410529": {
-"at": "2026-11-20T01:22:36.250184+00:00",
+"at": "2026-11-24T19:03:55.286766+00:00",
+"dur": 135,
 "en": "Adieu, Trixie Unconventional. Unperturbed. Compassionate. And a commanding presence on stage—a monolith of structure, clarity, and precision. Beatrice Cordua danced at the Volksbühne as early as the 1990s under Johann Kresnik and recently returned as a matadora with Florentina Holzinger and ensemble. Nudity was her costume in this raw form of being, and costume, she believed, was not a matter of age. She became a queen and remains a star in the dance sky.",
-"fr": "Adieu, Trixie non conventionnelle. Imperturbable. Compatissant. Et une présence imposante sur scène – un monolithe de structure, de clarté et de précision. Beatrice Cordua a dansé à la Volksbühne dès les années 1990 sous la direction de Johann Kresnik et est récemment revenue comme matadora avec Florentina Holzinger et l'ensemble. La nudité était son costume dans cette forme brute d'être, et le costume, croyait-elle, n'était pas une question d'âge. Elle est devenue reine et reste une star dans le ciel de la danse.",
+"fr": "Adieu, Trixie Non conventionnelle. Imperturbable. Compassionnante. Et une présence imposante sur scène : un monolithe de structure, de clarté et de précision. Beatrice Cordua dansait au Volksbühne dès les années 1990 sous la direction de Johann Kresnik et est récemment revenue en tant que matadora avec Florentina Holzinger et son ensemble. La nudité était son costume dans cette forme brute d’être, et le costume, croyait-elle, n’était pas une question d’âge. Elle est devenue une reine et reste une étoile dans le firmament de la danse.",
 "spoken": null,
 "src": "Adieu, Trixie Unconventional. Unperturbed. Compassionate. And a commanding presence on stage—a monolith of structure, clarity, and precision. Beatrice Cordua danced at the Volksbühne as early as the 1990s under Johann Kresnik and recently returned as a matadora with Florentina Holzinger and ensemble. Nudity was her costume in this raw form of being, and costume, she believed, was not a matter of age. She became a queen and remains a star in the dance sky.",
 "surtitles": "surtitres allemands et anglais",
 "tx": 1,
-"u": "https://www.volksbuehne-berlin.de/en/productions/a-year-without-summer/20261128-1830/",
+"u": "https://www.volksbuehne-berlin.de/en/productions/a-year-without-summer/20261128-1930/",
 "v": 3
 },
 "d0998cbf45f7": {
@@ -3173,7 +3257,8 @@
 "v": 3
 },
 "d2a38a692501": {
-"at": "2026-11-21T13:37:40.875893+00:00",
+"at": "2026-11-24T19:02:02.138795+00:00",
+"dur": null,
 "en": "",
 "fr": "",
 "src": null,
@@ -3223,12 +3308,15 @@
 "v": 3
 },
 "d5892be7ee10": {
-"at": "2026-11-18T22:42:36.519858+00:00",
+"at": "2026-11-24T19:01:55.399636+00:00",
+"dur": null,
 "en": "Company member Dominik White Slavkovský creates Chicxulub or The Devil’s Flea , a dance piece for children aged 6 and up – and for grown-ups who aren’t afraid of eccentric encounters with dinosaurs, off-the-wall characters, and a wildly imaginative world. At the heart of the story are a young prince and his sister, who escape the monotony of everyday life by diving into a digital parallel universe.",
-"fr": "Dominik White Slavkovský, membre de la compagnie, crée Chicxulub ou La puce du diable, une pièce de danse pour les enfants à partir de 6 ans – et pour les adultes qui n'ont pas peur des rencontres excentriques avec des dinosaures, des personnages décalés et un monde débordant d'imagination. Au cœur de l'histoire se trouvent un jeune prince et sa sœur, qui échappent à la monotonie du quotidien en plongeant dans un univers numérique parallèle.",
+"fr": "Dominik White Slavkovský, membre de la compagnie, crée Chicxulub ou La Puce du diable, une pièce de danse destinée aux enfants à partir de 6 ans – et aux adultes qui n’ont pas peur des rencontres excentriques avec des dinosaures, des personnages décalés et un univers débordant d’imagination. Au cœur de l’histoire se trouvent un jeune prince et sa sœur, qui échappent à la monotonie de la vie quotidienne en plongeant dans un univers parallèle numérique.",
 "spoken": "Aucune langue requise (danse)",
 "src": "Company member Dominik White Slavkovský creates Chicxulub or The Devil’s Flea , a dance piece for children aged 6 and up – and for grown-ups who aren’t afraid of eccentric encounters with dinosaurs, off-the-wall characters, and a wildly imaginative world. At the heart of the story are a young prince and his sister, who escape the monotony of everyday life by diving into a digital parallel universe.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/chicxulub-en/305.html",
 "v": 3
 },
 "d5ddc77b09c3": {
@@ -3336,7 +3424,8 @@
 "v": 3
 },
 "de1b7184808b": {
-"at": "2026-11-22T13:30:23.051389+00:00",
+"at": "2026-11-24T19:04:02.828089+00:00",
+"dur": 300,
 "en": "",
 "fr": "",
 "spoken": null,
@@ -3543,12 +3632,15 @@
 "v": 3
 },
 "ed6084565f94": {
-"at": "2026-11-08T15:18:25.353695+00:00",
-"en": "T-Boy is a trans teenager looking for intimate relationships with other gay men on the sex app Grindr. It doesn't take long for T-Boy to realise that his dates don't view his body as \"masculine\" – a view that contradicts his own perception of himself. T-Boy sets out on a queer hero's journey: he develops strategies for navigating the subcultural codes of the gay-cis community. In his first solo piece, Joao d'Orey combines an autofictional narrative with music and dance.",
-"fr": "T-Boy est un adolescent trans à la recherche de relations intimes avec d'autres hommes gays sur l'application sexuelle Grindr. Il ne faut pas longtemps à T-Boy pour se rendre compte que ses rendez-vous ne considèrent pas son corps comme « masculin » – une vision qui contredit sa propre perception de lui-même. T-Boy se lance dans le voyage d'un héros queer : il développe des stratégies pour naviguer dans les codes sous-culturels de la communauté gay-cis. Dans sa première pièce solo, Joao d'Orey associe un récit autofictionnel à la musique et à la danse.",
+"at": "2026-11-24T19:03:49.980623+00:00",
+"dur": null,
+"en": "T-Boy is a trans teenager navigating the cis-gay community on the dating app Grindr. Faced with a reality that often perceives his body as non-masculine, T-Boy embarks on a turbulent journey through powerful monologues, music and choreography.",
+"fr": "T-Boy est un adolescent trans qui évolue dans la communauté cisgenre gay sur l'application de rencontres Grindr. Confronté à une réalité qui perçoit souvent son corps comme non masculin, T-Boy se lance dans un parcours mouvementé à travers des monologues percutants, de la musique et de la chorégraphie.",
 "spoken": "En anglais",
-"src": "T-Boy is a trans teenager looking for intimate relationships with other gay men on the sex app Grindr. It doesn't take long for T-Boy to realise that his dates don't view his body as \"masculine\" – a view that contradicts his own perception of himself. T-Boy sets out on a queer hero's journey: he develops strategies for navigating the subcultural codes of the gay-cis community. In his first solo piece, Joao d'Orey combines an autofictional narrative with music and dance.",
+"src": "T-Boy is a trans teenager navigating the cis-gay community on the dating app Grindr. Faced with a reality that often perceives his body as non-masculine, T-Boy embarks on a turbulent journey through powerful monologues, music and choreography.",
 "surtitles": "surtitres anglais",
+"tx": 1,
+"u": "https://www.berliner-ensemble.de/en/production/t-boy-grindr",
 "v": 3
 },
 "ed89f8f6b308": {
@@ -3658,19 +3750,22 @@
 "v": 3
 },
 "f39869cc7b36": {
-"at": "2026-11-18T22:42:43.804898+00:00",
+"at": "2026-11-24T19:03:23.809888+00:00",
+"dur": null,
 "en": "It has been a tradition for decades that the students of the Staatliche Ballett- und Artistikschule Berlin present the results of their training work in a festive gala held every year on the stages of Berlin’s opera houses.",
-"fr": "C’est une tradition depuis des décennies que les étudiants du Staatliche Ballett- und Artistikschule Berlin présentent chaque année les résultats de leur formation lors d’un gala festif sur les scènes des opéras de Berlin.",
+"fr": "Depuis des décennies, il est de tradition que les élèves de la Staatliche Ballett- und Artistikschule Berlin présentent les résultats de leur travail de formation lors d'un gala festif organisé chaque année sur les scènes des opéras berlinois.",
 "spoken": "Aucune langue requise (danse)",
 "src": "It has been a tradition for decades that the students of the Staatliche Ballett- und Artistikschule Berlin present the results of their training work in a festive gala held every year on the stages of Berlin’s opera houses.",
 "surtitles": null,
+"tx": 1,
+"u": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/staatliche-ballett-und-artistikschule/91.html",
 "v": 3
 },
 "f587627b4fca": {
-"at": "2026-11-24T16:01:45.054299+00:00",
+"at": "2026-11-24T19:01:09.280728+00:00",
 "dur": null,
 "en": "KONVENT Construct a Dark Mirror for an Increasingly Dangerous World with Third Album Firesky Fiercely sinister and heavy as ever, Danish heavy hitters KONVENT return with their third album, Firesky, on November 6, 2026 via Napalm Records.",
-"fr": "KONVENT construit un miroir sombre pour un monde de plus en plus dangereux avec son troisième album Firesky Farouchement sinistres et lourds comme jamais, les gros frappeurs danois KONVENT reviennent avec leur troisième album, Firesky, le 6 novembre 2026 via Napalm Records.",
+"fr": "KONVENT : un miroir sombre pour un monde de plus en plus dangereux avec leur troisième album, Firesky Plus sinistres et plus lourds que jamais, les poids lourds danois de KONVENT reviennent avec leur troisième album, Firesky, le 6 novembre 2026, sous le label Napalm Records.",
 "spoken": null,
 "src": "KONVENT Construct a Dark Mirror for an Increasingly Dangerous World with Third Album Firesky Fiercely sinister and heavy as ever, Danish heavy hitters KONVENT return with their third album, Firesky, on November 6, 2026 via Napalm Records.",
 "surtitles": "surtitres anglais",
@@ -3826,12 +3921,15 @@
 "v": 3
 },
 "fff43d407708": {
-"at": "2026-11-11T00:37:34.047083+00:00",
+"at": "2026-11-24T19:02:52.266962+00:00",
+"dur": null,
 "en": "A storm rages off the coast of Crete, forcing King Idomeneo, who is returning from the Trojan War, to make an ill-fated promise to Neptune: if the enraged god lets him reach land safely, he will sacrifice the first man he meets. When Idomeneo arrives on the beach, he meets his son Idamante. But the unforgiving world of the gods seems determined to exact the king’s promise.",
-"fr": "Une tempête fait rage au large des côtes de Crète, forçant le roi Idomeneo, qui revient de la guerre de Troie, à faire une promesse malheureuse à Neptune : si le dieu enragé le laisse atteindre la terre en toute sécurité, il sacrifiera le premier homme qu'il rencontrera. Quand Idomeneo arrive sur la plage, il rencontre son fils Idamante. Mais le monde impitoyable des dieux semble déterminé à exiger la promesse du roi.",
+"fr": "Une tempête fait rage au large des côtes de la Crète, obligeant le roi Idomeneo, qui revient de la guerre de Troie, à faire une promesse funeste à Neptune : si le dieu en colère le laisse atteindre la terre en toute sécurité, il sacrifiera le premier homme qu’il rencontrera. Lorsque Idomeneo arrive sur la plage, il rencontre son fils Idamante. Mais le monde impitoyable des dieux semble déterminé à exiger que le roi tienne sa promesse.",
 "spoken": "En italien",
 "src": "A storm rages off the coast of Crete, forcing King Idomeneo, who is returning from the Trojan War, to make an ill-fated promise to Neptune: if the enraged god lets him reach land safely, he will sacrifice the first man he meets. When Idomeneo arrives on the beach, he meets his son Idamante. But the unforgiving world of the gods seems determined to exact the king’s promise.",
 "surtitles": "surtitres allemands et anglais",
+"tx": 1,
+"u": "https://www.staatsoper-berlin.de/en/veranstaltungen/idomeneo.7542/",
 "v": 3
 }
 }
