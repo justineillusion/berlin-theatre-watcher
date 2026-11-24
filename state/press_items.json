@@ -9,17 +9,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Schaubühne",
-  "title": "Die Seherin (The Seer)",
-  "url": "https://www.schaubuehne.de/en/produktionen/die-seherin.html?ID_Vorstellung=7262&m=398",
-  "opens": "2026-11-24",
-  "aliases": [
-   "Die Seherin",
-   "The Seer"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Dido & Aeneas",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
@@ -64,6 +53,14 @@
   "title": "20 Minuten",
   "url": "https://www.volksbuehne-berlin.de/en/series-and-projects/20-minuten/20-minuten-2/",
   "opens": "2026-12-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Schaubühne",
+  "title": "Stereophonic",
+  "url": "https://www.schaubuehne.de/en/produktionen/stereophonic.html?ID_Vorstellung=7317&m=398",
+  "opens": "2026-12-04",
   "aliases": []
  },
  {
@@ -135,6 +132,14 @@
    "Im Herzen der Gewalt",
    "History of Violence"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Berliner Ensemble",
+  "title": "Hamlet",
+  "url": "https://www.berliner-ensemble.de/en/production/hamlet",
+  "opens": "2026-12-19",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -362,28 +367,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Deutsches Theater",
-  "title": "Die Räuber (The Robbers)",
-  "url": "https://www.deutschestheater.de/en/program/productions/die-raeuber",
-  "opens": "2026-11-23",
-  "aliases": [
-   "Die Räuber",
-   "The Robbers"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Schokoladen",
-  "title": "The Black Elephant Band (AntiFolk) + Gutter Romance (Akustikpunk)",
-  "url": "https://www.schokoladen-mitte.de/#e20261123",
-  "opens": "2026-11-23",
-  "aliases": [
-   "The Black Elephant Band",
-   "AntiFolk) + Gutter Romance (Akustikpunk"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "HAU Hebbel am Ufer",
   "title": "Dive into You",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/kat-valastur-dive-into-you/",
@@ -437,14 +420,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Alles Glück der Welt",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261125-1930/",
-  "opens": "2026-11-25",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Jazz at Berlin Philharmonic“Conversations”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57062/",
@@ -457,6 +432,14 @@
   "title": "Faux Real + Dance Arts Center + The Nightclubs",
   "url": "https://www.urbanspree.com/program/concerts/faux-real-urban-spree-berlin.html",
   "opens": "2026-11-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Alles Glück der Welt",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261126-2000/",
+  "opens": "2026-11-26",
   "aliases": []
  },
  {
@@ -544,17 +527,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Deutsches Theater",
-  "title": "Der Liebling (Darling)",
-  "url": "https://www.deutschestheater.de/en/program/productions/der-liebling",
-  "opens": "2026-11-28",
-  "aliases": [
-   "Der Liebling",
-   "Darling"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Staatsoper Unter den Linden",
   "title": "Tosca",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
@@ -591,14 +563,6 @@
   "title": "Ulay, Ulay & Abramović",
   "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/ulay-ulay-abramovic/",
   "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Deutsches Theater",
-  "title": "Rosa L.",
-  "url": "https://www.deutschestheater.de/en/program/productions/rosa-l",
-  "opens": "2026-11-29",
   "aliases": []
  },
  {
@@ -728,19 +692,9 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Orpheus in the Underworld",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
-  "opens": "2026-12-04",
-  "aliases": [
-   "Orpheus in der Unterwelt"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Bei Bedarf (punkrock / Berlin) + Pornobalken (punk / MV)",
-  "url": "https://www.schokoladen-mitte.de/?page=2#e20261204",
+  "url": "https://www.schokoladen-mitte.de/#e20261204",
   "opens": "2026-12-04",
   "aliases": [
    "Bei Bedarf",
@@ -926,6 +880,16 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Orpheus in the Underworld",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
+  "opens": "2026-12-11",
+  "aliases": [
+   "Orpheus in der Unterwelt"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Wood In Di Fire (Rocksteady, Reggae & Jamaican Jazz)",
   "url": "https://www.schokoladen-mitte.de/?page=2#e20261211",
@@ -934,6 +898,14 @@
    "Wood In Di Fire",
    "Rocksteady, Reggae & Jamaican Jazz"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Urban Spree",
+  "title": "KOROWA — A Night of Live & Dark Sounds",
+  "url": "https://www.urbanspree.com/program/concerts/korowa-—-a-night-of-live-and-dark-sounds.html",
+  "opens": "2026-12-11",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1020,6 +992,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsches Theater",
+  "title": "Rosa L.",
+  "url": "https://www.deutschestheater.de/en/program/productions/rosa-l",
+  "opens": "2026-12-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Maxime Pascal makes his debut with Berlioz’s “L’Enfance du Christ”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57079/",
@@ -1095,6 +1075,24 @@
  },
  {
   "kind": "theatre",
+  "venue": "Urban Spree",
+  "title": "hubris. (Postrock, CH) | Berlin Show @ Urban Spree",
+  "url": "https://www.urbanspree.com/program/concerts/hubris.-(postrock,-ch)-berlin-show-urban-spree.html",
+  "opens": "2026-12-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Treading the boards",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
+  "opens": "2026-12-20",
+  "aliases": [
+   "Bretter, die die Welt bedeuten"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Jaguwar (shoegaze/noise-pop) & Crush Tones (indie-rock)",
   "url": "https://www.schokoladen-mitte.de/?page=3#e20261221",
@@ -1109,14 +1107,6 @@
   "venue": "Deutsches Theater",
   "title": "Bookpink",
   "url": "https://www.deutschestheater.de/en/program/productions/bookpink-new-arrivals",
-  "opens": "2026-12-22",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Nabucco",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/nabucco.15505/",
   "opens": "2026-12-22",
   "aliases": []
  },
@@ -1181,16 +1171,6 @@
   "url": "https://deutscheoperberlin.de/en_EN/production/la-traviata.1385739",
   "opens": "2026-12-26",
   "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Treading the boards",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/bretter-die-die-welt-bedeuten/",
-  "opens": "2026-12-26",
-  "aliases": [
-   "Bretter, die die Welt bedeuten"
-  ]
  },
  {
   "kind": "theatre",
@@ -1264,7 +1244,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Van Urst/Fevering + Third Lung (weirdo mutant punk, mmbrs milemarker, big eater) + tba live",
-  "url": "https://www.schokoladen-mitte.de/?page=4#e20261231",
+  "url": "https://www.schokoladen-mitte.de/?page=3#e20261231",
   "opens": "2026-12-31",
   "aliases": []
  },
@@ -1389,17 +1369,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Echnaton (Akhnaten)",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
-  "opens": "2027-01-14",
-  "aliases": [
-   "Echnaton",
-   "Akhnaten"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Kirill Petrenko opens the Biennale of the Berliner Philharmoniker",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57088/",
@@ -1424,6 +1393,17 @@
   "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/2020",
   "opens": "2027-01-15",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Echnaton (Akhnaten)",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
+  "opens": "2027-01-16",
+  "aliases": [
+   "Echnaton",
+   "Akhnaten"
+  ]
  },
  {
   "kind": "theatre",
@@ -1855,7 +1835,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "P.O. BOX (FR) | „The 25th-Something Anniversary Tour“ + guest",
-  "url": "https://www.schokoladen-mitte.de/?page=7#e20270223",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270223",
   "opens": "2027-02-23",
   "aliases": []
  },
@@ -2157,7 +2137,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Materazi Future Club (electro-punk, it)",
-  "url": "https://www.schokoladen-mitte.de/?page=8#e20270402",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270402",
   "opens": "2027-04-02",
   "aliases": [
    "Materazi Future Club",
@@ -2194,6 +2174,14 @@
   "title": "Russian Modernism with Christian Tetzlaff and Paavo Järvi",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57135/",
   "opens": "2027-04-08",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Urban Spree",
+  "title": "KONVENT",
+  "url": "https://www.urbanspree.com/program/concerts/konvent-berlin-urban-spree.html",
+  "opens": "2027-04-10",
   "aliases": []
  },
  {
@@ -2286,6 +2274,17 @@
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57147/",
   "opens": "2027-04-22",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Schokoladen",
+  "title": "Diogo Strausz (bra)",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270422",
+  "opens": "2027-04-22",
+  "aliases": [
+   "Diogo Strausz",
+   "bra"
+  ]
  },
  {
   "kind": "theatre",
