@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1795446624.066081,
+    "at": 1795532973.8285666,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1795446670.84384,
+    "at": 1795533020.4753973,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/chamaeleon-berlin": {
    "0": {
-    "at": 1795446665.630908,
+    "at": 1795533015.3784661,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -1022,7 +1022,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin": {
    "0": {
-    "at": 1795446639.6299832,
+    "at": 1795532988.90318,
     "items": [
      {
       "date": "7. November 2026.",
@@ -1824,7 +1824,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/english-theatre-berlin": {
    "0": {
-    "at": 1795446662.5990415,
+    "at": 1795533012.0126543,
     "items": [
      {
       "date": "Berlin, 31. Mai 2018.",
@@ -1858,7 +1858,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin": {
    "0": {
-    "at": 1795446653.2413862,
+    "at": 1795533001.7087514,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -2560,7 +2560,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin": {
    "0": {
-    "at": 1795446645.8180783,
+    "at": 1795532995.1108851,
     "items": [
      {
       "date": "5. September 2026.",
@@ -3362,7 +3362,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1795446617.136707,
+    "at": 1795532966.7294273,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -4164,7 +4164,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin": {
    "0": {
-    "at": 1795446659.8148313,
+    "at": 1795533008.2661936,
     "items": [
      {
       "date": "13. Februar 2026.",
@@ -4449,7 +4449,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1795446631.9692173,
+    "at": 1795532981.2429652,
     "items": [
      {
       "date": "30. Oktober 2026.",
@@ -5452,7 +5452,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/rosa-l-deutsches-theater-berlin-anica-tomic-bringt-ein-luxemburg-biopic-auf-die-buehne": {
-   "at": 1795446674.9794996,
+   "at": 1795533025.3938072,
    "published": 1794074995.0,
    "scores": [
     0.0,
@@ -5469,7 +5469,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin/antigone-der-abschied-alexander-zeldins-familiendrama-um-abschied-trauer-und-verdraengung": {
-   "at": 1795351898.8196795,
+   "at": 1795533025.105748,
    "published": 1793025056.0,
    "scores": [
     -0.8462,
@@ -6486,7 +6486,7 @@
    ]
   },
   "Absteige (nndw) + Yakama (alternative, saarbrücken) + nobis": {
-   "at": 1795096055.7968323,
+   "at": 1795533137.062922,
    "results": []
   },
   "AntiFolk) + Gutter Romance (Akustikpunk": {
@@ -7290,7 +7290,7 @@
    ]
   },
   "Banda Entopica": {
-   "at": 1795266132.0743666,
+   "at": 1795533237.467643,
    "results": []
   },
   "Berlin Review x Volksbühne": {
@@ -7306,7 +7306,7 @@
    "results": []
   },
   "COOGANS BLUFF 10 Years Of Flying To The Stars": {
-   "at": 1795181373.4991357,
+   "at": 1795533195.165618,
    "results": []
   },
   "CURSED": {
@@ -7452,7 +7452,7 @@
    ]
   },
   "Die Seherin": {
-   "at": 1795138069.9110491,
+   "at": 1795533053.906923,
    "results": [
     [
      "Circus Oresteia – Theater an der Ruhr Mülheim – Thomas Köcks Aischylos-Überschreibung von Philipp Preuss uraufgeführt",
@@ -7839,7 +7839,7 @@
    "results": []
   },
   "Dive into You": {
-   "at": 1795096030.750941,
+   "at": 1795533081.4925373,
    "results": [
     [
      "Dracula. Blutige Anfänger – Komödie am Kurfürstendamm Berlin – Peter Jordan und Leonhard Koppelmann inszenieren ein gutgelauntes Grusical",
@@ -7855,6 +7855,21 @@
      "Festival Theaterformen 2018 \"Watch & Write\" – Carla Lever on Cape Town theatres that are challenging South Africa's cultural post-Apartheid segregation",
      "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/festival-theaterformen/festival-theaterformen-2018-watch-write-carla-lever-on-cape-town-theatres-that-are-challenging-south-africas-cultural-post-apartheid-segregation",
      "2018-06-14T12:38:29+02:00"
+    ],
+    [
+     "Drop Dead, Gorgeous! – In der Kaserne Basel musizieren fleischlin/meser/oberholzer gegen den Tod an",
+     "https://nachtkritik.de/nachtkritiken/schweiz/nordwestschweiz/basel/kaserne-basel/drop-dead-gorgeous-in-der-kaserne-basel-musizieren-fleischlinmeseroberholzer-gegen-den-tod-an",
+     "2013-01-09T07:21:51+01:00"
+    ]
+   ]
+  },
+  "Dive into You HAU": {
+   "at": 1795533137.0359654,
+   "results": [
+    [
+     "Dracula. Blutige Anfänger – Komödie am Kurfürstendamm Berlin – Peter Jordan und Leonhard Koppelmann inszenieren ein gutgelauntes Grusical",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/theater-am-kurfuerstendamm-berlin/dracula-blutige-anfaenger-komoedie-am-kurfuerstendamm-berlin-peter-jordan-und-leonhard-koppelmann-inszenieren-ein-gutgelauntes-grusical",
+     "2026-10-12T07:35:47+02:00"
     ],
     [
      "Drop Dead, Gorgeous! – In der Kaserne Basel musizieren fleischlin/meser/oberholzer gegen den Tod an",
@@ -8222,7 +8237,7 @@
    "results": []
   },
   "Faux Real + Dance Arts Center + The Nightclubs": {
-   "at": 1795181310.064343,
+   "at": 1795533141.6291165,
    "results": []
   },
   "Fiddler! One Night Only": {
@@ -8234,7 +8249,7 @@
    "results": []
   },
   "FÏX8:SËD8 + NEROGRIS + SCHNEIDER": {
-   "at": 1795181404.0706089,
+   "at": 1795533213.4243853,
    "results": []
   },
   "Good Vibes Only": {
@@ -9396,7 +9411,7 @@
    ]
   },
   "Kintsugi Chamäleon": {
-   "at": 1795138142.2850678,
+   "at": 1795533076.810021,
    "results": []
   },
   "Kolonialismus erinnern. Vom Konzept zum Ort": {
@@ -9661,7 +9676,7 @@
    "results": []
   },
   "Madama Butterfly": {
-   "at": 1795008245.5759816,
+   "at": 1795533224.5145602,
    "results": [
     [
      "Antigone – Staatstheater Nürnberg – Andreas Kriegenburg ringt dem Sophokles-Klassiker ein Bekenntnis gegen die Vorherrschaft des Mannes ab",
@@ -10841,11 +10856,11 @@
    "results": []
   },
   "Sick and Tired English Theatre": {
-   "at": 1795138146.2282245,
+   "at": 1795533074.4187596,
    "results": []
   },
   "Simone Dede Ayivi & Kompliz*innen": {
-   "at": 1795266118.971929,
+   "at": 1795533195.74737,
    "results": [
     [
      "Unauthorized und Unverschämt – Nationaltheater Mannheim – Simone Dede Ayivi und Kompliz*innen schreiben Geschichte neu",
@@ -10869,6 +10884,21 @@
     ]
    ]
   },
+  "Simone Dede Ayivi & Kompliz*innen Sophiensaele": {
+   "at": 1795533243.1778085,
+   "results": [
+    [
+     "Unauthorized und Unverschämt – Sophiensaele Berlin – Simone Dede Ayivi beleuchtet mit ihren Kompliz*innen ein wenig beachtetes Stück bundesrepublikanischer Geschichte",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/unauthorized-und-unverschaemt-sophiensaele-berlin",
+     "2024-02-10T07:40:42+01:00"
+    ],
+    [
+     "Solidaritätsstück – Sophiensaele Berlin – Simone Dede Ayivi und Kompliz*innen tragen theaterchorisch ihren Protestbrief vor",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/solidaritaetsstueck-sophiensaele-berlin-simone-dede-ayivi-und-kompliz-innen-tragen-theaterchorisch-ihren-protestbrief-vor",
+     "2019-09-27T20:38:03+02:00"
+    ]
+   ]
+  },
   "The Abduction from the Seraglio": {
    "at": 1794834301.378575,
    "results": []
@@ -10882,7 +10912,7 @@
    "results": []
   },
   "The Nutcracker": {
-   "at": 1795181375.9889822,
+   "at": 1795533177.521828,
    "results": []
   },
   "The Picture of Dorian Gray": {
@@ -11116,7 +11146,7 @@
    ]
   },
   "The Seer Schaubühne": {
-   "at": 1795008235.2375844,
+   "at": 1795533097.7917523,
    "results": [
     [
      "The Bolaño Project – Das Duo Notfoundyet dilettiert für Euro-Scene und Schauspiel Leipzig mit einer hanebüchen-unterhaltsamen Meta-Als-Ob-Performance zu Bolaños \"2666\"",
@@ -11144,7 +11174,7 @@
    "results": []
   },
   "Tosca": {
-   "at": 1795181412.9941366,
+   "at": 1795533215.2800572,
    "results": [
     [
      "Glücklich die Glücklichen – Berliner Ensemble – Oliver Reese adaptiert Yasmina Rezas Roman von 2013",
@@ -11312,6 +11342,10 @@
    "at": 1795138149.4716432,
    "results": []
   },
+  "Urban Spree KLUBNACHT x RECESS": {
+   "at": 1795533207.490631,
+   "results": []
+  },
   "WISBORG Phantomschmerz Tour": {
    "at": 1795096015.9551995,
    "results": []
@@ -11329,11 +11363,11 @@
    "results": []
   },
   "markus&markustheaterkollektiv": {
-   "at": 1795181329.345493,
+   "at": 1795533145.9230697,
    "results": []
   },
   "markus&markustheaterkollektiv Sophiensaele": {
-   "at": 1795181348.9054456,
+   "at": 1795533157.540868,
    "results": []
   },
   "ska- + pop-punk) + Buster Beat (ska": {
