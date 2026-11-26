@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1795618134.6392884,
+    "at": 1795702347.8352516,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1795618178.7694523,
+    "at": 1795702392.8058271,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/chamaeleon-berlin": {
    "0": {
-    "at": 1795618174.054496,
+    "at": 1795702387.62867,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -1022,7 +1022,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin": {
    "0": {
-    "at": 1795618147.838799,
+    "at": 1795702362.696598,
     "items": [
      {
       "date": "7. November 2026.",
@@ -1824,7 +1824,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/english-theatre-berlin": {
    "0": {
-    "at": 1795618170.8866756,
+    "at": 1795702384.8765483,
     "items": [
      {
       "date": "Berlin, 31. Mai 2018.",
@@ -1858,7 +1858,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin": {
    "0": {
-    "at": 1795618161.445722,
+    "at": 1795702375.806793,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -2560,7 +2560,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin": {
    "0": {
-    "at": 1795618154.5931833,
+    "at": 1795702369.5151381,
     "items": [
      {
       "date": "5. September 2026.",
@@ -3362,7 +3362,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1795618127.6735563,
+    "at": 1795702340.8848438,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -4164,8 +4164,13 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin": {
    "0": {
-    "at": 1795618167.7973034,
+    "at": 1795702381.929472,
     "items": [
+     {
+      "date": "26. November 2026.",
+      "title": "Schwarze Leute. Reclaiming Memories",
+      "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/schwarze-leute-reclaiming-memories-sophiensaele-berlin-ein-dokumentarabend-von-simone-dede-ayivi-untersucht-institutionellen-rassismus-in-der-bundesrepublik"
+     },
      {
       "date": "13. Februar 2026.",
       "title": "Auf allen Vieren",
@@ -4192,7 +4197,7 @@
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/turn-the-p-age-sophiensaele-berlin-eva-meyer-keller-erforscht-das-aelterwerden-des-weiblichen-koerpers"
      },
      {
-      "date": "19. Dezember 2024.",
+      "date": "Berlin - 19. Dezember 2024",
       "title": "Mastektomie",
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/mastektomie-ein-bittersuesses-abschiedslied-sophiensaele-berlin-chicks-untersuchen-die-chirurgische-entfernung-der-brust-als-krebsvorsorge-und-transitionserfahrung"
      },
@@ -4355,11 +4360,6 @@
       "date": "Berlin - 31. Oktober 2013",
       "title": "Die Aufführung",
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/die-auffuehrung-melanie-mohren-und-bernhard-herbordt-spielen-in-den-berliner-sophiensaelen-mit-den-grenzen-des-theater"
-     },
-     {
-      "date": "Berlin - 13. März 2013",
-      "title": "8 Stunden (Mindestens)",
-      "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/8-stunden-mindestens-turbo-pascal-experimentieren-in-den-sophiensaelen-mit-einem-schlaflabor-fuer-die-muedigkeitsgesellschaft"
      }
     ]
    },
@@ -4449,8 +4449,13 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1795618141.3890722,
+    "at": 1795702354.7125006,
     "items": [
+     {
+      "date": "26. November 2026.",
+      "title": "Alles Glück der Welt",
+      "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/alles-glueck-der-welt-volksbuehne-berlin-lena-brasch-inszeniert-ein-generationenkonflikt-musical-frei-nach-einem-bisher-unveroeffentlichten-drehbuch-von-thomas-brasch"
+     },
      {
       "date": "30. Oktober 2026.",
       "title": "Mata Leão",
@@ -4477,7 +4482,7 @@
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/spooky-paradise-volksbuehne-berlin-philippe-quesne"
      },
      {
-      "date": "29. März 2026.",
+      "date": "Berlin - 29. März 2026",
       "title": "Warten auf Bardot",
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/warten-auf-bardot-volksbuehne-berlin-meo-wulfs-schriller-glitzerabend-um-brigitte-bardot-und-die-neue-rechte"
      },
@@ -4640,11 +4645,6 @@
       "date": "Berlin - 11. November 2022",
       "title": "Hyäne Fischer. Das totale Musical",
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/hyaene-fischer-das-totale-musical-volksbuehne-am-rosa-luxemburg-platz-gen-matriarchat-fuehren-marlene-engel-und-lydia-haider-mit-ihrer-hommage-an-die-nazi-ikonen-parodierende-kunstfigur-hyaene"
-     },
-     {
-      "date": "Berlin - 16. September 2022",
-      "title": "Ophelia's Got Talent",
-      "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/ophelia-s-got-talent-volksbuehne-berlin-florentina-holzinger-eroeffnet-neue-volksbuehnen-spielzeit-mit-einem-wasserspektakel"
      }
     ]
    },
@@ -5452,7 +5452,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/rosa-l-deutsches-theater-berlin-anica-tomic-bringt-ein-luxemburg-biopic-auf-die-buehne": {
-   "at": 1795618183.0401945,
+   "at": 1795702397.0905447,
    "published": 1794074995.0,
    "scores": [
     0.0,
@@ -5529,6 +5529,22 @@
     0.4545,
     0.8182,
     -0.3333
+   ],
+   "theater_ok": true
+  },
+  "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin/schwarze-leute-reclaiming-memories-sophiensaele-berlin-ein-dokumentarabend-von-simone-dede-ayivi-untersucht-institutionellen-rassismus-in-der-bundesrepublik": {
+   "at": 1795702397.0415783,
+   "published": 0.0,
+   "scores": [
+    0.8077
+   ],
+   "theater_ok": true
+  },
+  "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/alles-glueck-der-welt-volksbuehne-berlin-lena-brasch-inszeniert-ein-generationenkonflikt-musical-frei-nach-einem-bisher-unveroeffentlichten-drehbuch-von-thomas-brasch": {
+   "at": 1795702397.0315402,
+   "published": 1795680279.0,
+   "scores": [
+    -0.6
    ],
    "theater_ok": true
   },
@@ -7306,6 +7322,10 @@
   },
   "Banda Entopica": {
    "at": 1795533237.467643,
+   "results": []
+  },
+  "Barnett Cohen": {
+   "at": 1795702604.4058588,
    "results": []
   },
   "Berlin Review x Volksbühne": {
@@ -10523,6 +10543,14 @@
     ]
    ]
   },
+  "Novulent": {
+   "at": 1795702589.7625175,
+   "results": []
+  },
+  "Obi Blanche X Kristina Tica": {
+   "at": 1795702499.4758077,
+   "results": []
+  },
   "Olympia Bukkakis": {
    "at": 1795446697.3305776,
    "results": [
@@ -10787,7 +10815,7 @@
    "results": []
   },
   "SPK + ALVAR": {
-   "at": 1795266131.5005474,
+   "at": 1795702520.767037,
    "results": []
   },
   "Schnee von gestern, Schnee von morgen": {
@@ -10919,7 +10947,7 @@
    ]
   },
   "The Abduction from the Seraglio": {
-   "at": 1794834301.378575,
+   "at": 1795702580.5600328,
    "results": []
   },
   "The Flying Dutchman": {
@@ -11387,6 +11415,14 @@
   },
   "markus&markustheaterkollektiv Sophiensaele": {
    "at": 1795533157.540868,
+   "results": []
+  },
+  "post-digital-punk) + Rooves (psych/post-rock, bln": {
+   "at": 1795702527.4052997,
+   "results": []
+  },
+  "post-rock, uk) & Sweetspot (noise-dream-pop, bln": {
+   "at": 1795702508.8787866,
    "results": []
   },
   "ska- + pop-punk) + Buster Beat (ska": {
