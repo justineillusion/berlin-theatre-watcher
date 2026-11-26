@@ -124,10 +124,26 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Nixon in China",
+  "url": "https://deutscheoperberlin.de/en_EN/production/nixon-in-china.1385484",
+  "opens": "2027-01-10",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Festspiele",
   "title": "Archives of Feelings",
   "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/archives-of-feelings",
   "opens": "2027-01-21",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Good Vibes Only",
+  "url": "https://deutscheoperberlin.de/en_EN/production/good-vibes-only.1386831",
+  "opens": "2027-01-22",
   "aliases": []
  },
  {
@@ -423,6 +439,16 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "The Magic Flute",
+  "url": "https://deutscheoperberlin.de/en_EN/production/the-magic-flute.1385471",
+  "opens": "2026-11-28",
+  "aliases": [
+   "Die Zauberflöte"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "Madama Butterfly",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
@@ -493,6 +519,16 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Around the World in 80 Days",
+  "url": "https://deutscheoperberlin.de/en_EN/production/around-the-world-in-80-days.1385725",
+  "opens": "2026-12-02",
+  "aliases": [
+   "In 80 Tagen um die Welt"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Saba Lou (bln, r'n'b / soul / songwriter) Rec Release!",
   "url": "https://www.schokoladen-mitte.de/#e20261202",
@@ -530,6 +566,16 @@
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
   "opens": "2026-12-03",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "The Abduction from the Seraglio",
+  "url": "https://deutscheoperberlin.de/en_EN/production/the-abduction-from-the-seraglio.1383413",
+  "opens": "2026-12-03",
+  "aliases": [
+   "Die Entführung aus dem Serail"
+  ]
  },
  {
   "kind": "theatre",
@@ -764,6 +810,14 @@
    "Heimsuchung",
    "Visitation"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "La bohème",
+  "url": "https://deutscheoperberlin.de/en_EN/production/la-boheme.1385732",
+  "opens": "2026-12-11",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1018,6 +1072,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Hänsel und Gretel",
+  "url": "https://deutscheoperberlin.de/en_EN/production/haensel-und-gretel.1385736",
+  "opens": "2026-12-23",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Deutsches Theater",
   "title": "Jeder stirbt für sich allein (Every Man Dies Alone)",
   "url": "https://www.deutschestheater.de/en/program/productions/jeder-stirbt-fuer-sich-allein",
@@ -1033,6 +1095,14 @@
   "title": "Weihnachtstrinken mit: Klinge Komplex (rap, le) & Carmel Zoum (singer/dj/solar-punk) live",
   "url": "https://www.schokoladen-mitte.de/?page=3#e20261225",
   "opens": "2026-12-25",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "La traviata",
+  "url": "https://deutscheoperberlin.de/en_EN/production/la-traviata.1385739",
+  "opens": "2026-12-26",
   "aliases": []
  },
  {
@@ -1386,6 +1456,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Le nozze di Figaro",
+  "url": "https://deutscheoperberlin.de/en_EN/production/le-nozze-di-figaro.1385793",
+  "opens": "2027-01-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Kirill Petrenko conducts Beethoven’s Missa solemnis",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57102/",
@@ -1398,6 +1476,14 @@
   "title": "ASTORE (P38 GANG, IT) \"Non è un live rap\" - ONE STEP FORWARD Tour",
   "url": "https://www.schokoladen-mitte.de/?page=5#e20270128",
   "opens": "2027-01-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Rigoletto",
+  "url": "https://deutscheoperberlin.de/en_EN/production/rigoletto.1385794",
+  "opens": "2027-01-29",
   "aliases": []
  },
  {
@@ -1583,6 +1669,16 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "The Flying Dutchman",
+  "url": "https://deutscheoperberlin.de/en_EN/production/the-flying-dutchman.1385827",
+  "opens": "2027-02-13",
+  "aliases": [
+   "Der fliegende Holländer"
+  ]
+ },
+ {
   "kind": "expo",
   "venue": "C/O Berlin",
   "title": "Helen Levitt — City at Play",
@@ -1604,6 +1700,14 @@
   "title": "Amin Yousefi — Defensive Readiness: Revised Edition",
   "url": "https://co-berlin.org/en/program/exhibitions/amin-yousefi",
   "opens": "2027-02-13",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Lohengrin",
+  "url": "https://deutscheoperberlin.de/en_EN/production/lohengrin.1385795",
+  "opens": "2027-02-14",
   "aliases": []
  },
  {
@@ -1735,6 +1839,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Così fan tutte",
+  "url": "https://deutscheoperberlin.de/en_EN/production/cosi-fan-tutte.1385840",
+  "opens": "2027-02-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "🎸 The Overjoyed (powerpop, punk - Athen) + tba",
   "url": "https://www.schokoladen-mitte.de/?page=7#e20270301",
@@ -1770,10 +1882,26 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Carmen",
+  "url": "https://deutscheoperberlin.de/en_EN/production/carmen.1385520",
+  "opens": "2027-03-04",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Urban Spree",
   "title": "Winona Riders - El Sueño de Dominar el Planeta se Renueva",
   "url": "https://www.urbanspree.com/program/concerts/winona-riders-el-sueño-de-dominar-el-planeta-se-renueva.html",
   "opens": "2027-03-04",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Music of Changes",
+  "url": "https://deutscheoperberlin.de/en_EN/production/music-of-changes.1388473",
+  "opens": "2027-03-05",
   "aliases": []
  },
  {
@@ -1806,6 +1934,14 @@
   "title": "Death By Horse (Punk/HC - SWE) + tba",
   "url": "https://www.schokoladen-mitte.de/?page=7#e20270311",
   "opens": "2027-03-11",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Don Giovanni",
+  "url": "https://deutscheoperberlin.de/en_EN/production/don-giovanni.1385522",
+  "opens": "2027-03-14",
   "aliases": []
  },
  {
@@ -1907,6 +2043,16 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "St Matthew Passion",
+  "url": "https://deutscheoperberlin.de/en_EN/production/st-matthew-passion.1385796",
+  "opens": "2027-03-25",
+  "aliases": [
+   "Matthäus-Passion"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Komische Oper Berlin",
   "title": "The Golden Cockerel",
   "url": "https://www.komische-oper-berlin.de/en/what/a-z/the-golden-cockerel/",
@@ -1925,6 +2071,14 @@
    "Desperate Journalist",
    "post-punk/indie-rock, london"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Tosca",
+  "url": "https://deutscheoperberlin.de/en_EN/production/tosca.1385472",
+  "opens": "2027-04-01",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -2035,10 +2189,26 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Otello",
+  "url": "https://deutscheoperberlin.de/en_EN/production/otello.1385835",
+  "opens": "2027-04-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Urban Spree",
   "title": "GIRLS UNDER GLASS + SUPPORT",
   "url": "https://www.urbanspree.com/program/concerts/girls-under-glass-support.html",
   "opens": "2027-04-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Salome",
+  "url": "https://deutscheoperberlin.de/en_EN/production/salome.1383424",
+  "opens": "2027-04-17",
   "aliases": []
  },
  {
@@ -2104,6 +2274,14 @@
   "aliases": []
  },
  {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Nabucco",
+  "url": "https://deutscheoperberlin.de/en_EN/production/nabucco.1385815",
+  "opens": "2027-04-24",
+  "aliases": []
+ },
+ {
   "kind": "expo",
   "venue": "Neue Nationalgalerie",
   "title": "Katharina Sieverding",
@@ -2153,6 +2331,14 @@
    "Bärchen und die Milchbubis",
    "NDW/Pop/Punk) & Hatless Cat (Ska/Rocksteady"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Turandot",
+  "url": "https://deutscheoperberlin.de/en_EN/production/turandot.1385817",
+  "opens": "2027-05-01",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -2213,6 +2399,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Antikrist",
+  "url": "https://deutscheoperberlin.de/en_EN/production/antikrist.1385820",
+  "opens": "2027-05-16",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Piano recital with Yuja Wang",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57164/",
@@ -2261,10 +2455,26 @@
  },
  {
   "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Il barbiere di Siviglia",
+  "url": "https://deutscheoperberlin.de/en_EN/production/il-barbiere-di-siviglia.1385828",
+  "opens": "2027-05-23",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Kirill Petrenko conducts “Hänsel und Gretel”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57170/",
   "opens": "2027-05-27",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "Don Carlo",
+  "url": "https://deutscheoperberlin.de/en_EN/production/don-carlo.1385834",
+  "opens": "2027-05-29",
   "aliases": []
  },
  {
@@ -2406,6 +2616,14 @@
   "title": "Alan Gilbert and Isabelle Faust",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57182/",
   "opens": "2027-06-17",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsche Oper Berlin",
+  "title": "War Requiem",
+  "url": "https://deutscheoperberlin.de/en_EN/production/war-requiem.1385838",
+  "opens": "2027-06-18",
   "aliases": []
  },
  {
