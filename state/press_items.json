@@ -17,34 +17,10 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Disrupt the Default: Translating Experience",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/disrupt-the-default-translating-experience/20261128-1900/",
-  "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "English Theatre Berlin",
   "title": "It’s Gonna Rain",
   "url": "https://www.etberlin.de/production/its-gonna-rain/",
   "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Berlin Review x Volksbühne: Fire From All Sides",
-  "url": "https://www.volksbuehne-berlin.de/en/series-and-projects/berlin-review-x-volksbuehne-fire-from-all-sides/berlin-review-x-volksbuehne-fire-from-all-sides-3/",
-  "opens": "2026-12-01",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "20 Minuten",
-  "url": "https://www.volksbuehne-berlin.de/en/series-and-projects/20-minuten/20-minuten-2/",
-  "opens": "2026-12-03",
   "aliases": []
  },
  {
@@ -412,14 +388,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "A Year without Summer",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/a-year-without-summer/20261128-1930/",
-  "opens": "2026-11-28",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "HAU Hebbel am Ufer",
   "title": "Piece of Changes",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/isabelle-schad-piece-of-changes/",
@@ -443,6 +411,14 @@
   "aliases": [
    "Die Zauberflöte"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Madama Butterfly",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
+  "opens": "2026-11-28",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -482,14 +458,6 @@
   "title": "Die Zauberflöte",
   "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/die-zauberfloete.15/",
   "opens": "2026-11-29",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Alles Glück der Welt",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261130-1930/",
-  "opens": "2026-11-30",
   "aliases": []
  },
  {
@@ -557,14 +525,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Madama Butterfly",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
-  "opens": "2026-12-03",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "The Wants (post-punk, nyc) & Schnallo (wave, bln)",
   "url": "https://www.schokoladen-mitte.de/#e20261203",
@@ -580,14 +540,6 @@
   "title": "Novulent - Live in Europe 2026",
   "url": "https://www.urbanspree.com/program/concerts/novulent-live-in-europe-2026.html",
   "opens": "2026-12-03",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "SAVE A HORSE RIDE A COWGIRL",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/save-a-horse-ride-a-cowgirl/20261204-2000/",
-  "opens": "2026-12-04",
   "aliases": []
  },
  {
@@ -866,14 +818,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Mononoke",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261215-1930/",
-  "opens": "2026-12-15",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Berliner Philharmoniker EnsemblesBerliner Barock Solisten and Daishin Kashimoto with Vivaldi’s “The Four Seasons”",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57448/",
@@ -961,14 +905,6 @@
   "title": "2 Chapters Love",
   "url": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/2-chapters-love-en/63.html",
   "opens": "2026-12-18",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Fräulein Else",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/fraeulein-else/20261219-1930/",
-  "opens": "2026-12-19",
   "aliases": []
  },
  {
@@ -1099,14 +1035,6 @@
    "Die Dreigroschenoper",
    "The Threepenny Opera"
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "Spooky Paradise",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/spooky-paradise/20261228-1930/",
-  "opens": "2026-12-28",
-  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1299,17 +1227,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Echnaton (Akhnaten)",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
-  "opens": "2027-01-14",
-  "aliases": [
-   "Echnaton",
-   "Akhnaten"
-  ]
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Kirill Petrenko opens the Biennale of the Berliner Philharmoniker",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57088/",
@@ -1334,6 +1251,17 @@
   "url": "https://www.berlinerfestspiele.de/en/performing-arts-season/programm/2026/spielplan/2020",
   "opens": "2027-01-15",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Echnaton (Akhnaten)",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
+  "opens": "2027-01-16",
+  "aliases": [
+   "Echnaton",
+   "Akhnaten"
+  ]
  },
  {
   "kind": "theatre",
@@ -2717,14 +2645,6 @@
   "title": "Bridget Polk — In der Schwebe",
   "url": "https://www.kw-berlin.de/en/exhibitions/bridget-polk-in-der-schwebe",
   "opens": "2027-10-15",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Volksbühne",
-  "title": "CURSED – a preinvented world.",
-  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261210-1900/",
-  "opens": null,
   "aliases": []
  },
  {
