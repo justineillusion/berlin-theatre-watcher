@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1795702347.8352516,
+    "at": 1795788695.0333328,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1795702392.8058271,
+    "at": 1795788738.1305382,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/chamaeleon-berlin": {
    "0": {
-    "at": 1795702387.62867,
+    "at": 1795788733.1806605,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -1022,7 +1022,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin": {
    "0": {
-    "at": 1795702362.696598,
+    "at": 1795788708.4014494,
     "items": [
      {
       "date": "7. November 2026.",
@@ -1824,7 +1824,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/english-theatre-berlin": {
    "0": {
-    "at": 1795702384.8765483,
+    "at": 1795788729.9977171,
     "items": [
      {
       "date": "Berlin, 31. Mai 2018.",
@@ -1858,7 +1858,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin": {
    "0": {
-    "at": 1795702375.806793,
+    "at": 1795788720.747907,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -2560,7 +2560,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin": {
    "0": {
-    "at": 1795702369.5151381,
+    "at": 1795788714.573427,
     "items": [
      {
       "date": "5. September 2026.",
@@ -3362,7 +3362,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1795702340.8848438,
+    "at": 1795788687.9220762,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -4164,7 +4164,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin": {
    "0": {
-    "at": 1795702381.929472,
+    "at": 1795788726.9958186,
     "items": [
      {
       "date": "26. November 2026.",
@@ -4449,7 +4449,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1795702354.7125006,
+    "at": 1795788701.9785113,
     "items": [
      {
       "date": "26. November 2026.",
@@ -5452,7 +5452,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/rosa-l-deutsches-theater-berlin-anica-tomic-bringt-ein-luxemburg-biopic-auf-die-buehne": {
-   "at": 1795702397.0905447,
+   "at": 1795788742.1259928,
    "published": 1794074995.0,
    "scores": [
     0.0,
@@ -5540,11 +5540,32 @@
    ],
    "theater_ok": true
   },
+  "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/a-year-without-summer-volksbuehne-am-rosa-luxemburg-platz-berlin": {
+   "at": 1795788742.1967325,
+   "published": 1747897724.0,
+   "scores": [
+    -0.1186,
+    -0.8,
+    0.0,
+    -0.6,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "theater_ok": true
+  },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/alles-glueck-der-welt-volksbuehne-berlin-lena-brasch-inszeniert-ein-generationenkonflikt-musical-frei-nach-einem-bisher-unveroeffentlichten-drehbuch-von-thomas-brasch": {
-   "at": 1795702397.0315402,
+   "at": 1795788742.4377804,
    "published": 1795680279.0,
    "scores": [
-    -0.6
+    -0.6,
+    -0.7778,
+    0.0,
+    0.0,
+    0.5091,
+    0.0,
+    0.25,
+    0.0
    ],
    "theater_ok": true
   },
@@ -6525,7 +6546,7 @@
    "results": []
   },
   "Antonia Baehr": {
-   "at": 1795446683.2044942,
+   "at": 1795788748.679807,
    "results": [
     [
      "Gut gemacht! – Schauspiel Leipzig – Antonia Baehr und Kolleg*innen stellen mit Vorbildern aus der DDR-Kunst die Frage nach der Qualität",
@@ -6555,7 +6576,7 @@
    ]
   },
   "Antonia Baehr Sophiensaele": {
-   "at": 1795446691.5271313,
+   "at": 1795788756.592636,
    "results": []
   },
   "Apart": {
@@ -7328,8 +7349,12 @@
    "at": 1795702604.4058588,
    "results": []
   },
+  "Barnett Cohen Sophiensaele": {
+   "at": 1795788967.9062705,
+   "results": []
+  },
   "Berlin Review x Volksbühne": {
-   "at": 1795446713.7506783,
+   "at": 1795788778.2426252,
    "results": []
   },
   "Berlin Review x Volksbühne Volksbühne": {
@@ -7338,6 +7363,10 @@
   },
   "Bragolin + Carrellee": {
    "at": 1795095962.1671715,
+   "results": []
+  },
+  "CAVA (Record Release Day 1) & APOLLO": {
+   "at": 1795788895.941506,
    "results": []
   },
   "COOGANS BLUFF 10 Years Of Flying To The Stars": {
@@ -7388,11 +7417,11 @@
    ]
   },
   "Di/STRAUSS technique": {
-   "at": 1795446788.4458606,
+   "at": 1795788848.6210685,
    "results": []
   },
   "Dido & Aeneas": {
-   "at": 1795446683.0225067,
+   "at": 1795788748.5668275,
    "results": [
     [
      "Die Orestie – Theater Luzern – Bei Katja Langenbach ziehen die Atriden in einer Euripides-Neudichtung von Raoul Schrott ins Fachwerkhaus",
@@ -7866,7 +7895,7 @@
    ]
   },
   "Disrupt the Default": {
-   "at": 1795446713.4385486,
+   "at": 1795788777.1093817,
    "results": []
   },
   "Disrupt the Default Volksbühne": {
@@ -8280,7 +8309,7 @@
    "results": []
   },
   "Fiddler! One Night Only HAU": {
-   "at": 1795446758.3063774,
+   "at": 1795788818.0405588,
    "results": []
   },
   "FÏX8:SËD8 + NEROGRIS + SCHNEIDER": {
@@ -8306,11 +8335,11 @@
    "results": []
   },
   "Hanako Hayakawa": {
-   "at": 1795446720.2614713,
+   "at": 1795788784.5548518,
    "results": []
   },
   "Hanako Hayakawa Sophiensaele": {
-   "at": 1795446729.2531981,
+   "at": 1795788792.2342649,
    "results": []
   },
   "Hedda": {
@@ -8669,11 +8698,11 @@
    ]
   },
   "It’s Gonna Rain": {
-   "at": 1795446686.2539754,
+   "at": 1795788750.7556806,
    "results": []
   },
   "It’s Gonna Rain English Theatre": {
-   "at": 1795446699.815927,
+   "at": 1795788763.9577303,
    "results": []
   },
   "Jazz at Berlin Philharmonic“Conversations”": {
@@ -9056,7 +9085,7 @@
    ]
   },
   "KIDS HAU": {
-   "at": 1795446734.882379,
+   "at": 1795788799.00235,
    "results": [
     [
      "Der kleine Prinz / Kleine Prinzen – Schauspielhaus Zürich & Theater Basel – Antú Romero Nunes erkundet den berühmten Stoff von Antoine de Saint-Exupéry",
@@ -10552,7 +10581,7 @@
    "results": []
   },
   "Olympia Bukkakis": {
-   "at": 1795446697.3305776,
+   "at": 1795788762.498742,
    "results": [
     [
      "Cast Away + Liars – Sophiensaele Berlin – Neue Abende von Markus&Markus und Henrike Iglesias",
@@ -10572,7 +10601,7 @@
    ]
   },
   "Olympia Bukkakis Sophiensaele": {
-   "at": 1795446706.1912007,
+   "at": 1795788770.8993003,
    "results": [
     [
      "Cast Away + Liars – Sophiensaele Berlin – Neue Abende von Markus&Markus und Henrike Iglesias",
@@ -10844,7 +10873,7 @@
    ]
   },
   "Scratch Theater": {
-   "at": 1795446726.3879402,
+   "at": 1795788789.4801836,
    "results": [
     [
      "Der Diener zweier Herren – Volkstheater Wien – Antonio Latella dringt mit sensationellem Ensemble zum brutalen Kern von Carlo Goldoni berühmter Komödie vor",
@@ -10899,7 +10928,7 @@
    ]
   },
   "Sick and Tired": {
-   "at": 1795446778.5991,
+   "at": 1795788837.502506,
    "results": []
   },
   "Sick and Tired English Theatre": {
