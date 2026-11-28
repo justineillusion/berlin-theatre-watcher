@@ -1,18 +1,10 @@
 [
  {
   "kind": "theatre",
-  "venue": "Sophiensæle",
-  "title": "Antonia Baehr: Schreien (SCREAMING) II – Eine Forschungsreihe",
-  "url": "https://sophiensaele.com/en/stueck/screaming-ii-eine-forschungsreihe",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Dido & Aeneas",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/dido-aeneas.7528/",
-  "opens": "2026-11-27",
+  "venue": "Volksbühne",
+  "title": "Disrupt the Default: Translating Experience",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/disrupt-the-default-translating-experience/20261128-1900/",
+  "opens": "2026-11-28",
   "aliases": []
  },
  {
@@ -21,6 +13,14 @@
   "title": "It’s Gonna Rain",
   "url": "https://www.etberlin.de/production/its-gonna-rain/",
   "opens": "2026-11-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Berlin Review x Volksbühne: Fire From All Sides",
+  "url": "https://www.volksbuehne-berlin.de/en/series-and-projects/berlin-review-x-volksbuehne-fire-from-all-sides/berlin-review-x-volksbuehne-fire-from-all-sides-3/",
+  "opens": "2026-12-01",
   "aliases": []
  },
  {
@@ -332,62 +332,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Chamäleon Berlin",
-  "title": "Kintsugi",
-  "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Sophiensæle",
-  "title": "Simone Dede Ayivi & Kompliz*innen: Schwarze Leute – Reclaiming Memories",
-  "url": "https://sophiensaele.com/en/stueck/schwarze-leute-reclaiming-memories",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Sophiensæle",
-  "title": "markus&markustheaterkollektiv: Die Brieffreundschaft II",
-  "url": "https://sophiensaele.com/en/stueck/die-brieffreundschaft-ii",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Staatsballett Berlin",
-  "title": "The Nutcracker",
-  "url": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-nussknacker-en/348.html",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Schokoladen",
-  "title": "CAVA (Record Release Day 1) & APOLLO",
-  "url": "https://www.schokoladen-mitte.de/#e20261127",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Urban Spree",
-  "title": "Urban Spree KLUBNACHT x RECESS",
-  "url": "https://www.urbanspree.com/program/concerts/urban-spree-klubnacht-x-recess.html",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
-  "venue": "Urban Spree",
-  "title": "FÏX8:SËD8 + NEROGRIS + SCHNEIDER",
-  "url": "https://www.urbanspree.com/program/concerts/fïx8sëd8-nerogris-schneider-urban-spree,-berlin.html",
-  "opens": "2026-11-27",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "HAU Hebbel am Ufer",
   "title": "Piece of Changes",
   "url": "https://www.hebbel-am-ufer.de/en/programme/pdetail/isabelle-schad-piece-of-changes/",
@@ -396,9 +340,25 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Tosca",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
+  "venue": "Chamäleon Berlin",
+  "title": "Kintsugi",
+  "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
+  "opens": "2026-11-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Sophiensæle",
+  "title": "Simone Dede Ayivi & Kompliz*innen: Schwarze Leute – Reclaiming Memories",
+  "url": "https://sophiensaele.com/en/stueck/schwarze-leute-reclaiming-memories",
+  "opens": "2026-11-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Sophiensæle",
+  "title": "markus&markustheaterkollektiv: Die Brieffreundschaft II",
+  "url": "https://sophiensaele.com/en/stueck/die-brieffreundschaft-ii",
   "opens": "2026-11-28",
   "aliases": []
  },
@@ -411,14 +371,6 @@
   "aliases": [
    "Die Zauberflöte"
   ]
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Madama Butterfly",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
-  "opens": "2026-11-28",
-  "aliases": []
  },
  {
   "kind": "theatre",
@@ -462,6 +414,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Alles Glück der Welt",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/vb04-alles-glueck-der-welt/20261130-1930/",
+  "opens": "2026-11-30",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Shaking Hand (post-rock, uk) & Sweetspot (noise-dream-pop, bln)",
   "url": "https://www.schokoladen-mitte.de/#e20261130",
@@ -470,6 +430,14 @@
    "Shaking Hand",
    "post-rock, uk) & Sweetspot (noise-dream-pop, bln"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Tosca",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/tosca.23/",
+  "opens": "2026-12-02",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -507,6 +475,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "20 Minuten",
+  "url": "https://www.volksbuehne-berlin.de/en/series-and-projects/20-minuten/20-minuten-2/",
+  "opens": "2026-12-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Maxim Gorki Theater",
   "title": "The Hearing Trumpet",
   "url": "https://www.gorki.de/en/the-hearing-trumpet",
@@ -522,6 +498,14 @@
   "aliases": [
    "Die Entführung aus dem Serail"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Madama Butterfly",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/madama-butterfly/",
+  "opens": "2026-12-03",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -688,7 +672,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "ANTILLECTUAL (punkrock, NL) + GOOD VIEWS, BAD NEWS (punkrock, BLN)",
-  "url": "https://www.schokoladen-mitte.de/?page=2#e20261208",
+  "url": "https://www.schokoladen-mitte.de/#e20261208",
   "opens": "2026-12-08",
   "aliases": [
    "ANTILLECTUAL",
@@ -759,6 +743,16 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Orpheus in the Underworld",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
+  "opens": "2026-12-11",
+  "aliases": [
+   "Orpheus in der Unterwelt"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Wood In Di Fire (rocksteady / reggae / jamaican jazz)",
   "url": "https://www.schokoladen-mitte.de/?page=2#e20261211",
@@ -815,6 +809,14 @@
    "Kabale und Liebe",
    "Intrigue and Love"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Mononoke",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/mononoke/20261215-1930/",
+  "opens": "2026-12-15",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -909,6 +911,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Fräulein Else",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/fraeulein-else/20261219-1930/",
+  "opens": "2026-12-19",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Deutsches Theater",
   "title": "The Cold Reminder (AT)",
   "url": "https://www.deutschestheater.de/en/program/productions/the-cold-reminder-at",
@@ -922,7 +932,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "The Special Guests feat. Willie Ocean",
-  "url": "https://www.schokoladen-mitte.de/?page=3#e20261219",
+  "url": "https://www.schokoladen-mitte.de/?page=2#e20261219",
   "opens": "2026-12-19",
   "aliases": []
  },
@@ -1038,6 +1048,14 @@
  },
  {
   "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "Spooky Paradise",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/spooky-paradise/20261228-1930/",
+  "opens": "2026-12-28",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Sempf (pop-punk/ HH) + Bistro 11 (PopPunk/CollegeRock/ Bln)",
   "url": "https://www.schokoladen-mitte.de/?page=3#e20261228",
@@ -1075,16 +1093,6 @@
   "aliases": [
    "Das Dinner",
    "The Dinner"
-  ]
- },
- {
-  "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Orpheus in the Underworld",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/orpheus-in-the-underworld/",
-  "opens": "2026-12-31",
-  "aliases": [
-   "Orpheus in der Unterwelt"
   ]
  },
  {
@@ -1227,6 +1235,17 @@
  },
  {
   "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Echnaton (Akhnaten)",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
+  "opens": "2027-01-14",
+  "aliases": [
+   "Echnaton",
+   "Akhnaten"
+  ]
+ },
+ {
+  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Kirill Petrenko opens the Biennale of the Berliner Philharmoniker",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57088/",
@@ -1254,14 +1273,11 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Echnaton (Akhnaten)",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/akhnaten-echnaton/",
+  "venue": "Staatsballett Berlin",
+  "title": "The Nutcracker",
+  "url": "https://www.staatsballett-berlin.de/en/spielplan/event-detail/stid/der-nussknacker-en/348.html",
   "opens": "2027-01-16",
-  "aliases": [
-   "Echnaton",
-   "Akhnaten"
-  ]
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1294,7 +1310,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "L'Orne (post-rock, nl) & Dusk Saffron (shoegaze, bln)",
-  "url": "https://www.schokoladen-mitte.de/?page=5#e20270120",
+  "url": "https://www.schokoladen-mitte.de/?page=4#e20270120",
   "opens": "2027-01-20",
   "aliases": [
    "L'Orne",
@@ -1489,7 +1505,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Mahler/Fondermann & the beast (Indie_Punk/HH) + Litbarski (Punk/Bln)",
-  "url": "https://www.schokoladen-mitte.de/?page=6#e20270206",
+  "url": "https://www.schokoladen-mitte.de/?page=5#e20270206",
   "opens": "2027-02-06",
   "aliases": [
    "Mahler/Fondermann & the beast",
@@ -1704,7 +1720,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Honig & Meursault - stupid love tour 2027! (2x folk / indie-pop / songwriter)",
-  "url": "https://www.schokoladen-mitte.de/?page=7#e20270222",
+  "url": "https://www.schokoladen-mitte.de/?page=6#e20270222",
   "opens": "2027-02-22",
   "aliases": [
    "Honig & Meursault - stupid love tour 2027!",
@@ -1941,14 +1957,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Staatsoper Unter den Linden",
-  "title": "Manon Lescaut",
-  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/manon-lescaut.27276/",
-  "opens": "2027-03-21",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "OriginalklangIl Caravaggio and Camille Delaforge",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57126/",
@@ -1965,6 +1973,14 @@
    "Jamie Perrett",
    "post-punk/indie singer-songwriter, uk"
   ]
+ },
+ {
+  "kind": "theatre",
+  "venue": "Staatsoper Unter den Linden",
+  "title": "Manon Lescaut",
+  "url": "https://www.staatsoper-berlin.de/en/veranstaltungen/manon-lescaut.27276/",
+  "opens": "2027-03-24",
+  "aliases": []
  },
  {
   "kind": "theatre",
@@ -1990,7 +2006,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Desperate Journalist (post-punk/indie-rock, london)",
-  "url": "https://www.schokoladen-mitte.de/?page=8#e20270327",
+  "url": "https://www.schokoladen-mitte.de/?page=7#e20270327",
   "opens": "2027-03-27",
   "aliases": [
    "Desperate Journalist",
@@ -2138,14 +2154,6 @@
  },
  {
   "kind": "theatre",
-  "venue": "Komische Oper Berlin",
-  "title": "Cast a Diva",
-  "url": "https://www.komische-oper-berlin.de/en/what/a-z/cast-a-diva/",
-  "opens": "2027-04-17",
-  "aliases": []
- },
- {
-  "kind": "theatre",
   "venue": "Berliner Philharmoniker",
   "title": "Piano recital with Leif Ove AndsnesBeethoven’s legacy",
   "url": "https://www.berliner-philharmoniker.de/en/concert/calendar/57145/",
@@ -2212,6 +2220,14 @@
   "title": "Katharina Sieverding",
   "url": "https://www.smb.museum/en/museums-institutions/neue-nationalgalerie/exhibitions/detail/katharina-sieverding/",
   "opens": "2027-04-24",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Komische Oper Berlin",
+  "title": "Cast a Diva",
+  "url": "https://www.komische-oper-berlin.de/en/what/a-z/cast-a-diva/",
+  "opens": "2027-04-25",
   "aliases": []
  },
  {
@@ -2422,7 +2438,7 @@
   "kind": "theatre",
   "venue": "Schokoladen",
   "title": "Dosenstolz (Punk/Dresden) + Eddie (Punk/Neuruppin)",
-  "url": "https://www.schokoladen-mitte.de/?page=9#e20270604",
+  "url": "https://www.schokoladen-mitte.de/?page=8#e20270604",
   "opens": "2027-06-04",
   "aliases": [
    "Dosenstolz",
@@ -2645,6 +2661,14 @@
   "title": "Bridget Polk — In der Schwebe",
   "url": "https://www.kw-berlin.de/en/exhibitions/bridget-polk-in-der-schwebe",
   "opens": "2027-10-15",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "CURSED – a preinvented world.",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/cursed-a-preinvented-world/20261210-1900/",
+  "opens": null,
   "aliases": []
  },
  {
