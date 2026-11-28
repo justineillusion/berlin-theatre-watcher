@@ -43,7 +43,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Twelfth Night (Was ihr wollt)",
-  "url": "https://www.berliner-ensemble.de/en/production/twelfth-night-was-ihr-wollt",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/twelfth-night-was-ihr-wollt",
   "opens": "2026-12-08",
   "aliases": [
    "Twelfth Night",
@@ -102,7 +102,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "De Profundis",
-  "url": "https://www.berliner-ensemble.de/en/production/de-profundis",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/de-profundis",
   "opens": "2027-01-09",
   "aliases": []
  },
@@ -318,7 +318,7 @@
   "kind": "expo",
   "venue": "Hamburger Bahnhof",
   "title": "Sophie Calle",
-  "url": "https://www.smb.museum/en/museums-institutions/hamburger-bahnhof/exhibitions/detail/sophie-calle/",
+  "url": "",
   "opens": "2026-11-13",
   "aliases": []
  },
@@ -345,6 +345,17 @@
   "url": "https://chamaeleonberlin.com/en/shows/kintsugi-berlin/",
   "opens": "2026-11-28",
   "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Deutsches Theater",
+  "title": "Der Liebling (Darling)",
+  "url": "https://www.deutschestheater.de/en/program/productions/der-liebling",
+  "opens": "2026-11-28",
+  "aliases": [
+   "Der Liebling",
+   "Darling"
+  ]
  },
  {
   "kind": "theatre",
@@ -524,6 +535,14 @@
   "title": "Novulent - Live in Europe 2026",
   "url": "https://www.urbanspree.com/program/concerts/novulent-live-in-europe-2026.html",
   "opens": "2026-12-03",
+  "aliases": []
+ },
+ {
+  "kind": "theatre",
+  "venue": "Volksbühne",
+  "title": "SAVE A HORSE RIDE A COWGIRL",
+  "url": "https://www.volksbuehne-berlin.de/en/productions/save-a-horse-ride-a-cowgirl/20261204-2000/",
+  "opens": "2026-12-04",
   "aliases": []
  },
  {
@@ -1039,7 +1058,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "Die Dreigroschenoper (The Threepenny Opera)",
-  "url": "https://www.berliner-ensemble.de/en/inszenierung/die-dreigroschenoper",
+  "url": "https://www.berliner-ensemble.de/index.php/en/inszenierung/die-dreigroschenoper",
   "opens": "2026-12-27",
   "aliases": [
    "Die Dreigroschenoper",
@@ -1069,7 +1088,7 @@
   "kind": "theatre",
   "venue": "Berliner Ensemble",
   "title": "The Arsonists (Biedermann und die Brandstifter)",
-  "url": "https://www.berliner-ensemble.de/en/production/arsonists-biedermann-und-die-brandstifter",
+  "url": "https://www.berliner-ensemble.de/index.php/en/production/arsonists-biedermann-und-die-brandstifter",
   "opens": "2026-12-31",
   "aliases": [
    "The Arsonists",
