@@ -2,7 +2,7 @@
  "listings": {
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-ensemble": {
    "0": {
-    "at": 1795788695.0333328,
+    "at": 1795872522.981389,
     "items": [
      {
       "date": "6. November 2026.",
@@ -784,7 +784,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/berliner-festspiele": {
    "0": {
-    "at": 1795788738.1305382,
+    "at": 1795872577.7086632,
     "items": [
      {
       "date": "13. November 2026.",
@@ -998,7 +998,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/chamaeleon-berlin": {
    "0": {
-    "at": 1795788733.1806605,
+    "at": 1795872571.8159013,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -1022,8 +1022,13 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin": {
    "0": {
-    "at": 1795788708.4014494,
+    "at": 1795872544.0102446,
     "items": [
+     {
+      "date": "28. November 2026.",
+      "title": "Kabale und Liebe",
+      "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/kabale-und-liebe-deutsches-theater-berlin-anne-lenk"
+     },
      {
       "date": "7. November 2026.",
       "title": "Rosa L.",
@@ -1050,7 +1055,7 @@
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/die-physiker-deutsches-theater-berlin-bastian-kraft-macht-duerrenmatt-fit-fuer-den-deutsch-unterricht"
      },
      {
-      "date": "20. April 2026.",
+      "date": "Berlin - 20. April 2026",
       "title": "Bookpink: New Arrivals",
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/bookpink-new-arrivals-deutsches-theater-berlin-neue-szenen-aus-dem-leben-der-voegel-von-caren-jess-uraufgefuehrt-von-jorinde-droese"
      },
@@ -1213,11 +1218,6 @@
       "date": "Berlin - 24. Februar 2024",
       "title": "Penthesilea. Ein Requiem",
       "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/penthesilea-deutsches-theater-berlin-in-nino-haratischwilis-erzaehlt-den-antiken-mythos-der-rasend-verliebten-amazone-mit-anklaengen-an-den-russischen-imperialismus"
-     },
-     {
-      "date": "Berlin - 28. Januar 2024",
-      "title": "Nora oder Wie man das Herrenhaus kompostiert",
-      "url": "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/nora-oder-wie-man-das-herrenhaus-kompostiert-deutsches-theater-berlin-anica-tomic-inszeniert-die-ibsen-ueberschreibung-von-sivan-ben-yishai"
      }
     ]
    },
@@ -1824,7 +1824,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/english-theatre-berlin": {
    "0": {
-    "at": 1795788729.9977171,
+    "at": 1795872568.889003,
     "items": [
      {
       "date": "Berlin, 31. Mai 2018.",
@@ -1858,7 +1858,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/hau-berlin": {
    "0": {
-    "at": 1795788720.747907,
+    "at": 1795872558.983962,
     "items": [
      {
       "date": "11. Juni 2026.",
@@ -2560,7 +2560,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin": {
    "0": {
-    "at": 1795788714.573427,
+    "at": 1795872551.892387,
     "items": [
      {
       "date": "5. September 2026.",
@@ -3362,7 +3362,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/schaubuehne-berlin": {
    "0": {
-    "at": 1795788687.9220762,
+    "at": 1795872514.0880513,
     "items": [
      {
       "date": "25. Oktober 2026.",
@@ -4164,7 +4164,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/sophiensaele-berlin": {
    "0": {
-    "at": 1795788726.9958186,
+    "at": 1795872566.034199,
     "items": [
      {
       "date": "26. November 2026.",
@@ -4449,7 +4449,7 @@
   },
   "/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin": {
    "0": {
-    "at": 1795788701.9785113,
+    "at": 1795872532.8741837,
     "items": [
      {
       "date": "26. November 2026.",
@@ -5451,8 +5451,14 @@
    ],
    "theater_ok": true
   },
+  "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/kabale-und-liebe-deutsches-theater-berlin-anne-lenk": {
+   "at": 1795872583.23263,
+   "published": 1795857104.0,
+   "scores": [],
+   "theater_ok": true
+  },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/rosa-l-deutsches-theater-berlin-anica-tomic-bringt-ein-luxemburg-biopic-auf-die-buehne": {
-   "at": 1795788742.1259928,
+   "at": 1795872583.3200574,
    "published": 1794074995.0,
    "scores": [
     0.0,
@@ -5555,7 +5561,7 @@
    "theater_ok": true
   },
   "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/alles-glueck-der-welt-volksbuehne-berlin-lena-brasch-inszeniert-ein-generationenkonflikt-musical-frei-nach-einem-bisher-unveroeffentlichten-drehbuch-von-thomas-brasch": {
-   "at": 1795788742.4377804,
+   "at": 1795872583.361666,
    "published": 1795680279.0,
    "scores": [
     -0.6,
@@ -6537,6 +6543,10 @@
     ]
    ]
   },
+  "ANTILLECTUAL": {
+   "at": 1795872782.773587,
+   "results": []
+  },
   "Absteige (nndw) + Yakama (alternative, saarbrücken) + nobis": {
    "at": 1795533137.062922,
    "results": []
@@ -7342,7 +7352,7 @@
    ]
   },
   "Banda Entopica": {
-   "at": 1795533237.467643,
+   "at": 1795872670.325567,
    "results": []
   },
   "Barnett Cohen": {
@@ -7359,6 +7369,10 @@
   },
   "Berlin Review x Volksbühne Volksbühne": {
    "at": 1795618218.9544506,
+   "results": []
+  },
+  "Black Pope + Furie + Yetzt": {
+   "at": 1795872727.2507312,
    "results": []
   },
   "Bragolin + Carrellee": {
@@ -7379,6 +7393,10 @@
   },
   "CURSED Volksbühne": {
    "at": 1794147056.519181,
+   "results": []
+  },
+  "Coilguns": {
+   "at": 1795872753.8797815,
    "results": []
   },
   "Das Bildnis des Dorian Gray": {
@@ -7413,6 +7431,106 @@
      "Dorian Gray – Bastian Kraft radikalisiert Oscar Wilde",
      "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/burgtheater-wien/dorian-gray-nbastian-kraft-radikalisiert-oscar-wilde",
      "2010-03-19T01:00:00+01:00"
+    ]
+   ]
+  },
+  "Deutscher Herbst": {
+   "at": 1795872777.9680784,
+   "results": [
+    [
+     "House of Hopes – Volksbühne am Rosa-Luxemburg-Platz Berlin – Rimini Protokoll eröffnen die Volksbühnen-Intendanz von Matthias Lilienthal mit einer globalen Demokratiebesinnung",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/volksbuehne-am-rosa-luxemburg-platz-berlin/house-of-hopes-volksbuehne-am-rosa-luxemburg-platz-berlin-rimini-protokoll-eroeffnen-die-volksbuehnen-intendanz-von-matthias-lilienthal-mit-einer-globalen-demokratiebesinnung",
+     "2026-10-02T10:22:10+02:00"
+    ],
+    [
+     "Deutscher Herbst – Ruhrtriennale – Christopher Rüping assoziiert sich durch einen Gehörgang",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/ruhrtriennale/deutscher-herbst-ruhrtriennale-christopher-rueping-assoziiert-sich-durch-einen-gehoergang",
+     "2026-09-27T07:43:59+02:00"
+    ],
+    [
+     "Christoph Schlingensief: Es ist nicht mehr mein Problem! – MAK Wien/Gropius Bau Berlin – Eine Ausstellung zum Auftakt der Wiener Festwochen zeigt den Aktionskünstler in seiner ganzen Aktualität",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/wien-niederoesterreich/wien/wiener-festwochen/christoph-schliengensief-es-ist-nicht-mehr-mein-problem-mak-wien-eine-ausstellung-zum-auftakt-der-wiener-festwochen-zeigt-den-aktionskuenstler-in-seiner-ganzen-aktualitaet",
+     "2026-05-13T07:34:27+02:00"
+    ],
+    [
+     "Die Abweichlerin – Deutsches Schauspielhaus Hamburg – Karin Henkel bringt Tove Ditlevsen letzten Roman auf die Bühne. Mit Lina Beckmann",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hamburg-schleswig-holstein/hamburg/deutsches-schauspielhaus-hamburg/die-abweichlerin-deutsches-schauspielhaus-hamburg-karin-henkel-tove-ditlevsen",
+     "2025-03-13T09:12:02+01:00"
+    ],
+    [
+     "Valbella – Theater Neumarkt Zürich – Das AG Theater Rämibühl glaubt an das Gute im Menschen",
+     "https://nachtkritik.de/nachtkritiken/schweiz/zuerich-region/zuerich/theater-neumarkt-zuerich/valbella-theater-neumarkt-zuerich-das-ag-theater-raemibuehl-glaubt-an-das-gute-im-menschen",
+     "2024-04-06T06:22:27+02:00"
+    ],
+    [
+     "Sonne / Luft – Schauspielhaus Graz – Emre Akal inszeniert die Österreichische Erstaufführung von Elfriede Jelineks Textdoppel",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/steiermark/graz/schauspielhaus-graz/sonne-luft-schauspielhaus-graz-emre-akal-inszeniert-die-oesterreichische-erstauffuehrung-von-elfriede-jelineks-textdoppel",
+     "2023-10-14T08:53:43+02:00"
+    ],
+    [
+     "Decamerone – Deutsches Theater Berlin – Kirill Serebrennikov verlegt Giovanni Boccaccios Pestgeschichten in die Turnhalle",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/deutsches-theater-berlin/decamerone-deutsches-theater-berlin-kirill-serebrennikow",
+     "2020-03-08T23:00:00+01:00"
+    ],
+    [
+     "Wir sind keine Barbaren – Stefan Wolfram inszeniert Philipp Löhles Stück mit erhobenem Zeigefinger am Volkstheater Bautzen",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/bautzen/deutsch-sorbisches-volkstheater-bautzen/wir-sind-keine-barbaren",
+     "2016-11-26T23:46:32+01:00"
+    ],
+    [
+     "Je suis Fassbinder – Für Falk Richters Blick auf \"Deutschland im Herbst 2016\" verwandelt Barish Karademir die Nürnberger Tafelhalle in eine Tanzbühne zwischen Witz und Donner",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bayern/nuernberg/tafelhalle-nuernberg/je-suis-fassbinder-fuer-falk-richters-blick-auf-deutschland-im-herbst-2016-verwandelt-barish-karademir-die-nuernberger-tafelhalle-in-eine-tanzbuehne-zwischen-witz-und-donner",
+     "2016-09-30T22:20:29+02:00"
+    ],
+    [
+     "Indianer – Oliver Bukowskis bissiges Jubiläumsstück zum Mauerfall in Zittau uraufgeführt",
+     "https://nachtkritik.de/nachtkritiken/deutschland/sachsen/zittau/gerhart-hauptmann-theater-zittau/2014-11-08-07-13-46",
+     "2014-11-07T08:06:29+01:00"
+    ],
+    [
+     "Der Untergang der Nibelungen – Am Berliner Gorki Theater versucht Sebastian Nübling den Mythos umzukehren",
+     "https://nachtkritik.de/nachtkritiken/deutschland/berlin-brandenburg/berlin/maxim-gorki-theater-berlin/2014-10-24-06-39-56",
+     "2014-10-23T08:22:48+02:00"
+    ],
+    [
+     "Karl und Rosa (UA) – Alice Buddeberg bringt den vierten Band von Alfred Döblins Monumentalroman \"November 1918\" auf die Bühne des Bonner Theaters",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bonn/schauspiel-bonn/karl-und-rosa-bonn",
+     "2013-10-03T00:53:23+02:00"
+    ],
+    [
+     "Die Ratten – Am Bonner Theater verlegt Lukas Langhoff Gerhart Hauptmanns Milieustück in die Berliner Republik",
+     "https://nachtkritik.de/nachtkritiken/deutschland/nordrhein-westfalen/bonn/schauspiel-bonn/die-ratten-am-bonner-theater-verlegt-lukas-langhoff-gerhart-hauptmanns-milieustueck-in-die-berliner-republik",
+     "2013-02-22T08:05:21+01:00"
+    ],
+    [
+     "Herbstzeithelden – Michaela Dicu und Anna Gerhards bereiten den Alten am Deutschen Theater in Göttingen eine Bühne",
+     "https://nachtkritik.de/nachtkritiken/deutschland/bremen-niedersachsen/niedersachsen/goettingen/deutsches-theater-goettingen/herbstzeithelden-bereitet-den-alten-am-deutschen-theater-in-goettingen-eine-buehne",
+     "2012-11-17T23:45:19+01:00"
+    ],
+    [
+     "Ohne Netz – Die Uraufführung von Anne Rabes neuem Stück",
+     "https://nachtkritik.de/nachtkritiken/deutschland/hessen/giessen/stadttheater-giessen/ohne-netz-die-urauffuehrung-von-anne-rabes-neuem-stueck-auf-der-til-studiobuehne-des-stadttheaters-giessen",
+     "2011-02-26T08:25:00+01:00"
+    ],
+    [
+     "Medicament – Die deutsch-israelische Theaterkooperation Familienbande geht mit Maya Scheyes Stück in eine neue Runde",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/heidelberg/theater-heidelberg/medicament-die-deutsch-israelische-theaterkooperation-familienbande-geht-mit-maya-scheyes-stueck-in-eine-neue-runde",
+     "2010-11-14T22:21:48+01:00"
+    ],
+    [
+     "Atropa – Konstanze Lauterbach inszeniert Tom Lanoyes Atriden-Klagegesang",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/konstanz/theater-konstanz/atropa-nkonstanze-lauterbach-inszeniert-tom-lanoyes-atriden-klagegesang",
+     "2009-11-29T22:00:00+01:00"
+    ],
+    [
+     "Antigone/ Das Produkt – Christian Nickel kombiniert Sophokles mit Ravenhill zu einer 11/9-Comedy",
+     "https://nachtkritik.de/nachtkritiken/oesterreich/salzburg-region/salzburg/salzburger-landestheater/antigone-das-produkt-christian-nickel-kombiniert-sophokles-mit-ravenhill-zu-einer-119-comedy",
+     "2009-11-21T00:54:58+01:00"
+    ],
+    [
+     "Liebe ist kälter als das Kapital – René Polleschs Beitrag zur RAF-Projektwoche",
+     "https://nachtkritik.de/nachtkritiken/deutschland/baden-wuerttemberg/stuttgart/schauspiel-stuttgart/liebe-ist-kaelter-als-das-kapital-rene-polleschs-beitrag-zur-raf-projektwoche",
+     "2007-09-22T01:00:00+02:00"
     ]
    ]
   },
@@ -8314,6 +8432,10 @@
   },
   "FÏX8:SËD8 + NEROGRIS + SCHNEIDER": {
    "at": 1795533213.4243853,
+   "results": []
+  },
+  "German Autumn": {
+   "at": 1795872784.0989897,
    "results": []
   },
   "Good Vibes Only": {
@@ -9475,7 +9597,7 @@
    ]
   },
   "Kintsugi Chamäleon": {
-   "at": 1795533076.810021,
+   "at": 1795872630.7502801,
    "results": []
   },
   "Kolonialismus erinnern. Vom Konzept zum Ort": {
@@ -9740,7 +9862,7 @@
    "results": []
   },
   "Madama Butterfly": {
-   "at": 1795533224.5145602,
+   "at": 1795872717.5996313,
    "results": [
     [
      "Antigone – Staatstheater Nürnberg – Andreas Kriegenburg ringt dem Sophokles-Klassiker ein Bekenntnis gegen die Vorherrschaft des Mannes ab",
@@ -10611,7 +10733,7 @@
    ]
   },
   "OriginalklangBaroque Christmas music with Les Accents": {
-   "at": 1795008385.465191,
+   "at": 1795872778.6240451,
    "results": []
   },
   "OriginalklangIl pomo d’oro & Jakub Józef Orliński": {
@@ -10619,15 +10741,19 @@
    "results": []
   },
   "Piano Recital with Mitsuko Uchida": {
-   "at": 1795008363.5282383,
+   "at": 1795872768.2235577,
    "results": []
   },
   "Piece of Changes": {
    "at": 1795618383.9447026,
    "results": []
   },
+  "Planta Industrial": {
+   "at": 1795872768.362908,
+   "results": []
+  },
   "Polaris": {
-   "at": 1795095967.8677573,
+   "at": 1795872759.126681,
    "results": [
     [
      "Zerstörungslust – Theater Paderborn – Katharina Kreuzhage bringt die Studie über rechtsextreme Einstellungen von Carolin Amlinger und Oliver Nachtwey auf die Bühne",
@@ -10847,6 +10973,10 @@
    "at": 1795702520.767037,
    "results": []
   },
+  "Saba Lou (bln, r'n'b / soul / songwriter) Rec Release!": {
+   "at": 1795872719.4156747,
+   "results": []
+  },
   "Schnee von gestern, Schnee von morgen": {
    "at": 1794146710.234671,
    "results": [
@@ -10932,7 +11062,7 @@
    "results": []
   },
   "Sick and Tired English Theatre": {
-   "at": 1795533074.4187596,
+   "at": 1795872622.7357738,
    "results": []
   },
   "Simone Dede Ayivi & Kompliz*innen": {
@@ -10975,6 +11105,10 @@
     ]
    ]
   },
+  "Thaylo x URBAN SPREE": {
+   "at": 1795872748.3768258,
+   "results": []
+  },
   "The Abduction from the Seraglio": {
    "at": 1795702580.5600328,
    "results": []
@@ -10985,6 +11119,10 @@
   },
   "The Last Sky: My Search for Palestine": {
    "at": 1794315159.3060915,
+   "results": []
+  },
+  "The Magic Touch feat. The Floorettes": {
+   "at": 1795872740.363308,
    "results": []
   },
   "The Nutcracker": {
@@ -11250,7 +11388,7 @@
    "results": []
   },
   "Tosca": {
-   "at": 1795533215.2800572,
+   "at": 1795872633.633358,
    "results": [
     [
      "Glücklich die Glücklichen – Berliner Ensemble – Oliver Reese adaptiert Yasmina Rezas Roman von 2013",
@@ -11439,11 +11577,11 @@
    "results": []
   },
   "markus&markustheaterkollektiv": {
-   "at": 1795533145.9230697,
+   "at": 1795872630.7852511,
    "results": []
   },
   "markus&markustheaterkollektiv Sophiensaele": {
-   "at": 1795533157.540868,
+   "at": 1795872633.9485943,
    "results": []
   },
   "post-digital-punk) + Rooves (psych/post-rock, bln": {
